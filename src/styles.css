@@ -14,6 +14,7 @@ body { margin: 0; }
 }
 .heroInner { width: min(1120px, calc(100% - 40px)); margin: auto; }
 .eyebrow { text-transform: uppercase; letter-spacing: .12em; font-size: 13px; }
+.eyebrow.dark { color: #002fa7; font-weight: 800; }
 h1 { margin: 0; font-size: clamp(56px, 9vw, 118px); line-height: .92; letter-spacing: 0; }
 .sub { max-width: 740px; font-size: 22px; line-height: 1.45; }
 .actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
@@ -48,10 +49,32 @@ button, .links a {
 .product svg { color: #002fa7; }
 .product h2 { margin-bottom: 8px; }
 .product p { color: #4c5876; line-height: 1.5; }
+.product code {
+  display: block;
+  margin-top: 14px;
+  padding: 10px;
+  background: #f6f8ff;
+  color: #233054;
+  border-radius: 6px;
+  overflow-wrap: anywhere;
+  font-size: 12px;
+}
+.readiness {
+  width: min(1120px, calc(100% - 40px));
+  margin: 0 auto 64px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 1.2fr);
+  gap: 24px;
+  align-items: start;
+}
+.readiness h2 { margin: 0 0 10px; font-size: 34px; letter-spacing: 0; }
+.readiness p { color: #4c5876; line-height: 1.55; }
 .links { width: min(1120px, calc(100% - 40px)); margin: 0 auto 56px; display: flex; gap: 10px; flex-wrap: wrap; }
+.readiness .links { width: 100%; margin: 0; }
 .links a { border-color: #cdd8fb; }
 .links .disabled { opacity: .45; cursor: not-allowed; }
 @media (max-width: 640px) {
   .hero { min-height: 72vh; }
   .sub { font-size: 18px; }
+  .readiness { grid-template-columns: 1fr; }
 }
