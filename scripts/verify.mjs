@@ -64,12 +64,17 @@ for (const key of ["VITE_YNX_API_BASE_URL", "VITE_YNX_EVM_RPC_URL", "VITE_YNX_EX
 }
 const styles = fs.readFileSync("src/styles.css", "utf8");
 const hero = fs.readFileSync("src/sections/Hero.jsx", "utf8");
+const vercel = JSON.parse(fs.readFileSync("vercel.json", "utf8"));
 if (!styles.includes("--blue: #002fa7") || !styles.includes(".heroStage.isPulling")) {
   console.error("missing Klein blue palette or draggable hero interaction");
   process.exit(1);
 }
 if (!hero.includes("executionScene") || !hero.includes("onPointerMove") || hero.includes("<img") || hero.includes("ynx-execution-sculpture.png")) {
   console.error("CSS execution scene or pull interaction is not configured correctly");
+  process.exit(1);
+}
+if (!vercel.cleanUrls || vercel.rewrites?.[0]?.source !== "/(.*)" || vercel.rewrites?.[0]?.destination !== "/") {
+  console.error("Vercel SPA deep-link fallback is not configured for clean URLs");
   process.exit(1);
 }
 console.log("website verification passed");
