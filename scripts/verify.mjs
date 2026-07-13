@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { normalizeAddress, toEVMAddress, toYNXAddress } from "../src/lib/address.js";
 
 const required = [
   "package.json",
@@ -7,6 +8,8 @@ const required = [
   "src/main.jsx",
   "src/styles.css",
   "src/lib/api/ynxApi.js",
+  "src/lib/address.js",
+  "src/components/AddressConverter.jsx",
   "src/components/StatusCard.jsx",
   "src/components/ProductPanel.jsx",
   "src/components/LinkGrid.jsx",
@@ -76,6 +79,27 @@ if (!hero.includes("executionScene") || !hero.includes("onPointerMove") || hero.
 if (!vercel.cleanUrls || vercel.rewrites?.[0]?.source !== "/(.*)" || vercel.rewrites?.[0]?.destination !== "/") {
   console.error("Vercel SPA deep-link fallback is not configured for clean URLs");
   process.exit(1);
+}
+const addressVectors = [
+  ["0x0000000000000000000000000000000000000000", "ynx1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqgrm2qr"],
+  ["0x7e5f4552091a69125d5dfcb7b8c2659029395bdf", "ynx10e0525sfrf53yh2aljmm3sn9jq5njk7llqhn80"],
+  ["0xffffffffffffffffffffffffffffffffffffffff", "ynx1llllllllllllllllllllllllllllllllyj698f"]
+];
+for (const [hex, ynx] of addressVectors) {
+  if (toYNXAddress(hex) !== ynx || toEVMAddress(ynx) !== hex || normalizeAddress(ynx).evmAddress !== hex) {
+    console.error(`address vector mismatch: ${hex}`);
+    process.exit(1);
+  }
+}
+const validYNX = addressVectors[1][1];
+for (const invalid of ["0x1234", `Y${validYNX.slice(1)}`, `${validYNX.slice(0, -1)}q`, `eth${validYNX.slice(3)}`]) {
+  try {
+    toEVMAddress(invalid);
+    console.error(`invalid address passed: ${invalid}`);
+    process.exit(1);
+  } catch {
+    // Expected strict rejection.
+  }
 }
 console.log("website verification passed");
 

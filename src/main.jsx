@@ -12,6 +12,7 @@ import { LinkGrid } from "./components/LinkGrid.jsx";
 import { SiteHeader } from "./components/SiteHeader.jsx";
 import { SiteFooter } from "./components/SiteFooter.jsx";
 import { RoutePage } from "./components/RoutePage.jsx";
+import { AddressConverter } from "./components/AddressConverter.jsx";
 import "./styles.css";
 
 const route = window.location.pathname.replace(/\/$/, "") || "/";
@@ -134,7 +135,7 @@ function App() {
           <ProductPanel icon={<ShieldCheck />} title="Trust + Chain Law" text="Evidence-bound tracing, advisory labels, request validity, appeals, corrections, and transparency." status={serviceState("trust")} href="https://trust.ynxweb4.com/health" />
           <ProductPanel icon={<Gauge />} title="Resource Market" text="Policy-bound quotes, delegation, rental settlement, provider income, and analytics." status={serviceState("resource")} href="https://resource.ynxweb4.com/health" />
           <ProductPanel icon={<Braces />} title="Developer SDKs" text="Dependency-free JavaScript and Python clients verified against the live REST and EVM endpoints." status="live" href="/docs" />
-          <ProductPanel icon={<WalletCards />} title="Wallet Integration" text="MetaMask-compatible chain metadata and EVM account mechanics; default wallet support is not claimed." status="readiness" href="/testnet" />
+          <ProductPanel icon={<WalletCards />} title="Wallet Integration" text="Live reversible ynx1 and 0x account identity with MetaMask-compatible EVM mechanics; default wallet support is not claimed." status="live" href="/#address" />
         </div>
       </section>
 
@@ -152,12 +153,14 @@ function App() {
         </div>
       </section>
 
+      <AddressConverter />
+
       <section className="readinessSection" id="readiness" aria-labelledby="readiness-title" data-reveal>
         <div className="sectionHeader">
           <div><p className="sectionEyebrow">Readiness without overclaiming</p><h2 id="readiness-title">Current state and target state stay separate.</h2></div>
         </div>
         <div className="readinessColumns">
-          <div><h3><CheckCircle2 /> Verified now</h3><ul><li>Public YNX Testnet on chain ID 6423</li><li>Four remotely deployed validator roles</li><li>Live RPC, EVM, Faucet, Indexer and Explorer</li><li>AI action, Pay, Trust, Resource and governance surfaces</li><li>Checksummed releases, backup and rollback tooling</li></ul></div>
+          <div><h3><CheckCircle2 /> Verified now</h3><ul><li>Public YNX Testnet on chain ID 6423</li><li>Four remotely deployed validator roles</li><li>Live RPC, EVM, Faucet, Indexer and Explorer</li><li>Reversible ynx1 and 0x account identity</li><li>AI action, Pay, Trust, Resource and governance surfaces</li><li>Checksummed releases, backup and rollback tooling</li></ul></div>
           <div><h3><Clock3 /> Still required</h3><ul><li>Independent custody recovery and handover review</li><li>Public CometBFT voting and cutover proof</li><li>Independent public-vantage evidence</li><li>External security audit and mainnet legal review</li><li>External wallet, exchange, issuer and bridge approvals</li></ul></div>
           <div className="claimBoundary"><Scale size={28} /><h3>No fake claims</h3><p>This project does not claim mainnet launch, exchange listing, stablecoin issuer support, wallet default support, or third-party partnerships.</p><a href="/readiness">Read full boundaries</a></div>
         </div>

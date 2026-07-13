@@ -109,7 +109,7 @@ a { color: inherit; }
 .heroFacts { display: flex; flex-wrap: wrap; gap: 10px 22px; margin-top: 36px; width: min(720px, 100%); color: white; font-size: 13px; font-weight: 650; }
 .heroFacts span { display: inline-flex; align-items: center; gap: 6px; }
 .heroFacts .boundary { width: 100%; color: rgba(255,255,255,.68); font-weight: 500; }
-.networkBand, .validatorSection, .ecosystemSection, .developerSection, .readinessSection, .resourceSection { scroll-margin-top: 78px; }
+.networkBand, .validatorSection, .ecosystemSection, .developerSection, .addressSection, .readinessSection, .resourceSection { scroll-margin-top: 78px; }
 .networkBand { background: var(--soft); padding: 54px max(24px, calc((100vw - 1240px) / 2)) 64px; }
 .sectionHeader { display: flex; justify-content: space-between; align-items: end; gap: 40px; margin-bottom: 32px; }
 .sectionHeader.compact { margin-bottom: 22px; }
@@ -128,7 +128,7 @@ a { color: inherit; }
 .metric p { margin: 7px 0 0; color: var(--muted); font-size: 12px; overflow-wrap: anywhere; }
 .metric.emphasis p { color: rgba(255,255,255,.7); }
 .metric.hasError strong, .metric.hasError p { color: var(--danger); }
-.validatorSection, .ecosystemSection, .developerSection, .readinessSection, .resourceSection { width: min(1240px, calc(100% - 48px)); margin: 0 auto; padding: 96px 0; }
+.validatorSection, .ecosystemSection, .developerSection, .addressSection, .readinessSection, .resourceSection { width: min(1240px, calc(100% - 48px)); margin: 0 auto; padding: 96px 0; }
 .validatorTable { border-top: 1px solid var(--blue); }
 .validatorRow { display: grid; grid-template-columns: 1.2fr 1.8fr .7fr .7fr; gap: 20px; align-items: center; min-height: 76px; padding: 12px 10px; border-bottom: 1px solid var(--line); font-size: 14px; transition: background .2s ease, padding .2s ease; }
 .validatorRow:not(.validatorHead):hover { padding-left: 16px; background: #f7f9ff; }
@@ -161,6 +161,31 @@ a { color: inherit; }
 .endpoint code { overflow-wrap: anywhere; font-size: 13px; }
 .endpoint button { width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--line); border-radius: 8px; color: var(--blue); background: white; cursor: pointer; transition: background .2s ease, color .2s ease; }
 .endpoint button:hover { color: white; background: var(--blue); }
+.addressSection { display: grid; grid-template-columns: .78fr 1.22fr; gap: 80px; align-items: start; border-top: 1px solid var(--line); }
+.addressIntro h2 { margin: 0; color: var(--blue); font-size: 44px; line-height: 1.08; }
+.addressIntro > p:not(.sectionEyebrow) { color: var(--muted); line-height: 1.65; }
+.addressBoundary { display: flex; gap: 10px; align-items: flex-start; margin-top: 26px; padding-top: 18px; border-top: 1px solid var(--line); color: #3e4653; font-size: 13px; line-height: 1.5; }
+.addressBoundary svg { flex: 0 0 auto; color: var(--blue); }
+.addressBoundary code { color: var(--blue); }
+.addressTool { padding: 24px; border: 1px solid var(--line); border-top: 2px solid var(--blue); border-radius: 8px; background: var(--soft); box-shadow: 0 20px 42px rgba(0,47,167,.08); }
+.addressTool > label { display: block; margin-bottom: 9px; color: var(--muted); font-size: 12px; font-weight: 750; }
+.addressInputRow { display: grid; grid-template-columns: minmax(0,1fr) auto; border: 1px solid #bdc7da; border-radius: 8px; overflow: hidden; background: white; transition: border-color .2s ease, box-shadow .2s ease; }
+.addressInputRow:focus-within { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(0,47,167,.1); }
+.addressInputRow.hasError { border-color: var(--danger); }
+.addressInputRow input { min-width: 0; height: 52px; padding: 0 14px; border: 0; outline: 0; color: var(--ink); background: transparent; font-family: ui-monospace, "SFMono-Regular", monospace; font-size: 13px; }
+.addressInputRow button { min-width: 118px; padding: 0 16px; border: 0; display: inline-flex; align-items: center; justify-content: center; gap: 8px; color: white; background: var(--blue); font-weight: 750; cursor: pointer; transition: background .2s ease; }
+.addressInputRow button:hover:not(:disabled) { background: var(--blue-dark); }
+.addressInputRow button:disabled { cursor: not-allowed; opacity: .45; }
+.addressError { display: flex; align-items: flex-start; gap: 8px; margin: 12px 0 0; color: var(--danger); font-size: 13px; line-height: 1.45; }
+.addressError svg { flex: 0 0 auto; }
+.addressResults { margin-top: 20px; border-top: 1px solid var(--blue); }
+.addressOutput { display: grid; grid-template-columns: 120px minmax(0,1fr) 38px; gap: 12px; align-items: center; min-height: 72px; border-bottom: 1px solid var(--line); }
+.addressOutput > span { color: var(--muted); font-size: 12px; font-weight: 700; }
+.addressOutput code { min-width: 0; overflow-wrap: anywhere; color: var(--ink); font-size: 12px; }
+.addressOutput button { width: 36px; height: 36px; border: 1px solid var(--line); border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; color: var(--blue); background: white; cursor: pointer; }
+.addressOutput button:hover { color: white; background: var(--blue); }
+.addressExplorer { min-height: 48px; display: inline-flex; align-items: center; gap: 7px; color: var(--blue); font-size: 13px; font-weight: 750; text-decoration: none; }
+.addressExplorer:hover { text-decoration: underline; }
 .readinessSection { width: 100%; background: #eef3ff; padding-left: max(24px, calc((100vw - 1240px) / 2)); padding-right: max(24px, calc((100vw - 1240px) / 2)); }
 .readinessColumns { display: grid; grid-template-columns: 1fr 1fr .8fr; gap: 46px; }
 .readinessColumns h3 { display: flex; align-items: center; gap: 9px; margin: 0 0 20px; color: var(--blue); font-size: 17px; }
@@ -202,6 +227,7 @@ a { color: inherit; }
   .metricsGrid { grid-template-columns: repeat(3, 1fr); }
   .productGrid { grid-template-columns: repeat(2, 1fr); }
   .readinessColumns { grid-template-columns: 1fr 1fr; }
+  .addressSection { grid-template-columns: 1fr; gap: 42px; }
   .claimBoundary { grid-column: 1 / -1; border-left: 0; border-top: 1px solid rgba(0,47,167,.25); padding: 28px 0 0; }
 }
 @media (max-width: 760px) {
@@ -232,7 +258,7 @@ a { color: inherit; }
   .metricsGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .metric { min-height: 148px; padding: 15px; }
   .metric strong { font-size: 21px; }
-  .validatorSection, .ecosystemSection, .developerSection, .readinessSection, .resourceSection { width: 100%; padding: 72px 18px; }
+  .validatorSection, .ecosystemSection, .developerSection, .addressSection, .readinessSection, .resourceSection { width: 100%; padding: 72px 18px; }
   .validatorRow { grid-template-columns: 1.25fr .75fr; gap: 9px 14px; padding: 16px 5px; }
   .validatorHead { display: none; }
   .validatorRow > span:nth-child(2) { color: var(--muted); font-size: 12px; }
@@ -242,6 +268,12 @@ a { color: inherit; }
   .developerSection { display: grid; grid-template-columns: 1fr; gap: 48px; }
   .endpoint { grid-template-columns: 1fr 40px; padding: 12px 0; }
   .endpoint > span { grid-column: 1 / -1; }
+  .addressIntro h2 { font-size: 34px; }
+  .addressTool { padding: 16px; }
+  .addressInputRow { grid-template-columns: 1fr; }
+  .addressInputRow button { min-height: 48px; }
+  .addressOutput { grid-template-columns: 1fr 38px; padding: 12px 0; }
+  .addressOutput > span { grid-column: 1 / -1; }
   .readinessColumns, .linkGrid { grid-template-columns: 1fr; }
   .resourceLink:nth-child(odd) { border-right: 0; }
   .siteFooter { grid-template-columns: 1fr; padding: 46px 18px; }
