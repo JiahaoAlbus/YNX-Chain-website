@@ -1,24 +1,25 @@
-import { ExternalLink } from "lucide-react";
+import React from "react";
+import { ArrowUpRight, BookOpen, Code2, Coins, Droplets, Search } from "lucide-react";
 import { apiConfig } from "../lib/api/ynxApi.js";
 
 const links = [
-  ["Explorer", () => apiConfig.explorerUrl],
-  ["Faucet", () => apiConfig.faucetUrl],
-  ["Docs", () => apiConfig.docsUrl],
-  ["Grant Package", () => apiConfig.grantUrl],
-  ["Ecosystem Package", () => apiConfig.ecosystemUrl],
-  ["Exchange Readiness", () => apiConfig.exchangeUrl],
-  ["API Status", () => `${apiConfig.apiBase}/status`]
+  { label: "Explorer", detail: "Blocks, transactions and validators", href: apiConfig.explorerUrl, icon: Search },
+  { label: "Faucet", detail: "Request testnet YNXT", href: apiConfig.faucetUrl, icon: Droplets },
+  { label: "Developer docs", detail: "RPC, SDK and integration paths", href: apiConfig.docsUrl, icon: BookOpen },
+  { label: "Chain source", detail: "Runtime and verification code", href: "https://github.com/JiahaoAlbus/YNX-Chain", icon: Code2 },
+  { label: "Ecosystem readiness", detail: "External review package", href: apiConfig.ecosystemUrl, icon: Coins }
 ];
 
 export function LinkGrid() {
   return (
-    <div className="links">
-      {links.map(([label, getHref]) => {
-        const href = getHref();
-        const disabled = !href;
-        return <a key={label} className={disabled ? "disabled" : ""} href={disabled ? undefined : href}>{label}<ExternalLink size={16} /></a>;
-      })}
+    <div className="linkGrid">
+      {links.map(({ label, detail, href, icon: Icon }) => (
+        <a key={label} href={href} className="resourceLink" data-reveal>
+          <Icon size={20} />
+          <span><strong>{label}</strong><small>{detail}</small></span>
+          <ArrowUpRight size={17} />
+        </a>
+      ))}
     </div>
   );
 }

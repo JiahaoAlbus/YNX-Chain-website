@@ -11,6 +11,9 @@ const required = [
   "src/components/ProductPanel.jsx",
   "src/components/LinkGrid.jsx",
   "src/sections/Hero.jsx",
+  "server/network-status.mjs",
+  "api/network/status.js",
+  "vite.config.js",
   "app/README.md",
   "components/README.md",
   "sections/README.md",
@@ -43,12 +46,30 @@ for (const file of walk(".")) {
     }
   }
 }
+for (const file of walk("src")) {
+  if (!file.endsWith(".jsx")) continue;
+  const source = fs.readFileSync(file, "utf8");
+  if (!source.includes('from "react"')) {
+    console.error(`JSX module does not import React: ${file}`);
+    process.exit(1);
+  }
+}
 const env = fs.readFileSync(".env.example", "utf8");
 for (const key of ["VITE_YNX_API_BASE_URL", "VITE_YNX_EVM_RPC_URL", "VITE_YNX_EXPLORER_URL", "VITE_YNX_FAUCET_URL", "VITE_YNX_DOCS_URL", "VITE_YNX_GRANT_URL", "VITE_YNX_ECOSYSTEM_URL", "VITE_YNX_EXCHANGE_URL"]) {
   if (!env.includes(`${key}=`)) {
     console.error(`missing env key ${key}`);
     process.exit(1);
   }
+}
+const styles = fs.readFileSync("src/styles.css", "utf8");
+const hero = fs.readFileSync("src/sections/Hero.jsx", "utf8");
+if (!styles.includes("--blue: #002fa7") || !styles.includes(".hero.isPulling")) {
+  console.error("missing Klein blue palette or draggable hero interaction");
+  process.exit(1);
+}
+if (!hero.includes("ynx-execution-sculpture.png") || !hero.includes("onPointerMove") || hero.includes("ynx-validator-system.png")) {
+  console.error("hero asset or pull interaction is not configured correctly");
+  process.exit(1);
 }
 console.log("website verification passed");
 

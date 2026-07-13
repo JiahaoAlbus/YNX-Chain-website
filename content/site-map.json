@@ -2,17 +2,13 @@
   "brand": "YNX Chain",
   "nativeCoin": "YNXT",
   "primarySections": [
-    "live-status",
-    "wallet",
-    "explorer",
-    "ai",
-    "pay",
-    "trust",
-    "ide",
-    "resources",
-    "grant",
+    "network",
+    "validators",
     "ecosystem",
-    "exchange-readiness"
+    "developers",
+    "readiness",
+    "resources"
   ],
+  "preservedRoutes": ["docs", "testnet", "validators", "builders", "readiness", "about", "privacy", "terms", "risk", "security", "support", "test-assets", "bridge", "withdraw", "trading", "ai"],
   "dynamicDataPolicy": "All network facts must come from real YNX Chain APIs or render an explicit unavailable state."
 }
