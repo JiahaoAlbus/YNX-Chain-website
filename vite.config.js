@@ -1,6 +1,6 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import { collectNetworkStatus } from "./server/network-status.mjs";
+import { collectNetworkStatus, collectServiceHealth } from "./server/network-status.mjs";
 
 export default defineConfig({
   plugins: [
@@ -14,6 +14,13 @@ export default defineConfig({
           response.setHeader("content-type", "application/json; charset=utf-8");
           response.setHeader("cache-control", "no-store");
           response.end(JSON.stringify(await collectNetworkStatus()));
+        });
+        server.middlewares.use("/api/services/health", async (request, response, next) => {
+          if (request.method !== "GET") return next();
+          response.statusCode = 200;
+          response.setHeader("content-type", "application/json; charset=utf-8");
+          response.setHeader("cache-control", "no-store");
+          response.end(JSON.stringify(await collectServiceHealth()));
         });
       }
     }

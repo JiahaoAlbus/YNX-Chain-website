@@ -35,7 +35,11 @@ export async function loadEvmChainId(options = {}) {
 }
 
 export async function loadNetworkSnapshot() {
-  return requestJson(`${window.location.origin}/api/network/status`);
+  return requestJson(`${window.location.origin}/api/network/status`, { timeoutMs: 20000 });
+}
+
+export async function loadServiceHealth() {
+  return requestJson(`${window.location.origin}/api/services/health`, { timeoutMs: 20000 });
 }
 
 export function networkParams() {

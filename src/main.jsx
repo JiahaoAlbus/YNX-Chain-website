@@ -4,7 +4,7 @@ import {
   Activity, Bot, Box, Braces, CheckCircle2, CircleDollarSign, Clock3, Code2, Coins,
   Database, Gauge, Layers3, Network, Scale, Search, ShieldCheck, WalletCards
 } from "lucide-react";
-import { apiConfig, loadNetworkSnapshot, networkParams } from "./lib/api/ynxApi.js";
+import { apiConfig, loadNetworkSnapshot, loadServiceHealth, networkParams } from "./lib/api/ynxApi.js";
 import { Hero } from "./sections/Hero.jsx";
 import { StatusCard } from "./components/StatusCard.jsx";
 import { ProductPanel } from "./components/ProductPanel.jsx";
@@ -26,6 +26,8 @@ function App() {
   useEffect(() => {
     let active = true;
     let previousHeight = 0;
+    let networkTimer = 0;
+    let lastServiceCheck = 0;
     const refresh = async () => {
       const next = await loadNetworkSnapshot();
       if (!active) return;
@@ -33,12 +35,24 @@ function App() {
       setHeightMoved(previousHeight > 0 && nextHeight > previousHeight);
       previousHeight = Math.max(previousHeight, nextHeight);
       setSnapshot(next);
-      setServices(next.services || {});
-      setConnectionState(next.status?.error ? "error" : "live");
+      setConnectionState(next.error || next.status?.error ? "error" : "live");
     };
-    refresh();
-    const networkTimer = window.setInterval(refresh, 5000);
-    return () => { active = false; window.clearInterval(networkTimer); };
+    const refreshServices = async () => {
+      const next = await loadServiceHealth();
+      if (!active) return;
+      setServices(next.services || {});
+      lastServiceCheck = Date.now();
+    };
+    const cycle = async () => {
+      await refresh();
+      if (active && Date.now() - lastServiceCheck >= 120000) await refreshServices();
+      if (active) networkTimer = window.setTimeout(cycle, 5000);
+    };
+    cycle();
+    return () => {
+      active = false;
+      window.clearTimeout(networkTimer);
+    };
   }, []);
 
   useEffect(() => {

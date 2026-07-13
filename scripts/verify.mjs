@@ -13,6 +13,7 @@ const required = [
   "src/sections/Hero.jsx",
   "server/network-status.mjs",
   "api/network/status.js",
+  "api/services/health.js",
   "vite.config.js",
   "app/README.md",
   "components/README.md",
@@ -63,12 +64,12 @@ for (const key of ["VITE_YNX_API_BASE_URL", "VITE_YNX_EVM_RPC_URL", "VITE_YNX_EX
 }
 const styles = fs.readFileSync("src/styles.css", "utf8");
 const hero = fs.readFileSync("src/sections/Hero.jsx", "utf8");
-if (!styles.includes("--blue: #002fa7") || !styles.includes(".hero.isPulling")) {
+if (!styles.includes("--blue: #002fa7") || !styles.includes(".heroStage.isPulling")) {
   console.error("missing Klein blue palette or draggable hero interaction");
   process.exit(1);
 }
-if (!hero.includes("ynx-execution-sculpture.png") || !hero.includes("onPointerMove") || hero.includes("ynx-validator-system.png")) {
-  console.error("hero asset or pull interaction is not configured correctly");
+if (!hero.includes("executionScene") || !hero.includes("onPointerMove") || hero.includes("<img") || hero.includes("ynx-execution-sculpture.png")) {
+  console.error("CSS execution scene or pull interaction is not configured correctly");
   process.exit(1);
 }
 console.log("website verification passed");

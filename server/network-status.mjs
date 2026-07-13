@@ -12,13 +12,6 @@ const endpoints = Object.freeze({
 
 export async function collectNetworkStatus() {
   const checkedAt = new Date().toISOString();
-  const servicesPromise = Promise.all([
-    getJson(endpoints.faucet, {}, 3500),
-    getJson(endpoints.ai, {}, 3500),
-    getJson(endpoints.pay, {}, 3500),
-    getJson(endpoints.trust, {}, 3500),
-    getJson(endpoints.resource, {}, 3500)
-  ]);
   // Fetch the identity-bearing endpoints in sequence. The public ingress can
   // throttle concurrent requests from one deployment worker.
   const status = await getJson(endpoints.status);
@@ -29,8 +22,6 @@ export async function collectNetworkStatus() {
     headers: { "content-type": "application/json" },
     body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: "eth_chainId", params: [] })
   });
-  const [faucet, ai, pay, trust, resource] = await servicesPromise;
-
   const identityValid = status.chainId === 6423 && status.nativeCurrencySymbol === "YNXT" && evm.result === "0x1917";
   return {
     ok: identityValid,
@@ -39,9 +30,18 @@ export async function collectNetworkStatus() {
     summary,
     validators,
     evm,
-    services: { faucet, ai, pay, trust, resource },
     sources: endpoints
   };
+}
+
+export async function collectServiceHealth() {
+  const checkedAt = new Date().toISOString();
+  const services = {};
+  // Keep these sequential as several public hostnames share ingress capacity.
+  for (const name of ["faucet", "ai", "pay", "trust", "resource"]) {
+    services[name] = await getJson(endpoints[name], {}, 3000);
+  }
+  return { checkedAt, services };
 }
 
 async function getJson(url, init = {}, timeoutMs = 7000) {

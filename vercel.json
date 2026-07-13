@@ -3,6 +3,9 @@
   "outputDirectory": "dist",
   "framework": "vite",
   "cleanUrls": true,
+  "functions": {
+    "api/**/*.js": { "maxDuration": 30 }
+  },
   "headers": [
     {
       "source": "/(.*)",
@@ -15,6 +18,6 @@
     }
   ],
   "rewrites": [
-    { "source": "/((?!api/|assets/|ynx-execution-sculpture.png).*)", "destination": "/index.html" }
+    { "source": "/((?!api/|assets/).*)", "destination": "/index.html" }
   ]
 }
