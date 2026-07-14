@@ -170,7 +170,7 @@ if (packageJson.dependencies?.["@noble/curves"] !== "2.2.0" || packageJson.depen
   console.error("browser signer cryptography dependencies are not exactly pinned");
   process.exit(1);
 }
-if (signerSource.repository !== "https://github.com/JiahaoAlbus/YNX-Chain" || signerSource.commit !== "41340eb") {
+if (signerSource.repository !== "https://github.com/JiahaoAlbus/YNX-Chain" || signerSource.commit !== "5bab0e0") {
   console.error("browser signer provenance is missing or stale");
   process.exit(1);
 }
