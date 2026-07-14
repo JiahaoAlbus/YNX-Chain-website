@@ -9,6 +9,7 @@
     "readiness",
     "resources"
   ],
-  "preservedRoutes": ["docs", "testnet", "validators", "builders", "readiness", "about", "privacy", "terms", "risk", "security", "support", "test-assets", "bridge", "withdraw", "trading", "ai"],
+  "productRoutes": ["apps", "square", "docs"],
+  "preservedRoutes": ["testnet", "validators", "builders", "readiness", "about", "privacy", "terms", "risk", "security", "support", "test-assets", "bridge", "withdraw", "trading", "ai"],
   "dynamicDataPolicy": "All network facts must come from real YNX Chain APIs or render an explicit unavailable state."
 }

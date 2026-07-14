@@ -10,13 +10,20 @@ const required = [
   "src/lib/api/ynxApi.js",
   "src/lib/address.js",
   "src/components/AddressConverter.jsx",
+  "src/pages/AppsPage.jsx",
+  "src/pages/DocsPage.jsx",
+  "src/pages/SquarePage.jsx",
   "src/components/StatusCard.jsx",
   "src/components/ProductPanel.jsx",
   "src/components/LinkGrid.jsx",
   "src/sections/Hero.jsx",
   "server/network-status.mjs",
+  "server/app-gateway.mjs",
   "api/network/status.js",
   "api/services/health.js",
+  "api/apps/health.js",
+  "api/apps/square/feed.js",
+  "api/apps/square/post.js",
   "vite.config.js",
   "app/README.md",
   "components/README.md",
@@ -69,6 +76,11 @@ const styles = fs.readFileSync("src/styles.css", "utf8");
 const hero = fs.readFileSync("src/sections/Hero.jsx", "utf8");
 const addressConverter = fs.readFileSync("src/components/AddressConverter.jsx", "utf8");
 const main = fs.readFileSync("src/main.jsx", "utf8");
+const header = fs.readFileSync("src/components/SiteHeader.jsx", "utf8");
+const appsPage = fs.readFileSync("src/pages/AppsPage.jsx", "utf8");
+const squarePage = fs.readFileSync("src/pages/SquarePage.jsx", "utf8");
+const docsPage = fs.readFileSync("src/pages/DocsPage.jsx", "utf8");
+const appGateway = fs.readFileSync("server/app-gateway.mjs", "utf8");
 const vercel = JSON.parse(fs.readFileSync("vercel.json", "utf8"));
 if (!styles.includes("--blue: #002fa7") || !styles.includes(".heroStage.isPulling")) {
   console.error("missing Klein blue palette or draggable hero interaction");
@@ -86,6 +98,28 @@ if (nativeOutput < 0 || compatibilityOutput < 0 || nativeOutput > compatibilityO
 }
 if (!main.includes("Exchange Integration Candidate") || !main.includes("No exchange listing is claimed")) {
   console.error("website does not expose the verified exchange candidate boundary");
+  process.exit(1);
+}
+if (!main.includes('route === "/apps"') || !main.includes('route === "/docs"') || !main.includes('route === "/square"')) {
+  console.error("first-party app, Square, and docs routes are not configured");
+  process.exit(1);
+}
+if (!header.includes('["Apps", "/apps"]') || !header.includes('["Docs", "/docs"]')) {
+  console.error("stable Apps and Docs navigation is missing");
+  process.exit(1);
+}
+for (const requiredText of ["Read-only beta", "Backend deployed", "Bounded engine verified", "Planned"]) {
+  if (!appsPage.includes(requiredText)) {
+    console.error(`application truth status missing: ${requiredText}`);
+    process.exit(1);
+  }
+}
+if (!squarePage.includes("No sample posts are inserted") || !squarePage.includes("chain-account ownership proof") || !docsPage.includes("Search YNX documentation")) {
+  console.error("Square truth boundary or in-site documentation is incomplete");
+  process.exit(1);
+}
+if (appGateway.includes("/chat/") || /method:\s*["']POST["']/.test(appGateway) || !appGateway.includes("/square/feed")) {
+  console.error("website app proxy must remain read-only Square-only");
   process.exit(1);
 }
 if (!vercel.cleanUrls || vercel.rewrites?.[0]?.source !== "/(.*)" || vercel.rewrites?.[0]?.destination !== "/") {
@@ -112,6 +146,25 @@ for (const invalid of ["0x1234", `Y${validYNX.slice(1)}`, `${validYNX.slice(0, -
   } catch {
     // Expected strict rejection.
   }
+}
+const originalFetch = globalThis.fetch;
+let requestedSquareUrl = "";
+globalThis.fetch = async (url) => {
+  requestedSquareUrl = String(url);
+  return new Response(JSON.stringify({ posts: [] }), { status: 200, headers: { "content-type": "application/json" } });
+};
+const { getSquareFeed, getSquarePost } = await import("../server/app-gateway.mjs");
+const feed = await getSquareFeed({ limit: 500, cursor: "cursor-1" });
+if (!Array.isArray(feed.posts) || requestedSquareUrl !== "https://api.ynxweb4.com/app/square/feed?limit=50&cursor=cursor-1") {
+  console.error(`Square feed proxy is not fixed and bounded: ${requestedSquareUrl}`);
+  process.exit(1);
+}
+let invalidPostRejected = false;
+try { await getSquarePost("../chat/devices"); } catch (error) { invalidPostRejected = error?.status === 400; }
+globalThis.fetch = originalFetch;
+if (!invalidPostRejected) {
+  console.error("Square post proxy did not reject an unsafe identifier");
+  process.exit(1);
 }
 console.log("website verification passed");
 

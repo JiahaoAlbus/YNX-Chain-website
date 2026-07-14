@@ -4,10 +4,9 @@ import { useState } from "react";
 import { apiConfig } from "../lib/api/ynxApi.js";
 
 const navigation = [
-  ["Network", "/#network"],
-  ["Ecosystem", "/#ecosystem"],
+  ["Products", "/#ecosystem"],
+  ["Apps", "/apps"],
   ["Developers", "/#developers"],
-  ["Readiness", "/#readiness"],
   ["Docs", "/docs"]
 ];
 

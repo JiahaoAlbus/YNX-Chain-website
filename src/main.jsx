@@ -13,6 +13,9 @@ import { SiteHeader } from "./components/SiteHeader.jsx";
 import { SiteFooter } from "./components/SiteFooter.jsx";
 import { RoutePage } from "./components/RoutePage.jsx";
 import { AddressConverter } from "./components/AddressConverter.jsx";
+import { AppsPage } from "./pages/AppsPage.jsx";
+import { DocsPage } from "./pages/DocsPage.jsx";
+import { SquarePage } from "./pages/SquarePage.jsx";
 import "./styles.css";
 
 const route = window.location.pathname.replace(/\/$/, "") || "/";
@@ -77,7 +80,13 @@ function App() {
     };
   }, []);
 
-  if (route !== "/") return <><SiteHeader scrollProgress={scrollProgress} /><RoutePage path={route} /><SiteFooter /></>;
+  if (route !== "/") {
+    let page = <RoutePage path={route} />;
+    if (route === "/apps") page = <AppsPage />;
+    if (route === "/docs") page = <DocsPage />;
+    if (route === "/square" || route.startsWith("/square/")) page = <SquarePage path={route} />;
+    return <><SiteHeader scrollProgress={scrollProgress} />{page}<SiteFooter /></>;
+  }
 
   const { status = {}, summary = {}, validators = {}, evm = {} } = snapshot;
   const validatorRows = Array.isArray(validators.validators) ? validators.validators : [];
