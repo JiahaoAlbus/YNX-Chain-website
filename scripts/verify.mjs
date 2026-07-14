@@ -143,7 +143,7 @@ if (!squarePage.includes("No sample posts are inserted") || !squarePage.includes
   console.error("Square truth boundary or in-site documentation is incomplete");
   process.exit(1);
 }
-for (const requiredText of ["sealSignerVault", "openSignerVault", "Connect signed session", "createPost", "disconnect({ revokeDevice: true })", "finally {", "local signing keys cleared"]) {
+for (const requiredText of ["sealSignerVault", "openSignerVault", "Connect signed session", "createPost", "disconnect({ revokeDevice: true })", "finally {", "local signing keys cleared", "Delete local copy", "Remote device state was not changed"]) {
   if (!squareAccountPanel.includes(requiredText)) {
     console.error(`Square signed account workflow is incomplete: ${requiredText}`);
     process.exit(1);

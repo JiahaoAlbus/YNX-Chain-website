@@ -138,6 +138,18 @@ export function SquareAccountPanel({ onPublished }) {
     });
   };
 
+  const removeLocalVault = () => {
+    if (!backupConfirmed || !window.confirm("Delete this local encrypted vault copy? This does not change remote device state.")) return;
+    clientRef.current?.lock();
+    clientRef.current = null;
+    localStorage.removeItem(VAULT_KEY);
+    localStorage.removeItem(BACKUP_KEY);
+    setHasVault(false); setBackupConfirmed(false); setIdentity(null);
+    setSession({ connected: false, expiresAt: null });
+    setPassword(""); setMode("create");
+    setNotice("Local encrypted vault copy removed. Remote device state was not changed.");
+  };
+
   const saveBackup = () => {
     const vault = readVault();
     if (!vault) return;
@@ -197,6 +209,7 @@ export function SquareAccountPanel({ onPublished }) {
             <button className="button primary" disabled={Boolean(busy)}><LockKeyhole size={17} />{busy === "unlocking" ? "Unlocking" : "Unlock"}</button>
             <div className="vaultActions">
               <button type="button" onClick={() => fileRef.current?.click()}><Upload />Import encrypted vault</button>
+              <button type="button" className="danger" onClick={removeLocalVault} disabled={!backupConfirmed}><Trash2 />Delete local copy</button>
             </div>
           </form>
         )}
