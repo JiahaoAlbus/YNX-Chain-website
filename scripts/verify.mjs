@@ -67,6 +67,8 @@ for (const key of ["VITE_YNX_API_BASE_URL", "VITE_YNX_EVM_RPC_URL", "VITE_YNX_EX
 }
 const styles = fs.readFileSync("src/styles.css", "utf8");
 const hero = fs.readFileSync("src/sections/Hero.jsx", "utf8");
+const addressConverter = fs.readFileSync("src/components/AddressConverter.jsx", "utf8");
+const main = fs.readFileSync("src/main.jsx", "utf8");
 const vercel = JSON.parse(fs.readFileSync("vercel.json", "utf8"));
 if (!styles.includes("--blue: #002fa7") || !styles.includes(".heroStage.isPulling")) {
   console.error("missing Klein blue palette or draggable hero interaction");
@@ -74,6 +76,16 @@ if (!styles.includes("--blue: #002fa7") || !styles.includes(".heroStage.isPullin
 }
 if (!hero.includes("executionScene") || !hero.includes("onPointerMove") || hero.includes("<img") || hero.includes("ynx-execution-sculpture.png")) {
   console.error("CSS execution scene or pull interaction is not configured correctly");
+  process.exit(1);
+}
+const nativeOutput = addressConverter.indexOf('label="YNX native (default)"');
+const compatibilityOutput = addressConverter.indexOf('label="EVM compatibility / MetaMask"');
+if (nativeOutput < 0 || compatibilityOutput < 0 || nativeOutput > compatibilityOutput || !addressConverter.includes("isolated to the EVM compatibility layer")) {
+  console.error("YNX-native address identity is not the truthful default");
+  process.exit(1);
+}
+if (!main.includes("Exchange Integration Candidate") || !main.includes("No exchange listing is claimed")) {
+  console.error("website does not expose the verified exchange candidate boundary");
   process.exit(1);
 }
 if (!vercel.cleanUrls || vercel.rewrites?.[0]?.source !== "/(.*)" || vercel.rewrites?.[0]?.destination !== "/") {

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import {
   Activity, Bot, Box, Braces, CheckCircle2, CircleDollarSign, Clock3, Code2, Coins,
-  Database, Gauge, Layers3, Network, Scale, Search, ShieldCheck, WalletCards
+  Database, Gauge, Landmark, Layers3, Network, Scale, Search, ShieldCheck, WalletCards
 } from "lucide-react";
 import { apiConfig, loadNetworkSnapshot, loadServiceHealth, networkParams } from "./lib/api/ynxApi.js";
 import { Hero } from "./sections/Hero.jsx";
@@ -135,7 +135,8 @@ function App() {
           <ProductPanel icon={<ShieldCheck />} title="Trust + Chain Law" text="Evidence-bound tracing, advisory labels, request validity, appeals, corrections, and transparency." status={serviceState("trust")} href="https://trust.ynxweb4.com/health" />
           <ProductPanel icon={<Gauge />} title="Resource Market" text="Policy-bound quotes, delegation, rental settlement, provider income, and analytics." status={serviceState("resource")} href="https://resource.ynxweb4.com/health" />
           <ProductPanel icon={<Braces />} title="Developer SDKs" text="Dependency-free JavaScript and Python clients verified against the live REST and EVM endpoints." status="live" href="/docs" />
-          <ProductPanel icon={<WalletCards />} title="Wallet Integration" text="Live reversible ynx1 and 0x account identity with MetaMask-compatible EVM mechanics; default wallet support is not claimed." status="live" href="/#address" />
+          <ProductPanel icon={<WalletCards />} title="YNX-native Identity" text="ynx1 is the default account identity across first-party YNX surfaces. The equivalent 0x value is confined to the EVM compatibility adapter." status="live" href="/#address" />
+          <ProductPanel icon={<Landmark />} title="Exchange Integration Candidate" text="Public-testnet signed transaction broadcast, nonce, block, history, receipt, and log flows are verified. No exchange listing is claimed." status="live" href={apiConfig.exchangeUrl} />
         </div>
       </section>
 
@@ -160,8 +161,8 @@ function App() {
           <div><p className="sectionEyebrow">Readiness without overclaiming</p><h2 id="readiness-title">Current state and target state stay separate.</h2></div>
         </div>
         <div className="readinessColumns">
-          <div><h3><CheckCircle2 /> Verified now</h3><ul><li>Public YNX Testnet on chain ID 6423</li><li>Four remotely deployed validator roles</li><li>Live RPC, EVM, Faucet, Indexer and Explorer</li><li>Reversible ynx1 and 0x account identity</li><li>AI action, Pay, Trust, Resource and governance surfaces</li><li>Checksummed releases, backup and rollback tooling</li></ul></div>
-          <div><h3><Clock3 /> Still required</h3><ul><li>Independent custody recovery and handover review</li><li>Public CometBFT voting and cutover proof</li><li>Independent public-vantage evidence</li><li>External security audit and mainnet legal review</li><li>External wallet, exchange, issuer and bridge approvals</li></ul></div>
+          <div><h3><CheckCircle2 /> Verified now</h3><ul><li>Public YNX Testnet on chain ID 6423</li><li>Four remotely deployed validator roles</li><li>Live RPC, EVM, Faucet, Indexer and Explorer</li><li>YNX-native ynx1 identity with an isolated EVM adapter</li><li>Signed transaction and exchange-candidate RPC flows</li><li>AI action, Pay, Trust, Resource and governance surfaces</li><li>Checksummed releases, backup and rollback tooling</li></ul></div>
+          <div><h3><Clock3 /> Still required</h3><ul><li>YNX native wallet production release and custody handover</li><li>Public CometBFT voting and cutover proof</li><li>Independent public-vantage evidence</li><li>External security audit and mainnet legal review</li><li>External wallet, exchange, issuer and bridge approvals</li></ul></div>
           <div className="claimBoundary"><Scale size={28} /><h3>No fake claims</h3><p>This project does not claim mainnet launch, exchange listing, stablecoin issuer support, wallet default support, or third-party partnerships.</p><a href="/readiness">Read full boundaries</a></div>
         </div>
       </section>

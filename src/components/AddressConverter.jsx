@@ -34,9 +34,9 @@ export function AddressConverter() {
     <section className="addressSection" id="address" aria-labelledby="address-title" data-reveal>
       <div className="addressIntro">
         <p className="sectionEyebrow">YNX account identity</p>
-        <h2 id="address-title">One account. Two verified formats.</h2>
-        <p>The YNX-native alias and EVM address encode the same 20 account bytes. Assets, keys, and account state do not change during conversion.</p>
-        <div className="addressBoundary"><WalletCards size={19} /><span>MetaMask, Solidity, and EVM JSON-RPC continue to use the canonical <code>0x...</code> form.</span></div>
+        <h2 id="address-title">YNX-native by default.</h2>
+        <p><code>ynx1...</code> is the primary account identity across YNX applications. The compatibility address encodes the same 20 account bytes, so assets, keys, and account state do not change.</p>
+        <div className="addressBoundary"><WalletCards size={19} /><span><code>0x...</code> is isolated to the EVM compatibility layer used by standard MetaMask, Solidity, and EVM JSON-RPC tooling.</span></div>
       </div>
 
       <form className="addressTool" onSubmit={convert} noValidate>
@@ -46,7 +46,7 @@ export function AddressConverter() {
             id="address-input"
             value={input}
             onChange={(event) => { setInput(event.target.value); setError(""); setResult(null); }}
-            placeholder="0x... or ynx1..."
+            placeholder="ynx1... or EVM compatibility address"
             autoComplete="off"
             spellCheck="false"
           />
@@ -54,8 +54,8 @@ export function AddressConverter() {
         </div>
         {error && <p className="addressError" role="alert"><CircleAlert size={16} />{error}</p>}
         {result && <div className="addressResults" aria-live="polite">
-          <AddressOutput label="EVM / MetaMask" value={result.evmAddress} type="evm" copied={copied} onCopy={copy} />
-          <AddressOutput label="YNX native" value={result.ynxAddress} type="ynx" copied={copied} onCopy={copy} />
+          <AddressOutput label="YNX native (default)" value={result.ynxAddress} type="ynx" copied={copied} onCopy={copy} />
+          <AddressOutput label="EVM compatibility / MetaMask" value={result.evmAddress} type="evm" copied={copied} onCopy={copy} />
           <a className="addressExplorer" href={`${apiConfig.explorerUrl}/api/accounts/${result.ynxAddress}`}>
             Verify this account in Explorer <ExternalLink size={16} />
           </a>
