@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { AlertCircle, ArrowLeft, Clock3, MessageCircle, RefreshCw, ShieldCheck, UserRound } from "lucide-react";
+import { SquareAccountPanel } from "../components/SquareAccountPanel.jsx";
 
 export function SquarePage({ path }) {
   const postId = path.startsWith("/square/") ? decodeURIComponent(path.slice("/square/".length)) : "";
@@ -43,12 +44,14 @@ export function SquarePage({ path }) {
         </div>
       </header>
 
-      <div className="squareBoundary"><ShieldCheck /><span><strong>Read-only beta</strong>Posting and Chat remain disabled until chain-account ownership proof binds the device session to the claimed on-chain account.</span>{updatedAt && <time dateTime={updatedAt}>Updated {formatTime(updatedAt)}</time>}</div>
+      <div className="squareBoundary"><ShieldCheck /><span><strong>Public reads live · signed writes beta</strong>Publishing requires a local encrypted YNX vault, chain-account ownership proof, and a device-signed session. Private keys never enter the Gateway.</span>{updatedAt && <time dateTime={updatedAt}>Updated {formatTime(updatedAt)}</time>}</div>
+
+      {!postId && <SquareAccountPanel onPublished={refresh} />}
 
       {state === "loading" && <section className="squareLoading" aria-live="polite"><span /><span /><span /></section>}
       {state === "error" && <section className="squareEmpty error" aria-live="polite"><AlertCircle /><h2>Square is unavailable</h2><p>{data?.error || "The live feed could not be reached."}</p><button className="button primary" onClick={refresh}>Try again</button></section>}
       {state === "ready" && postId && <PostDetail data={data} />}
-      {state === "ready" && !postId && posts.length === 0 && <section className="squareEmpty"><MessageCircle /><h2>The public feed is empty.</h2><p>No sample posts are inserted. The first post will appear here only after ownership-bound publishing is safely enabled.</p></section>}
+      {state === "ready" && !postId && posts.length === 0 && <section className="squareEmpty"><MessageCircle /><h2>The public feed is empty.</h2><p>No sample posts are inserted. A post appears only after a user completes local vault backup, account ownership verification, and device-signed publishing.</p></section>}
       {state === "ready" && !postId && posts.length > 0 && <section className="squareFeed" aria-label="Square public feed">{posts.map((post) => <Post key={post.id} post={post} />)}</section>}
     </main>
   );

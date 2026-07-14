@@ -1,0 +1,10 @@
+{
+  "repository": "https://github.com/JiahaoAlbus/YNX-Chain",
+  "commit": "41340eb",
+  "package": "sdk/browser",
+  "files": {
+    "index.js": "e5668d44d701c229c8ae3c34569543af2a0184f7a77e74991c1e03c9b08107b2",
+    "client.js": "51e49fde8d0aa4076749ae19cf849cffb832e17dfb329dc2e1d39272f83019f1",
+    "vault.js": "09dd4bb6f87beeea39b3b894cfd7879a4a210d337f22f6c2c9e68d4dbfd07dc4"
+  }
+}

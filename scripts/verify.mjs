@@ -1,18 +1,27 @@
 import fs from "node:fs";
 import path from "node:path";
+import crypto from "node:crypto";
 import { normalizeAddress, toEVMAddress, toYNXAddress } from "../src/lib/address.js";
 
 const required = [
   "package.json",
   "index.html",
+  "public/manifest.webmanifest",
+  "public/sw.js",
+  "public/ynx-mark.svg",
   "src/main.jsx",
   "src/styles.css",
   "src/lib/api/ynxApi.js",
   "src/lib/address.js",
   "src/components/AddressConverter.jsx",
+  "src/components/SquareAccountPanel.jsx",
   "src/pages/AppsPage.jsx",
   "src/pages/DocsPage.jsx",
   "src/pages/SquarePage.jsx",
+  "src/lib/ynx-signer/index.js",
+  "src/lib/ynx-signer/client.js",
+  "src/lib/ynx-signer/vault.js",
+  "src/lib/ynx-signer/SOURCE.json",
   "src/components/StatusCard.jsx",
   "src/components/ProductPanel.jsx",
   "src/components/LinkGrid.jsx",
@@ -76,12 +85,18 @@ const styles = fs.readFileSync("src/styles.css", "utf8");
 const hero = fs.readFileSync("src/sections/Hero.jsx", "utf8");
 const addressConverter = fs.readFileSync("src/components/AddressConverter.jsx", "utf8");
 const main = fs.readFileSync("src/main.jsx", "utf8");
+const indexHtml = fs.readFileSync("index.html", "utf8");
+const serviceWorker = fs.readFileSync("public/sw.js", "utf8");
+const manifest = JSON.parse(fs.readFileSync("public/manifest.webmanifest", "utf8"));
 const header = fs.readFileSync("src/components/SiteHeader.jsx", "utf8");
 const appsPage = fs.readFileSync("src/pages/AppsPage.jsx", "utf8");
 const squarePage = fs.readFileSync("src/pages/SquarePage.jsx", "utf8");
+const squareAccountPanel = fs.readFileSync("src/components/SquareAccountPanel.jsx", "utf8");
 const docsPage = fs.readFileSync("src/pages/DocsPage.jsx", "utf8");
 const appGateway = fs.readFileSync("server/app-gateway.mjs", "utf8");
 const vercel = JSON.parse(fs.readFileSync("vercel.json", "utf8"));
+const packageJson = JSON.parse(fs.readFileSync("package.json", "utf8"));
+const signerSource = JSON.parse(fs.readFileSync("src/lib/ynx-signer/SOURCE.json", "utf8"));
 if (!styles.includes("--blue: #002fa7") || !styles.includes(".heroStage.isPulling")) {
   console.error("missing Klein blue palette or draggable hero interaction");
   process.exit(1);
@@ -104,6 +119,16 @@ if (!main.includes('route === "/apps"') || !main.includes('route === "/docs"') |
   console.error("first-party app, Square, and docs routes are not configured");
   process.exit(1);
 }
+if (!main.includes('navigator.serviceWorker.register("/sw.js")') || !indexHtml.includes('rel="manifest"') || manifest.start_url !== "/" || manifest.display !== "standalone") {
+  console.error("installable PWA shell is incomplete");
+  process.exit(1);
+}
+for (const boundary of ['url.origin !== self.location.origin', 'url.pathname.startsWith("/api/")', 'request.method !== "GET"']) {
+  if (!serviceWorker.includes(boundary)) {
+    console.error(`PWA cache safety boundary missing: ${boundary}`);
+    process.exit(1);
+  }
+}
 if (!header.includes('["Apps", "/apps"]') || !header.includes('["Docs", "/docs"]')) {
   console.error("stable Apps and Docs navigation is missing");
   process.exit(1);
@@ -114,8 +139,18 @@ for (const requiredText of ["Read-only beta", "Backend deployed", "Bounded engin
     process.exit(1);
   }
 }
-if (!squarePage.includes("No sample posts are inserted") || !squarePage.includes("chain-account ownership proof") || !docsPage.includes("Search YNX documentation")) {
+if (!squarePage.includes("No sample posts are inserted") || !squarePage.includes("signed writes beta") || !squarePage.includes("SquareAccountPanel") || !docsPage.includes("Search YNX documentation")) {
   console.error("Square truth boundary or in-site documentation is incomplete");
+  process.exit(1);
+}
+for (const requiredText of ["sealSignerVault", "openSignerVault", "Connect signed session", "createPost", "disconnect({ revokeDevice: true })", "finally {", "local signing keys cleared"]) {
+  if (!squareAccountPanel.includes(requiredText)) {
+    console.error(`Square signed account workflow is incomplete: ${requiredText}`);
+    process.exit(1);
+  }
+}
+if (squareAccountPanel.includes("X-YNX-Square-Key") || squareAccountPanel.includes("X-YNX-Chat-Key")) {
+  console.error("Square browser workflow contains a server-side service credential header");
   process.exit(1);
 }
 if (appGateway.includes("/chat/") || /method:\s*["']POST["']/.test(appGateway) || !appGateway.includes("/square/feed")) {
@@ -125,6 +160,26 @@ if (appGateway.includes("/chat/") || /method:\s*["']POST["']/.test(appGateway) |
 if (!vercel.cleanUrls || vercel.rewrites?.[0]?.source !== "/(.*)" || vercel.rewrites?.[0]?.destination !== "/") {
   console.error("Vercel SPA deep-link fallback is not configured for clean URLs");
   process.exit(1);
+}
+const csp = vercel.headers?.[0]?.headers?.find((header) => header.key === "Content-Security-Policy")?.value || "";
+if (!csp.includes("script-src 'self'") || !csp.includes("worker-src 'self'") || !csp.includes("connect-src 'self' https://api.ynxweb4.com") || !csp.includes("object-src 'none'")) {
+  console.error("strict browser signer CSP is missing");
+  process.exit(1);
+}
+if (packageJson.dependencies?.["@noble/curves"] !== "2.2.0" || packageJson.dependencies?.["@noble/hashes"] !== "2.2.0") {
+  console.error("browser signer cryptography dependencies are not exactly pinned");
+  process.exit(1);
+}
+if (signerSource.repository !== "https://github.com/JiahaoAlbus/YNX-Chain" || signerSource.commit !== "41340eb") {
+  console.error("browser signer provenance is missing or stale");
+  process.exit(1);
+}
+for (const [file, digest] of Object.entries(signerSource.files)) {
+  const actual = crypto.createHash("sha256").update(fs.readFileSync(`src/lib/ynx-signer/${file}`)).digest("hex");
+  if (actual !== digest) {
+    console.error(`browser signer source digest mismatch: ${file}`);
+    process.exit(1);
+  }
 }
 const addressVectors = [
   ["0x0000000000000000000000000000000000000000", "ynx1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqgrm2qr"],
@@ -147,6 +202,20 @@ for (const invalid of ["0x1234", `Y${validYNX.slice(1)}`, `${validYNX.slice(0, -
     // Expected strict rejection.
   }
 }
+const signer = await import("../src/lib/ynx-signer/index.js");
+const signerAccountSecret = Uint8Array.from({ length: 32 }, (_, index) => index === 31 ? 1 : 0);
+const signerDeviceSecret = new Uint8Array(32).fill(0x41);
+if (signer.accountIdentity(signerAccountSecret).account !== validYNX || signer.deviceIdentifier(signerDeviceSecret) !== "web-9a92d2b54a9a5402de3e65a0") {
+  console.error("vendored browser signer vectors do not match the chain package");
+  process.exit(1);
+}
+const signerVault = await signer.sealSignerVault({ accountSecret: signerAccountSecret, deviceSecret: signerDeviceSecret }, "website verification password");
+const openedSignerVault = await signer.openSignerVault(signerVault, "website verification password");
+if (Buffer.from(openedSignerVault.accountSecret).toString("hex") !== Buffer.from(signerAccountSecret).toString("hex")) {
+  console.error("vendored browser signer vault did not round-trip");
+  process.exit(1);
+}
+signer.zeroize(openedSignerVault.accountSecret, openedSignerVault.deviceSecret);
 const originalFetch = globalThis.fetch;
 let requestedSquareUrl = "";
 globalThis.fetch = async (url) => {

@@ -259,6 +259,51 @@ a { color: inherit; }
 .squareBoundary > span { display: flex; flex-direction: column; gap: 4px; color: var(--muted); font-size: 13px; }
 .squareBoundary strong { color: var(--blue); }
 .squareBoundary time { color: var(--muted); font-size: 11px; }
+.squareWorkspace { margin: 0 0 38px; display: grid; grid-template-columns: minmax(320px,.82fr) minmax(420px,1.18fr); border: 1px solid var(--line); border-top: 2px solid var(--blue); border-radius: 8px; overflow: hidden; background: white; box-shadow: 0 20px 44px rgba(0,47,167,.08); }
+.squareAccountPane, .squareComposer { min-width: 0; padding: 24px; }
+.squareAccountPane { border-right: 1px solid var(--line); background: var(--soft); }
+.workspaceTitle { min-height: 42px; display: flex; align-items: center; gap: 12px; color: var(--blue); }
+.workspaceTitle > svg { width: 22px; flex: 0 0 auto; }
+.workspaceTitle > span { min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.workspaceTitle small { color: var(--muted); font-size: 10px; font-weight: 800; text-transform: uppercase; }
+.workspaceTitle strong { overflow-wrap: anywhere; font-size: 16px; }
+.vaultForm { display: grid; gap: 14px; margin-top: 22px; }
+.modeSwitch { width: 100%; display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); padding: 3px; border: 1px solid var(--line); border-radius: 8px; background: white; }
+.modeSwitch button { min-height: 36px; border: 0; border-radius: 6px; color: var(--muted); background: transparent; cursor: pointer; }
+.modeSwitch button.active { color: white; background: var(--blue); }
+.vaultField { display: grid; gap: 7px; }
+.vaultField span { color: var(--muted); font-size: 11px; font-weight: 750; }
+.vaultField input, .composerFooter input, .squareComposer textarea { width: 100%; border: 1px solid #bdc7da; border-radius: 8px; outline: 0; color: var(--ink); background: white; font: inherit; transition: border-color .2s ease, box-shadow .2s ease; }
+.vaultField input { height: 46px; padding: 0 12px; }
+.vaultField input:focus, .composerFooter input:focus, .squareComposer textarea:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(0,47,167,.1); }
+.vaultForm .button, .connectButton { width: 100%; }
+.vaultActions { display: flex; flex-wrap: wrap; gap: 8px; }
+.vaultActions button { min-height: 34px; padding: 0 8px; border: 0; display: inline-flex; align-items: center; gap: 6px; color: var(--blue); background: transparent; font-size: 11px; font-weight: 750; cursor: pointer; }
+.vaultActions button.danger { color: var(--danger); }
+.vaultActions button:disabled { color: var(--muted); cursor: not-allowed; opacity: .5; }
+.vaultActions svg { width: 14px; }
+.accountStatus { display: grid; gap: 14px; margin-top: 22px; }
+.accountStatus code { padding: 11px 12px; border: 1px solid var(--line); border-radius: 8px; overflow-wrap: anywhere; background: white; font-size: 11px; }
+.backupCheck { min-height: 40px; display: flex; align-items: center; cursor: pointer; }
+.backupCheck input { width: 18px; height: 18px; margin: 0 10px 0 0; accent-color: var(--blue); }
+.backupCheck span { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-size: 12px; }
+.backupCheck svg { width: 14px; color: var(--green); }
+.connectButton { margin-top: 18px; }
+.sessionReady { min-height: 52px; margin-top: 18px; display: flex; align-items: center; gap: 12px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.sessionReady > i { width: 9px; height: 9px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 5px rgba(11,122,75,.12); }
+.sessionReady > span { display: flex; flex-direction: column; gap: 3px; }
+.sessionReady small { color: var(--muted); font-size: 10px; }
+.squareComposer { display: flex; flex-direction: column; }
+.squareComposer textarea { min-height: 152px; margin-top: 22px; padding: 14px; resize: vertical; line-height: 1.55; }
+.squareComposer textarea:disabled, .composerFooter input:disabled { color: var(--muted); background: var(--soft); cursor: not-allowed; }
+.composerFooter { display: grid; grid-template-columns: minmax(0,1fr) auto auto; gap: 12px; align-items: center; margin-top: 14px; }
+.composerFooter input { min-width: 0; height: 44px; padding: 0 12px; }
+.composerFooter > span { color: var(--muted); font-size: 10px; }
+.composerFooter .button { min-height: 44px; }
+.workspaceNotice { grid-column: 1 / -1; min-height: 44px; padding: 12px 24px; display: flex; align-items: center; border-top: 1px solid var(--line); font-size: 12px; }
+.workspaceNotice.success { color: var(--green); background: #effaf5; }
+.workspaceNotice.error { color: var(--danger); background: #fff4f2; }
+.visuallyHidden { position: absolute !important; width: 1px !important; height: 1px !important; padding: 0 !important; margin: -1px !important; overflow: hidden !important; clip: rect(0,0,0,0) !important; white-space: nowrap !important; border: 0 !important; }
 .squareLoading { display: grid; gap: 12px; }
 .squareLoading span { height: 158px; border: 1px solid var(--line); border-radius: 8px; background: linear-gradient(100deg, var(--soft) 20%, #fff 38%, var(--soft) 56%); background-size: 220% 100%; animation: shimmer 1.35s ease infinite; }
 .squareEmpty { min-height: 360px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 46px 24px; border: 1px solid var(--line); border-radius: 8px; text-align: center; background: var(--soft); }
@@ -394,6 +439,11 @@ a { color: inherit; }
   .squareControls { width: 100%; justify-content: space-between; padding: 0; }
   .squareBoundary { grid-template-columns: 24px minmax(0,1fr); }
   .squareBoundary time { grid-column: 2; }
+  .squareWorkspace { grid-template-columns: 1fr; }
+  .squareAccountPane { border-right: 0; border-bottom: 1px solid var(--line); }
+  .squareAccountPane, .squareComposer { padding: 18px; }
+  .composerFooter { grid-template-columns: minmax(0,1fr) auto; }
+  .composerFooter .button { grid-column: 1 / -1; width: 100%; }
   .squareEmpty { min-height: 300px; }
   .docsLayout { grid-template-columns: 1fr; gap: 34px; }
   .docsNav { position: static; display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); border-left: 1px solid var(--line); }
