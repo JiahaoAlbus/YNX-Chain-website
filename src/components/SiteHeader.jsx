@@ -15,7 +15,7 @@ export function SiteHeader({ scrollProgress = 0 }) {
   return (
     <header className="siteHeader">
       <span className="scrollProgress" style={{ transform: `scaleX(${scrollProgress})` }} aria-hidden="true" />
-      <a className="brand" href="/" aria-label="YNX Chain home"><span>YNX</span><small>CHAIN</small></a>
+      <a className="brand" href="/" aria-label="YNX Chain home"><img src="/ynx-logo.png" alt="" /><small>CHAIN</small></a>
       <nav className={open ? "open" : ""} aria-label="Primary navigation">
         {navigation.map(([label, href]) => <a key={label} href={href} onClick={() => setOpen(false)}>{label}</a>)}
         <a className="navExplorer" href={apiConfig.explorerUrl}>Explorer <ExternalLink size={14} /></a>

@@ -8,7 +8,10 @@ const required = [
   "index.html",
   "public/manifest.webmanifest",
   "public/sw.js",
-  "public/ynx-mark.svg",
+  "public/ynx-logo.png",
+  "public/ynx-icon-512.png",
+  "public/ynx-icon-maskable-512.png",
+  "public/ynx-favicon-48.png",
   "src/main.jsx",
   "src/styles.css",
   "src/lib/api/ynxApi.js",
@@ -50,6 +53,17 @@ const required = [
 for (const file of required) {
   if (!fs.existsSync(file)) {
     console.error(`missing ${file}`);
+    process.exit(1);
+  }
+}
+if (fs.existsSync("public/ynx-mark.svg")) {
+  console.error("legacy YNX logo asset is still present");
+  process.exit(1);
+}
+for (const file of ["public/ynx-logo.png", "public/ynx-icon-512.png", "public/ynx-icon-maskable-512.png", "public/ynx-favicon-48.png"]) {
+  const image = fs.readFileSync(file);
+  if (image.length < 100 || image.subarray(0, 8).toString("hex") !== "89504e470d0a1a0a") {
+    console.error(`invalid official YNX PNG asset: ${file}`);
     process.exit(1);
   }
 }
@@ -121,6 +135,10 @@ if (!main.includes('route === "/apps"') || !main.includes('route === "/docs"') |
 }
 if (!main.includes('navigator.serviceWorker.register("/sw.js")') || !indexHtml.includes('rel="manifest"') || manifest.start_url !== "/" || manifest.display !== "standalone") {
   console.error("installable PWA shell is incomplete");
+  process.exit(1);
+}
+if (!header.includes('src="/ynx-logo.png"') || !indexHtml.includes('/ynx-favicon-48.png') || !indexHtml.includes('/ynx-icon-512.png') || manifest.icons?.length !== 2 || manifest.icons[0]?.src !== "/ynx-icon-512.png" || manifest.icons[1]?.src !== "/ynx-icon-maskable-512.png") {
+  console.error("official YNX logo is not wired through navigation, favicon, and PWA icons");
   process.exit(1);
 }
 for (const boundary of ['url.origin !== self.location.origin', 'url.pathname.startsWith("/api/")', 'request.method !== "GET"']) {

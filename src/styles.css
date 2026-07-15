@@ -25,8 +25,8 @@ a { color: inherit; }
   position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,.9); border-bottom: 1px solid rgba(0,47,167,.12); backdrop-filter: blur(20px) saturate(140%);
 }
 .scrollProgress { position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--blue); transform-origin: left center; }
-.brand { display: inline-flex; align-items: baseline; gap: 7px; color: var(--blue); text-decoration: none; }
-.brand span { font-size: 24px; font-weight: 780; }
+.brand { display: inline-flex; align-items: center; gap: 8px; color: var(--blue); text-decoration: none; }
+.brand img { display: block; width: 52px; height: 28px; object-fit: contain; }
 .brand small { font-size: 10px; font-weight: 800; }
 .siteHeader nav { display: flex; align-items: center; gap: 26px; }
 .siteHeader nav a { position: relative; color: #4b5261; font-size: 14px; text-decoration: none; transition: color .2s ease; }
