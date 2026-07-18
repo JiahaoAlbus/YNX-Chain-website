@@ -1,35 +1,165 @@
 import React, { useMemo, useState } from "react";
-import { BookOpen, Braces, Code2, Copy, Search, ShieldCheck, WalletCards } from "lucide-react";
+import { BookOpen, Braces, Code2, Search, ShieldCheck, WalletCards, Radio, Bot, Megaphone, Cloud, Smartphone, CloudCog, CircleDollarSign, MessageCircle } from "lucide-react";
 import { apiConfig } from "../lib/api/ynxApi.js";
+import { getCatalog, PRODUCT_STATUS, STATUS_CONFIG } from "../lib/ecosystemCatalog.js";
 
-const sections = [
-  { id: "quickstart", title: "Quickstart", icon: BookOpen, body: "Connect to the current public testnet with YNXT as the native gas and resource asset.", rows: [["Network", "YNX Testnet"], ["Chain ID", "6423"], ["EVM chain ID", "0x1917"], ["Native coin", "YNXT"], ["REST RPC", apiConfig.apiBase], ["EVM JSON-RPC", apiConfig.evmRpc], ["Explorer", apiConfig.explorerUrl], ["Faucet", apiConfig.faucetUrl]] },
-  { id: "wallet", title: "Addresses and wallet", icon: WalletCards, body: "First-party YNX surfaces use ynx1 as the default identity. Standard EVM tooling uses the equivalent 0x address only inside the compatibility boundary.", code: `await ethereum.request({\n  method: "wallet_addEthereumChain",\n  params: [{\n    chainId: "0x1917",\n    chainName: "YNX Testnet",\n    nativeCurrency: { name: "YNXT", symbol: "YNXT", decimals: 18 },\n    rpcUrls: ["${apiConfig.evmRpc}"],\n    blockExplorerUrls: ["${apiConfig.explorerUrl}"]\n  }]\n});` },
-  { id: "rpc", title: "RPC", icon: Code2, body: "The REST surface exposes chain status, blocks, accounts, transactions, validators, and ecosystem APIs. EVM JSON-RPC supports the verified compatibility subset.", code: `curl ${apiConfig.apiBase}/status\n\ncurl -X POST ${apiConfig.evmRpc} \\\n  -H 'content-type: application/json' \\\n  -d '{"jsonrpc":"2.0","id":1,"method":"eth_chainId","params":[]}'` },
-  { id: "sdk", title: "SDKs", icon: Braces, body: "Dependency-free JavaScript and Python clients have reproducible local artifacts. They are not yet claimed as published npm or PyPI packages.", rows: [["JavaScript", "sdk/js"], ["Python", "sdk/python"], ["Address vectors", "testdata/address-vectors.json"], ["Registry status", "Not published"]] },
-  { id: "pay", title: "Pay API", icon: Code2, body: "Merchant-authenticated intents, invoices, refunds, webhook signatures, idempotency, and event records are deployed. The website does not expose merchant secrets.", rows: [["Health", "https://pay.ynxweb4.com/health"], ["Asset", "YNXT testnet"], ["Consumer checkout UI", "Not delivered"]] },
-  { id: "trust", title: "Trust and governance", icon: ShieldCheck, body: "Request validity, evidence requirements, overbroad-request rejection, native YNXT protection, appeals, corrections, and transparency records are implemented.", rows: [["Health", "https://trust.ynxweb4.com/health"], ["Native YNXT freeze", "Not allowed"], ["Labels", "Advisory and evidence-bound"]] },
-  { id: "chat", title: "Chat", icon: ShieldCheck, body: "The encrypted direct-message backend is deployed on a private loopback boundary. Public Chat is blocked until device sessions prove control of the claimed on-chain account.", rows: [["Backend", "Deployed privately"], ["Public route", "Disabled"], ["Groups and media", "Not implemented"]] },
-  { id: "ide", title: "IDE and contracts", icon: Code2, body: "Compiler and pinned bounded contract execution have verification evidence. Arbitrary EVM completeness and a production IDE application are not claimed.", rows: [["Compile", "Verified"], ["Pinned deploy/call", "Verified candidate proof"], ["Full arbitrary EVM", "Not implemented"], ["IDE product UI", "Not delivered"]] },
-  { id: "roadmap", title: "Readiness boundaries", icon: ShieldCheck, body: "Bank, Shop, production desktop apps, mainnet, exchange listings, stablecoin issuer support, wallet default support, and third-party partnerships remain future work or external approvals.", rows: [["Public network", "Testnet"], ["Mainnet", "Not launched"], ["Bank / Shop", "Planned"], ["macOS / Windows", "Not delivered"]] }
+const staticSections = [
+  {
+    id: "quickstart",
+    title: "Quickstart",
+    icon: BookOpen,
+    body: "This site keeps the official status first: public testnet, chain status, and product links. YNXT is the native gas/resource asset and chain identity remains ynx1-first.",
+    rows: [["Network", "YNX Testnet"], ["Chain ID", "6423"], ["EVM chain", "0x1917"], ["Native coin", "YNXT"], ["REST", apiConfig.apiBase], ["EVM RPC", apiConfig.evmRpc], ["Explorer", apiConfig.explorerUrl], ["Faucet", apiConfig.faucetUrl], ["Testnet Downloads", "/download"]],
+  },
+  {
+    id: "wallet",
+    title: "钱包",
+    icon: WalletCards,
+    body: "ynx1 identity is first-party and default. 0x compatibility remains in EVM adapter boundary and is used only for EVM-compatible signing.",
+    rows: [["Address path", "YNX Wallet default + EVM compatibility"], ["Login", "Sign in with YNX Wallet"], ["Provider", "Wallet session + signed intent"], ["Docs", "Not claiming external wallet default support"]]
+  },
+  {
+    id: "sdk",
+    title: "SDK",
+    icon: Braces,
+    body: "Use the in-repo JS/Python API examples, client examples, and integration endpoints without claiming external package publishing yet.",
+    code: `// js pseudocode
+import { toYNXAddress } from "./address";
+console.log(toYNXAddress("0x7e5f..."));`,
+    rows: [["Client", "Built-in web sample only"], ["Publishing", "Not published as external package"], ["Source", apiConfig.docsUrl]]
+  },
+  {
+    id: "explorer",
+    title: "Explorer",
+    icon: Search,
+    body: "Explorer is the production-facing proof path for live blocks, txs, accounts, validators and indexed event evidence.",
+    rows: [["Entry", apiConfig.explorerUrl], ["SSE", "Realtime updates and stale/catching-up labels"], ["Fallback", "Offline-aware error states"]]
+  },
+  {
+    id: "exchange",
+    title: "Exchange",
+    icon: Megaphone,
+    body: "Exchange flow is candidate integration for signed tx and order proof. No exchange listing claim is presented until external approval and formal custody checks exist.",
+    rows: [["Exchange route", apiConfig.exchangeUrl], ["Closed loop", "Signed tx + nonce + block/receipt"], ["Boundary", "Not exchange listed"]]
+  },
+  {
+    id: "pay",
+    title: "Pay",
+    icon: CircleDollarSign,
+    body: "Pay API verifies merchant intent, idempotent requests and proof evidence for settlement/receipt. Checkout UI remains in candidate state, not production.",
+    rows: [["Endpoint", "https://pay.ynxweb4.com/health"], ["Trace", "idempotency + webhook signature"], ["Boundary", "No production checkout package"]]
+  },
+  {
+    id: "trust",
+    title: "Trust",
+    icon: ShieldCheck,
+    body: "Trust Center records request validity, advisory evidence labels, transparency reports, appeals and correction events.",
+    rows: [["Request validity", "Policy-bound and evidence-requiring"], ["Appeals", "/trust/appeals endpoint candidate"], ["Transparency", "/governance/transparency event trail"]]
+  },
+  {
+    id: "ai",
+    title: "AI",
+    icon: Bot,
+    body: "AI Gateway validates action proposals and signed scope before execution. AI output includes explicit refusal and fallback behavior under provider failure.",
+    rows: [["Session", "Wallet-aware intent binding"], ["Policy", "Action approval + rollback path"], ["Output", "Chinese / English / custom response language"]]
+  },
+  {
+    id: "chat",
+    title: "Chat",
+    icon: MessageCircle,
+    body: "Chat surfaces are implemented as secure messaging loop but public network mode requires session-bound identity and moderation controls.",
+    rows: [["Boundary", "Identity and wallet proof only"], ["Current mode", "private loop candidate"], ["Gap", "No global public social discovery claim"]]
+  },
+  {
+    id: "shop",
+    title: "Shop",
+    icon: Radio,
+    body: "Shop remains a priority product. Candidate loops exist for catalog and ordering, while settlement and lifecycle proof is still being closed in the thread.",
+    rows: [["Catalog", "In product threads"], ["Order", "Intent + reconciliation candidate"], ["Boundary", "No published storefront app"]]
+  },
+  {
+    id: "resource",
+    title: "Resource",
+    icon: CloudCog,
+    body: "Resource market documents quote / intent / settlement model and failure recovery for non-financial resource credits.",
+    rows: [["Scope", "Request + quote + settlement candidate"], ["State", "offline + unavailable + retry states"], ["Boundary", "No final settlement production route"]]
+  },
+  {
+    id: "mobile",
+    title: "Mobile 发布",
+    icon: Smartphone,
+    body: "Mobile is target-first for Wallet, Social, Pay, Exchange, Shop, AI, Music, Video, Cloud, Docs, Browser, Finance, Mail, Calendar. Android/iOS proof is required before status upgrade.",
+    rows: [["Target", "Android + iOS"], ["Current", "Candidate + testnet proof"], ["Boundary", "No public store launch claim"]]
+  },
+  {
+    id: "risk-boundary",
+    title: "风控边界",
+    icon: ShieldCheck,
+    body: "No claims are made for mainnet launch, exchange listing, stablecoin issuer support, custody default, or third-party partnership without external proof.",
+    rows: [["Replay", "Required rejection checks"], ["Tamper", "Request hash + signature verification"], ["Availability", "Loading / failure / retry / offline"], ["Compliance", "No hidden native YNXT freeze"]]
+  }
 ];
 
+const formatStatus = (status) => STATUS_CONFIG[status]?.label || status;
+
+const platformSummary = (product) => {
+  const available = Object.entries(product.downloads || {})
+    .filter(([, item]) => item?.href && (item.downloadHosted || item.status === PRODUCT_STATUS.LIVE))
+    .map(([platform]) => platform);
+
+  return available.length > 0 ? available.join(", ") : "Not ready";
+};
+
+const productSections = (catalog) => catalog.map((product) => ({
+  id: `product-${product.key}`,
+  title: product.name,
+  icon: product.icon,
+  body: product.detail,
+  rows: [
+    ["Status", formatStatus(product.status)],
+    ["Entry", product.entry?.label || "Not ready"],
+    ["Docs", product.docs?.label || "Not ready"],
+    ["Release", product.release ? `${product.release.branch}@${product.release.commit}` : "Not available"],
+    ["Public access / download", platformSummary(product)]
+  ]
+}));
+
 export function DocsPage() {
+  const catalog = useMemo(() => getCatalog(), []);
   const [query, setQuery] = useState("");
+
+  const sections = useMemo(() => [...staticSections, ...productSections(catalog)], [catalog]);
   const visible = useMemo(() => {
     const needle = query.trim().toLowerCase();
-    return needle ? sections.filter((section) => `${section.title} ${section.body} ${JSON.stringify(section.rows || [])}`.toLowerCase().includes(needle)) : sections;
-  }, [query]);
+    if (!needle) return sections;
+
+    return sections.filter((section) => {
+      const allText = `${section.title} ${section.body} ${JSON.stringify(section.rows || [])}`.toLowerCase();
+      return allText.includes(needle);
+    });
+  }, [query, sections]);
 
   return (
     <main className="docsPage">
-      <header className="docsHeader"><p className="sectionEyebrow">Developer documentation</p><h1>Build on YNX Testnet.</h1><p>Network parameters, public surfaces, and current implementation boundaries in one place.</p></header>
-      <div className="docsSearch"><Search /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search YNX documentation" aria-label="Search documentation" /></div>
+      <header className="docsHeader">
+        <p className="sectionEyebrow">Developer documentation</p>
+        <h1>Build with the real YNX production-boundary testnet.</h1>
+        <p>All documentation here is in-site by default; external repo links appear only when local paths are unavailable.</p>
+      </header>
+      <div className="docsSearch">
+        <Search />
+        <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search YNX documentation" aria-label="Search documentation" aria-describedby="docs-search-status" />
+      </div>
+      <p className="docsSearchStatus" id="docs-search-status" role="status">{query.trim() ? `${visible.length} matching sections` : `${sections.length} documentation sections`}</p>
+
       <div className="docsLayout">
-        <nav className="docsNav" aria-label="Documentation sections">{sections.map((section) => <a key={section.id} href={`#${section.id}`}>{section.title}</a>)}</nav>
+        <nav className="docsNav" aria-label="Documentation sections">
+          {visible.map((section) => <a key={section.id} href={`#${section.id}`}>{section.title}</a>)}
+        </nav>
+
         <div className="docsContent">
           {visible.map((section) => <DocSection key={section.id} section={section} />)}
-          {!visible.length && <section className="docsNoResults"><Search /><h2>No matching documentation</h2><p>Try a network, wallet, Pay, Trust, Chat, IDE, or readiness term.</p></section>}
+          {!visible.length && <section className="docsNoResults"><Search /><h2>No matching documentation</h2><p>Try wallet, trust, AI, pay, exchange, shop, resource, mobile, or product keywords.</p></section>}
         </div>
       </div>
     </main>
@@ -39,14 +169,30 @@ export function DocsPage() {
 function DocSection({ section }) {
   const Icon = section.icon;
   const [copied, setCopied] = useState(false);
+
   const copy = async () => {
-    try { await navigator.clipboard.writeText(section.code); setCopied(true); window.setTimeout(() => setCopied(false), 1400); } catch { setCopied(false); }
+    try {
+      await navigator.clipboard.writeText(section.code);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1400);
+    } catch {
+      setCopied(false);
+    }
   };
+
   return (
     <section className="docSection" id={section.id}>
       <div className="docTitle"><Icon /><div><h2>{section.title}</h2><p>{section.body}</p></div></div>
       {section.rows && <dl className="docRows">{section.rows.map(([term, value]) => <div key={term}><dt>{term}</dt><dd>{value}</dd></div>)}</dl>}
-      {section.code && <div className="codeBlock"><button onClick={copy} aria-label={`Copy ${section.title} example`} title={`Copy ${section.title} example`}><Copy />{copied && <span>Copied</span>}</button><pre><code>{section.code}</code></pre></div>}
+      {section.code && (
+        <div className="codeBlock">
+          <button onClick={copy} aria-label={`Copy ${section.title} example`} title={`Copy ${section.title} example`}>
+            <Code2 />
+            {copied && <span>Copied</span>}
+          </button>
+          <pre><code>{section.code}</code></pre>
+        </div>
+      )}
     </section>
   );
 }

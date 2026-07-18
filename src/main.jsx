@@ -14,8 +14,11 @@ import { SiteFooter } from "./components/SiteFooter.jsx";
 import { RoutePage } from "./components/RoutePage.jsx";
 import { AddressConverter } from "./components/AddressConverter.jsx";
 import { AppsPage } from "./pages/AppsPage.jsx";
+import { DownloadPage } from "./pages/DownloadPage.jsx";
 import { DocsPage } from "./pages/DocsPage.jsx";
+import { ProductStatusPage } from "./pages/ProductStatusPage.jsx";
 import { SquarePage } from "./pages/SquarePage.jsx";
+import { getProductByRoute } from "./lib/ecosystemCatalog.js";
 import "./styles.css";
 
 const route = window.location.pathname.replace(/\/$/, "") || "/";
@@ -82,6 +85,9 @@ function App() {
 
   if (route !== "/") {
     let page = <RoutePage path={route} />;
+    const product = getProductByRoute(route);
+    if (product) page = <ProductStatusPage product={product} />;
+    if (route === "/download") page = <DownloadPage />;
     if (route === "/apps") page = <AppsPage />;
     if (route === "/docs") page = <DocsPage />;
     if (route === "/square" || route.startsWith("/square/")) page = <SquarePage path={route} />;
@@ -116,17 +122,21 @@ function App() {
       <section className="validatorSection" aria-labelledby="validators-title" data-reveal>
         <div className="sectionHeader">
           <div><p className="sectionEyebrow">Four-region topology</p><h2 id="validators-title">Inspectable validator roles</h2></div>
-          <p>All four roles expose current state and fixed-height convergence. Public BFT voting is still pending independent custody approval.</p>
+          <p>Each role reports its own current height. Height convergence and public BFT voting remain pending and are not inferred from role availability.</p>
         </div>
         <div className="validatorTable" role="table" aria-label="Live validator roles">
           <div className="validatorRow validatorHead" role="row"><span>Location</span><span>Role</span><span>Height</span><span>Status</span></div>
-          {validatorRows.length ? validatorRows.map((validator) => (
-            <div className="validatorRow" role="row" key={validator.address}>
-              <span><strong>{validator.moniker?.replace("ynx-", "") || validator.address}</strong><small>{validator.address}</small></span>
-              <span>{validator.role}</span><span>{formatNumber(validator.latestHeight)}</span>
-              <span className={validator.peerReady ? "ready" : "pending"}><i />{validator.peerReady ? "Ready" : "Pending"}</span>
-            </div>
-          )) : <div className="tableEmpty">{validators.error || "Connecting to validator API"}</div>}
+          {validatorRows.length ? validatorRows.map((validator) => {
+            const lag = Math.max(0, Number(status.height || 0) - Number(validator.latestHeight || 0));
+            const current = validator.peerReady && lag <= 5;
+            return (
+              <div className="validatorRow" role="row" key={validator.address}>
+                <span><strong>{validator.moniker?.replace("ynx-", "") || validator.address}</strong><small>{validator.address}</small></span>
+                <span>{validator.role}</span><span>{formatNumber(validator.latestHeight)}</span>
+                <span className={current ? "ready" : "pending"}><i />{current ? "Current" : lag > 0 ? `${formatNumber(lag)} behind` : "Pending"}</span>
+              </div>
+            );
+          }) : <div className="tableEmpty">{validators.error || "Connecting to validator API"}</div>}
         </div>
       </section>
 

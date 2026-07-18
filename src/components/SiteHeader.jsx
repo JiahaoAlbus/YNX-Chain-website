@@ -5,9 +5,11 @@ import { apiConfig } from "../lib/api/ynxApi.js";
 
 const navigation = [
   ["Products", "/#ecosystem"],
+  ["Download", "/download"],
   ["Apps", "/apps"],
   ["Developers", "/#developers"],
-  ["Docs", "/docs"]
+  ["Docs", "/docs"],
+  ["Status", "/status"]
 ];
 
 export function SiteHeader({ scrollProgress = 0 }) {

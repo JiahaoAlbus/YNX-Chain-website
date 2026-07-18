@@ -13,7 +13,20 @@ npm run build
 npm run deploy:dry-run
 ```
 
-Real public endpoint values belong in local `.env` or deployment environment variables and must not be committed.
+Key acceptance routes:
+
+- `/apps` — independent product catalog and evidence state
+- `/download` — public web and verified installer directory
+- `/docs` — documentation rendered inside the official site
+- `/status` — network and release-boundary status
+- `/releases/ecosystem-release-registry.json` — machine-readable release snapshot
+
+Local build artifacts are not public downloads. See
+`docs/WEBSITE_ACCEPTANCE.md` for the release-admission rule and route checklist.
+
+The deployment script supplies the audited public-testnet defaults used by the
+site. Environment variables may override those values, but private credentials
+must never be committed.
 
 Production deployment requires:
 

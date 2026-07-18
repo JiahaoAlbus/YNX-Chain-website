@@ -4,9 +4,12 @@ const DEFAULTS = {
   explorerUrl: "https://explorer.ynxweb4.com",
   faucetUrl: "https://faucet.ynxweb4.com",
   docsUrl: "/docs",
+  docsRepoUrl: "https://github.com/JiahaoAlbus/YNX-Chain/tree/main/docs",
   grantUrl: "https://github.com/JiahaoAlbus/YNX-Chain/tree/main/docs/grants",
-  ecosystemUrl: "https://github.com/JiahaoAlbus/YNX-Chain/tree/main/docs/ecosystem",
-  exchangeUrl: "https://github.com/JiahaoAlbus/YNX-Chain/tree/main/docs/exchange-listing"
+  ecosystemUrl: "/apps",
+  ecosystemRepoUrl: "https://github.com/JiahaoAlbus/YNX-Chain/tree/main/docs/ecosystem",
+  exchangeUrl: "/trading",
+  exchangeRepoUrl: "https://github.com/JiahaoAlbus/YNX-Chain/tree/main/docs/exchange-listing"
 };
 
 export const apiConfig = Object.freeze({
@@ -14,10 +17,13 @@ export const apiConfig = Object.freeze({
   evmRpc: trim(import.meta.env.VITE_YNX_EVM_RPC_URL || DEFAULTS.evmRpc),
   explorerUrl: trim(import.meta.env.VITE_YNX_EXPLORER_URL || DEFAULTS.explorerUrl),
   faucetUrl: trim(import.meta.env.VITE_YNX_FAUCET_URL || DEFAULTS.faucetUrl),
-  docsUrl: trim(import.meta.env.VITE_YNX_DOCS_URL || DEFAULTS.docsUrl),
+  docsUrl: normalizePath(trim(import.meta.env.VITE_YNX_DOCS_URL || DEFAULTS.docsUrl), DEFAULTS.docsRepoUrl),
   grantUrl: trim(import.meta.env.VITE_YNX_GRANT_URL || DEFAULTS.grantUrl),
-  ecosystemUrl: trim(import.meta.env.VITE_YNX_ECOSYSTEM_URL || DEFAULTS.ecosystemUrl),
-  exchangeUrl: trim(import.meta.env.VITE_YNX_EXCHANGE_URL || DEFAULTS.exchangeUrl)
+  docsRepoUrl: DEFAULTS.docsRepoUrl,
+  ecosystemUrl: normalizePath(trim(import.meta.env.VITE_YNX_ECOSYSTEM_URL || DEFAULTS.ecosystemUrl), DEFAULTS.ecosystemRepoUrl),
+  ecosystemRepoUrl: DEFAULTS.ecosystemRepoUrl,
+  exchangeUrl: normalizePath(trim(import.meta.env.VITE_YNX_EXCHANGE_URL || DEFAULTS.exchangeUrl), DEFAULTS.exchangeRepoUrl),
+  exchangeRepoUrl: DEFAULTS.exchangeRepoUrl
 });
 
 export async function loadJson(pathOrUrl, options = {}) {
@@ -69,6 +75,13 @@ async function requestJson(url, { timeoutMs = 8000, ...init } = {}) {
 
 function trim(value) {
   return value.replace(/\/$/, "");
+}
+
+function normalizePath(candidate, fallbackExternal) {
+  if (!candidate) {
+    return fallbackExternal;
+  }
+  return candidate.startsWith("/") ? candidate : fallbackExternal;
 }
 
 function absolute(value) {

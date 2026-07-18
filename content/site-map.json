@@ -9,7 +9,7 @@
     "readiness",
     "resources"
   ],
-  "productRoutes": ["apps", "square", "docs"],
-  "preservedRoutes": ["testnet", "validators", "builders", "readiness", "about", "privacy", "terms", "risk", "security", "support", "test-assets", "bridge", "withdraw", "trading", "ai"],
+  "productRoutes": ["apps", "download", "docs", "wallet", "social", "pay", "merchant", "card", "exchange", "quant", "shop", "seller", "developer", "explorer", "monitor", "ai", "trust", "resource", "music", "video", "creator", "cloud", "docs-app", "browser", "search", "finance", "mail", "calendar", "dex"],
+  "preservedRoutes": ["testnet", "validators", "builders", "readiness", "status", "square", "about", "privacy", "terms", "risk", "security", "support", "test-assets", "bridge", "withdraw", "trading"],
   "dynamicDataPolicy": "All network facts must come from real YNX Chain APIs or render an explicit unavailable state."
 }

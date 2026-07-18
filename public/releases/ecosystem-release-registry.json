@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "auditedAt": "2026-07-18",
+  "scope": "YNX ecosystem central acceptance snapshot",
+  "rules": {
+    "localArtifactIsDownload": false,
+    "publicHealthIsProductUi": false,
+    "hostedDownloadRequires": ["immutableUrl", "sha256", "sizeBytes", "signingClass", "installProof"],
+    "externalClaimsRequireIndependentEvidence": true
+  },
+  "products": [
+    { "key": "wallet", "name": "YNX Wallet", "route": "/wallet", "state": "candidate", "branch": "codex/ecosystem-wallet-auth", "commit": "efe827f46710", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
+    { "key": "social", "name": "YNX Social", "route": "/social", "state": "candidate", "branch": "codex/ecosystem-social", "commit": "8c08bc3fff53", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
+    { "key": "pay", "name": "YNX Pay", "route": "/pay", "state": "candidate", "branch": "codex/ecosystem-pay", "commit": "ffb528b4971b", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
+    { "key": "merchantConsole", "name": "Merchant Console", "route": "/merchant", "state": "candidate", "branch": "codex/ecosystem-pay", "commit": "ffb528b4971b", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
+    { "key": "card", "name": "YNX Card", "route": "/card", "state": "candidate-incomplete", "branch": "codex/ecosystem-pay", "commit": "ffb528b4971b", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
+    { "key": "exchange", "name": "YNX Exchange", "route": "/exchange", "state": "candidate", "branch": "codex/ecosystem-exchange", "commit": "5d95046a92e0", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
+    { "key": "shop", "name": "YNX Shop", "route": "/shop", "state": "candidate-incomplete", "branch": "codex/ecosystem-shop", "commit": "ef0456a6111e", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
+    { "key": "sellerConsole", "name": "Seller Console", "route": "/seller", "state": "candidate-incomplete", "branch": "codex/ecosystem-shop", "commit": "ef0456a6111e", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
+    { "key": "developer", "name": "YNX Developer", "route": "/developer", "state": "candidate", "branch": "codex/ecosystem-developer", "commit": "7c4d83f77d07", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
+    { "key": "explorer", "name": "YNX Explorer", "route": "/explorer", "state": "public-web", "branch": "codex/ecosystem-explorer-monitor", "commit": "d4b4a3e5d7d6", "centralAccepted": false, "publicWeb": "https://explorer.ynxweb4.com", "downloadHosted": false },
+    { "key": "monitor", "name": "YNX Monitor", "route": "/monitor", "state": "candidate", "branch": "codex/ecosystem-explorer-monitor", "commit": "d4b4a3e5d7d6", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
+    { "key": "ai", "name": "YNX AI", "route": "/ai", "state": "candidate", "branch": "codex/ecosystem-ai", "commit": "fb4afc0025e6", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
+    { "key": "trust", "name": "YNX Trust Center", "route": "/trust", "state": "candidate", "branch": "codex/ecosystem-trust-resource", "commit": "c7e4445598a7", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
+    { "key": "resource", "name": "YNX Resource Market", "route": "/resource", "state": "candidate", "branch": "codex/ecosystem-trust-resource", "commit": "c7e4445598a7", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
+    { "key": "music", "name": "YNX Music", "route": "/music", "state": "candidate", "branch": "codex/ecosystem-music", "commit": "3cf997b16664", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
+    { "key": "video", "name": "YNX Video", "route": "/video", "state": "candidate", "branch": "codex/ecosystem-video", "commit": "0d13f8f86932", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
+    { "key": "creatorStudio", "name": "Creator Studio", "route": "/creator", "state": "candidate-incomplete", "branch": "codex/ecosystem-video", "commit": "0d13f8f86932", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
+    { "key": "cloud", "name": "YNX Cloud", "route": "/cloud", "state": "candidate", "branch": "codex/ecosystem-cloud-docs", "commit": "7b3c5f427c17", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
+    { "key": "docs", "name": "YNX Docs", "route": "/docs-app", "state": "candidate", "branch": "codex/ecosystem-cloud-docs", "commit": "7b3c5f427c17", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
+    { "key": "browser", "name": "YNX Browser", "route": "/browser", "state": "candidate", "branch": "codex/ecosystem-browser-search", "commit": "db8651b68c6e", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
+    { "key": "search", "name": "YNX Search", "route": "/search", "state": "candidate-incomplete", "branch": "codex/ecosystem-browser-search", "commit": "db8651b68c6e", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
+    { "key": "finance", "name": "YNX Finance", "route": "/finance", "state": "candidate", "branch": "codex/ecosystem-finance", "commit": "bf0a592b2513", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
+    { "key": "mail", "name": "YNX Mail", "route": "/mail", "state": "candidate", "branch": "codex/ecosystem-mail-calendar", "commit": "8126a2dae869", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
+    { "key": "calendar", "name": "YNX Calendar", "route": "/calendar", "state": "candidate", "branch": "codex/ecosystem-mail-calendar", "commit": "8126a2dae869", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
+    { "key": "dex", "name": "YNX DEX", "route": "/dex", "state": "candidate-incomplete", "branch": "codex/ecosystem-dex", "commit": "719e1018267e", "centralAccepted": false, "publicWeb": null, "downloadHosted": false }
+  ]
+}
