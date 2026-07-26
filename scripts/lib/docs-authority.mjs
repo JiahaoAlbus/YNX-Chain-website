@@ -25,6 +25,10 @@ export function loadDocsAuthority(root = websiteRoot) {
   if (artifact.schema !== "ynx-public-docs-artifact/v1") {
     throw new Error("unsupported YNX docs artifact schema");
   }
+  assertSafePath(artifact.archive);
+  if (!/^[a-f0-9]{64}$/.test(artifact.sha256) || !Number.isSafeInteger(artifact.bytes) || artifact.bytes <= 0) {
+    throw new Error("invalid YNX docs artifact digest or byte count");
+  }
   if (artifact.productionSigned !== false || artifact.downloadHosted !== false) {
     throw new Error("vendored candidate overstates signing or hosted-download status");
   }
@@ -80,11 +84,51 @@ export function emitDocsAuthority(outputDirectory, root = websiteRoot) {
     fs.mkdirSync(path.dirname(target), { recursive: true });
     fs.writeFileSync(target, data);
   }
-  fs.copyFileSync(
-    path.join(root, vendorRoot, "artifact-manifest.json"),
-    path.join(outputDirectory, "artifact-manifest.json"),
+  const hostedArtifact = createHostedArtifactManifest(authority);
+  const archiveTarget = safeOutputPath(
+    outputDirectory,
+    hostedArtifact.downloadPath.replace(/^\/docs-authority\//, ""),
   );
+  fs.mkdirSync(path.dirname(archiveTarget), { recursive: true });
+  fs.copyFileSync(path.join(root, vendorRoot, authority.artifact.archive), archiveTarget);
+  fs.writeFileSync(
+    path.join(outputDirectory, "artifact-manifest.json"),
+    `${JSON.stringify(hostedArtifact, null, 2)}\n`,
+  );
+  verifyHostedDocsAuthority(outputDirectory, authority);
   return authority;
+}
+
+export function createHostedArtifactManifest(authority) {
+  const siteUrl = authority.productMetadata.siteUrl?.replace(/\/$/, "");
+  if (!siteUrl || new URL(siteUrl).protocol !== "https:") {
+    throw new Error("YNX docs hosting requires an HTTPS canonical site URL");
+  }
+  const downloadPath = `/docs-authority/packages/sha256-${authority.artifact.sha256}/${authority.artifact.archive}`;
+  return {
+    ...authority.artifact,
+    downloadHosted: true,
+    downloadUrl: `${siteUrl}${downloadPath}`,
+    downloadPath,
+    immutable: true,
+  };
+}
+
+export function verifyHostedDocsAuthority(outputDirectory, authority = loadDocsAuthority()) {
+  const expected = createHostedArtifactManifest(authority);
+  const manifest = readJson(path.join(outputDirectory, "artifact-manifest.json"));
+  if (JSON.stringify(manifest) !== JSON.stringify(expected)) {
+    throw new Error("hosted YNX docs artifact manifest mismatch");
+  }
+  const archivePath = safeOutputPath(
+    outputDirectory,
+    expected.downloadPath.replace(/^\/docs-authority\//, ""),
+  );
+  const archive = fs.readFileSync(archivePath);
+  if (archive.length !== expected.bytes || sha256(archive) !== expected.sha256) {
+    throw new Error("hosted YNX docs archive digest or byte count mismatch");
+  }
+  return manifest;
 }
 
 export function markdownToHtml(markdown) {

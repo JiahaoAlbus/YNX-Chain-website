@@ -6,7 +6,7 @@
     "dev": "vite --host 127.0.0.1",
     "build": "vite build && node scripts/prerender.mjs",
     "preview": "vite preview --host 127.0.0.1",
-    "test": "node scripts/docs-authority.mjs --verify && node scripts/verify.mjs",
+    "test": "node scripts/docs-authority.mjs --verify-hosting && node scripts/verify.mjs",
     "docs:verify": "node scripts/docs-authority.mjs --verify",
     "deploy:dry-run": "DEPLOY_DRY_RUN=1 bash deploy/vercel-deploy.sh",
     "deploy:prod": "bash deploy/vercel-deploy.sh"

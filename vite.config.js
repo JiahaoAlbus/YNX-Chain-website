@@ -1,7 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { collectNetworkStatus, collectServiceHealth } from "./server/network-status.mjs";
-import { loadDocsAuthority } from "./scripts/lib/docs-authority.mjs";
+import { createHostedArtifactManifest, loadDocsAuthority } from "./scripts/lib/docs-authority.mjs";
 
 export default defineConfig({
   plugins: [
@@ -34,7 +34,7 @@ function docsAuthorityPlugin() {
   const moduleId = "virtual:ynx-docs-authority";
   const resolvedId = `\0${moduleId}`;
   const publicAuthority = {
-    artifact: authority.artifact,
+    artifact: createHostedArtifactManifest(authority),
     articles: authority.articles,
     productMetadata: authority.productMetadata,
   };

@@ -3,7 +3,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { emitDocsAuthority, loadDocsAuthority } from "./lib/docs-authority.mjs";
+import { createHostedArtifactManifest, emitDocsAuthority, loadDocsAuthority, verifyHostedDocsAuthority } from "./lib/docs-authority.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const dist = path.join(root, "dist");
@@ -11,6 +11,7 @@ const basePath = path.join(dist, "index.html");
 const baseHtml = fs.readFileSync(basePath, "utf8");
 const authority = loadDocsAuthority(root);
 const siteUrl = authority.productMetadata.siteUrl.replace(/\/$/, "");
+const hostedArtifact = createHostedArtifactManifest(authority);
 
 for (const article of authority.articles) {
   const jsonLd = article.route === "/faq" ? faqJsonLd(article) : articleJsonLd(article);
@@ -25,7 +26,7 @@ for (const article of authority.articles) {
 writeRoute("/docs", {
   title: "YNX Chain Documentation and Public Evidence",
   description: "Evidence-linked documentation for YNX Chain, YNX Web4, YNXT, YNX Testnet, products, security, economics and risks.",
-  body: `<main class="authorityPage"><header class="authorityHeader"><p class="sectionEyebrow">YNX documentation</p><h1>Evidence-linked YNX documentation</h1><p>Public explanations and claim boundaries from the verified YNX website-content bundle.</p></header><nav class="authorityIndex" aria-label="YNX public documentation">${authority.articles.map((article) => `<a href="${article.route}"><strong>${escapeHtml(article.h1)}</strong><span>${escapeHtml(article.description)}</span></a>`).join("")}</nav></main>`,
+  body: `<main class="authorityPage"><header class="authorityHeader"><p class="sectionEyebrow">YNX documentation</p><h1>Evidence-linked YNX documentation</h1><p>Public explanations and claim boundaries from the verified YNX website-content bundle.</p><a class="docsBundleDownload" href="${escapeAttribute(hostedArtifact.downloadPath)}" download><span><strong>Download verified documentation bundle</strong><small>ZIP · ${hostedArtifact.bytes.toLocaleString("en-US")} bytes · SHA-256 ${hostedArtifact.sha256}</small></span></a></header><nav class="authorityIndex" aria-label="YNX public documentation">${authority.articles.map((article) => `<a href="${article.route}"><strong>${escapeHtml(article.h1)}</strong><span>${escapeHtml(article.description)}</span></a>`).join("")}</nav></main>`,
   jsonLd: {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
@@ -69,6 +70,18 @@ function writeDiscoveryFiles() {
 }
 
 function verifyOutput() {
+  const verifiedHostedArtifact = verifyHostedDocsAuthority(path.join(dist, "docs-authority"), authority);
+  if (
+    verifiedHostedArtifact.downloadHosted !== true ||
+    verifiedHostedArtifact.productionSigned !== false ||
+    verifiedHostedArtifact.downloadUrl !== hostedArtifact.downloadUrl
+  ) {
+    throw new Error("hosted YNX docs release state is not truthful");
+  }
+  const docsHtml = fs.readFileSync(path.join(dist, "docs.html"), "utf8");
+  if (!docsHtml.includes(hostedArtifact.downloadPath) || !docsHtml.includes(hostedArtifact.sha256)) {
+    throw new Error("prerendered docs route is missing the immutable hosted bundle");
+  }
   for (const article of authority.articles) {
     const html = fs.readFileSync(path.join(dist, `${article.route.replace(/^\/+/, "")}.html`), "utf8");
     for (const required of [article.h1, `rel="canonical"`, `application/ld+json`, authority.artifact.sourceCommit.slice(0, 12)]) {

@@ -389,6 +389,10 @@ a { color: inherit; }
 .commentList article p { line-height: 1.55; }
 .commentList article small, .commentEmpty { color: var(--muted); }
 .docsHeader { max-width: 860px; }
+.docsBundleDownload { display: inline-flex; align-items: flex-start; gap: 10px; max-width: 100%; margin: 18px 0 10px; padding: 14px 16px; border: 1px solid var(--line); color: var(--blue); text-decoration: none; background: #fff; }
+.docsBundleDownload span { display: grid; gap: 4px; min-width: 0; }
+.docsBundleDownload small { color: var(--muted); overflow-wrap: anywhere; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; line-height: 1.5; }
+.docsBundleDownload:hover { border-color: var(--blue); }
 .docsSearch { width: min(720px,100%); height: 52px; margin: 34px 0 42px; display: grid; grid-template-columns: 46px minmax(0,1fr); align-items: center; border: 1px solid var(--line); border-radius: 8px; background: var(--soft); transition: border-color .2s ease, box-shadow .2s ease; }
 .docsSearch:focus-within { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(0,47,167,.1); }
 .docsSearch svg { width: 18px; justify-self: center; color: var(--blue); }
