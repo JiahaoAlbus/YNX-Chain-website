@@ -1,10 +1,12 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { collectNetworkStatus, collectServiceHealth } from "./server/network-status.mjs";
+import { loadDocsAuthority } from "./scripts/lib/docs-authority.mjs";
 
 export default defineConfig({
   plugins: [
     react(),
+    docsAuthorityPlugin(),
     {
       name: "ynx-network-status",
       configureServer(server) {
@@ -26,3 +28,23 @@ export default defineConfig({
     }
   ]
 });
+
+function docsAuthorityPlugin() {
+  const authority = loadDocsAuthority();
+  const moduleId = "virtual:ynx-docs-authority";
+  const resolvedId = `\0${moduleId}`;
+  const publicAuthority = {
+    artifact: authority.artifact,
+    articles: authority.articles,
+    productMetadata: authority.productMetadata,
+  };
+  return {
+    name: "ynx-docs-authority",
+    resolveId(id) {
+      return id === moduleId ? resolvedId : null;
+    },
+    load(id) {
+      return id === resolvedId ? `export default ${JSON.stringify(publicAuthority)};` : null;
+    },
+  };
+}

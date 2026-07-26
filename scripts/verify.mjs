@@ -20,6 +20,7 @@ const required = [
   "src/components/AddressConverter.jsx",
   "src/components/SquareAccountPanel.jsx",
   "src/pages/AppsPage.jsx",
+  "src/pages/AuthorityArticlePage.jsx",
   "src/pages/DownloadPage.jsx",
   "src/pages/DocsPage.jsx",
   "src/pages/ProductStatusPage.jsx",
@@ -52,6 +53,11 @@ const required = [
   "ecosystem/README.md",
   "deploy/vercel-env-check.mjs",
   "deploy/vercel-deploy.sh",
+  "scripts/docs-authority.mjs",
+  "scripts/lib/docs-authority.mjs",
+  "scripts/prerender.mjs",
+  "vendor/ynx-docs/artifact-manifest.json",
+  "vendor/ynx-docs/ynx-website-content-2b7a86436944.zip",
   "vercel.json"
 ];
 for (const file of required) {
@@ -81,6 +87,19 @@ for (const file of walk(".")) {
     if (source.includes(term)) {
       console.error(`disallowed term in ${file}: ${term}`);
       process.exit(1);
+    }
+  }
+}
+const prohibitedPublicReferences = [/\bcodex\//i, /\bworktree\b/i, /\brefs\/heads\b/i, /\borigin\//i, /\/users\//i];
+for (const root of ["public", "src"]) {
+  for (const file of walk(root)) {
+    if (!/\.(html|js|jsx|json|md|txt|xml)$/i.test(file)) continue;
+    const source = fs.readFileSync(file, "utf8");
+    for (const pattern of prohibitedPublicReferences) {
+      if (pattern.test(source)) {
+        console.error(`internal reference in public website source: ${file}`);
+        process.exit(1);
+      }
     }
   }
 }
@@ -118,7 +137,12 @@ const docsPage = fs.readFileSync("src/pages/DocsPage.jsx", "utf8");
 const appGateway = fs.readFileSync("server/app-gateway.mjs", "utf8");
 const vercel = JSON.parse(fs.readFileSync("vercel.json", "utf8"));
 const packageJson = JSON.parse(fs.readFileSync("package.json", "utf8"));
+const viteConfig = fs.readFileSync("vite.config.js", "utf8");
 const signerSource = JSON.parse(fs.readFileSync("src/lib/ynx-signer/SOURCE.json", "utf8"));
+if (releaseRegistry.products.some((product) => Object.hasOwn(product, "branch"))) {
+  console.error("public release registry exposes internal branch names");
+  process.exit(1);
+}
 if (!styles.includes("--blue: #002fa7") || !styles.includes(".heroStage.isPulling")) {
   console.error("missing Klein blue palette or draggable hero interaction");
   process.exit(1);
@@ -139,6 +163,14 @@ if (!main.includes("Exchange Integration Candidate") || !main.includes("No excha
 }
 if (!main.includes('route === "/apps"') || !main.includes('route === "/download"') || !main.includes('route === "/docs"') || !main.includes('route === "/square"') || !main.includes("getProductByRoute(route)")) {
   console.error("first-party app, download, product-status, Square, and docs routes are not configured");
+  process.exit(1);
+}
+if (!main.includes("AuthorityArticlePage") || !main.includes("docsAuthority.articles") || !viteConfig.includes("docsAuthorityPlugin")) {
+  console.error("verified YNX documentation authority is not wired into the website runtime");
+  process.exit(1);
+}
+if (!packageJson.scripts?.build?.includes("scripts/prerender.mjs") || !packageJson.scripts?.test?.includes("scripts/docs-authority.mjs")) {
+  console.error("docs authority verification and prerender gates are not enforced");
   process.exit(1);
 }
 if (!main.includes('navigator.serviceWorker.register("/sw.js")') || !indexHtml.includes('rel="manifest"') || manifest.start_url !== "/" || manifest.display !== "standalone") {

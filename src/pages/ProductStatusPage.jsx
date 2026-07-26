@@ -24,7 +24,7 @@ function Surface({ platform, item }) {
   );
 }
 
-export function ProductStatusPage({ product }) {
+export function ProductStatusPage({ product, article, artifact }) {
   const publicWeb = product.status === PRODUCT_STATUS.LIVE;
   const hasHostedDownload = Object.values(product.downloads || {}).some((item) => item.downloadHosted && item.href);
   const status = STATUS_CONFIG[product.status] || STATUS_CONFIG[PRODUCT_STATUS.NOT_READY];
@@ -48,7 +48,7 @@ export function ProductStatusPage({ product }) {
           <div className="productStatusSection">
             <div className="sectionHeader compact"><div><p className="sectionEyebrow">Current evidence</p><h2>What this status proves</h2></div></div>
             <ul className="productEvidenceList">
-              <EvidenceState label="Candidate code" value={product.status !== PRODUCT_STATUS.NOT_READY} detail={`Audited branch snapshot: ${product.release?.branch || "not registered"}`} />
+              <EvidenceState label="Candidate code" value={product.status !== PRODUCT_STATUS.NOT_READY} detail={`Audited source commit: ${product.release?.commit || "not registered"}`} />
               <EvidenceState label="Central acceptance" value={false} detail="No committed product-release.json was present during the central audit." />
               <EvidenceState label="Public product surface" value={publicWeb} detail={publicWeb ? "A public web surface was remotely reachable during this audit." : "A health endpoint or local build does not prove a public product UI."} />
               <EvidenceState label="Hosted installer" value={hasHostedDownload} detail={hasHostedDownload ? "Immutable hosted artifact evidence is registered." : "No immutable artifact URL, hash, size, and install proof are registered."} />
@@ -67,7 +67,7 @@ export function ProductStatusPage({ product }) {
         <aside className="productStatusAside">
           <div>
             <GitBranch size={18} />
-            <span><small>Source candidate</small><strong>{product.release?.branch || "Not registered"}</strong><code>{product.release?.commit || "No audited commit"}</code></span>
+            <span><small>Source commit</small><code>{product.release?.commit || "No audited commit"}</code></span>
           </div>
           <p>{product.release?.statusNote || "No product release record has been accepted."}</p>
           <a className="button primary" href={product.docs.href} rel={product.docs.external ? "noopener" : undefined}>Read product docs <ArrowUpRight size={16} /></a>
@@ -80,6 +80,18 @@ export function ProductStatusPage({ product }) {
         <ShieldCheck />
         <div><strong>Status is narrower than ambition.</strong><p>Candidate code, local packages, public APIs, hosted installers, production signing, and store acceptance are separate states.</p></div>
       </aside>
+
+      {article && (
+        <section className="productAuthority" aria-labelledby="product-authority-title">
+          <header>
+            <p className="sectionEyebrow">Evidence-linked public documentation</p>
+            <h2 id="product-authority-title">{article.h1}</h2>
+            <p>{article.description}</p>
+            <small>Version {article.version} · reviewed {article.lastReviewed || article.effectiveDate || "in source"} · bundle <code>{artifact.sourceCommit.slice(0, 12)}</code></small>
+          </header>
+          <article className="authorityArticle" dangerouslySetInnerHTML={{ __html: article.html }} />
+        </section>
+      )}
     </main>
   );
 }

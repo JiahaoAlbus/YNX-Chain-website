@@ -68,8 +68,7 @@ function renderRelease(release) {
 
   return (
     <span className="appMetaBlock">
-      <span>Branch: {release.branch}</span>
-      <span>Commit: {release.commit}</span>
+      <span>Source commit: {release.commit}</span>
       {release.statusNote ? <span>{release.statusNote}</span> : null}
     </span>
   );
