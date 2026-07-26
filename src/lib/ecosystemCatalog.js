@@ -107,12 +107,12 @@ const PRODUCT_ROUTES = {
 const evidence = {
   wallet: {
     commit: "efe827f46710",
-    statusNote: "Local branch has Android APK and web session tests; iOS/desktop not published.",
+    statusNote: "The local candidate has Android APK and web session tests; iOS/desktop not published.",
     downloads: {
       android: artifactDownload(PRODUCT_STATUS.LOCAL, "apps/wallet/android/app/build/outputs/apk/release/app-release.apk", "Android app release (debug-signed, testnet preview)"),
       ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS project exists; simulator/launch evidence not completed on this host." },
-      macos: { status: PRODUCT_STATUS.NOT_READY, note: "No macOS package is published for Wallet on this branch." },
-      windows: { status: PRODUCT_STATUS.NOT_READY, note: "No Windows package is published for Wallet on this branch." }
+      macos: { status: PRODUCT_STATUS.NOT_READY, note: "No macOS package is published for Wallet in this candidate." },
+      windows: { status: PRODUCT_STATUS.NOT_READY, note: "No Windows package is published for Wallet in this candidate." }
     }
   },
   social: {
@@ -121,8 +121,8 @@ const evidence = {
     downloads: {
       android: artifactDownload(PRODUCT_STATUS.LOCAL, "apps/social/android/app/build/outputs/apk/release/app-release.apk", "Android app release (debug-signed, testnet preview)"),
       ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS project exists; simulator/app-store evidence pending." },
-      macos: { status: PRODUCT_STATUS.NOT_READY, note: "No published macOS package in this thread." },
-      windows: { status: PRODUCT_STATUS.NOT_READY, note: "No published Windows package in this thread." }
+      macos: { status: PRODUCT_STATUS.NOT_READY, note: "No published macOS package for this candidate." },
+      windows: { status: PRODUCT_STATUS.NOT_READY, note: "No published Windows package for this candidate." }
     }
   },
   pay: {
@@ -131,20 +131,20 @@ const evidence = {
     downloads: {
       android: artifactDownload(PRODUCT_STATUS.LOCAL, "apps/pay/android/app/build/outputs/apk/release/app-release.apk", "Android app release (debug-signed, testnet preview)"),
       ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS project exists; simulator/signed App Store evidence pending." },
-      macos: { status: PRODUCT_STATUS.NOT_READY, note: "No published macOS package in this thread." },
-      windows: { status: PRODUCT_STATUS.NOT_READY, note: "No published Windows package in this thread." }
+      macos: { status: PRODUCT_STATUS.NOT_READY, note: "No published macOS package for this candidate." },
+      windows: { status: PRODUCT_STATUS.NOT_READY, note: "No published Windows package for this candidate." }
     }
   },
   merchantConsole: {
     commit: "ffb528b4971b",
-    statusNote: "Merchant console surfaces are web-only in this branch; no standalone merchant app package yet.",
+    statusNote: "Merchant console surfaces are web-only in this candidate; no standalone merchant app package yet.",
     downloads: {
       web: { status: PRODUCT_STATUS.LOCAL, href: "/docs#pay", note: "Console-in-product entry and API surface are available for verification." }
     }
   },
   card: {
     commit: "ffb528b4971b",
-    statusNote: "Card is a sandbox candidate in the Pay branch. No issuing partner, production card, or downloadable client is claimed.",
+    statusNote: "Card is a sandbox candidate in the Pay product. No issuing partner, production card, or downloadable client is claimed.",
     downloads: {
       web: { status: PRODUCT_STATUS.PLANNED, note: "Sandbox implementation exists locally; no public Card URL is registered." }
     }
@@ -155,8 +155,8 @@ const evidence = {
     downloads: {
       android: artifactDownload(PRODUCT_STATUS.LOCAL, "apps/exchange/mobile/android/app/build/outputs/apk/release/app-release.apk", "Android app release (debug-signed, testnet preview)"),
       ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS project exists; simulator proof/ signing evidence pending." },
-      macos: { status: PRODUCT_STATUS.NOT_READY, note: "No published Exchange macOS package in this branch." },
-      windows: { status: PRODUCT_STATUS.NOT_READY, note: "No published Exchange Windows package in this branch." }
+      macos: { status: PRODUCT_STATUS.NOT_READY, note: "No published Exchange macOS package in this candidate." },
+      windows: { status: PRODUCT_STATUS.NOT_READY, note: "No published Exchange Windows package in this candidate." }
     }
   },
   shop: {
@@ -165,8 +165,8 @@ const evidence = {
     downloads: {
       android: artifactDownload(PRODUCT_STATUS.LOCAL, "apps/shop/native/android/app/build/outputs/apk/debug/app-debug.apk", "Android debug APK (local-only test verification).") ,
       ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS project exists; simulator evidence pending." },
-      macos: { status: PRODUCT_STATUS.NOT_READY, note: "No published Shop macOS package in this branch." },
-      windows: { status: PRODUCT_STATUS.NOT_READY, note: "No published Shop Windows package in this branch." }
+      macos: { status: PRODUCT_STATUS.NOT_READY, note: "No published Shop macOS package in this candidate." },
+      windows: { status: PRODUCT_STATUS.NOT_READY, note: "No published Shop Windows package in this candidate." }
     }
   },
   sellerConsole: {
@@ -181,8 +181,8 @@ const evidence = {
     statusNote: "Web IDE and local macOS Testnet Preview bundle are available. Windows local compile exists without packaged artifact.",
     downloads: {
       web: { status: PRODUCT_STATUS.LOCAL, href: "/docs#ide", note: "Web IDE candidate documentation; no public IDE deployment is registered." },
-      android: { status: PRODUCT_STATUS.NOT_READY, note: "No native Android package published for Developer in this branch." },
-      ios: { status: PRODUCT_STATUS.NOT_READY, note: "No iOS package published for Developer in this branch." },
+      android: { status: PRODUCT_STATUS.NOT_READY, note: "No native Android package published for Developer in this candidate." },
+      ios: { status: PRODUCT_STATUS.NOT_READY, note: "No iOS package published for Developer in this candidate." },
       macos: artifactDownload(PRODUCT_STATUS.LOCAL, "apps/developer/.ynx-developer-local/ynx-developer-testnet-preview-macos-unsigned.zip", "Unsigned Testnet Preview macOS zip; no production signature."),
       windows: { status: PRODUCT_STATUS.PLANNED, note: "Windows WPF/WebView2 project exists; compiled package evidence pending." }
     }
@@ -207,13 +207,13 @@ const evidence = {
     downloads: {
       android: artifactDownload(PRODUCT_STATUS.LOCAL, "apps/ai/mobile/android/app/build/outputs/apk/release/app-release.apk", "Android app release (debug-signed, testnet preview)"),
       ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS project generated; simulator evidence pending." },
-      macos: { status: PRODUCT_STATUS.NOT_READY, note: "No published AI macOS package in this branch." },
-      windows: { status: PRODUCT_STATUS.NOT_READY, note: "No published AI Windows package in this branch." }
+      macos: { status: PRODUCT_STATUS.NOT_READY, note: "No published AI macOS package in this candidate." },
+      windows: { status: PRODUCT_STATUS.NOT_READY, note: "No published AI Windows package in this candidate." }
     }
   },
   trust: {
     commit: "c7e4445598a7",
-    statusNote: "Trust-center Android debug package is generated as part of this branch.",
+    statusNote: "Trust-center Android debug package is generated for this candidate.",
     downloads: {
       android: artifactDownload(PRODUCT_STATUS.LOCAL, "apps/trust-center/mobile/android/app/build/outputs/apk/debug/app-debug.apk", "Trust Center Android debug APK."),
       ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS project exists; simulator signing evidence pending." },
@@ -222,7 +222,7 @@ const evidence = {
   },
   resource: {
     commit: "c7e4445598a7",
-    statusNote: "Resource market Android debug package is generated as part of this branch.",
+    statusNote: "Resource market Android debug package is generated for this candidate.",
     downloads: {
       android: artifactDownload(PRODUCT_STATUS.LOCAL, "apps/resource-market/mobile/android/app/build/outputs/apk/debug/app-debug.apk", "Resource Market Android debug APK."),
       ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS project exists; simulator/signing evidence pending." },
@@ -235,8 +235,8 @@ const evidence = {
     downloads: {
       android: artifactDownload(PRODUCT_STATUS.LOCAL, "apps/music/android/app/build/outputs/apk/debug/app-debug.apk", "Music Android debug APK."),
       ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS project exists; simulator evidence pending." },
-      macos: { status: PRODUCT_STATUS.NOT_READY, note: "No published Music macOS package in this branch." },
-      windows: { status: PRODUCT_STATUS.NOT_READY, note: "No published Music Windows package in this branch." }
+      macos: { status: PRODUCT_STATUS.NOT_READY, note: "No published Music macOS package in this candidate." },
+      windows: { status: PRODUCT_STATUS.NOT_READY, note: "No published Music Windows package in this candidate." }
     }
   },
   video: {
@@ -246,8 +246,8 @@ const evidence = {
       android: artifactDownload(PRODUCT_STATUS.LOCAL, "apps/video/android/app/build/outputs/apk/debug/app-debug.apk", "Video Android debug APK."),
       ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS project exists; simulator/signing evidence pending." },
       web: { status: PRODUCT_STATUS.LOCAL, href: "/docs#video", note: "Video web companion is testnet-facing." },
-      macos: { status: PRODUCT_STATUS.NOT_READY, note: "No published Video macOS package in this branch." },
-      windows: { status: PRODUCT_STATUS.NOT_READY, note: "No published Video Windows package in this branch." }
+      macos: { status: PRODUCT_STATUS.NOT_READY, note: "No published Video macOS package in this candidate." },
+      windows: { status: PRODUCT_STATUS.NOT_READY, note: "No published Video Windows package in this candidate." }
     }
   },
   creatorStudio: {

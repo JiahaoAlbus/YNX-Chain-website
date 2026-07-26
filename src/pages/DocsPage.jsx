@@ -75,7 +75,7 @@ console.log(toYNXAddress("0x7e5f..."));`,
     id: "shop",
     title: "Shop",
     icon: Radio,
-    body: "Shop remains a priority product. Candidate loops exist for catalog and ordering, while settlement and lifecycle proof is still being closed in the thread.",
+    body: "Shop remains a priority product. Candidate loops exist for catalog and ordering, while settlement and lifecycle proof is still being closed in the product lifecycle.",
     rows: [["Catalog", "In product threads"], ["Order", "Intent + reconciliation candidate"], ["Boundary", "No published storefront app"]]
   },
   {

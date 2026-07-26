@@ -57,7 +57,6 @@ const required = [
   "scripts/lib/docs-authority.mjs",
   "scripts/prerender.mjs",
   "vendor/ynx-docs/artifact-manifest.json",
-  "vendor/ynx-docs/ynx-website-content-2b7a86436944.zip",
   "vercel.json"
 ];
 for (const file of required) {
@@ -90,7 +89,14 @@ for (const file of walk(".")) {
     }
   }
 }
-const prohibitedPublicReferences = [/\bcodex\//i, /\bworktree\b/i, /\brefs\/heads\b/i, /\borigin\//i, /\/users\//i];
+const prohibitedPublicReferences = [
+  /\bcodex\//i,
+  /\bbranch\b/i,
+  /\bworktree\b/i,
+  /\brefs\/heads\b/i,
+  /\borigin\//i,
+  /\/users\//i,
+];
 for (const root of ["public", "src"]) {
   for (const file of walk(root)) {
     if (!/\.(html|js|jsx|json|md|txt|xml)$/i.test(file)) continue;
