@@ -106,7 +106,6 @@ const PRODUCT_ROUTES = {
 
 const evidence = {
   wallet: {
-    branch: "codex/ecosystem-wallet-auth",
     commit: "efe827f46710",
     statusNote: "Local branch has Android APK and web session tests; iOS/desktop not published.",
     downloads: {
@@ -117,7 +116,6 @@ const evidence = {
     }
   },
   social: {
-    branch: "codex/ecosystem-social",
     commit: "8c08bc3fff53",
     statusNote: "Android release exists locally, web companion is available through Square feed route.",
     downloads: {
@@ -128,7 +126,6 @@ const evidence = {
     }
   },
   pay: {
-    branch: "codex/ecosystem-pay",
     commit: "ffb528b4971b",
     statusNote: "Android release and debug packages are generated; web/API remains primary production-facing surface.",
     downloads: {
@@ -139,7 +136,6 @@ const evidence = {
     }
   },
   merchantConsole: {
-    branch: "codex/ecosystem-pay",
     commit: "ffb528b4971b",
     statusNote: "Merchant console surfaces are web-only in this branch; no standalone merchant app package yet.",
     downloads: {
@@ -147,7 +143,6 @@ const evidence = {
     }
   },
   card: {
-    branch: "codex/ecosystem-pay",
     commit: "ffb528b4971b",
     statusNote: "Card is a sandbox candidate in the Pay branch. No issuing partner, production card, or downloadable client is claimed.",
     downloads: {
@@ -155,7 +150,6 @@ const evidence = {
     }
   },
   exchange: {
-    branch: "codex/ecosystem-exchange",
     commit: "5d95046a92e0",
     statusNote: "Android release APK and exchange route available; iOS/desktop package not published.",
     downloads: {
@@ -166,7 +160,6 @@ const evidence = {
     }
   },
   shop: {
-    branch: "codex/ecosystem-shop",
     commit: "ef0456a6111e",
     statusNote: "Buyer Android debug package exists; seller console is web/desktop pending separate package work.",
     downloads: {
@@ -177,7 +170,6 @@ const evidence = {
     }
   },
   sellerConsole: {
-    branch: "codex/ecosystem-shop",
     commit: "ef0456a6111e",
     statusNote: "Seller console remains web/product API driven. Native app package not provided yet.",
     downloads: {
@@ -185,7 +177,6 @@ const evidence = {
     }
   },
   developer: {
-    branch: "codex/ecosystem-developer",
     commit: "7c4d83f77d07",
     statusNote: "Web IDE and local macOS Testnet Preview bundle are available. Windows local compile exists without packaged artifact.",
     downloads: {
@@ -197,7 +188,6 @@ const evidence = {
     }
   },
   explorer: {
-    branch: "codex/ecosystem-explorer-monitor",
     commit: "d4b4a3e5d7d6",
     statusNote: "Explorer is a public live web deployment through shared URL.",
     downloads: {
@@ -205,7 +195,6 @@ const evidence = {
     }
   },
   monitor: {
-    branch: "codex/ecosystem-explorer-monitor",
     commit: "d4b4a3e5d7d6",
     statusNote: "Monitor is web/operator-focused with protected deployment proof only; no native package published.",
     downloads: {
@@ -213,7 +202,6 @@ const evidence = {
     }
   },
   ai: {
-    branch: "codex/ecosystem-ai",
     commit: "fb4afc0025e6",
     statusNote: "Android release is generated. iOS/desktop package is under construction.",
     downloads: {
@@ -224,7 +212,6 @@ const evidence = {
     }
   },
   trust: {
-    branch: "codex/ecosystem-trust-resource",
     commit: "c7e4445598a7",
     statusNote: "Trust-center Android debug package is generated as part of this branch.",
     downloads: {
@@ -234,7 +221,6 @@ const evidence = {
     }
   },
   resource: {
-    branch: "codex/ecosystem-trust-resource",
     commit: "c7e4445598a7",
     statusNote: "Resource market Android debug package is generated as part of this branch.",
     downloads: {
@@ -244,7 +230,6 @@ const evidence = {
     }
   },
   music: {
-    branch: "codex/ecosystem-music",
     commit: "3cf997b16664",
     statusNote: "Music debug APK is generated locally; iOS and playback packages are pending.",
     downloads: {
@@ -255,7 +240,6 @@ const evidence = {
     }
   },
   video: {
-    branch: "codex/ecosystem-video",
     commit: "0d13f8f86932",
     statusNote: "Video debug APK is generated for local tests; creator studio packaging is still separate work.",
     downloads: {
@@ -267,7 +251,6 @@ const evidence = {
     }
   },
   creatorStudio: {
-    branch: "codex/ecosystem-video",
     commit: "0d13f8f86932",
     statusNote: "Creator Studio remains part of Video work; no dedicated production package has been published yet.",
     downloads: {
@@ -275,7 +258,6 @@ const evidence = {
     }
   },
   cloud: {
-    branch: "codex/ecosystem-cloud-docs",
     commit: "7b3c5f427c17",
     statusNote: "Cloud Android release and docs app release packages are generated; iOS desktop/Windows are pending publication.",
     downloads: {
@@ -285,7 +267,6 @@ const evidence = {
     }
   },
   docs: {
-    branch: "codex/ecosystem-cloud-docs",
     commit: "7b3c5f427c17",
     statusNote: "Docs Android release package is generated; web companion remains primary.",
     downloads: {
@@ -295,7 +276,6 @@ const evidence = {
     }
   },
   browser: {
-    branch: "codex/ecosystem-browser-search",
     commit: "db8651b68c6e",
     statusNote: "Browser Android build package is available for test; native macOS executable exists but not packaged.",
     downloads: {
@@ -306,7 +286,6 @@ const evidence = {
     }
   },
   search: {
-    branch: "codex/ecosystem-browser-search",
     commit: "db8651b68c6e",
     statusNote: "Search is implemented as product logic and companion UI. No dedicated packaged search app is published yet.",
     downloads: {
@@ -314,7 +293,6 @@ const evidence = {
     }
   },
   finance: {
-    branch: "codex/ecosystem-finance",
     commit: "bf0a592b2513",
     statusNote: "Finance Android debug/release APK exists, including cold-start evidence; iOS simulator not available on this host.",
     downloads: {
@@ -324,7 +302,6 @@ const evidence = {
     }
   },
   mail: {
-    branch: "codex/ecosystem-mail-calendar",
     commit: "8126a2dae869",
     statusNote: "Mail Android debug APK is generated and cold-start test evidence exists.",
     downloads: {
@@ -334,7 +311,6 @@ const evidence = {
     }
   },
   calendar: {
-    branch: "codex/ecosystem-mail-calendar",
     commit: "8126a2dae869",
     statusNote: "Calendar Android debug APK is generated for testnet workflow.",
     downloads: {
@@ -344,7 +320,6 @@ const evidence = {
     }
   },
   dex: {
-    branch: "codex/ecosystem-dex",
     commit: "719e1018267e",
     statusNote: "DEX work is uncommitted candidate WIP on the audited base. No integrated UI, liquidity, audit, deployment, or download is claimed.",
     downloads: {
@@ -365,7 +340,6 @@ const attachEvidence = (entry) => {
     publicEntry: entry.entry,
     entry: { label: "Product status", href: PRODUCT_ROUTES[entry.key] },
     release: {
-      branch: matched.branch,
       commit: matched.commit,
       statusNote: matched.statusNote
     },

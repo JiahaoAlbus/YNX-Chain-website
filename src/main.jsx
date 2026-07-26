@@ -16,9 +16,11 @@ import { AddressConverter } from "./components/AddressConverter.jsx";
 import { AppsPage } from "./pages/AppsPage.jsx";
 import { DownloadPage } from "./pages/DownloadPage.jsx";
 import { DocsPage } from "./pages/DocsPage.jsx";
+import { AuthorityArticlePage } from "./pages/AuthorityArticlePage.jsx";
 import { ProductStatusPage } from "./pages/ProductStatusPage.jsx";
 import { SquarePage } from "./pages/SquarePage.jsx";
 import { getProductByRoute } from "./lib/ecosystemCatalog.js";
+import docsAuthority from "virtual:ynx-docs-authority";
 import "./styles.css";
 
 const route = window.location.pathname.replace(/\/$/, "") || "/";
@@ -86,7 +88,9 @@ function App() {
   if (route !== "/") {
     let page = <RoutePage path={route} />;
     const product = getProductByRoute(route);
-    if (product) page = <ProductStatusPage product={product} />;
+    const authorityArticle = docsAuthority.articles.find((article) => article.route === route);
+    if (product) page = <ProductStatusPage product={product} article={authorityArticle} artifact={docsAuthority.artifact} />;
+    else if (authorityArticle) page = <AuthorityArticlePage article={authorityArticle} artifact={docsAuthority.artifact} />;
     if (route === "/download") page = <DownloadPage />;
     if (route === "/apps") page = <AppsPage />;
     if (route === "/docs") page = <DocsPage />;

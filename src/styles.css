@@ -416,6 +416,39 @@ a { color: inherit; }
 .docsNoResults { min-height: 300px; display: flex; flex-direction: column; align-items: center; justify-content: center; border-top: 1px solid var(--blue); text-align: center; }
 .docsNoResults svg { color: var(--blue); }
 .docsNoResults p { color: var(--muted); }
+.docTitle h2 a { color: inherit; text-decoration-color: rgba(0,47,167,.35); text-underline-offset: 5px; }
+.authorityPage { width: min(1040px, calc(100% - 48px)); margin: 0 auto; padding: 76px 0 110px; }
+.authorityHeader { max-width: 860px; padding-bottom: 46px; border-bottom: 1px solid var(--line); }
+.authorityHeader h1 { margin: 14px 0 18px; font-size: clamp(42px, 6vw, 72px); line-height: 1.02; letter-spacing: -.045em; }
+.authorityHeader > p:not(.sectionEyebrow) { max-width: 780px; margin: 0; color: var(--muted); font-size: 19px; line-height: 1.62; }
+.authorityHeader > .authorityStaticSource { margin-top: 20px; font-size: 12px; }
+.authorityProvenance { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 1px; margin: 34px 0 0; background: var(--line); border: 1px solid var(--line); }
+.authorityProvenance div { min-width: 0; padding: 16px; background: white; }
+.authorityProvenance dt { display: flex; align-items: center; gap: 7px; color: var(--muted); font-size: 11px; font-weight: 750; }
+.authorityProvenance dt svg { width: 15px; color: var(--blue); }
+.authorityProvenance dd { margin: 8px 0 0; overflow-wrap: anywhere; font-size: 13px; }
+.authorityArticle { max-width: 860px; padding-top: 54px; }
+.authorityArticle > h1:first-child { display: none; }
+.authorityArticle h2 { margin: 58px 0 16px; padding-top: 8px; border-top: 1px solid var(--blue); font-size: 30px; }
+.authorityArticle h3 { margin: 34px 0 12px; font-size: 22px; }
+.authorityArticle p, .authorityArticle li { font-size: 16px; line-height: 1.75; }
+.authorityArticle p { margin: 0 0 18px; }
+.authorityArticle ul { padding-left: 24px; }
+.authorityArticle a { color: var(--blue); }
+.authorityArticle code { overflow-wrap: anywhere; }
+.authorityTableWrap { margin: 24px 0 34px; overflow-x: auto; }
+.authorityTableWrap table { width: 100%; min-width: 560px; border-collapse: collapse; }
+.authorityTableWrap th, .authorityTableWrap td { padding: 13px 14px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; font-size: 13px; line-height: 1.55; }
+.authorityTableWrap th { color: var(--muted); font-size: 11px; text-transform: uppercase; }
+.authorityIndex { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 1px; margin-top: 46px; border: 1px solid var(--line); background: var(--line); }
+.authorityIndex a { min-height: 150px; padding: 24px; display: flex; flex-direction: column; gap: 12px; color: var(--ink); background: white; text-decoration: none; }
+.authorityIndex a:hover { color: var(--blue); }
+.authorityIndex span { color: var(--muted); font-size: 14px; line-height: 1.55; }
+.productAuthority { margin-top: 86px; padding-top: 54px; border-top: 1px solid var(--blue); }
+.productAuthority > header { max-width: 860px; }
+.productAuthority > header h2 { margin: 12px 0 16px; font-size: 36px; }
+.productAuthority > header > p:not(.sectionEyebrow) { color: var(--muted); font-size: 17px; line-height: 1.6; }
+.productAuthority > header small { display: block; margin-top: 18px; color: var(--muted); }
 @keyframes pulse { 50% { opacity: .45; } }
 @keyframes spin { to { transform: rotate(360deg); } }
 @keyframes shimmer { to { background-position-x: -220%; } }
@@ -529,6 +562,10 @@ a { color: inherit; }
   .composerFooter { grid-template-columns: minmax(0,1fr) auto; }
   .composerFooter .button { grid-column: 1 / -1; width: 100%; }
   .squareEmpty { min-height: 300px; }
+  .authorityPage { width: calc(100% - 36px); padding: 54px 0 78px; }
+  .authorityProvenance { grid-template-columns: 1fr; }
+  .authorityIndex { grid-template-columns: 1fr; }
+  .authorityHeader h1 { font-size: 42px; }
   .docsLayout { grid-template-columns: 1fr; gap: 34px; }
   .docsNav { position: static; display: flex; flex-direction: row; overflow-x: auto; border-left: 0; border-bottom: 1px solid var(--line); scroll-snap-type: x proximity; scrollbar-width: thin; }
   .docsNav a { flex: 0 0 auto; min-height: 44px; padding: 13px 16px; border-right: 1px solid var(--line); scroll-snap-align: start; }

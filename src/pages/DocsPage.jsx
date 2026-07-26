@@ -2,6 +2,7 @@ import React, { useMemo, useState } from "react";
 import { BookOpen, Braces, Code2, Search, ShieldCheck, WalletCards, Radio, Bot, Megaphone, Cloud, Smartphone, CloudCog, CircleDollarSign, MessageCircle } from "lucide-react";
 import { apiConfig } from "../lib/api/ynxApi.js";
 import { getCatalog, PRODUCT_STATUS, STATUS_CONFIG } from "../lib/ecosystemCatalog.js";
+import docsAuthority from "virtual:ynx-docs-authority";
 
 const staticSections = [
   {
@@ -119,16 +120,30 @@ const productSections = (catalog) => catalog.map((product) => ({
     ["Status", formatStatus(product.status)],
     ["Entry", product.entry?.label || "Not ready"],
     ["Docs", product.docs?.label || "Not ready"],
-    ["Release", product.release ? `${product.release.branch}@${product.release.commit}` : "Not available"],
+    ["Source commit", product.release?.commit || "Not available"],
     ["Public access / download", platformSummary(product)]
   ]
+}));
+
+const authoritySections = docsAuthority.articles.map((article) => ({
+  id: `authority-${article.route.replace(/^\//, "")}`,
+  title: article.h1,
+  icon: BookOpen,
+  body: article.description,
+  href: article.route,
+  rows: [
+    ["Version", article.version],
+    ["Last reviewed", article.lastReviewed || article.effectiveDate || "Recorded in source"],
+    ["Bundle source", docsAuthority.artifact.sourceCommit.slice(0, 12)],
+    ["Canonical route", article.route],
+  ],
 }));
 
 export function DocsPage() {
   const catalog = useMemo(() => getCatalog(), []);
   const [query, setQuery] = useState("");
 
-  const sections = useMemo(() => [...staticSections, ...productSections(catalog)], [catalog]);
+  const sections = useMemo(() => [...authoritySections, ...staticSections, ...productSections(catalog)], [catalog]);
   const visible = useMemo(() => {
     const needle = query.trim().toLowerCase();
     if (!needle) return sections;
@@ -142,9 +157,9 @@ export function DocsPage() {
   return (
     <main className="docsPage">
       <header className="docsHeader">
-        <p className="sectionEyebrow">Developer documentation</p>
-        <h1>Build with the real YNX production-boundary testnet.</h1>
-        <p>All documentation here is in-site by default; external repo links appear only when local paths are unavailable.</p>
+        <p className="sectionEyebrow">YNX documentation</p>
+        <h1>Evidence-linked public facts and developer documentation.</h1>
+        <p>The public authority collection is consumed from the verified website-content bundle at source <code>{docsAuthority.artifact.sourceCommit.slice(0, 12)}</code>. Candidate, Testnet and production states remain separate.</p>
       </header>
       <div className="docsSearch">
         <Search />
@@ -182,7 +197,7 @@ function DocSection({ section }) {
 
   return (
     <section className="docSection" id={section.id}>
-      <div className="docTitle"><Icon /><div><h2>{section.title}</h2><p>{section.body}</p></div></div>
+      <div className="docTitle"><Icon /><div><h2>{section.href ? <a href={section.href}>{section.title}</a> : section.title}</h2><p>{section.body}</p></div></div>
       {section.rows && <dl className="docRows">{section.rows.map(([term, value]) => <div key={term}><dt>{term}</dt><dd>{value}</dd></div>)}</dl>}
       {section.code && (
         <div className="codeBlock">
