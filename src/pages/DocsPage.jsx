@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { BookOpen, Braces, Code2, Search, ShieldCheck, WalletCards, Radio, Bot, Megaphone, Cloud, Smartphone, CloudCog, CircleDollarSign, MessageCircle } from "lucide-react";
+import { BookOpen, Braces, Code2, Search, ShieldCheck, WalletCards, Radio, Bot, Megaphone, Cloud, Smartphone, CloudCog, CircleDollarSign, MessageCircle, Download } from "lucide-react";
 import { apiConfig } from "../lib/api/ynxApi.js";
 import { getCatalog, PRODUCT_STATUS, STATUS_CONFIG } from "../lib/ecosystemCatalog.js";
 import docsAuthority from "virtual:ynx-docs-authority";
@@ -160,6 +160,15 @@ export function DocsPage() {
         <p className="sectionEyebrow">YNX documentation</p>
         <h1>Evidence-linked public facts and developer documentation.</h1>
         <p>The public authority collection is consumed from the verified website-content bundle at source <code>{docsAuthority.artifact.sourceCommit.slice(0, 12)}</code>. Candidate, Testnet and production states remain separate.</p>
+        {docsAuthority.artifact.downloadHosted && docsAuthority.artifact.downloadPath ? (
+          <a className="docsBundleDownload" href={docsAuthority.artifact.downloadPath} download>
+            <Download size={16} />
+            <span>
+              <strong>Download verified documentation bundle</strong>
+              <small>ZIP · {docsAuthority.artifact.bytes.toLocaleString("en-US")} bytes · SHA-256 {docsAuthority.artifact.sha256}</small>
+            </span>
+          </a>
+        ) : null}
       </header>
       <div className="docsSearch">
         <Search />

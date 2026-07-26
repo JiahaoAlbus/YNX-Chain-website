@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import { emitDocsAuthority, loadDocsAuthority } from "./lib/docs-authority.mjs";
 
@@ -11,6 +13,15 @@ if (args.includes("--emit")) {
   const output = args[outputIndex + 1];
   if (!output) throw new Error("--emit requires an output directory");
   emitDocsAuthority(path.resolve(output));
+}
+
+if (args.includes("--verify-hosting")) {
+  const output = fs.mkdtempSync(path.join(os.tmpdir(), "ynx-docs-hosting-"));
+  try {
+    emitDocsAuthority(output);
+  } finally {
+    fs.rmSync(output, { recursive: true, force: true });
+  }
 }
 
 process.stdout.write(

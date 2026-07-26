@@ -175,8 +175,19 @@ if (!main.includes("AuthorityArticlePage") || !main.includes("docsAuthority.arti
   console.error("verified YNX documentation authority is not wired into the website runtime");
   process.exit(1);
 }
-if (!packageJson.scripts?.build?.includes("scripts/prerender.mjs") || !packageJson.scripts?.test?.includes("scripts/docs-authority.mjs")) {
+if (!packageJson.scripts?.build?.includes("scripts/prerender.mjs") || !packageJson.scripts?.test?.includes("--verify-hosting")) {
   console.error("docs authority verification and prerender gates are not enforced");
+  process.exit(1);
+}
+const hostedDocsHeaders = vercel.headers?.find((entry) => entry.source === "/docs-authority/packages/(.*)")?.headers || [];
+if (
+  !hostedDocsHeaders.some((entry) => entry.key === "Cache-Control" && entry.value.includes("immutable")) ||
+  !hostedDocsHeaders.some((entry) => entry.key === "Content-Disposition" && entry.value === "attachment") ||
+  !docsPage.includes("docsAuthority.artifact.downloadHosted") ||
+  !docsPage.includes("docsAuthority.artifact.downloadPath") ||
+  !docsPage.includes("docsAuthority.artifact.sha256")
+) {
+  console.error("immutable hosted documentation bundle is not wired into deployment and UI");
   process.exit(1);
 }
 if (!main.includes('navigator.serviceWorker.register("/sw.js")') || !indexHtml.includes('rel="manifest"') || manifest.start_url !== "/" || manifest.display !== "standalone") {
@@ -253,7 +264,9 @@ if (!vercel.cleanUrls || vercel.rewrites?.[0]?.source !== "/(.*)" || vercel.rewr
   console.error("Vercel SPA deep-link fallback is not configured for clean URLs");
   process.exit(1);
 }
-const csp = vercel.headers?.[0]?.headers?.find((header) => header.key === "Content-Security-Policy")?.value || "";
+const csp = vercel.headers
+  ?.find((entry) => entry.source === "/(.*)")
+  ?.headers?.find((header) => header.key === "Content-Security-Policy")?.value || "";
 if (!csp.includes("script-src 'self'") || !csp.includes("worker-src 'self'") || !csp.includes("connect-src 'self' https://api.ynxweb4.com") || !csp.includes("object-src 'none'")) {
   console.error("strict browser signer CSP is missing");
   process.exit(1);
