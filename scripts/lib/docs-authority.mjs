@@ -15,6 +15,7 @@ const requiredEntries = [
   "docs/public/search/YNX_TESTNET_GUIDE.md",
   "release/facts/brand.json",
   "release/facts/faq.json",
+  "release/evidence/website-public-acceptance-2026-07-26.json",
   "release/public-product-metadata.json",
   "release/structured-data-suggestions.json",
 ];
