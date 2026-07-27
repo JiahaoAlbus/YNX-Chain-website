@@ -2,11 +2,11 @@
   "schema": "ynx-public-docs-artifact/v1",
   "package": "YNX Chain Website Content",
   "release": "0.2.0-candidate",
-  "sourceCommit": "9f9efcb84b59fe0b10c8a9233aa6af840f0a96a4",
-  "sourceCommitTime": "2026-07-26T21:20:29+08:00",
-  "archive": "ynx-website-content-9f9efcb84b59.zip",
-  "bytes": 129546,
-  "sha256": "f940eda5d37606d48172cd6b7805f5f1805cc495d3bd49fb44178d01305af246",
+  "sourceCommit": "ab209455dc1e0e537da2872505ed0bb2b2256609",
+  "sourceCommitTime": "2026-07-27T10:59:24+08:00",
+  "archive": "ynx-website-content-ab209455dc1e.zip",
+  "bytes": 134565,
+  "sha256": "5626e71218124b7890140df74a7a044fb5593aeaec5088f9433f4781ca0c4969",
   "productionSigned": false,
   "downloadHosted": false
 }
