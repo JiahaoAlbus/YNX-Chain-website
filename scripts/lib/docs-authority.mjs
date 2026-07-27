@@ -9,6 +9,7 @@ const requiredEntries = [
   "bundle-manifest.json",
   "docs/public/FAQ.md",
   "docs/public/PUBLIC_BRAND_FACTS.md",
+  "docs/public/WEBSITE_INTEGRATION_HANDOFF.md",
   "docs/public/search/WHAT_IS_YNX_CHAIN.md",
   "docs/public/search/WHAT_IS_YNX_WEB4.md",
   "docs/public/search/WHAT_IS_YNXT.md",
@@ -66,12 +67,32 @@ export function loadDocsAuthority(root = websiteRoot) {
     .sort((left, right) => left.name.localeCompare(right.name));
   articleEntries.push({ name: "docs/public/FAQ.md", data: byName.get("docs/public/FAQ.md") });
   const articles = articleEntries.map(({ name, data }) => parseArticle(name, data.toString("utf8")));
+  const productMetadata = JSON.parse(byName.get("release/public-product-metadata.json").toString("utf8"));
+  const siteUrl = new URL(productMetadata.siteUrl);
+  const canonicalUrl = new URL(productMetadata.canonicalUrl);
+  if (canonicalUrl.origin !== siteUrl.origin || !articles.some((article) => article.route === canonicalUrl.pathname)) {
+    throw new Error("YNX public product canonical URL does not match an authority route");
+  }
+  for (const key of ["support", "privacy", "security", "status"]) {
+    const url = new URL(productMetadata.urls?.[key]);
+    if (url.protocol !== "https:" || url.origin !== siteUrl.origin) {
+      throw new Error(`YNX public product URL is invalid: ${key}`);
+    }
+  }
+  const documentationDownload = productMetadata.downloads?.find((entry) => entry.type === "documentation-bundle");
+  if (
+    documentationDownload?.manifestUrl !== `${siteUrl.origin}/docs-authority/artifact-manifest.json` ||
+    documentationDownload?.status !== "hosted-unsigned-candidate" ||
+    documentationDownload?.productionSigned !== false
+  ) {
+    throw new Error("YNX public product download metadata is stale or overstated");
+  }
 
   return {
     artifact,
     bundle,
     articles,
-    productMetadata: JSON.parse(byName.get("release/public-product-metadata.json").toString("utf8")),
+    productMetadata,
     structuredData: JSON.parse(byName.get("release/structured-data-suggestions.json").toString("utf8")),
     entries,
   };
