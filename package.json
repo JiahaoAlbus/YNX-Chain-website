@@ -4,10 +4,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 127.0.0.1",
-    "build": "vite build && node scripts/prerender.mjs",
+    "build": "vite build && node scripts/prerender.mjs && node scripts/indexnow.mjs --dry-run",
     "preview": "vite preview --host 127.0.0.1",
     "test": "node scripts/docs-authority.mjs --verify-hosting && node scripts/verify.mjs",
     "docs:verify": "node scripts/docs-authority.mjs --verify",
+    "indexnow:dry-run": "node scripts/indexnow.mjs --dry-run",
+    "release:indexnow": "node scripts/indexnow.mjs",
     "deploy:dry-run": "DEPLOY_DRY_RUN=1 bash deploy/vercel-deploy.sh",
     "deploy:prod": "bash deploy/vercel-deploy.sh"
   },

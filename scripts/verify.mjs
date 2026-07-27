@@ -13,6 +13,7 @@ const required = [
   "public/ynx-icon-maskable-512.png",
   "public/ynx-favicon-48.png",
   "public/releases/ecosystem-release-registry.json",
+  "public/da45868fe3e0818f27f187b21a56ccb5.txt",
   "src/main.jsx",
   "src/styles.css",
   "src/lib/api/ynxApi.js",
@@ -56,6 +57,7 @@ const required = [
   "scripts/docs-authority.mjs",
   "scripts/lib/docs-authority.mjs",
   "scripts/prerender.mjs",
+  "scripts/indexnow.mjs",
   "vendor/ynx-docs/artifact-manifest.json",
   "vercel.json"
 ];
@@ -143,6 +145,8 @@ const docsPage = fs.readFileSync("src/pages/DocsPage.jsx", "utf8");
 const appGateway = fs.readFileSync("server/app-gateway.mjs", "utf8");
 const vercel = JSON.parse(fs.readFileSync("vercel.json", "utf8"));
 const packageJson = JSON.parse(fs.readFileSync("package.json", "utf8"));
+const indexNowKey = fs.readFileSync("public/da45868fe3e0818f27f187b21a56ccb5.txt", "utf8").trim();
+const indexNowScript = fs.readFileSync("scripts/indexnow.mjs", "utf8");
 const viteConfig = fs.readFileSync("vite.config.js", "utf8");
 const signerSource = JSON.parse(fs.readFileSync("src/lib/ynx-signer/SOURCE.json", "utf8"));
 if (releaseRegistry.products.some((product) => Object.hasOwn(product, "branch"))) {
@@ -177,6 +181,17 @@ if (!main.includes("AuthorityArticlePage") || !main.includes("docsAuthority.arti
 }
 if (!packageJson.scripts?.build?.includes("scripts/prerender.mjs") || !packageJson.scripts?.test?.includes("--verify-hosting")) {
   console.error("docs authority verification and prerender gates are not enforced");
+  process.exit(1);
+}
+if (
+  indexNowKey !== "da45868fe3e0818f27f187b21a56ccb5" ||
+  !packageJson.scripts?.build?.includes("scripts/indexnow.mjs --dry-run") ||
+  packageJson.scripts?.["release:indexnow"] !== "node scripts/indexnow.mjs" ||
+  !indexNowScript.includes("https://api.indexnow.org/indexnow") ||
+  !indexNowScript.includes("keyLocation") ||
+  !indexNowScript.includes("urlList")
+) {
+  console.error("IndexNow public release integration is incomplete");
   process.exit(1);
 }
 const hostedDocsHeaders = vercel.headers?.find((entry) => entry.source === "/docs-authority/packages/(.*)")?.headers || [];
