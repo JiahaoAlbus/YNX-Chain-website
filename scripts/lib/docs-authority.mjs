@@ -16,6 +16,7 @@ const requiredEntries = [
   "docs/public/search/YNX_TESTNET_GUIDE.md",
   "release/facts/brand.json",
   "release/facts/faq.json",
+  "release/facts/release-status.json",
   "release/evidence/website-public-acceptance-2026-07-26.json",
   "release/public-product-metadata.json",
   "release/structured-data-suggestions.json",
@@ -87,12 +88,33 @@ export function loadDocsAuthority(root = websiteRoot) {
   ) {
     throw new Error("YNX public product download metadata is stale or overstated");
   }
+  const releaseStatus = JSON.parse(byName.get("release/facts/release-status.json").toString("utf8"));
+  const websiteEvidence = JSON.parse(byName.get("release/evidence/website-public-acceptance-2026-07-26.json").toString("utf8"));
+  const staging = websiteEvidence.stagingRuntime;
+  if (
+    releaseStatus.states?.deployedStaging !== true ||
+    !releaseStatus.stateEvidence?.deployedStaging?.includes("release/evidence/website-public-acceptance-2026-07-26.json") ||
+    staging?.provider !== "Vercel" ||
+    staging?.environment !== "Preview" ||
+    staging?.deploymentState !== "success" ||
+    !/^[0-9a-f]{40}$/.test(staging?.sourceCommit ?? "") ||
+    staging?.anonymousAccess?.httpStatus !== 302 ||
+    staging?.anonymousAccess?.accessPolicy !== "provider-sso" ||
+    staging?.anonymousAccess?.contentVerified !== false ||
+    releaseStatus.states?.deployedPublic !== true ||
+    releaseStatus.states?.downloadHosted !== true ||
+    releaseStatus.states?.productionSigned !== false
+  ) {
+    throw new Error("YNX staged/public release evidence is missing or overstated");
+  }
 
   return {
     artifact,
     bundle,
     articles,
     productMetadata,
+    releaseStatus,
+    websiteEvidence,
     structuredData: JSON.parse(byName.get("release/structured-data-suggestions.json").toString("utf8")),
     entries,
   };
