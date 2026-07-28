@@ -17,9 +17,19 @@ Key acceptance routes:
 
 - `/apps` — independent product catalog and evidence state
 - `/download` — public web and verified installer directory
+- `/manual` — user journey, safety boundaries, and recovery guidance
 - `/docs` — documentation rendered inside the official site
+- `/api` — public REST, EVM JSON-RPC, Explorer, and Faucet reference
+- `/faq`, `/security`, `/support` — public authority and safe support routes
 - `/status` — network and release-boundary status
+- `/public-product-metadata.json` — canonical machine-readable product identity
+- `/product-release.json` — evidence-bound release state
 - `/releases/ecosystem-release-registry.json` — machine-readable release snapshot
+
+Global navigation includes a keyboard command palette (`⌘K` / `Ctrl+K`), light and
+dark appearance, RTL layout, mobile navigation, visible keyboard focus, and a skip
+link. Loading, empty, unavailable, error, and recovery guidance must remain explicit
+instead of being replaced by sample values.
 
 Local build artifacts are not public downloads. See
 `docs/WEBSITE_ACCEPTANCE.md` for the release-admission rule and route checklist.

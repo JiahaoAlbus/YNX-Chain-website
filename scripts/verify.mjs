@@ -26,6 +26,8 @@ const required = [
   "src/pages/DocsPage.jsx",
   "src/pages/ProductStatusPage.jsx",
   "src/pages/SquarePage.jsx",
+  "src/pages/ManualPage.jsx",
+  "src/pages/ApiPage.jsx",
   "src/lib/ecosystemCatalog.js",
   "src/lib/ynx-signer/index.js",
   "src/lib/ynx-signer/client.js",
@@ -34,6 +36,7 @@ const required = [
   "src/components/StatusCard.jsx",
   "src/components/ProductPanel.jsx",
   "src/components/LinkGrid.jsx",
+  "src/components/CommandPalette.jsx",
   "src/sections/Hero.jsx",
   "server/network-status.mjs",
   "server/app-gateway.mjs",
@@ -135,6 +138,10 @@ const serviceWorker = fs.readFileSync("public/sw.js", "utf8");
 const manifest = JSON.parse(fs.readFileSync("public/manifest.webmanifest", "utf8"));
 const releaseRegistry = JSON.parse(fs.readFileSync("public/releases/ecosystem-release-registry.json", "utf8"));
 const header = fs.readFileSync("src/components/SiteHeader.jsx", "utf8");
+const commandPalette = fs.readFileSync("src/components/CommandPalette.jsx", "utf8");
+const routePage = fs.readFileSync("src/components/RoutePage.jsx", "utf8");
+const manualPage = fs.readFileSync("src/pages/ManualPage.jsx", "utf8");
+const apiPage = fs.readFileSync("src/pages/ApiPage.jsx", "utf8");
 const appsPage = fs.readFileSync("src/pages/AppsPage.jsx", "utf8");
 const downloadsPage = fs.readFileSync("src/pages/DownloadPage.jsx", "utf8");
 const productStatusPage = fs.readFileSync("src/pages/ProductStatusPage.jsx", "utf8");
@@ -222,6 +229,42 @@ for (const boundary of ['url.origin !== self.location.origin', 'url.pathname.sta
 if (!header.includes('["Apps", "/apps"]') || !header.includes('["Download", "/download"]') || !header.includes('["Docs", "/docs"]') || !header.includes('["Status", "/status"]')) {
   console.error("stable Apps, Download, Docs, and Status navigation is missing");
   process.exit(1);
+}
+for (const requiredText of ["metaKey", "ctrlKey", "ynx-theme", "ynx-direction", "CommandPalette", "Skip to content"]) {
+  if (!header.includes(requiredText)) {
+    console.error(`global navigation capability missing: ${requiredText}`);
+    process.exit(1);
+  }
+}
+for (const requiredText of ["role=\"dialog\"", "aria-modal=\"true\"", "ArrowDown", "ArrowUp", "No matching YNX resource", "API reference"]) {
+  if (!commandPalette.includes(requiredText)) {
+    console.error(`command palette capability missing: ${requiredText}`);
+    process.exit(1);
+  }
+}
+for (const requiredText of ['"/manual"', '"/api"', "Page unavailable", "Get support"]) {
+  if (!routePage.includes(requiredText)) {
+    console.error(`public information architecture or recovery route missing: ${requiredText}`);
+    process.exit(1);
+  }
+}
+for (const requiredText of ["From zero to a verified testnet action", "Recovery", "A timeout is not proof", "Security boundary"]) {
+  if (!manualPage.includes(requiredText)) {
+    console.error(`user manual capability missing: ${requiredText}`);
+    process.exit(1);
+  }
+}
+for (const requiredText of ["Chain status", "Validator roles", "EVM JSON-RPC", "Fail visibly and recover deliberately", "eth_chainId"]) {
+  if (!apiPage.includes(requiredText)) {
+    console.error(`API reference capability missing: ${requiredText}`);
+    process.exit(1);
+  }
+}
+for (const requiredText of ['[data-theme="dark"]', '[dir="rtl"]', ":focus-visible", ".commandPalette"]) {
+  if (!styles.includes(requiredText)) {
+    console.error(`accessibility or adaptive appearance styles missing: ${requiredText}`);
+    process.exit(1);
+  }
 }
 for (const requiredText of ["Public web", "Candidate", "Candidate incomplete", "Not ready", "evidence-backed status"]) {
   if (!appsPage.includes(requiredText)) {

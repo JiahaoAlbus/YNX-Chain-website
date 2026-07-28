@@ -36,6 +36,7 @@ writeRoute("/docs", {
 });
 
 emitDocsAuthority(path.join(dist, "docs-authority"), root);
+writePublicMetadata();
 writeDiscoveryFiles();
 verifyOutput();
 process.stdout.write(`prerendered ${authority.articles.length + 1} authority routes\n`);
@@ -59,6 +60,8 @@ function writeDiscoveryFiles() {
     "/apps",
     "/download",
     "/docs",
+    "/manual",
+    "/api",
     "/status",
     ...authority.articles.map((article) => article.route),
   ];
@@ -67,6 +70,17 @@ function writeDiscoveryFiles() {
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${unique.map((route) => `  <url><loc>${escapeXml(`${siteUrl}${route}`)}</loc><lastmod>${lastModified}</lastmod></url>`).join("\n")}\n</urlset>\n`;
   fs.writeFileSync(path.join(dist, "sitemap.xml"), sitemap);
   fs.writeFileSync(path.join(dist, "robots.txt"), `User-agent: *\nAllow: /\n\nSitemap: ${siteUrl}/sitemap.xml\n`);
+}
+
+function writePublicMetadata() {
+  fs.writeFileSync(
+    path.join(dist, "public-product-metadata.json"),
+    `${JSON.stringify(authority.productMetadata, null, 2)}\n`,
+  );
+  fs.writeFileSync(
+    path.join(dist, "product-release.json"),
+    `${JSON.stringify(authority.releaseStatus, null, 2)}\n`,
+  );
 }
 
 function verifyOutput() {
@@ -92,6 +106,15 @@ function verifyOutput() {
     if (!fs.readFileSync(path.join(dist, "sitemap.xml"), "utf8").includes(required)) {
       throw new Error(`sitemap is missing ${required}`);
     }
+  }
+  const publicMetadata = JSON.parse(fs.readFileSync(path.join(dist, "public-product-metadata.json"), "utf8"));
+  const productRelease = JSON.parse(fs.readFileSync(path.join(dist, "product-release.json"), "utf8"));
+  if (
+    publicMetadata.canonicalUrl !== authority.productMetadata.canonicalUrl ||
+    productRelease.states?.deployedPublic !== true ||
+    productRelease.states?.productionSigned !== false
+  ) {
+    throw new Error("public product metadata or release truth is missing");
   }
 }
 

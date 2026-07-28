@@ -19,6 +19,8 @@ import { DocsPage } from "./pages/DocsPage.jsx";
 import { AuthorityArticlePage } from "./pages/AuthorityArticlePage.jsx";
 import { ProductStatusPage } from "./pages/ProductStatusPage.jsx";
 import { SquarePage } from "./pages/SquarePage.jsx";
+import { ManualPage } from "./pages/ManualPage.jsx";
+import { ApiPage } from "./pages/ApiPage.jsx";
 import { getProductByRoute } from "./lib/ecosystemCatalog.js";
 import docsAuthority from "virtual:ynx-docs-authority";
 import "./styles.css";
@@ -94,8 +96,10 @@ function App() {
     if (route === "/download") page = <DownloadPage />;
     if (route === "/apps") page = <AppsPage />;
     if (route === "/docs") page = <DocsPage />;
+    if (route === "/manual") page = <ManualPage />;
+    if (route === "/api") page = <ApiPage />;
     if (route === "/square" || route.startsWith("/square/")) page = <SquarePage path={route} />;
-    return <><SiteHeader scrollProgress={scrollProgress} />{page}<SiteFooter /></>;
+    return <><SiteHeader scrollProgress={scrollProgress} /><div id="main-content">{page}</div><SiteFooter /></>;
   }
 
   const { status = {}, summary = {}, validators = {}, evm = {} } = snapshot;
@@ -104,7 +108,7 @@ function App() {
   const serviceState = (name) => services[name]?.ok === true ? "live" : services[name]?.error ? "status unavailable" : "checking";
 
   return (
-    <main>
+    <main id="main-content">
       <SiteHeader scrollProgress={scrollProgress} />
       <Hero snapshot={snapshot} connectionState={connectionState} onAddNetwork={addNetwork} />
 

@@ -7,9 +7,14 @@ export function SiteFooter() {
       <div><strong>YNX Chain</strong><p>Web4 L1 ecosystem built around YNXT.</p></div>
       <div className="footerLinks">
         <a href="/download">Download</a>
-        <a href="/docs">产品文档中心</a>
+        <a href="/manual">User manual</a>
+        <a href="/docs">Developer docs</a>
+        <a href="/api">API</a>
+        <a href="/faq">FAQ</a>
         <a href="/apps">Apps</a>
         <a href="/status">Status</a>
+        <a href="/security">Security</a>
+        <a href="/support">Support</a>
         <a href="/square">Square</a>
         <a href={apiConfig.explorerUrl}>Explorer</a>
         <a href="/readiness">Readiness</a>
