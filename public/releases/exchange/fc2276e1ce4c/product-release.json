@@ -1,0 +1,37 @@
+{
+  "artifacts": [
+    "exchange-status.json",
+    "public-product-metadata.json",
+    "rpc-capabilities.json",
+    "signed-transaction-vectors.json",
+    "ynx-testnet-exchange-profile.json"
+  ],
+  "evidence": {
+    "deterministicPackage": true,
+    "exactReplayTested": true,
+    "restartPersistenceTested": true,
+    "signedDepositTested": true,
+    "signedWithdrawalTested": true,
+    "tamperRejectionTested": true
+  },
+  "externalStates": {
+    "exchangeListed": false,
+    "exchangePartnership": false,
+    "exchangeSubmitted": false,
+    "independentExchangeVerified": false,
+    "mainnet": false,
+    "productionCustodyApproved": false,
+    "productionSigned": false
+  },
+  "product": "YNX Exchange Integration",
+  "release": "1.0.0-testnet-candidate",
+  "releaseClass": "testnet-integration-candidate",
+  "schema": "ynx-product-release/v1",
+  "sourceCommitBoundByManifest": true,
+  "testCommands": [
+    "make exchange-vector-check",
+    "make exchange-package-integrity-check",
+    "make exchange-integration-check",
+    "make exchange-live-check"
+  ]
+}

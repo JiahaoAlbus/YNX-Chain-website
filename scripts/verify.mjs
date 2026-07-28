@@ -13,6 +13,13 @@ const required = [
   "public/ynx-icon-maskable-512.png",
   "public/ynx-favicon-48.png",
   "public/releases/ecosystem-release-registry.json",
+  "public/releases/exchange/fc2276e1ce4c/exchange-status.json",
+  "public/releases/exchange/fc2276e1ce4c/manifest.json",
+  "public/releases/exchange/fc2276e1ce4c/product-release.json",
+  "public/releases/exchange/fc2276e1ce4c/public-product-metadata.json",
+  "public/releases/exchange/fc2276e1ce4c/rpc-capabilities.json",
+  "public/releases/exchange/fc2276e1ce4c/signed-transaction-vectors.json",
+  "public/releases/exchange/fc2276e1ce4c/ynx-testnet-exchange-profile.json",
   "public/da45868fe3e0818f27f187b21a56ccb5.txt",
   "src/main.jsx",
   "src/styles.css",
@@ -137,6 +144,10 @@ const indexHtml = fs.readFileSync("index.html", "utf8");
 const serviceWorker = fs.readFileSync("public/sw.js", "utf8");
 const manifest = JSON.parse(fs.readFileSync("public/manifest.webmanifest", "utf8"));
 const releaseRegistry = JSON.parse(fs.readFileSync("public/releases/ecosystem-release-registry.json", "utf8"));
+const exchangeReleaseRoot = "public/releases/exchange/fc2276e1ce4c";
+const exchangeManifest = JSON.parse(fs.readFileSync(`${exchangeReleaseRoot}/manifest.json`, "utf8"));
+const exchangeProductRelease = JSON.parse(fs.readFileSync(`${exchangeReleaseRoot}/product-release.json`, "utf8"));
+const exchangePublicMetadata = JSON.parse(fs.readFileSync(`${exchangeReleaseRoot}/public-product-metadata.json`, "utf8"));
 const header = fs.readFileSync("src/components/SiteHeader.jsx", "utf8");
 const commandPalette = fs.readFileSync("src/components/CommandPalette.jsx", "utf8");
 const routePage = fs.readFileSync("src/components/RoutePage.jsx", "utf8");
@@ -159,6 +170,48 @@ const signerSource = JSON.parse(fs.readFileSync("src/lib/ynx-signer/SOURCE.json"
 if (releaseRegistry.products.some((product) => Object.hasOwn(product, "branch"))) {
   console.error("public release registry exposes internal branch names");
   process.exit(1);
+}
+if (
+  exchangeManifest.gitCommit !== "fc2276e1ce4c8ac6001ebb9888fd4835111f2f9e" ||
+  exchangeManifest.schema !== "ynx-exchange-candidate/v1" ||
+  exchangeManifest.status?.candidatePublicRuntimeDeployed !== true ||
+  Object.entries(exchangeManifest.status || {}).some(([key, value]) => key !== "candidatePublicRuntimeDeployed" && key !== "truthfulStatus" && value !== false) ||
+  exchangeProductRelease.schema !== "ynx-product-release/v1" ||
+  exchangeProductRelease.release !== "1.0.0-testnet-candidate" ||
+  Object.values(exchangeProductRelease.externalStates || {}).some((value) => value !== false) ||
+  exchangePublicMetadata.schema !== "ynx-public-product-metadata/v1" ||
+  exchangePublicMetadata.canonicalUrl !== "https://www.ynxweb4.com/exchange" ||
+  exchangePublicMetadata.routes?.product !== "/exchange"
+) {
+  console.error("exchange release identity or truthful external-state boundary is invalid");
+  process.exit(1);
+}
+const exchangeManifestFiles = new Map(exchangeManifest.files?.map((entry) => [entry.file, entry]) || []);
+const expectedExchangeFiles = [
+  "exchange-status.json",
+  "product-release.json",
+  "public-product-metadata.json",
+  "rpc-capabilities.json",
+  "signed-transaction-vectors.json",
+  "ynx-testnet-exchange-profile.json",
+];
+if (
+  exchangeManifestFiles.size !== expectedExchangeFiles.length ||
+  expectedExchangeFiles.some((file) => !exchangeManifestFiles.has(file)) ||
+  exchangeProductRelease.sourceCommitBoundByManifest !== true ||
+  Object.values(exchangeProductRelease.evidence || {}).some((value) => value !== true) ||
+  ["product", "manual", "developerDocs", "api", "faq", "security", "status", "support"].some((route) => !exchangePublicMetadata.routes?.[route])
+) {
+  console.error("exchange release file set, evidence, or website handoff routes are incomplete");
+  process.exit(1);
+}
+for (const [file, record] of exchangeManifestFiles) {
+  const body = fs.readFileSync(`${exchangeReleaseRoot}/${file}`);
+  const digest = crypto.createHash("sha256").update(body).digest("hex");
+  if (record.bytes !== body.length || record.sha256 !== digest) {
+    console.error(`exchange release artifact digest mismatch: ${file}`);
+    process.exit(1);
+  }
 }
 if (!styles.includes("--blue: #002fa7") || !styles.includes(".heroStage.isPulling")) {
   console.error("missing Klein blue palette or draggable hero interaction");
@@ -278,8 +331,21 @@ if (productKeys.length !== 25 || new Set(productKeys).size !== 25 || !productKey
   process.exit(1);
 }
 const registryKeys = releaseRegistry.products?.map((product) => product.key) || [];
-if (registryKeys.length !== 25 || new Set(registryKeys).size !== 25 || productKeys.some((key) => !registryKeys.includes(key)) || releaseRegistry.products.some((product) => product.centralAccepted !== false || product.downloadHosted !== false) || releaseRegistry.rules?.localArtifactIsDownload !== false) {
-  console.error("release registry must truthfully preserve 25 unaccepted, non-hosted product states");
+const acceptedProducts = releaseRegistry.products?.filter((product) => product.centralAccepted === true) || [];
+const exchangeRegistry = acceptedProducts[0];
+if (
+  registryKeys.length !== 25 ||
+  new Set(registryKeys).size !== 25 ||
+  productKeys.some((key) => !registryKeys.includes(key)) ||
+  releaseRegistry.products.some((product) => product.downloadHosted !== false) ||
+  acceptedProducts.length !== 1 ||
+  exchangeRegistry?.key !== "exchange" ||
+  exchangeRegistry.commit !== "fc2276e1ce4c" ||
+  exchangeRegistry.productRelease !== "/releases/exchange/fc2276e1ce4c/product-release.json" ||
+  exchangeRegistry.publicProductMetadata !== "/releases/exchange/fc2276e1ce4c/public-product-metadata.json" ||
+  releaseRegistry.rules?.localArtifactIsDownload !== false
+) {
+  console.error("release registry must preserve 25 truthful states and exactly one commit-bound accepted exchange candidate");
   process.exit(1);
 }
 for (const requiredText of ["downloadHosted", "Local build only", "candidate incomplete", "Product status"]) {

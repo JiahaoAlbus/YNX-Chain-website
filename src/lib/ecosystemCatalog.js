@@ -150,8 +150,13 @@ const evidence = {
     }
   },
   exchange: {
-    commit: "5d95046a92e0",
-    statusNote: "Android release APK and exchange route available; iOS/desktop package not published.",
+    commit: "fc2276e1ce4c",
+    centralAccepted: true,
+    productRelease: {
+      href: "/releases/exchange/fc2276e1ce4c/product-release.json",
+      release: "1.0.0-testnet-candidate"
+    },
+    statusNote: "The deterministic Testnet exchange-integration package is centrally accepted and source-commit bound. Production custody, signing, listing, partnership, and mainnet remain unapproved.",
     downloads: {
       android: artifactDownload(PRODUCT_STATUS.LOCAL, "apps/exchange/mobile/android/app/build/outputs/apk/release/app-release.apk", "Android app release (debug-signed, testnet preview)"),
       ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS project exists; simulator proof/ signing evidence pending." },
@@ -341,7 +346,9 @@ const attachEvidence = (entry) => {
     entry: { label: "Product status", href: PRODUCT_ROUTES[entry.key] },
     release: {
       commit: matched.commit,
-      statusNote: matched.statusNote
+      statusNote: matched.statusNote,
+      centralAccepted: matched.centralAccepted === true,
+      productRelease: matched.productRelease || null
     },
     downloads: {
       ...makeDownloads(),
@@ -434,12 +441,12 @@ export const getCatalog = () => [
     key: "exchange",
     name: "YNX Exchange",
     icon: AppWindow,
-    status: PRODUCT_STATUS.LOCAL,
-    detail: "Exchange candidate flow verifies signed tx, nonce, receipts and history with no claim of listing.",
+    status: PRODUCT_STATUS.LIVE,
+    detail: "The public Testnet exchange-integration candidate verifies signed transfers, replay safety, nonce, blocks, receipts, logs, restart persistence, and a fail-closed confirmation policy. No listing is claimed.",
     entry: { ...exchangeLink(), label: "Exchange entry" },
     docs: { ...docsAnchor("exchange"), label: "Exchange docs" },
-    downloads: web(PRODUCT_STATUS.LOCAL, "/trading", "Exchange candidate UI route"),
-    metrics: [["Closure", "Signed tx + receipts"], ["Risk", "No exchange listing is claimed"], ["Readiness", "No production exchange package"]]
+    downloads: web(PRODUCT_STATUS.LIVE, "/trading", "Public Testnet exchange integration route"),
+    metrics: [["Closure", "Signed tx + receipts + evidence package"], ["Risk", "No exchange listing is claimed"], ["Readiness", "Production custody and independent review remain pending"]]
   },
   {
     key: "shop",

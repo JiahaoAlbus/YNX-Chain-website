@@ -1,0 +1,92 @@
+[
+  {
+    "compatibility": "standard-read",
+    "method": "eth_chainId",
+    "publicVerified": true,
+    "status": "supported"
+  },
+  {
+    "compatibility": "standard-read",
+    "method": "net_version",
+    "publicVerified": true,
+    "status": "supported"
+  },
+  {
+    "compatibility": "standard-read",
+    "method": "eth_blockNumber",
+    "publicVerified": true,
+    "status": "supported"
+  },
+  {
+    "compatibility": "latest-or-pending-only",
+    "method": "eth_getBalance",
+    "publicVerified": true,
+    "status": "bounded"
+  },
+  {
+    "compatibility": "latest-or-pending-only",
+    "method": "eth_getTransactionCount",
+    "publicVerified": true,
+    "status": "bounded"
+  },
+  {
+    "compatibility": "exact-height-or-standard-tag",
+    "method": "eth_getBlockByNumber",
+    "publicVerified": true,
+    "status": "supported"
+  },
+  {
+    "compatibility": "exact-canonical-block-hash",
+    "method": "eth_getBlockByHash",
+    "publicVerified": true,
+    "status": "supported"
+  },
+  {
+    "compatibility": "standard-read-bounded-fields",
+    "method": "eth_getTransactionByHash",
+    "publicVerified": true,
+    "status": "bounded"
+  },
+  {
+    "compatibility": "standard-read-bounded-fields",
+    "method": "eth_getTransactionReceipt",
+    "publicVerified": true,
+    "status": "bounded"
+  },
+  {
+    "compatibility": "bounded-range-address-topic-filter",
+    "method": "eth_getLogs",
+    "publicVerified": true,
+    "status": "bounded"
+  },
+  {
+    "compatibility": "ynx-native-envelope-only; standard-ethereum-rlp-unsupported",
+    "method": "eth_sendRawTransaction",
+    "publicVerified": true,
+    "status": "bounded"
+  },
+  {
+    "compatibility": "bounded-contract-subset",
+    "method": "eth_call",
+    "publicVerified": false,
+    "status": "bounded"
+  },
+  {
+    "compatibility": "constant-local-estimate-not-production-gas-market",
+    "method": "eth_estimateGas",
+    "publicVerified": false,
+    "status": "not-exchange-safe"
+  },
+  {
+    "compatibility": "bounded-devtool-contract-call-only",
+    "method": "eth_sendTransaction",
+    "publicVerified": false,
+    "status": "not-exchange-safe"
+  },
+  {
+    "compatibility": "not-implemented",
+    "method": "eth_gasPrice",
+    "publicVerified": false,
+    "status": "unsupported"
+  }
+]
