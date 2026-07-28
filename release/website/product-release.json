@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "ynx-product-release/v1",
+  "productId": "28",
+  "product": "YNX Website / SEO / Product Micro-sites",
+  "slug": "website",
+  "owner": "28-website",
+  "version": "1.0.0-public-candidate",
+  "branch": "codex/final-website",
+  "sourceCommit": "1e998b5a2d09ab389fe0652f739aab7d1a352eb9",
+  "phase": "PUBLIC",
+  "releaseStates": {
+    "implementedLocal": true,
+    "testedLocal": true,
+    "installedLocal": false,
+    "integratedCentral": false,
+    "deployedStaging": false,
+    "deployedPublic": true,
+    "downloadHosted": false,
+    "productionSigned": false,
+    "storeReleased": false
+  },
+  "publicEvidence": {
+    "origin": "https://www.ynxweb4.com",
+    "observedRoute": "/status",
+    "observedHttpStatus": 200,
+    "exactCurrentSourceVerified": false,
+    "observationDate": "2026-07-29"
+  },
+  "knownGaps": [
+    "all 35 owner product records are not centrally accepted",
+    "exact current-source production identity is not verified",
+    "hosted product installers remain unavailable",
+    "search-console and independent index coverage evidence are unavailable"
+  ]
+}

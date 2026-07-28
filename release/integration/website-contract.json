@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "1.0.0",
+  "productId": "28",
+  "product": "YNX Website / SEO / Product Micro-sites",
+  "slug": "website",
+  "owner": "28-website",
+  "sourceCommit": "1e998b5a2d09ab389fe0652f739aab7d1a352eb9",
+  "branch": "codex/final-website",
+  "authority": {
+    "owns": ["public routes and navigation","website publication state","download admission","SEO metadata and structured data","public support, security and status links"],
+    "doesNotOwn": ["product implementation or release state","network identity","Wallet identity","chain finality","prices","billing ledger","security acceptance","central protocol freeze"]
+  },
+  "api": {"health":"/api/services/health","networkStatus":"/api/network/status","releaseRegistry":"/releases/ecosystem-release-registry.json","productRelease":"/product-release.json","publicMetadata":"/public-product-metadata.json"},
+  "auth": {"publicReads":"no authentication","mutations":"not exposed by product pages","privateTokensInBrowser":false},
+  "canonicalEvents": ["website.release-registry.published.v1","website.download.admitted.v1","website.status.observed.v1"],
+  "errorCodes": ["website_owner_record_missing","website_owner_record_stale","website_download_evidence_incomplete","website_upstream_unavailable"],
+  "migration": {"contentSchemaVersion":1,"oldRouteRedirectsRequired":true,"rollbackRequired":true},
+  "dependencies": ["01-chain-core","02-wallet-auth","12-explorer","13-monitor","15-trust-center","26-data-fabric","29-integration","30-security-platform"],
+  "externalInputs": ["accepted product owner records","deployment authority","search-console ownership evidence"],
+  "releaseStates": {"implementedLocal":true,"testedLocal":true,"installedLocal":false,"integratedCentral":false,"deployedStaging":false,"deployedPublic":true,"downloadHosted":false,"productionSigned":false,"storeReleased":false}
+}

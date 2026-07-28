@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "ynx-public-product-metadata/v1",
+  "productId": "28",
+  "product": "YNX Website / SEO / Product Micro-sites",
+  "slug": "website",
+  "owner": "28-website",
+  "sourceCommit": "1e998b5a2d09ab389fe0652f739aab7d1a352eb9",
+  "canonicalRoute": "/",
+  "canonicalUrl": "https://www.ynxweb4.com/",
+  "title": "YNX Chain — Web4 Testnet ecosystem",
+  "metaDescription": "Explore YNX Testnet products, documentation, APIs, status and evidence-backed release information.",
+  "h1": "YNX Chain",
+  "features": ["Independent product directory","Evidence-gated downloads","Hosted documentation and API guides","Public status and recovery guidance","Canonical SEO and structured data"],
+  "risks": ["YNX Testnet assets have no represented monetary value.","Product availability differs and must be verified per product.","Mainnet, production signing, stores, audits and listings are not implied."],
+  "status": {"channel":"public-candidate","publicOriginReachable":true,"exactCurrentSourceVerified":false},
+  "downloads": [],
+  "supportUrl": "https://www.ynxweb4.com/support",
+  "privacyUrl": "https://www.ynxweb4.com/privacy",
+  "securityUrl": "https://www.ynxweb4.com/security",
+  "statusUrl": "https://www.ynxweb4.com/status",
+  "faq": [
+    {"question":"Is YNX Mainnet launched?","answer":"No. The documented network is YNX Testnet."},
+    {"question":"Are all products publicly available?","answer":"No. Each product route states its own evidence-backed release status."}
+  ],
+  "structuredDataSuggestion": {"types":["Organization","WebSite","SoftwareApplication","FAQPage","BreadcrumbList"]}
+}

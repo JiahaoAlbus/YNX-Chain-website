@@ -1,0 +1,12 @@
+{
+  "schemaVersion":"1.0.0",
+  "productId":"28",
+  "product":"YNX Website / SEO / Product Micro-sites",
+  "owner":"28-website",
+  "sourceCommit":"1e998b5a2d09ab389fe0652f739aab7d1a352eb9",
+  "vectors":[
+    {"id":"WEB-CP-001","flow":"Owner release -> Integration registry -> Product route","status":"testedLocal","positive":["accepted owner record renders exact status and canonical route"],"negative":["missing, stale, wrong-owner or invalid-source record never becomes public success"]},
+    {"id":"WEB-CP-002","flow":"Owner artifact -> Download admission -> Public download","status":"testedLocal","positive":["immutable URL, SHA-256, bytes, signing class, minimum OS and install evidence all required"],"negative":["local, unsigned, simulator or unhashed artifacts remain hidden"]},
+    {"id":"WEB-CP-003","flow":"Monitor status -> Website status -> Public probe","status":"inProgress","positive":["approved redacted status preserves source, version and as-of"],"negative":["HTTP 200 alone never proves product or network health"]}
+  ]
+}
