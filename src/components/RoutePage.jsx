@@ -20,11 +20,29 @@ const pages = {
   "/trading": ["Readiness", "Integration candidate, not a listing", "The public testnet verifies signed native transaction broadcast, nonce, block lookup, exact transaction history, receipts, and logs for exchange integration review. YNX Chain and YNXT are not claimed as exchange-listed; external review and approval remain required.", [["Exchange readiness", apiConfig.exchangeUrl]]],
   "/quant": ["Exchange surface", "Quant Lab remains a candidate interface", "Quant Lab is an Exchange product release surface for bounded strategy research and approval workflows. It is not a live trading system, does not control real funds, and has no public deployment or performance claim.", [["Exchange product status", "/exchange"], ["Readiness boundaries", "/readiness"]]],
   "/status": ["Network status", "Public testnet evidence and limitations", "The authoritative chain and ecosystem health endpoints are publicly reachable. Remote role heights must be compared with the primary height in the live status response; role reachability alone does not prove convergence or public BFT readiness.", [["Live chain status", `${apiConfig.apiBase}/status`], ["Explorer", apiConfig.explorerUrl], ["Readiness boundaries", "/readiness"]]],
-  "/ai": ["AI-native services", "Policy-bounded AI actions", "The public AI Gateway supports session and permission architecture, action proposal, approval, and audit flows. Provider-backed generation is not currently complete proof because upstream quota can fail.", [["AI health", "https://ai.ynxweb4.com/health"], ["Readiness overview", "/readiness"]]]
+  "/ai": ["AI-native services", "Policy-bounded AI actions", "The public AI Gateway supports session and permission architecture, action proposal, approval, and audit flows. Provider-backed generation is not currently complete proof because upstream quota can fail.", [["AI health", "https://ai.ynxweb4.com/health"], ["Readiness overview", "/readiness"]]],
+  "/manual": ["User manual", "Use YNX Testnet with clear recovery paths", "Start by confirming the network status, use only testnet YNXT, keep ynx1 as the first-party account identity, and use the EVM adapter only when an EVM-compatible wallet or tool requires 0x. If a request fails, do not repeat a state-changing action blindly: check Explorer or the transaction receipt first.", [["Connect to Testnet", "/testnet"], ["Open the documentation center", "/docs"], ["Check live status", "/status"], ["Get safe support", "/support"]]],
+  "/api": ["API reference", "Build against bounded public interfaces", "Use the REST status surface for chain and validator evidence, the EVM JSON-RPC endpoint for compatible tooling, and product-specific APIs only within their documented testnet boundaries. Treat timeouts, stale responses, and unavailable services as explicit states; never synthesize live values.", [["REST status", `${apiConfig.apiBase}/status`], ["Validator status", `${apiConfig.apiBase}/validators`], ["EVM JSON-RPC", apiConfig.evmRpc], ["Developer documentation", "/docs"]]]
 };
 
 export function RoutePage({ path }) {
-  const page = pages[path] || pages["/docs"];
+  const page = pages[path];
+  if (!page) {
+    return (
+      <main className="routePage notFoundPage">
+        <div className="routeInner">
+          <a className="backLink" href="/"><ArrowLeft size={17} /> YNX Chain</a>
+          <p className="sectionEyebrow">Page unavailable</p>
+          <h1>This route is not part of the public website.</h1>
+          <p className="routeLead">The link may be outdated or the resource may not have public release evidence. Search the current product, documentation, API, security, and support surfaces instead.</p>
+          <div className="routeLinks">
+            <a className="button primary" href="/docs">Open documentation <ArrowUpRight size={17} /></a>
+            <a className="button secondary" href="/support">Get support <ArrowUpRight size={17} /></a>
+          </div>
+        </div>
+      </main>
+    );
+  }
   const [eyebrow, title, text, links] = page;
   return (
     <main className="routePage">
