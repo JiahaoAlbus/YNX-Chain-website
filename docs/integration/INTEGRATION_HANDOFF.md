@@ -1,7 +1,7 @@
 # YNX Website Integration Handoff
 
 Owner: `28-website`  
-Source commit: `1e998b5a2d09ab389fe0652f739aab7d1a352eb9`  
+Source commit: `eaf279c9aad22059d5a832bc6455b926509d4b22`
 Branch: `codex/final-website`  
 Phase: `PUBLIC`
 
@@ -10,11 +10,13 @@ SEO and public support/status destinations. It never promotes another product
 without an accepted source-bound owner record.
 
 The current branch locally verifies the product directory, documentation,
-responsive and accessible navigation, PWA boundaries, release registry,
-download gates, sitemap, robots and IndexNow dry run. A bounded observation on
-2026-07-29 returned HTTP 200 for the production `/status` route. Network
-instability prevented an exact current-source production audit, so current-source
-public verification remains false.
+responsive and accessible navigation, PWA boundaries, release registry, a
+fail-closed snapshot of all 35 other owner branches, download gates, sitemap,
+robots and IndexNow dry run. A bounded observation on 2026-07-29 returned HTTP
+200 for the production `/status` route. Public records identify older
+documentation sources rather than this Website source, so
+exact current-source public verification remains false. See
+`docs/PRODUCTION_OBSERVATION_2026-07-29.md`.
 
 Integration must supply accepted records for all products and freeze the unique
 network/release facts. Security must accept deployment and rollback controls.

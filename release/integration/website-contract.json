@@ -4,7 +4,7 @@
   "product": "YNX Website / SEO / Product Micro-sites",
   "slug": "website",
   "owner": "28-website",
-  "sourceCommit": "1e998b5a2d09ab389fe0652f739aab7d1a352eb9",
+  "sourceCommit": "eaf279c9aad22059d5a832bc6455b926509d4b22",
   "branch": "codex/final-website",
   "authority": {
     "owns": ["public routes and navigation","website publication state","download admission","SEO metadata and structured data","public support, security and status links"],

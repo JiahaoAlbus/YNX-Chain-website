@@ -6,7 +6,7 @@
   "owner": "28-website",
   "version": "1.0.0-public-candidate",
   "branch": "codex/final-website",
-  "sourceCommit": "1e998b5a2d09ab389fe0652f739aab7d1a352eb9",
+  "sourceCommit": "eaf279c9aad22059d5a832bc6455b926509d4b22",
   "phase": "PUBLIC",
   "releaseStates": {
     "implementedLocal": true,
@@ -24,12 +24,16 @@
     "observedRoute": "/status",
     "observedHttpStatus": 200,
     "exactCurrentSourceVerified": false,
-    "observationDate": "2026-07-29"
+    "observationDate": "2026-07-29",
+    "remoteProductReleaseSourceCommit": "c8c4ff7263e50afc4c731dac8157aa85e02232dc",
+    "remotePublicMetadataSourceCommit": "2e3c893c7c97e7bc713af4e9a74438ffd125289f",
+    "currentSourceMismatchVerified": true
   },
   "knownGaps": [
-    "all 35 owner product records are not centrally accepted",
+    "all 35 owner branches are represented locally, but their records are not centrally accepted",
     "exact current-source production identity is not verified",
     "hosted product installers remain unavailable",
-    "search-console and independent index coverage evidence are unavailable"
+    "search-console, Bing, IndexNow submission receipt and independent index coverage evidence are unavailable",
+    "production monitoring, incident, rollback, backup and accessibility regression receipts are unavailable"
   ]
 }
