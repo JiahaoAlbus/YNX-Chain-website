@@ -13,6 +13,7 @@ const required = [
   "public/ynx-icon-maskable-512.png",
   "public/ynx-favicon-48.png",
   "public/releases/ecosystem-release-registry.json",
+  "public/releases/owner-record-index.json",
   "public/da45868fe3e0818f27f187b21a56ccb5.txt",
   "src/main.jsx",
   "src/styles.css",
@@ -137,6 +138,7 @@ const indexHtml = fs.readFileSync("index.html", "utf8");
 const serviceWorker = fs.readFileSync("public/sw.js", "utf8");
 const manifest = JSON.parse(fs.readFileSync("public/manifest.webmanifest", "utf8"));
 const releaseRegistry = JSON.parse(fs.readFileSync("public/releases/ecosystem-release-registry.json", "utf8"));
+const ownerRecordIndex = JSON.parse(fs.readFileSync("public/releases/owner-record-index.json", "utf8"));
 const header = fs.readFileSync("src/components/SiteHeader.jsx", "utf8");
 const commandPalette = fs.readFileSync("src/components/CommandPalette.jsx", "utf8");
 const routePage = fs.readFileSync("src/components/RoutePage.jsx", "utf8");
@@ -158,6 +160,25 @@ const viteConfig = fs.readFileSync("vite.config.js", "utf8");
 const signerSource = JSON.parse(fs.readFileSync("src/lib/ynx-signer/SOURCE.json", "utf8"));
 if (releaseRegistry.products.some((product) => Object.hasOwn(product, "branch"))) {
   console.error("public release registry exposes internal branch names");
+  process.exit(1);
+}
+const ownerProductIds = ownerRecordIndex.records?.map((record) => record.productId) || [];
+if (
+  ownerRecordIndex.owner !== "28-website" ||
+  ownerRecordIndex.rules?.observedBranchIsNotCentralAcceptance !== true ||
+  ownerRecordIndex.rules?.missingPublicEvidenceRemainsNull !== true ||
+  ownerProductIds.length !== 35 ||
+  new Set(ownerProductIds).size !== 35 ||
+  ownerProductIds.includes("28") ||
+  ownerRecordIndex.records.some((record) =>
+    !/^\d{2}$/.test(record.productId) ||
+    !/^[0-9a-f]{40}$/.test(record.sourceCommit) ||
+    record.publicUrl !== null ||
+    typeof record.publicVerified !== "boolean" ||
+    typeof record.downloadHosted !== "boolean"
+  )
+) {
+  console.error("35-product owner record index is missing, duplicated, unbound, or overclaims public evidence");
   process.exit(1);
 }
 if (!styles.includes("--blue: #002fa7") || !styles.includes(".heroStage.isPulling")) {

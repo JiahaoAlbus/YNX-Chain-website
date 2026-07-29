@@ -10,7 +10,7 @@
     "owns": ["public routes and navigation","website publication state","download admission","SEO metadata and structured data","public support, security and status links"],
     "doesNotOwn": ["product implementation or release state","network identity","Wallet identity","chain finality","prices","billing ledger","security acceptance","central protocol freeze"]
   },
-  "api": {"health":"/api/services/health","networkStatus":"/api/network/status","releaseRegistry":"/releases/ecosystem-release-registry.json","productRelease":"/product-release.json","publicMetadata":"/public-product-metadata.json"},
+  "api": {"health":"/api/services/health","networkStatus":"/api/network/status","releaseRegistry":"/releases/ecosystem-release-registry.json","ownerRecordIndex":"/releases/owner-record-index.json","productRelease":"/product-release.json","publicMetadata":"/public-product-metadata.json"},
   "auth": {"publicReads":"no authentication","mutations":"not exposed by product pages","privateTokensInBrowser":false},
   "canonicalEvents": ["website.release-registry.published.v1","website.download.admitted.v1","website.status.observed.v1"],
   "errorCodes": ["website_owner_record_missing","website_owner_record_stale","website_download_evidence_incomplete","website_upstream_unavailable"],
