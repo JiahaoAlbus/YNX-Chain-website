@@ -1,0 +1,45 @@
+{
+  "files": [
+    {
+      "bytes": 258,
+      "file": "exchange-status.json",
+      "sha256": "0b2f5bae3fe4a0c743839758e59a107161c8bd7bfea438e7913be0c1567c539a"
+    },
+    {
+      "bytes": 1063,
+      "file": "product-release.json",
+      "sha256": "635fbf9f946601c5d7285282bd633a70edee2c278fad5fe4e640cf283ff1ab8e"
+    },
+    {
+      "bytes": 1491,
+      "file": "public-product-metadata.json",
+      "sha256": "37c3f46f5b0a8e1d417e01c1c8a8cbe1021bc21da882a608130646d8fefe74a8"
+    },
+    {
+      "bytes": 2256,
+      "file": "rpc-capabilities.json",
+      "sha256": "fe27ece7e8aa36bf5730dc3f42b412205616942680a705d267258889750ae076"
+    },
+    {
+      "bytes": 3859,
+      "file": "signed-transaction-vectors.json",
+      "sha256": "a03fd32abbff259332646204029d63b265809168b32ea1446ba8f427644f06e6"
+    },
+    {
+      "bytes": 4303,
+      "file": "ynx-testnet-exchange-profile.json",
+      "sha256": "5473a9cda3f58cee0c7f2cc97e5af89e96a748cc19df6fcb459818f4f4745678"
+    }
+  ],
+  "gitCommit": "fc2276e1ce4c8ac6001ebb9888fd4835111f2f9e",
+  "schema": "ynx-exchange-candidate/v1",
+  "status": {
+    "candidatePublicRuntimeDeployed": true,
+    "exchangeListed": false,
+    "exchangePartnership": false,
+    "exchangeSubmitted": false,
+    "independentExchangeVerified": false,
+    "mainnetIncluded": false,
+    "truthfulStatus": "testnet-readiness-candidate-only"
+  }
+}

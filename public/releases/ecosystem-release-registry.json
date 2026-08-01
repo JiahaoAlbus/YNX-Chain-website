@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "auditedAt": "2026-07-18",
+  "auditedAt": "2026-07-28",
   "scope": "YNX ecosystem central acceptance snapshot",
   "rules": {
     "localArtifactIsDownload": false,
@@ -14,7 +14,7 @@
     { "key": "pay", "name": "YNX Pay", "route": "/pay", "state": "candidate", "commit": "ffb528b4971b", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
     { "key": "merchantConsole", "name": "Merchant Console", "route": "/merchant", "state": "candidate", "commit": "ffb528b4971b", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
     { "key": "card", "name": "YNX Card", "route": "/card", "state": "candidate-incomplete", "commit": "ffb528b4971b", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
-    { "key": "exchange", "name": "YNX Exchange", "route": "/exchange", "state": "candidate", "commit": "5d95046a92e0", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
+    { "key": "exchange", "name": "YNX Exchange", "route": "/exchange", "state": "public-testnet-candidate", "commit": "fc2276e1ce4c", "centralAccepted": true, "publicWeb": "https://www.ynxweb4.com/exchange", "downloadHosted": false, "productRelease": "/releases/exchange/fc2276e1ce4c/product-release.json", "publicProductMetadata": "/releases/exchange/fc2276e1ce4c/public-product-metadata.json" },
     { "key": "shop", "name": "YNX Shop", "route": "/shop", "state": "candidate-incomplete", "commit": "ef0456a6111e", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
     { "key": "sellerConsole", "name": "Seller Console", "route": "/seller", "state": "candidate-incomplete", "commit": "ef0456a6111e", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
     { "key": "developer", "name": "YNX Developer", "route": "/developer", "state": "candidate", "commit": "7c4d83f77d07", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },

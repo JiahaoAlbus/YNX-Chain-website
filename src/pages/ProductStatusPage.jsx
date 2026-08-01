@@ -30,6 +30,7 @@ export function ProductStatusPage({ product, article, artifact }) {
   const status = STATUS_CONFIG[product.status] || STATUS_CONFIG[PRODUCT_STATUS.NOT_READY];
   const publicEntry = product.publicEntry;
   const entryIsServiceHealth = publicEntry?.href?.includes("/health");
+  const centralAccepted = product.release?.centralAccepted === true;
 
   return (
     <main className="productStatusPage">
@@ -49,7 +50,7 @@ export function ProductStatusPage({ product, article, artifact }) {
             <div className="sectionHeader compact"><div><p className="sectionEyebrow">Current evidence</p><h2>What this status proves</h2></div></div>
             <ul className="productEvidenceList">
               <EvidenceState label="Candidate code" value={product.status !== PRODUCT_STATUS.NOT_READY} detail={`Audited source commit: ${product.release?.commit || "not registered"}`} />
-              <EvidenceState label="Central acceptance" value={false} detail="No committed product-release.json was present during the central audit." />
+              <EvidenceState label="Central acceptance" value={centralAccepted} detail={centralAccepted ? `Commit-bound ${product.release.productRelease?.release || "candidate"} product-release.json is published by this website.` : "No committed product-release.json was present during the central audit."} />
               <EvidenceState label="Public product surface" value={publicWeb} detail={publicWeb ? "A public web surface was remotely reachable during this audit." : "A health endpoint or local build does not prove a public product UI."} />
               <EvidenceState label="Hosted installer" value={hasHostedDownload} detail={hasHostedDownload ? "Immutable hosted artifact evidence is registered." : "No immutable artifact URL, hash, size, and install proof are registered."} />
               <EvidenceState label="Production signing / store release" value={false} detail="No owner production signature or app-store acceptance is claimed." />
@@ -71,6 +72,7 @@ export function ProductStatusPage({ product, article, artifact }) {
           </div>
           <p>{product.release?.statusNote || "No product release record has been accepted."}</p>
           <a className="button primary" href={product.docs.href} rel={product.docs.external ? "noopener" : undefined}>Read product docs <ArrowUpRight size={16} /></a>
+          {product.release?.productRelease?.href ? <a className="button secondary" href={product.release.productRelease.href}>Open release evidence <ArrowUpRight size={16} /></a> : null}
           {publicEntry?.href && (publicWeb || entryIsServiceHealth) ? <a className="button secondary" href={publicEntry.href} rel={publicEntry.external ? "noopener" : undefined}>{entryIsServiceHealth ? "Check service health" : publicEntry.label} <ArrowUpRight size={16} /></a> : null}
           <a className="textLink" href="/download"><Download size={16} /> Download center</a>
         </aside>
