@@ -324,7 +324,7 @@ for (const requiredText of ['"/manual"', '"/api"', "Page unavailable", "Get supp
     process.exit(1);
   }
 }
-for (const requiredText of ["From zero to a verified testnet action", "Recovery", "A timeout is not proof", "Security boundary"]) {
+for (const requiredText of ["From zero to a verified testnet action", "Recovery", "A timeout is not proof", "Security boundary", "Node join manual", "Validator manual", "Mining manual", "no active automatic one-YNXT-per-block issuance", "external submission is disabled", "historical block cannot receive a new transaction"]) {
   if (!manualPage.includes(requiredText)) {
     console.error(`user manual capability missing: ${requiredText}`);
     process.exit(1);
@@ -342,9 +342,15 @@ for (const requiredText of ['[data-theme="dark"]', '[dir="rtl"]', ":focus-visibl
     process.exit(1);
   }
 }
-for (const requiredText of ["Public web", "Candidate", "Candidate incomplete", "Not ready", "evidence-backed status"]) {
+for (const requiredText of ["Public web", "Candidate", "Candidate incomplete", "Not ready", "evidence-backed status", "Money & commerce", "Identity & community", "Build & operate", "AI, media & data", "Trust & infrastructure", "Find a product, workflow, or capability"]) {
   if (!appsPage.includes(requiredText)) {
     console.error(`application truth status missing: ${requiredText}`);
+    process.exit(1);
+  }
+}
+for (const requiredText of ["Transactions & blocks", "Node operations", "Validator candidate", "Mining truth", "Bridge evidence", "Historical block mutation", "Finalized locally; no external submission"]) {
+  if (!docsPage.includes(requiredText)) {
+    console.error(`detailed documentation capability missing: ${requiredText}`);
     process.exit(1);
   }
 }

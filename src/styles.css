@@ -266,7 +266,29 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .statusLegend .local, .appState.local { color: #6d4c00; border-color: rgba(165,106,0,.26); background: #fff8e8; }
 .statusLegend .planned, .appState.planned { color: var(--muted); background: var(--soft); }
 .statusLegend .not-ready, .appState.not-ready { color: #734a0b; border-color: rgba(115,74,11,.28); background: #fff5e1; }
+.appDiscovery { margin: 0 0 68px; padding: 22px; border: 1px solid var(--line); border-top: 2px solid var(--blue); border-radius: 10px; background: var(--soft); }
+.appSearch { height: 54px; display: grid; grid-template-columns: 48px minmax(0,1fr); align-items: center; border: 1px solid var(--line); border-radius: 8px; background: white; }
+.appSearch:focus-within { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(0,47,167,.1); }
+.appSearch svg { width: 18px; justify-self: center; color: var(--blue); }
+.appSearch input { min-width: 0; height: 52px; padding: 0 14px 0 0; border: 0; outline: 0; color: var(--ink); background: transparent; font: inherit; }
+.appFilterRow, .appStatusFilters { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.appFilterRow { margin-top: 16px; }
+.appFilterRow button, .appStatusFilters button { min-height: 38px; padding: 0 12px; border: 1px solid var(--line); border-radius: 7px; color: var(--muted); background: white; font: inherit; font-size: 12px; font-weight: 750; cursor: pointer; }
+.appFilterRow button span { margin-left: 6px; color: var(--blue); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+.appFilterRow button:hover, .appStatusFilters button:hover, .appFilterRow button.active, .appStatusFilters button.active { border-color: var(--blue); color: white; background: var(--blue); }
+.appFilterRow button.active span { color: white; }
+.appStatusFilters { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--line); }
+.appStatusFilters button { min-height: 32px; background: transparent; }
+.appStatusFilters p { margin: 0 0 0 auto; color: var(--muted); font-size: 12px; }
+.appStatusFilters p strong { color: var(--blue); }
+.appGroups { display: grid; gap: 84px; }
+.appGroup { scroll-margin-top: 92px; }
+.appGroupHeader { display: grid; grid-template-columns: minmax(220px,.8fr) minmax(280px,1.2fr) auto; gap: 36px; align-items: end; padding: 0 4px 22px; border-bottom: 1px solid var(--blue); }
+.appGroupHeader h2 { margin: 4px 0 0; font-size: 32px; }
+.appGroupHeader > p { max-width: 560px; margin: 0; color: var(--muted); line-height: 1.55; }
+.appGroupHeader > strong { color: var(--blue); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; white-space: nowrap; }
 .appDirectory { display: grid; grid-template-columns: 1fr; border-top: 1px solid var(--blue); border-left: 1px solid var(--line); }
+.appGroup .appDirectory { border-top: 0; }
 .appItem { min-height: 210px; display: grid; grid-template-columns: 52px minmax(240px, 1.1fr) minmax(150px, 0.9fr) minmax(240px, 1.2fr) minmax(190px, 0.8fr) 26px; gap: 18px; align-items: start; padding: 24px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); color: var(--ink); text-decoration: none; transition: background .22s ease, transform .22s ease, box-shadow .22s ease; }
 .appItem:hover { position: relative; z-index: 1; background: #f7f9ff; transform: translateY(-3px); box-shadow: 0 16px 34px rgba(0,47,167,.09); }
 .appIcon { width: 52px; height: 52px; display: inline-flex; align-items: center; justify-content: center; border-radius: 8px; color: white; background: var(--blue); }
@@ -298,6 +320,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .evidenceBoundary { margin-top: 38px; padding: 24px 0; display: grid; grid-template-columns: 32px minmax(0,1fr); gap: 16px; border-top: 1px solid var(--blue); border-bottom: 1px solid var(--line); }
 .evidenceBoundary svg { color: var(--blue); }
 .evidenceBoundary p { margin: 6px 0 0; max-width: 850px; color: var(--muted); line-height: 1.55; }
+.appsNoResults { min-height: 320px; display: grid; place-items: center; align-content: center; gap: 10px; border-top: 1px solid var(--blue); text-align: center; }
+.appsNoResults svg { color: var(--blue); }
+.appsNoResults h2, .appsNoResults p { margin: 0; }
+.appsNoResults p { color: var(--muted); }
 .downloadPage { width: min(1240px, calc(100% - 48px)); margin: 0 auto; padding: 84px 0 110px; }
 .downloadDirectory { width: 100%; margin: 0; }
 .downloadDirectory { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 0; border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
@@ -486,6 +512,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .guideHero > p:not(.sectionEyebrow) { max-width: 780px; margin: 0; color: var(--muted); font-size: 19px; line-height: 1.65; }
 .guideActions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
 .guideActions svg { width: 17px; }
+.manualToc { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); margin-top: 42px; border-top: 1px solid var(--blue); border-left: 1px solid var(--line); }
+.manualToc a { min-height: 60px; padding: 13px; display: flex; align-items: center; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); color: var(--ink); text-decoration: none; font-size: 12px; line-height: 1.35; }
+.manualToc a:hover { color: white; background: var(--blue); }
 .guideSectionHeader { max-width: 740px; margin-bottom: 32px; }
 .guideSectionHeader h2 { margin: 0; font-size: 38px; line-height: 1.1; }
 .guideSteps { padding: 70px 0; border-top: 1px solid var(--blue); }
@@ -497,6 +526,25 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .guideSteps p { max-width: 650px; margin: 0; color: var(--muted); line-height: 1.58; }
 .guideSteps li > a { display: inline-flex; align-items: center; gap: 7px; color: var(--blue); font-size: 13px; font-weight: 750; text-decoration: none; }
 .guideSteps li > a svg { width: 15px; }
+.manualChapters { border-top: 1px solid var(--blue); }
+.manualChapter { scroll-margin-top: 90px; padding: 82px 0; border-bottom: 1px solid var(--line); }
+.manualChapter > header { display: grid; grid-template-columns: 58px minmax(0,1fr); gap: 24px; max-width: 900px; }
+.manualChapterIcon { width: 54px; height: 54px; display: grid; place-items: center; border-radius: 8px; color: white; background: var(--blue); }
+.manualChapterIcon svg { width: 24px; }
+.manualChapter h2 { margin: 2px 0 14px; font-size: 36px; line-height: 1.1; }
+.manualChapter header p:not(.sectionEyebrow) { max-width: 800px; margin: 0; color: var(--muted); line-height: 1.65; }
+.manualFacts { margin: 34px 0 0 82px; border-top: 1px solid var(--blue); }
+.manualFacts div { min-height: 58px; display: grid; grid-template-columns: 220px minmax(0,1fr); gap: 22px; align-items: center; border-bottom: 1px solid var(--line); }
+.manualFacts dt { color: var(--muted); font-size: 11px; font-weight: 800; text-transform: uppercase; }
+.manualFacts dd { margin: 0; line-height: 1.55; }
+.manualChecklist { margin: 34px 0 0 82px; padding: 0; list-style: none; border-top: 1px solid var(--line); }
+.manualChecklist li { min-height: 64px; display: grid; grid-template-columns: 42px minmax(0,1fr); gap: 14px; align-items: center; border-bottom: 1px solid var(--line); }
+.manualChecklist span { color: var(--blue); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; }
+.manualChecklist p { margin: 0; line-height: 1.6; }
+.manualCode { margin: 28px 0 0 82px; padding: 24px; overflow-x: auto; border-radius: 8px; color: #e9efff; background: #101629; font-size: 12px; line-height: 1.75; }
+.manualWarning { margin: 24px 0 0 82px; padding: 18px; display: grid; grid-template-columns: 24px minmax(0,1fr); gap: 12px; border: 1px solid rgba(185,61,45,.26); border-left: 3px solid var(--danger); border-radius: 8px; background: #fff6f4; }
+.manualWarning svg { color: var(--danger); }
+.manualWarning p { margin: 0; line-height: 1.55; }
 .recoverySection { display: grid; grid-template-columns: .72fr 1.28fr; gap: 70px; padding: 84px 0; border-top: 1px solid var(--blue); }
 .recoveryIntro > svg { width: 46px; height: 46px; margin-bottom: 28px; color: var(--blue); }
 .recoveryIntro h2 { margin: 0 0 18px; font-size: 38px; line-height: 1.08; }
@@ -583,7 +631,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
 [data-theme="dark"] .endpoint button,
 [data-theme="dark"] .addressInputRow,
 [data-theme="dark"] .addressOutput button,
-[data-theme="dark"] .scenePlane { color: var(--ink); background: var(--surface-raised); }
+[data-theme="dark"] .scenePlane,
+[data-theme="dark"] .appSearch,
+[data-theme="dark"] .appFilterRow button { color: var(--ink); background: var(--surface-raised); }
 [data-theme="dark"] .networkBand,
 [data-theme="dark"] .squareEmpty,
 [data-theme="dark"] .docsSearch,
@@ -611,6 +661,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
 [data-theme="dark"] .siteFooter { color: white; background: #173ea8; }
 [data-theme="dark"] .metric.emphasis { color: white; background: #315edb; }
 [data-theme="dark"] .codeBlock { background: #050914; }
+[data-theme="dark"] .manualCode { background: #050914; }
+[data-theme="dark"] .manualWarning { background: #2b1718; }
 [data-theme="dark"] .squareLoading span { background: linear-gradient(100deg, var(--soft) 20%, #253149 38%, var(--soft) 56%); background-size: 220% 100%; }
 [dir="rtl"] .scrollProgress { transform-origin: right center; }
 [dir="rtl"] .commandResults > button { text-align: right; }
@@ -636,6 +688,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
   .addressSection { grid-template-columns: 1fr; gap: 42px; }
   .claimBoundary { grid-column: 1 / -1; border-left: 0; border-top: 1px solid rgba(0,47,167,.25); padding: 28px 0 0; }
   .docsLayout { grid-template-columns: 170px minmax(0,1fr); gap: 36px; }
+  .appGroupHeader { grid-template-columns: minmax(220px,.8fr) minmax(260px,1.2fr); }
+  .appGroupHeader > strong { grid-column: 1 / -1; }
   .appItem { grid-template-columns: 52px minmax(0,1fr) minmax(220px,.8fr); }
   .appMeta { grid-column: 2 / -1; }
   .productStatusLayout { grid-template-columns: 1fr; gap: 46px; }
@@ -643,6 +697,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
   .recoverySection { grid-template-columns: 1fr; gap: 34px; }
   .supportCallout { grid-template-columns: 58px 1fr; }
   .supportCallout > div:last-child { grid-column: 2; }
+  .manualToc { grid-template-columns: repeat(2,minmax(0,1fr)); }
   .endpointReferenceHead, .endpointReferenceRow { grid-template-columns: 120px 62px minmax(220px,1fr); }
   .endpointReferenceHead span:last-child, .endpointReferenceRow p { grid-column: 3; }
   .apiContract { grid-template-columns: 58px 1fr; }
@@ -709,6 +764,13 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
   .productPageHeader h1, .squareHeader h1, .docsHeader h1 { font-size: 42px; }
   .productPageHeader > p:not(.sectionEyebrow), .squareHeader > div > p:not(.sectionEyebrow), .docsHeader > p:not(.sectionEyebrow) { font-size: 16px; }
   .appDirectory { grid-template-columns: 1fr; }
+  .appDiscovery { margin-bottom: 48px; padding: 14px; }
+  .appFilterRow { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; }
+  .appFilterRow button { flex: 0 0 auto; }
+  .appStatusFilters p { width: 100%; margin: 8px 0 0; }
+  .appGroups { gap: 62px; }
+  .appGroupHeader { grid-template-columns: 1fr; gap: 12px; }
+  .appGroupHeader > strong { grid-column: 1; }
   .appItem { grid-template-columns: 46px minmax(0,1fr); gap: 14px; }
   .appLinks { border-top: 1px solid var(--line); padding-top: 14px; }
   .appSectionHeader { margin-bottom: 6px; }
@@ -757,6 +819,13 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
   .guideSteps { padding: 54px 0; }
   .guideSteps li { grid-template-columns: 34px 42px minmax(0,1fr); gap: 14px; }
   .guideSteps li > a { grid-column: 3; }
+  .manualToc { grid-template-columns: 1fr; }
+  .manualChapter { padding: 58px 0; }
+  .manualChapter > header { grid-template-columns: 46px minmax(0,1fr); gap: 16px; }
+  .manualChapterIcon { width: 46px; height: 46px; }
+  .manualChapter h2 { font-size: 30px; }
+  .manualFacts, .manualChecklist, .manualCode, .manualWarning { margin-left: 0; }
+  .manualFacts div { grid-template-columns: 1fr; gap: 6px; padding: 14px 0; }
   .recoverySection { padding: 58px 0; }
   .recoveryList article { grid-template-columns: 1fr; gap: 8px; }
   .supportCallout { grid-template-columns: 1fr; padding: 24px; }

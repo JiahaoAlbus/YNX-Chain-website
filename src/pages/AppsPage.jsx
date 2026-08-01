@@ -1,8 +1,48 @@
-import React from "react";
-import { ArrowUpRight, ShieldCheck } from "lucide-react";
+import React, { useMemo, useState } from "react";
+import { ArrowUpRight, Search, ShieldCheck } from "lucide-react";
 import { getCatalog, STATUS_CONFIG, DOWNLOAD_LABELS, PLATFORM_STATUS, PRODUCT_STATUS } from "../lib/ecosystemCatalog.js";
 
 const platformOrder = ["web", "android", "ios", "macos", "windows"];
+
+const categories = [
+  {
+    id: "commerce",
+    label: "Money & commerce",
+    description: "Payments, markets, merchant operations, finance, and exchange workflows.",
+    keys: ["pay", "merchantConsole", "card", "exchange", "shop", "sellerConsole", "finance", "dex"],
+  },
+  {
+    id: "community",
+    label: "Identity & community",
+    description: "Account custody, communication, identity-aware collaboration, and scheduling.",
+    keys: ["wallet", "social", "mail", "calendar"],
+  },
+  {
+    id: "builders",
+    label: "Build & operate",
+    description: "Developer, observability, chain-data, documentation, browser, and discovery tools.",
+    keys: ["developer", "explorer", "monitor", "docs", "browser", "search"],
+  },
+  {
+    id: "media",
+    label: "AI, media & data",
+    description: "AI-assisted workflows, content, storage, playback, and creator surfaces.",
+    keys: ["ai", "music", "video", "creatorStudio", "cloud"],
+  },
+  {
+    id: "trust",
+    label: "Trust & infrastructure",
+    description: "Evidence, governance, appeals, resource quotes, and settlement boundaries.",
+    keys: ["trust", "resource"],
+  },
+];
+
+const statusFilters = [
+  ["all", "All evidence states"],
+  [PRODUCT_STATUS.LIVE, "Public web"],
+  [PRODUCT_STATUS.LOCAL, "Candidate"],
+  [PRODUCT_STATUS.PLANNED, "Candidate incomplete"],
+];
 
 function renderProductLink({ label, href, external }) {
   if (!href) {
@@ -75,7 +115,25 @@ function renderRelease(release) {
 }
 
 export function AppsPage() {
-  const catalog = getCatalog();
+  const catalog = useMemo(() => getCatalog(), []);
+  const [query, setQuery] = useState("");
+  const [category, setCategory] = useState("all");
+  const [status, setStatus] = useState("all");
+  const categoryByProduct = useMemo(() => new Map(categories.flatMap((group) => group.keys.map((key) => [key, group.id]))), []);
+  const visibleGroups = useMemo(() => {
+    const needle = query.trim().toLowerCase();
+    return categories.map((group) => ({
+      ...group,
+      products: catalog.filter((product) => {
+        if (category !== "all" && group.id !== category) return false;
+        if (status !== "all" && product.status !== status) return false;
+        if (!needle) return categoryByProduct.get(product.key) === group.id;
+        const haystack = `${product.name} ${product.detail} ${product.metrics.flat().join(" ")}`.toLowerCase();
+        return categoryByProduct.get(product.key) === group.id && haystack.includes(needle);
+      }),
+    })).filter((group) => group.products.length > 0);
+  }, [catalog, category, categoryByProduct, query, status]);
+  const visibleCount = visibleGroups.reduce((total, group) => total + group.products.length, 0);
 
   return (
     <main className="appsPage">
@@ -92,8 +150,31 @@ export function AppsPage() {
         </div>
       </header>
 
-      <section className="appDirectory" aria-label="YNX DApp directory">
-        {catalog.map((product) => {
+      <section className="appDiscovery" aria-label="Filter YNX DApps">
+        <label className="appSearch">
+          <Search aria-hidden="true" />
+          <span className="visuallyHidden">Search DApps</span>
+          <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Find a product, workflow, or capability" />
+        </label>
+        <div className="appFilterRow" aria-label="DApp categories">
+          <button className={category === "all" ? "active" : ""} onClick={() => setCategory("all")}>All categories <span>{catalog.length}</span></button>
+          {categories.map((group) => <button key={group.id} className={category === group.id ? "active" : ""} onClick={() => setCategory(group.id)}>{group.label} <span>{group.keys.length}</span></button>)}
+        </div>
+        <div className="appStatusFilters" aria-label="Evidence status">
+          {statusFilters.map(([value, label]) => <button key={value} className={status === value ? "active" : ""} onClick={() => setStatus(value)}>{label}</button>)}
+          <p role="status">Showing <strong>{visibleCount}</strong> of {catalog.length} products</p>
+        </div>
+      </section>
+
+      <div className="appGroups">
+        {visibleGroups.map((group) => <section className="appGroup" key={group.id} aria-labelledby={`dapp-${group.id}`}>
+          <header className="appGroupHeader">
+            <div><p className="sectionEyebrow">DApp category</p><h2 id={`dapp-${group.id}`}>{group.label}</h2></div>
+            <p>{group.description}</p>
+            <strong>{group.products.length} product{group.products.length === 1 ? "" : "s"}</strong>
+          </header>
+          <div className="appDirectory">
+          {group.products.map((product) => {
           const statusLabel = STATUS_CONFIG[product.status]?.label || product.status;
           const statusTone = STATUS_CONFIG[product.status]?.tone || product.status;
 
@@ -127,8 +208,11 @@ export function AppsPage() {
 
             </article>
           );
-        })}
-      </section>
+          })}
+          </div>
+        </section>)}
+        {!visibleCount ? <section className="appsNoResults"><Search /><h2>No matching DApps</h2><p>Clear a filter or search by product name, workflow, evidence, or capability.</p></section> : null}
+      </div>
 
       <aside className="evidenceBoundary">
         <ShieldCheck />
