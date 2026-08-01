@@ -21,7 +21,7 @@ import { ProductStatusPage } from "./pages/ProductStatusPage.jsx";
 import { SquarePage } from "./pages/SquarePage.jsx";
 import { ManualPage } from "./pages/ManualPage.jsx";
 import { ApiPage } from "./pages/ApiPage.jsx";
-import { getProductByRoute } from "./lib/ecosystemCatalog.js";
+import { getLegacyDAppRedirect, getProductByRoute } from "./lib/ecosystemCatalog.js";
 import docsAuthority from "virtual:ynx-docs-authority";
 import "./styles.css";
 
@@ -88,17 +88,21 @@ function App() {
   }, []);
 
   if (route !== "/") {
+    const legacyTarget = getLegacyRouteTarget(route);
+    if (legacyTarget) {
+      return <LegacyRouteRedirect target={legacyTarget} />;
+    }
     let page = <RoutePage path={route} />;
     const product = getProductByRoute(route);
     const authorityArticle = docsAuthority.articles.find((article) => article.route === route);
     if (product) page = <ProductStatusPage product={product} article={authorityArticle} artifact={docsAuthority.artifact} />;
     else if (authorityArticle) page = <AuthorityArticlePage article={authorityArticle} artifact={docsAuthority.artifact} />;
-    if (route === "/download") page = <DownloadPage />;
-    if (route === "/apps") page = <AppsPage />;
+    if (route === "/dapp/download") page = <DownloadPage />;
+    if (route === "/dapp") page = <AppsPage />;
     if (route === "/docs") page = <DocsPage />;
     if (route === "/manual") page = <ManualPage />;
     if (route === "/api") page = <ApiPage />;
-    if (route === "/square" || route.startsWith("/square/")) page = <SquarePage path={route} />;
+    if (route === "/dapp/square" || route.startsWith("/dapp/square/")) page = <SquarePage path={route} />;
     return <><SiteHeader scrollProgress={scrollProgress} /><div id="main-content">{page}</div><SiteFooter /></>;
   }
 
@@ -157,10 +161,10 @@ function App() {
           <ProductPanel icon={<Layers3 />} title="L1 Runtime" text="Persistent chain state, RPC, EVM RPC, transactions, receipts, logs, balances, and four-role replication." status="live" href={`${apiConfig.apiBase}/status`} />
           <ProductPanel icon={<Coins />} title="YNXT Economy" text="Native gas and resource asset with no hidden direct-freeze hook in the current runtime." status="live" href="/testnet" />
           <ProductPanel icon={<Search />} title="Indexer + Explorer" text="Live blocks, transactions, accounts, validators, search, SSE updates, and network evidence." status="live" href={apiConfig.explorerUrl} />
-          <ProductPanel icon={<Bot />} title="AI Gateway" text="Session and permission architecture with policy-bounded action proposal, approval, and audit." status={serviceState("ai")} href="/ai" />
-          <ProductPanel icon={<CircleDollarSign />} title="Pay API" text="Merchant-bound intents, invoices, idempotency, webhook signing, refunds, and event records." status={serviceState("pay")} href="https://pay.ynxweb4.com/health" />
-          <ProductPanel icon={<ShieldCheck />} title="Trust + Chain Law" text="Evidence-bound tracing, advisory labels, request validity, appeals, corrections, and transparency." status={serviceState("trust")} href="https://trust.ynxweb4.com/health" />
-          <ProductPanel icon={<Gauge />} title="Resource Market" text="Policy-bound quotes, delegation, rental settlement, provider income, and analytics." status={serviceState("resource")} href="https://resource.ynxweb4.com/health" />
+          <ProductPanel icon={<Bot />} title="AI Gateway" text="Session and permission architecture with policy-bounded action proposal, approval, and audit." status={serviceState("ai")} href="/dapp/ai" />
+          <ProductPanel icon={<CircleDollarSign />} title="Pay API" text="Merchant-bound intents, invoices, idempotency, webhook signing, refunds, and event records." status={serviceState("pay")} href="/dapp/pay" />
+          <ProductPanel icon={<ShieldCheck />} title="Trust + Chain Law" text="Evidence-bound tracing, advisory labels, request validity, appeals, corrections, and transparency." status={serviceState("trust")} href="/dapp/trust" />
+          <ProductPanel icon={<Gauge />} title="Resource Market" text="Policy-bound quotes, delegation, rental settlement, provider income, and analytics." status={serviceState("resource")} href="/dapp/resource" />
           <ProductPanel icon={<Braces />} title="Developer SDKs" text="Dependency-free JavaScript and Python clients verified against the live REST and EVM endpoints." status="live" href="/docs" />
           <ProductPanel icon={<WalletCards />} title="YNX-native Identity" text="ynx1 is the default account identity across first-party YNX surfaces. The equivalent 0x value is confined to the EVM compatibility adapter." status="live" href="/#address" />
           <ProductPanel icon={<Landmark />} title="Exchange Integration Candidate" text="Public-testnet signed transaction broadcast, nonce, block, history, receipt, and log flows are verified. No exchange listing is claimed." status="live" href={apiConfig.exchangeUrl} />
@@ -216,6 +220,32 @@ function Endpoint({ label, value }) {
   };
   const copyLabel = copyState === "copied" ? "Copied" : copyState === "failed" ? "Copy failed" : `Copy ${label}`;
   return <div className="endpoint"><span>{label}</span><code>{value}</code><button onClick={copy} aria-label={copyLabel} title={copyLabel}>{copyState === "copied" ? <CheckCircle2 size={17} /> : <Code2 size={17} />}</button></div>;
+}
+
+function getLegacyRouteTarget(path) {
+  if (path === "/apps") return "/dapp";
+  if (path === "/download") return "/dapp/download";
+  if (path === "/square") return "/dapp/square";
+  if (path.startsWith("/square/")) return `/dapp/square/${path.slice("/square/".length)}`;
+  if (path === "/quant") return "/dapp/quant";
+  return getLegacyDAppRedirect(path);
+}
+
+function LegacyRouteRedirect({ target }) {
+  const destination = `${target}${window.location.search}${window.location.hash}`;
+  useEffect(() => {
+    window.location.replace(destination);
+  }, [destination]);
+  return (
+    <main id="main-content" className="routePage">
+      <div className="routeInner">
+        <p className="sectionEyebrow">DApp route moved</p>
+        <h1>This software now lives under /dapp.</h1>
+        <p className="routeLead">Redirecting to the canonical DApp address.</p>
+        <a className="button primary" href={destination}>Continue to DApps</a>
+      </div>
+    </main>
+  );
 }
 
 async function addNetwork() {

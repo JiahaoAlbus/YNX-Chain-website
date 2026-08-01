@@ -80,9 +80,9 @@ export function AppsPage() {
   return (
     <main className="appsPage">
       <header className="productPageHeader">
-        <p className="sectionEyebrow">YNX ecosystem</p>
-        <h1>{catalog.length} independent products, each with an evidence-backed status.</h1>
-        <p>This directory shows only what is implemented and what is still blocked. Click entry/docs/download for each product.</p>
+        <p className="sectionEyebrow">YNX DApps</p>
+        <h1>{catalog.length} software products, organized under one /dapp route.</h1>
+        <p>This DApp directory shows only what is implemented and what is still blocked. Every label is an evidence-backed status; open entry, docs, release evidence, or downloads for each product.</p>
         <p className="statusMeta">Public web, candidate code, local builds, hosted downloads, production signing, and store release remain separate states.</p>
         <div className="statusLegend" aria-label="Application status legend">
           <span className="live">Public web</span>
@@ -92,7 +92,7 @@ export function AppsPage() {
         </div>
       </header>
 
-      <section className="appDirectory" aria-label="YNX application directory">
+      <section className="appDirectory" aria-label="YNX DApp directory">
         {catalog.map((product) => {
           const statusLabel = STATUS_CONFIG[product.status]?.label || product.status;
           const statusTone = STATUS_CONFIG[product.status]?.tone || product.status;

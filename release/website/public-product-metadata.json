@@ -10,7 +10,7 @@
   "title": "YNX Chain — Web4 Testnet ecosystem",
   "metaDescription": "Explore YNX Testnet products, documentation, APIs, status and evidence-backed release information.",
   "h1": "YNX Chain",
-  "features": ["Independent product directory","Evidence-gated downloads","Hosted documentation and API guides","Public status and recovery guidance","Canonical SEO and structured data"],
+  "features": ["Canonical /dapp software hierarchy","Independent product status routes","Evidence-gated downloads","Hosted documentation and API guides","Public status and recovery guidance","Canonical SEO and structured data"],
   "risks": ["YNX Testnet assets have no represented monetary value.","Product availability differs and must be verified per product.","Mainnet, production signing, stores, audits and listings are not implied."],
   "status": {"channel":"public-candidate","publicOriginReachable":true,"exactCurrentSourceVerified":false},
   "downloads": [],

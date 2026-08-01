@@ -164,6 +164,8 @@ const squareAccountPanel = fs.readFileSync("src/components/SquareAccountPanel.js
 const docsPage = fs.readFileSync("src/pages/DocsPage.jsx", "utf8");
 const appGateway = fs.readFileSync("server/app-gateway.mjs", "utf8");
 const vercel = JSON.parse(fs.readFileSync("vercel.json", "utf8"));
+const siteMap = JSON.parse(fs.readFileSync("content/site-map.json", "utf8"));
+const prerender = fs.readFileSync("scripts/prerender.mjs", "utf8");
 const packageJson = JSON.parse(fs.readFileSync("package.json", "utf8"));
 const indexNowKey = fs.readFileSync("public/da45868fe3e0818f27f187b21a56ccb5.txt", "utf8").trim();
 const indexNowScript = fs.readFileSync("scripts/indexnow.mjs", "utf8");
@@ -252,8 +254,8 @@ if (!main.includes("Exchange Integration Candidate") || !main.includes("No excha
   console.error("website does not expose the verified exchange candidate boundary");
   process.exit(1);
 }
-if (!main.includes('route === "/apps"') || !main.includes('route === "/download"') || !main.includes('route === "/docs"') || !main.includes('route === "/square"') || !main.includes("getProductByRoute(route)")) {
-  console.error("first-party app, download, product-status, Square, and docs routes are not configured");
+if (!main.includes('route === "/dapp"') || !main.includes('route === "/dapp/download"') || !main.includes('route === "/docs"') || !main.includes('route === "/dapp/square"') || !main.includes("getProductByRoute(route)") || !main.includes("getLegacyDAppRedirect") || !main.includes("LegacyRouteRedirect")) {
+  console.error("canonical DApp, download, product-status, Square, docs, or legacy compatibility routes are not configured");
   process.exit(1);
 }
 if (!main.includes("AuthorityArticlePage") || !main.includes("docsAuthority.articles") || !viteConfig.includes("docsAuthorityPlugin")) {
@@ -300,8 +302,8 @@ for (const boundary of ['url.origin !== self.location.origin', 'url.pathname.sta
     process.exit(1);
   }
 }
-if (!header.includes('["Apps", "/apps"]') || !header.includes('["Download", "/download"]') || !header.includes('["Docs", "/docs"]') || !header.includes('["Status", "/status"]')) {
-  console.error("stable Apps, Download, Docs, and Status navigation is missing");
+if (!header.includes('["DApps", "/dapp"]') || !header.includes('["Download", "/dapp/download"]') || !header.includes('["Docs", "/docs"]') || !header.includes('["Status", "/status"]')) {
+  console.error("stable DApps, Download, Docs, and Status navigation is missing");
   process.exit(1);
 }
 for (const requiredText of ["metaKey", "ctrlKey", "ynx-theme", "ynx-direction", "CommandPalette", "Skip to content"]) {
@@ -364,6 +366,7 @@ if (
   exchangeRegistry.commit !== "fc2276e1ce4c" ||
   exchangeRegistry.productRelease !== "/releases/exchange/fc2276e1ce4c/product-release.json" ||
   exchangeRegistry.publicProductMetadata !== "/releases/exchange/fc2276e1ce4c/public-product-metadata.json" ||
+  releaseRegistry.products.some((product) => !product.route.startsWith("/dapp/")) ||
   releaseRegistry.rules?.localArtifactIsDownload !== false
 ) {
   console.error("release registry must preserve 25 truthful states and exactly one commit-bound accepted exchange candidate");
@@ -407,6 +410,30 @@ if (appGateway.includes("/chat/") || /method:\s*["']POST["']/.test(appGateway) |
 }
 if (!vercel.cleanUrls || vercel.rewrites?.[0]?.source !== "/(.*)" || vercel.rewrites?.[0]?.destination !== "/") {
   console.error("Vercel SPA deep-link fallback is not configured for clean URLs");
+  process.exit(1);
+}
+const requiredDAppRedirects = new Map([
+  ["/apps", "/dapp"], ["/download", "/dapp/download"], ["/square", "/dapp/square"],
+  ["/wallet", "/dapp/wallet"], ["/social", "/dapp/social"], ["/pay", "/dapp/pay"],
+  ["/merchant", "/dapp/merchant"], ["/card", "/dapp/card"], ["/exchange", "/dapp/exchange"],
+  ["/quant", "/dapp/quant"],
+  ["/shop", "/dapp/shop"], ["/seller", "/dapp/seller"], ["/developer", "/dapp/developer"],
+  ["/explorer", "/dapp/explorer"], ["/monitor", "/dapp/monitor"], ["/ai", "/dapp/ai"],
+  ["/trust", "/dapp/trust"], ["/resource", "/dapp/resource"], ["/music", "/dapp/music"],
+  ["/video", "/dapp/video"], ["/creator", "/dapp/creator"], ["/cloud", "/dapp/cloud"],
+  ["/docs-app", "/dapp/docs-app"], ["/browser", "/dapp/browser"], ["/search", "/dapp/search"],
+  ["/finance", "/dapp/finance"], ["/mail", "/dapp/mail"], ["/calendar", "/dapp/calendar"],
+  ["/dex", "/dapp/dex"]
+]);
+const configuredRedirects = new Map((vercel.redirects || []).map((redirect) => [redirect.source, redirect]));
+if (
+  [...requiredDAppRedirects].some(([source, destination]) => configuredRedirects.get(source)?.destination !== destination || configuredRedirects.get(source)?.permanent !== true) ||
+  configuredRedirects.get("/square/:path*")?.destination !== "/dapp/square/:path*" ||
+  !Array.isArray(siteMap.dappRoutes) || siteMap.dappRoutes.length !== 29 ||
+  siteMap.dappRoutes.some((route) => !route.startsWith("dapp")) ||
+  !prerender.includes("releaseRegistry.products.map((product) => product.route)")
+) {
+  console.error("DApp route hierarchy, permanent compatibility redirects, or discovery routes are incomplete");
   process.exit(1);
 }
 const csp = vercel.headers

@@ -6,8 +6,8 @@ import { CommandPalette } from "./CommandPalette.jsx";
 
 const navigation = [
   ["Products", "/#ecosystem"],
-  ["Download", "/download"],
-  ["Apps", "/apps"],
+  ["DApps", "/dapp"],
+  ["Download", "/dapp/download"],
   ["Manual", "/manual"],
   ["Docs", "/docs"],
   ["Status", "/status"]

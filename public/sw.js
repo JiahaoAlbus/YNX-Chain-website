@@ -1,4 +1,4 @@
-const CACHE_NAME = "ynx-web-shell-v1";
+const CACHE_NAME = "ynx-web-shell-v2-dapp-routes";
 const CACHEABLE_DESTINATIONS = new Set(["font", "image", "script", "style"]);
 
 self.addEventListener("install", () => self.skipWaiting());

@@ -10,7 +10,7 @@ const staticSections = [
     title: "Quickstart",
     icon: BookOpen,
     body: "This site keeps the official status first: public testnet, chain status, and product links. YNXT is the native gas/resource asset and chain identity remains ynx1-first.",
-    rows: [["Network", "YNX Testnet"], ["Chain ID", "6423"], ["EVM chain", "0x1917"], ["Native coin", "YNXT"], ["REST", apiConfig.apiBase], ["EVM RPC", apiConfig.evmRpc], ["Explorer", apiConfig.explorerUrl], ["Faucet", apiConfig.faucetUrl], ["Testnet Downloads", "/download"]],
+    rows: [["Network", "YNX Testnet"], ["Chain ID", "6423"], ["EVM chain", "0x1917"], ["Native coin", "YNXT"], ["REST", apiConfig.apiBase], ["EVM RPC", apiConfig.evmRpc], ["Explorer", apiConfig.explorerUrl], ["Faucet", apiConfig.faucetUrl], ["Testnet Downloads", "/dapp/download"]],
   },
   {
     id: "wallet",

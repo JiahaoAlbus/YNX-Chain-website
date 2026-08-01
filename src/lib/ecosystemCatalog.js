@@ -76,7 +76,9 @@ export const PLATFORM_STATUS = {
   [PRODUCT_STATUS.NOT_READY]: { text: "Not ready", verb: "blocked" }
 };
 
-const PRODUCT_ROUTES = {
+export const DAPP_BASE_ROUTE = "/dapp";
+
+const LEGACY_PRODUCT_ROUTES = {
   wallet: "/wallet",
   social: "/social",
   pay: "/pay",
@@ -103,6 +105,10 @@ const PRODUCT_ROUTES = {
   calendar: "/calendar",
   dex: "/dex"
 };
+
+const PRODUCT_ROUTES = Object.fromEntries(
+  Object.entries(LEGACY_PRODUCT_ROUTES).map(([key, legacyRoute]) => [key, `${DAPP_BASE_ROUTE}/${legacyRoute.slice(1)}`])
+);
 
 const evidence = {
   wallet: {
@@ -342,6 +348,7 @@ const attachEvidence = (entry) => {
   return {
     ...entry,
     route: PRODUCT_ROUTES[entry.key],
+    legacyRoute: LEGACY_PRODUCT_ROUTES[entry.key],
     publicEntry: entry.entry,
     entry: { label: "Product status", href: PRODUCT_ROUTES[entry.key] },
     release: {
@@ -399,9 +406,9 @@ export const getCatalog = () => [
     icon: MessageCircle,
     status: PRODUCT_STATUS.LOCAL,
     detail: "Social messaging and profile surfaces exist as candidate loop, but public address-book and full moderation loop are still incomplete.",
-    entry: { label: "Social entry", href: "/square" },
+    entry: { label: "Social entry", href: "/dapp/square" },
     docs: { ...docsAnchor("chat"), label: "Social docs" },
-    downloads: web(PRODUCT_STATUS.LOCAL, "/square", "Social web read/write flow"),
+    downloads: web(PRODUCT_STATUS.LOCAL, "/dapp/square", "Social web read/write flow"),
     metrics: [["Closure", "Encrypted thread + profile path"], ["Risk", "No public cross-app address discovery yet"], ["Readiness", "Standalone social install is not shipped"]]
   },
   {
@@ -476,7 +483,7 @@ export const getCatalog = () => [
     icon: SquarePen,
     status: PRODUCT_STATUS.LOCAL,
     detail: "Web IDE with bounded compiler/deploy checks is in candidate integration and needs central verifier completion for release.",
-    entry: { label: "Developer entry", href: "/apps#developer" },
+    entry: { label: "Developer entry", href: "/dapp/developer" },
     docs: { ...docsAnchor("ide"), label: "Developer docs" },
     downloads: web(PRODUCT_STATUS.LOCAL, "/docs#ide", "Web IDE candidate path"),
     metrics: [["Closure", "Parser, compile and deploy traces"], ["Risk", "Central verifier + native installer pending"], ["Readiness", "No production native package"]]
@@ -511,7 +518,7 @@ export const getCatalog = () => [
     detail: "Policy-bounded intent proposal, action review, and replay-tolerant AI gateway path are in candidate service.",
     entry: { label: "AI entry", href: "https://ai.ynxweb4.com/health", external: true },
     docs: { ...docsAnchor("ai"), label: "AI docs" },
-    downloads: web(PRODUCT_STATUS.LOCAL, "/ai", "AI gateway web companion"),
+    downloads: web(PRODUCT_STATUS.LOCAL, "/dapp/ai", "AI gateway web companion"),
     metrics: [["Closure", "Tool proposal and approval"], ["Risk", "Provider dependency and fallback"], ["Readiness", "No production AI client package"]]
   },
   {
@@ -660,3 +667,8 @@ export const getCatalog = () => [
 ].map(attachEvidence);
 
 export const getProductByRoute = (route) => getCatalog().find((product) => product.route === route) || null;
+
+export const getLegacyDAppRedirect = (route) => {
+  const product = getCatalog().find((entry) => entry.legacyRoute === route);
+  return product?.route || null;
+};

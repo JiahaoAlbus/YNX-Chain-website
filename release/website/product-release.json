@@ -35,5 +35,11 @@
     "hosted product installers remain unavailable",
     "search-console, Bing, IndexNow submission receipt and independent index coverage evidence are unavailable",
     "production monitoring, incident, rollback, backup and accessibility regression receipts are unavailable"
-  ]
+  ],
+  "routeHierarchy": {
+    "softwareBase": "/dapp",
+    "downloadCenter": "/dapp/download",
+    "square": "/dapp/square",
+    "legacyRoutesPermanentRedirect": true
+  }
 }

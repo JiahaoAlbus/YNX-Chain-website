@@ -3,7 +3,7 @@ import { AlertCircle, ArrowLeft, Clock3, MessageCircle, RefreshCw, ShieldCheck, 
 import { SquareAccountPanel } from "../components/SquareAccountPanel.jsx";
 
 export function SquarePage({ path }) {
-  const postId = path.startsWith("/square/") ? decodeURIComponent(path.slice("/square/".length)) : "";
+  const postId = path.startsWith("/dapp/square/") ? decodeURIComponent(path.slice("/dapp/square/".length)) : "";
   const [data, setData] = useState(null);
   const [state, setState] = useState("loading");
   const [updatedAt, setUpdatedAt] = useState("");
@@ -33,7 +33,7 @@ export function SquarePage({ path }) {
     <main className="squarePage">
       <header className="squareHeader">
         <div>
-          {postId && <a className="squareBack" href="/square"><ArrowLeft /> Feed</a>}
+          {postId && <a className="squareBack" href="/dapp/square"><ArrowLeft /> Feed</a>}
           <p className="sectionEyebrow">Public testnet social layer</p>
           <h1>YNX Square</h1>
           <p>Persisted public records from the deployed Square service.</p>

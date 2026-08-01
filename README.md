@@ -15,8 +15,10 @@ npm run deploy:dry-run
 
 Key acceptance routes:
 
-- `/apps` — independent product catalog and evidence state
-- `/download` — public web and verified installer directory
+- `/dapp` — canonical software catalog and evidence state
+- `/dapp/<product>` — independent product status routes
+- `/dapp/download` — public web and verified installer directory
+- `/dapp/square` — Square web application
 - `/manual` — user journey, safety boundaries, and recovery guidance
 - `/docs` — documentation rendered inside the official site
 - `/api` — public REST, EVM JSON-RPC, Explorer, and Faucet reference
