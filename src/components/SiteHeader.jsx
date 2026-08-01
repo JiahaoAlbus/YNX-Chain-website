@@ -32,7 +32,6 @@ export function SiteHeader({ scrollProgress = 0 }) {
   }, [theme]);
 
   useEffect(() => {
-    document.documentElement.dir = "ltr";
     window.localStorage.removeItem("ynx-direction");
   }, []);
 

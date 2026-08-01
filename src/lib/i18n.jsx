@@ -25,6 +25,16 @@ const messages = {
 
 const LocaleContext = createContext({ locale: "en", setLocale: () => {}, t: (key) => key });
 
+function enforceNativeLtr() {
+  for (const element of [document.documentElement, document.body]) {
+    if (!element) continue;
+    if (element.getAttribute("dir") !== "ltr") element.setAttribute("dir", "ltr");
+    if (element.style.getPropertyValue("direction") !== "ltr" || element.style.getPropertyPriority("direction") !== "important") {
+      element.style.setProperty("direction", "ltr", "important");
+    }
+  }
+}
+
 function normalizeLocale(value) {
   return value === "zh-CN" || String(value || "").toLowerCase().startsWith("zh") ? "zh-CN" : "en";
 }
@@ -40,11 +50,19 @@ export function LocaleProvider({ children }) {
 
   useEffect(() => {
     document.documentElement.lang = locale;
-    document.documentElement.dir = "ltr";
+    enforceNativeLtr();
     document.documentElement.dataset.locale = locale;
     document.title = locale === "zh-CN" ? "YNX Chain — Web4 Layer-1 生态系统" : "YNX Chain — Web4 Layer-1 Ecosystem";
     window.localStorage.setItem("ynx-locale", locale);
   }, [locale]);
+
+  useEffect(() => {
+    enforceNativeLtr();
+    const observer = new MutationObserver(enforceNativeLtr);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["dir", "style"] });
+    if (document.body) observer.observe(document.body, { attributes: true, attributeFilter: ["dir", "style"] });
+    return () => observer.disconnect();
+  }, []);
 
   const value = useMemo(() => ({
     locale,

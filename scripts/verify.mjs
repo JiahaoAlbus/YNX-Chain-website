@@ -294,9 +294,15 @@ if (!main.includes('navigator.serviceWorker.register("/sw.js")') || !indexHtml.i
   console.error("installable PWA shell is incomplete");
   process.exit(1);
 }
-if (!indexHtml.includes('class="notranslate"') || !indexHtml.includes('translate="no"') || !indexHtml.includes('<meta name="google" content="notranslate"')) {
+if (!indexHtml.includes('class="notranslate"') || !indexHtml.includes('translate="no"') || !indexHtml.includes('<meta name="google" content="notranslate"') || !indexHtml.includes('<body class="notranslate" translate="no" dir="ltr">')) {
   console.error("browser machine-translation opt-out is missing; native locale content could be mistranslated or mirrored");
   process.exit(1);
+}
+for (const requiredText of ['direction: ltr !important', 'body, #root { direction: ltr !important; }']) {
+  if (!styles.includes(requiredText)) {
+    console.error(`native LTR layout guard is missing: ${requiredText}`);
+    process.exit(1);
+  }
 }
 if (!header.includes('src="/ynx-logo.png"') || !indexHtml.includes('/ynx-favicon-48.png') || !indexHtml.includes('/ynx-icon-512.png') || manifest.icons?.length !== 2 || manifest.icons[0]?.src !== "/ynx-icon-512.png" || manifest.icons[1]?.src !== "/ynx-icon-maskable-512.png") {
   console.error("official YNX logo is not wired through navigation, favicon, and PWA icons");
@@ -318,7 +324,7 @@ for (const requiredText of ["metaKey", "ctrlKey", "ynx-theme", "localStorage.rem
     process.exit(1);
   }
 }
-for (const requiredText of ["LocaleProvider", "SUPPORTED_LOCALES", '"zh-CN"', "ynx-locale", 'document.documentElement.dir = "ltr"', "navigator.language"]) {
+for (const requiredText of ["LocaleProvider", "SUPPORTED_LOCALES", '"zh-CN"', "ynx-locale", "enforceNativeLtr", "MutationObserver", 'style.setProperty("direction", "ltr", "important")', "navigator.language"]) {
   const localeSource = requiredText === "LocaleProvider" ? main : i18n;
   if (!localeSource.includes(requiredText)) {
     console.error(`native locale capability missing: ${requiredText}`);

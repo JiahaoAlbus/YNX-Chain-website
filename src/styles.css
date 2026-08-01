@@ -17,7 +17,8 @@
   --shadow: rgba(0,47,167,.12);
 }
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; direction: ltr !important; }
+body, #root { direction: ltr !important; }
 body { margin: 0; min-width: 320px; overflow-x: hidden; }
 button, a { -webkit-tap-highlight-color: transparent; }
 button { font: inherit; }
