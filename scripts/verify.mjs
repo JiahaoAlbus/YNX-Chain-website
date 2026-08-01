@@ -306,7 +306,7 @@ if (!header.includes('["DApps", "/dapp"]') || !header.includes('["Download", "/d
   console.error("stable DApps, Download, Docs, and Status navigation is missing");
   process.exit(1);
 }
-for (const requiredText of ["metaKey", "ctrlKey", "ynx-theme", "ynx-direction", "CommandPalette", "Skip to content"]) {
+for (const requiredText of ["metaKey", "ctrlKey", "ynx-theme", "localStorage.removeItem(\"ynx-direction\")", "CommandPalette", "Skip to content"]) {
   if (!header.includes(requiredText)) {
     console.error(`global navigation capability missing: ${requiredText}`);
     process.exit(1);
@@ -336,7 +336,7 @@ for (const requiredText of ["Chain status", "Validator roles", "EVM JSON-RPC", "
     process.exit(1);
   }
 }
-for (const requiredText of ['[data-theme="dark"]', '[dir="rtl"]', ":focus-visible", ".commandPalette"]) {
+for (const requiredText of ['[data-theme="dark"]', ":focus-visible", ".commandPalette"]) {
   if (!styles.includes(requiredText)) {
     console.error(`accessibility or adaptive appearance styles missing: ${requiredText}`);
     process.exit(1);

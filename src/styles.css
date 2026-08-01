@@ -664,23 +664,6 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
 [data-theme="dark"] .manualCode { background: #050914; }
 [data-theme="dark"] .manualWarning { background: #2b1718; }
 [data-theme="dark"] .squareLoading span { background: linear-gradient(100deg, var(--soft) 20%, #253149 38%, var(--soft) 56%); background-size: 220% 100%; }
-[dir="rtl"] .scrollProgress { transform-origin: right center; }
-[dir="rtl"] .commandResults > button { text-align: right; }
-[dir="rtl"] .skipLink { left: auto; right: 12px; }
-[dir="rtl"] .sectionHeader,
-[dir="rtl"] .siteFooter,
-[dir="rtl"] .routePage,
-[dir="rtl"] .docsPage,
-[dir="rtl"] .appsPage,
-[dir="rtl"] .downloadPage,
-[dir="rtl"] .productStatusPage,
-[dir="rtl"] .authorityPage { text-align: right; }
-[dir="rtl"] .backLink svg,
-[dir="rtl"] .resourceLink > svg:last-child,
-[dir="rtl"] .appItem > svg:last-child { transform: scaleX(-1); }
-[dir="rtl"] .authorityArticle ul { padding-left: 0; padding-right: 24px; }
-[dir="rtl"] .footerLinks { justify-content: flex-start; }
-[dir="rtl"] .claimBoundary { padding-left: 0; padding-right: 30px; border-left: 0; border-right: 1px solid rgba(0,47,167,.25); }
 @media (max-width: 1000px) {
   .metricsGrid { grid-template-columns: repeat(3, 1fr); }
   .productGrid { grid-template-columns: repeat(2, 1fr); }

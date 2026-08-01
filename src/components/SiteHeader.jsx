@@ -1,5 +1,5 @@
 import React from "react";
-import { ExternalLink, Languages, Menu, Moon, Search, Sun, X } from "lucide-react";
+import { ExternalLink, Menu, Moon, Search, Sun, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { apiConfig } from "../lib/api/ynxApi.js";
 import { CommandPalette } from "./CommandPalette.jsx";
@@ -22,7 +22,6 @@ export function SiteHeader({ scrollProgress = 0 }) {
       ? saved
       : window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
   });
-  const [direction, setDirection] = useState(() => window.localStorage.getItem("ynx-direction") === "rtl" ? "rtl" : "ltr");
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
@@ -31,9 +30,9 @@ export function SiteHeader({ scrollProgress = 0 }) {
   }, [theme]);
 
   useEffect(() => {
-    document.documentElement.dir = direction;
-    window.localStorage.setItem("ynx-direction", direction);
-  }, [direction]);
+    document.documentElement.dir = "ltr";
+    window.localStorage.removeItem("ynx-direction");
+  }, []);
 
   useEffect(() => {
     const onKeyDown = (event) => {
@@ -62,9 +61,6 @@ export function SiteHeader({ scrollProgress = 0 }) {
           </button>
           <button type="button" className="toolButton" onClick={() => setTheme(theme === "dark" ? "light" : "dark")} aria-label={`Use ${theme === "dark" ? "light" : "dark"} mode`}>
             {theme === "dark" ? <Sun /> : <Moon />}
-          </button>
-          <button type="button" className="toolButton" onClick={() => setDirection(direction === "rtl" ? "ltr" : "rtl")} aria-label={`Use ${direction === "rtl" ? "left-to-right" : "right-to-left"} layout`}>
-            <Languages />
           </button>
           <button type="button" className="menuButton" aria-expanded={open} aria-label={open ? "Close navigation" : "Open navigation"} onClick={() => setOpen(!open)}>
             {open ? <X /> : <Menu />}
