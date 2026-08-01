@@ -1,8 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { ArrowUpRight, Search, ShieldCheck } from "lucide-react";
-import { getCatalog, STATUS_CONFIG, DOWNLOAD_LABELS, PLATFORM_STATUS, PRODUCT_STATUS } from "../lib/ecosystemCatalog.js";
-
-const platformOrder = ["web", "android", "ios", "macos", "windows"];
+import { getCatalog, STATUS_CONFIG, DOWNLOAD_LABELS, PRODUCT_STATUS } from "../lib/ecosystemCatalog.js";
 
 const categories = [
   {
@@ -56,61 +54,6 @@ function renderProductLink({ label, href, external }) {
       {label} <ArrowUpRight size={15} />
       {external ? <span className="visuallyHidden"> external</span> : null}
     </a>
-  );
-}
-
-function renderDownloadItem(platform, item) {
-  const platformText = PLATFORM_STATUS[item.status]?.text || "Not ready";
-  const canOpen = item.href && (item.downloadHosted || item.status === PRODUCT_STATUS.LIVE);
-  if (!canOpen) {
-    return (
-      <li key={platform} className="downloadItem disabled">
-        <span>{DOWNLOAD_LABELS[platform] || platform}</span>
-        <em>{platformText}</em>
-        {item.note ? <small>{item.note}</small> : null}
-      </li>
-    );
-  }
-
-  return (
-    <li key={platform} className={`downloadItem ${item.status}`}>
-      <span>{DOWNLOAD_LABELS[platform] || platform}</span>
-      <a href={item.href} rel={item.external ? "noopener" : undefined}>
-        <span>{platformText}</span>
-        <ArrowUpRight size={14} />
-      </a>
-      {item.note ? <small>{item.note}</small> : null}
-    </li>
-  );
-}
-
-function renderDownloadList(downloads) {
-  const items = platformOrder
-    .map((platform) => renderDownloadItem(platform, downloads[platform] || { status: "not-ready" }))
-    .filter(Boolean);
-
-  return <ul className="downloadList">{items}</ul>;
-}
-
-function ProductMetaSection({ title, children }) {
-  return (
-    <div className="appMeta">
-      <span className="appSectionHeader">{title}</span>
-      <span className="appMetaBlock">{children}</span>
-    </div>
-  );
-}
-
-function renderRelease(release) {
-  if (!release) {
-    return <span className="productLinkUnavailable">Release: Not yet bound</span>;
-  }
-
-  return (
-    <span className="appMetaBlock">
-      <span>Source commit: {release.commit}</span>
-      {release.statusNote ? <span>{release.statusNote}</span> : null}
-    </span>
   );
 }
 
@@ -177,35 +120,24 @@ export function AppsPage() {
           {group.products.map((product) => {
           const statusLabel = STATUS_CONFIG[product.status]?.label || product.status;
           const statusTone = STATUS_CONFIG[product.status]?.tone || product.status;
+          const surfaces = Object.entries(product.downloads || {})
+            .filter(([, item]) => item?.href)
+            .map(([platform]) => DOWNLOAD_LABELS[platform] || platform);
 
           return (
             <article className="appItem" key={product.key}>
-              <span className="appIcon"><product.icon size={23} /></span>
-
-              <span className="appCopy">
+              <header className="appCardHead">
+                <span className="appIcon"><product.icon size={23} /></span>
                 <span className={`appState ${statusTone}`}>{statusLabel}</span>
-                <strong>{product.name}</strong>
-                <small>{product.detail}</small>
-              </span>
-
-              <span className="appLinks">
-                <ProductMetaSection title="Entry">{renderProductLink(product.entry)}</ProductMetaSection>
-                <ProductMetaSection title="Docs">{renderProductLink(product.docs)}</ProductMetaSection>
-                <ProductMetaSection title="Release">{renderRelease(product.release)}</ProductMetaSection>
-              </span>
-
-              <ProductMetaSection title="Close-loop metrics">
-                <span className="appMetrics">
-                  {product.metrics.map(([label, value]) => (
-                    <span key={`${product.key}-${label}`}><i>{label}</i><strong>{value}</strong></span>
-                  ))}
-                </span>
-              </ProductMetaSection>
-
-              <ProductMetaSection title="Downloads">
-                {renderDownloadList(product.downloads)}
-              </ProductMetaSection>
-
+              </header>
+              <div className="appCopy"><strong>{product.name}</strong><small>{product.detail}</small></div>
+              <dl className="appCardFacts">{product.metrics.map(([label, value]) => <div key={`${product.key}-${label}`}><dt>{label}</dt><dd>{value}</dd></div>)}</dl>
+              <div className="appSurfaces"><span>Available surfaces</span><strong>{surfaces.length ? surfaces.join(" · ") : "No public package"}</strong></div>
+              <footer className="appCardActions">
+                <a className="appPrimaryLink" href={product.route}>View product <ArrowUpRight /></a>
+                {renderProductLink(product.docs)}
+                {product.status === PRODUCT_STATUS.LIVE && product.entry?.href ? renderProductLink(product.entry) : null}
+              </footer>
             </article>
           );
           })}

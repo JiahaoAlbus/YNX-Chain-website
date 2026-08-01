@@ -342,7 +342,7 @@ for (const requiredText of ['[data-theme="dark"]', ":focus-visible", ".commandPa
     process.exit(1);
   }
 }
-for (const requiredText of ["Public web", "Candidate", "Candidate incomplete", "Not ready", "evidence-backed status", "Money & commerce", "Identity & community", "Build & operate", "AI, media & data", "Trust & infrastructure", "Find a product, workflow, or capability"]) {
+for (const requiredText of ["Public web", "Candidate", "Candidate incomplete", "Not ready", "evidence-backed status", "Money & commerce", "Identity & community", "Build & operate", "AI, media & data", "Trust & infrastructure", "Find a product, workflow, or capability", "Available surfaces", "View product", "appCardFacts"]) {
   if (!appsPage.includes(requiredText)) {
     console.error(`application truth status missing: ${requiredText}`);
     process.exit(1);
