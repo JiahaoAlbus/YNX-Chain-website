@@ -23,11 +23,14 @@ import { ManualPage } from "./pages/ManualPage.jsx";
 import { ApiPage } from "./pages/ApiPage.jsx";
 import { getLegacyDAppRedirect, getProductByRoute } from "./lib/ecosystemCatalog.js";
 import docsAuthority from "virtual:ynx-docs-authority";
+import { LocaleProvider, useLocale } from "./lib/i18n.jsx";
 import "./styles.css";
 
 const route = window.location.pathname.replace(/\/$/, "") || "/";
 
 function App() {
+  const { locale } = useLocale();
+  const zh = locale === "zh-CN";
   const [snapshot, setSnapshot] = useState({ status: {}, summary: {}, validators: {}, evm: {} });
   const [services, setServices] = useState({});
   const [connectionState, setConnectionState] = useState("loading");
@@ -118,49 +121,49 @@ function App() {
 
       <section className="networkBand" id="network" aria-labelledby="network-title" data-reveal>
         <div className="sectionHeader compact">
-          <div><p className="sectionEyebrow">Live network</p><h2 id="network-title">Current public testnet state</h2></div>
-          <div className={`connection ${connectionState}`}><span />{connectionState === "live" ? `Updated ${formatTime(snapshot.checkedAt)}` : connectionState}</div>
+          <div><p className="sectionEyebrow">{zh ? "实时网络" : "Live network"}</p><h2 id="network-title">{zh ? "当前公开测试网状态" : "Current public testnet state"}</h2></div>
+          <div className={`connection ${connectionState}`}><span />{connectionState === "live" ? `${zh ? "更新于" : "Updated"} ${formatTime(snapshot.checkedAt, locale)}` : connectionState}</div>
         </div>
         <div className="metricsGrid">
-          <StatusCard icon={<Activity />} title="Block height" value={formatNumber(status.height)} label={heightMoved ? "Growing now" : "Live RPC height"} error={status.error} emphasis />
-          <StatusCard icon={<Gauge />} title="EVM chain" value={evm.result} label="Expected 0x1917" error={evm.error} />
-          <StatusCard icon={<Database />} title="Transactions" value={formatNumber(summary.totalTransactions)} label="Persisted testnet records" error={summary.error} />
-          <StatusCard icon={<Network />} title="Validator roles" value={validators.validators?.length} label="Expected four public roles" error={validators.error} />
-          <StatusCard icon={<Coins />} title="Native asset" value={status.nativeCurrencySymbol} label="Gas and resource asset" error={status.error} />
-          <StatusCard icon={<Box />} title="Release" value={shortRelease(buildRelease)} label={buildRelease} error={status.error} />
+          <StatusCard icon={<Activity />} title={zh ? "区块高度" : "Block height"} value={formatNumber(status.height, locale)} label={heightMoved ? (zh ? "正在增长" : "Growing now") : (zh ? "实时 RPC 高度" : "Live RPC height")} error={status.error} emphasis />
+          <StatusCard icon={<Gauge />} title={zh ? "EVM 链" : "EVM chain"} value={evm.result} label={zh ? "预期 0x1917" : "Expected 0x1917"} error={evm.error} />
+          <StatusCard icon={<Database />} title={zh ? "交易数" : "Transactions"} value={formatNumber(summary.totalTransactions, locale)} label={zh ? "持久化测试网记录" : "Persisted testnet records"} error={summary.error} />
+          <StatusCard icon={<Network />} title={zh ? "验证者角色" : "Validator roles"} value={validators.validators?.length} label={zh ? "预期四个公开角色" : "Expected four public roles"} error={validators.error} />
+          <StatusCard icon={<Coins />} title={zh ? "原生资产" : "Native asset"} value={status.nativeCurrencySymbol} label={zh ? "Gas 与资源资产" : "Gas and resource asset"} error={status.error} />
+          <StatusCard icon={<Box />} title={zh ? "版本" : "Release"} value={shortRelease(buildRelease)} label={buildRelease} error={status.error} />
         </div>
       </section>
 
       <section className="validatorSection" aria-labelledby="validators-title" data-reveal>
         <div className="sectionHeader">
-          <div><p className="sectionEyebrow">Four-region topology</p><h2 id="validators-title">Inspectable validator roles</h2></div>
-          <p>Each role reports its own current height. Height convergence and public BFT voting remain pending and are not inferred from role availability.</p>
+          <div><p className="sectionEyebrow">{zh ? "四区域拓扑" : "Four-region topology"}</p><h2 id="validators-title">{zh ? "可检查的验证者角色" : "Inspectable validator roles"}</h2></div>
+          <p>{zh ? "每个角色独立报告当前高度。角色可用并不代表高度已经收敛，也不能证明公开 BFT 投票已经完成。" : "Each role reports its own current height. Height convergence and public BFT voting remain pending and are not inferred from role availability."}</p>
         </div>
         <div className="validatorTable" role="table" aria-label="Live validator roles">
-          <div className="validatorRow validatorHead" role="row"><span>Location</span><span>Role</span><span>Height</span><span>Status</span></div>
+          <div className="validatorRow validatorHead" role="row"><span>{zh ? "位置" : "Location"}</span><span>{zh ? "角色" : "Role"}</span><span>{zh ? "高度" : "Height"}</span><span>{zh ? "状态" : "Status"}</span></div>
           {validatorRows.length ? validatorRows.map((validator) => {
             const lag = Math.max(0, Number(status.height || 0) - Number(validator.latestHeight || 0));
             const current = validator.peerReady && lag <= 5;
             return (
               <div className="validatorRow" role="row" key={validator.address}>
                 <span><strong>{validator.moniker?.replace("ynx-", "") || validator.address}</strong><small>{validator.address}</small></span>
-                <span>{validator.role}</span><span>{formatNumber(validator.latestHeight)}</span>
-                <span className={current ? "ready" : "pending"}><i />{current ? "Current" : lag > 0 ? `${formatNumber(lag)} behind` : "Pending"}</span>
+                <span>{validator.role}</span><span>{formatNumber(validator.latestHeight, locale)}</span>
+                <span className={current ? "ready" : "pending"}><i />{current ? (zh ? "当前" : "Current") : lag > 0 ? `${formatNumber(lag, locale)} ${zh ? "个区块落后" : "behind"}` : (zh ? "等待中" : "Pending")}</span>
               </div>
             );
-          }) : <div className="tableEmpty">{validators.error || "Connecting to validator API"}</div>}
+          }) : <div className="tableEmpty">{validators.error || (zh ? "正在连接验证者 API" : "Connecting to validator API")}</div>}
         </div>
       </section>
 
       <section className="ecosystemSection" id="ecosystem" aria-labelledby="ecosystem-title" data-reveal>
         <div className="sectionHeader">
-          <div><p className="sectionEyebrow">Full-stack ecosystem</p><h2 id="ecosystem-title">One chain, connected operational surfaces</h2></div>
-          <p>Runtime, economics, services, evidence, and integration tooling share the same YNX Testnet identity.</p>
+          <div><p className="sectionEyebrow">{zh ? "全栈生态" : "Full-stack ecosystem"}</p><h2 id="ecosystem-title">{zh ? "一条链，连接全部运营界面" : "One chain, connected operational surfaces"}</h2></div>
+          <p>{zh ? "运行时、经济系统、服务、证据与集成工具共享同一个 YNX 测试网身份。" : "Runtime, economics, services, evidence, and integration tooling share the same YNX Testnet identity."}</p>
         </div>
         <div className="productGrid">
-          <ProductPanel icon={<Layers3 />} title="L1 Runtime" text="Persistent chain state, RPC, EVM RPC, transactions, receipts, logs, balances, and four-role replication." status="live" href={`${apiConfig.apiBase}/status`} />
-          <ProductPanel icon={<Coins />} title="YNXT Economy" text="Native gas and resource asset with no hidden direct-freeze hook in the current runtime." status="live" href="/testnet" />
-          <ProductPanel icon={<Search />} title="Indexer + Explorer" text="Live blocks, transactions, accounts, validators, search, SSE updates, and network evidence." status="live" href={apiConfig.explorerUrl} />
+          <ProductPanel icon={<Layers3 />} title={zh ? "L1 运行时" : "L1 Runtime"} text={zh ? "持久化链状态、RPC、EVM RPC、交易、收据、日志、余额与四角色复制。" : "Persistent chain state, RPC, EVM RPC, transactions, receipts, logs, balances, and four-role replication."} status="live" href={`${apiConfig.apiBase}/status`} />
+          <ProductPanel icon={<Coins />} title={zh ? "YNXT 经济系统" : "YNXT Economy"} text={zh ? "当前运行时中的原生 Gas 与资源资产，没有隐藏的直接冻结入口。" : "Native gas and resource asset with no hidden direct-freeze hook in the current runtime."} status="live" href="/testnet" />
+          <ProductPanel icon={<Search />} title={zh ? "索引器 + 浏览器" : "Indexer + Explorer"} text={zh ? "实时区块、交易、账户、验证者、搜索、SSE 更新与网络证据。" : "Live blocks, transactions, accounts, validators, search, SSE updates, and network evidence."} status="live" href={apiConfig.explorerUrl} />
           <ProductPanel icon={<Bot />} title="AI Gateway" text="Session and permission architecture with policy-bounded action proposal, approval, and audit." status={serviceState("ai")} href="/dapp/ai" />
           <ProductPanel icon={<CircleDollarSign />} title="Pay API" text="Merchant-bound intents, invoices, idempotency, webhook signing, refunds, and event records." status={serviceState("pay")} href="/dapp/pay" />
           <ProductPanel icon={<ShieldCheck />} title="Trust + Chain Law" text="Evidence-bound tracing, advisory labels, request validity, appeals, corrections, and transparency." status={serviceState("trust")} href="/dapp/trust" />
@@ -173,9 +176,9 @@ function App() {
 
       <section className="developerSection" id="developers" aria-labelledby="developers-title" data-reveal>
         <div className="developerCopy">
-          <p className="sectionEyebrow">Developer surface</p><h2 id="developers-title">Connect to real endpoints.</h2>
-          <p>Chain identity and network state come from the live public testnet. SDK checks verify REST and EVM heights without submitting transactions.</p>
-          <a className="textLink" href="/docs">Open developer docs <Code2 size={17} /></a>
+          <p className="sectionEyebrow">{zh ? "开发者界面" : "Developer surface"}</p><h2 id="developers-title">{zh ? "连接真实端点。" : "Connect to real endpoints."}</h2>
+          <p>{zh ? "链身份与网络状态来自实时公开测试网；SDK 检查只核对 REST 与 EVM 高度，不提交交易。" : "Chain identity and network state come from the live public testnet. SDK checks verify REST and EVM heights without submitting transactions."}</p>
+          <a className="textLink" href="/docs">{zh ? "打开开发者文档" : "Open developer docs"} <Code2 size={17} /></a>
         </div>
         <div className="endpointList">
           <Endpoint label="REST RPC" value={apiConfig.apiBase} />
@@ -189,17 +192,17 @@ function App() {
 
       <section className="readinessSection" id="readiness" aria-labelledby="readiness-title" data-reveal>
         <div className="sectionHeader">
-          <div><p className="sectionEyebrow">Readiness without overclaiming</p><h2 id="readiness-title">Current state and target state stay separate.</h2></div>
+          <div><p className="sectionEyebrow">{zh ? "不夸大的就绪度" : "Readiness without overclaiming"}</p><h2 id="readiness-title">{zh ? "始终区分当前状态与目标状态。" : "Current state and target state stay separate."}</h2></div>
         </div>
         <div className="readinessColumns">
-          <div><h3><CheckCircle2 /> Verified now</h3><ul><li>Public YNX Testnet on chain ID 6423</li><li>Four remotely deployed validator roles</li><li>Live RPC, EVM, Faucet, Indexer and Explorer</li><li>YNX-native ynx1 identity with an isolated EVM adapter</li><li>Signed transaction and exchange-candidate RPC flows</li><li>AI action, Pay, Trust, Resource and governance surfaces</li><li>Checksummed releases, backup and rollback tooling</li></ul></div>
-          <div><h3><Clock3 /> Still required</h3><ul><li>YNX native wallet production release and custody handover</li><li>Public CometBFT voting and cutover proof</li><li>Independent public-vantage evidence</li><li>External security audit and mainnet legal review</li><li>External wallet, exchange, issuer and bridge approvals</li></ul></div>
-          <div className="claimBoundary"><Scale size={28} /><h3>No fake claims</h3><p>This project does not claim mainnet launch, exchange listing, stablecoin issuer support, wallet default support, or third-party partnerships.</p><a href="/readiness">Read full boundaries</a></div>
+          <div><h3><CheckCircle2 /> {zh ? "当前已验证" : "Verified now"}</h3><ul>{(zh ? ["链 ID 6423 的公开 YNX 测试网", "四个远程部署的验证者角色", "实时 RPC、EVM、水龙头、索引器与浏览器", "YNX 原生 ynx1 身份与隔离 EVM 适配器", "已签名交易与交易所候选 RPC 流程", "AI 操作、Pay、Trust、资源与治理界面", "带校验和的发布、备份与回滚工具"] : ["Public YNX Testnet on chain ID 6423", "Four remotely deployed validator roles", "Live RPC, EVM, Faucet, Indexer and Explorer", "YNX-native ynx1 identity with an isolated EVM adapter", "Signed transaction and exchange-candidate RPC flows", "AI action, Pay, Trust, Resource and governance surfaces", "Checksummed releases, backup and rollback tooling"]).map((item) => <li key={item}>{item}</li>)}</ul></div>
+          <div><h3><Clock3 /> {zh ? "仍然需要" : "Still required"}</h3><ul>{(zh ? ["YNX 原生钱包生产发布与保管移交", "公开 CometBFT 投票与切换证明", "独立公网观察点证据", "外部安全审计与主网法律审查", "外部钱包、交易所、发行方与跨链桥批准"] : ["YNX native wallet production release and custody handover", "Public CometBFT voting and cutover proof", "Independent public-vantage evidence", "External security audit and mainnet legal review", "External wallet, exchange, issuer and bridge approvals"]).map((item) => <li key={item}>{item}</li>)}</ul></div>
+          <div className="claimBoundary"><Scale size={28} /><h3>{zh ? "不作虚假声明" : "No fake claims"}</h3><p>{zh ? "本项目不宣称主网上线、交易所上币、稳定币发行方支持、钱包默认支持或第三方合作关系。" : "This project does not claim mainnet launch, exchange listing, stablecoin issuer support, wallet default support, or third-party partnerships."}</p><a href="/readiness">{zh ? "查看完整边界" : "Read full boundaries"}</a></div>
         </div>
       </section>
 
       <section className="resourceSection" aria-labelledby="resources-title" data-reveal>
-        <div className="sectionHeader"><div><p className="sectionEyebrow">Start building</p><h2 id="resources-title">Public entry points</h2></div></div>
+        <div className="sectionHeader"><div><p className="sectionEyebrow">{zh ? "开始构建" : "Start building"}</p><h2 id="resources-title">{zh ? "公开入口" : "Public entry points"}</h2></div></div>
         <LinkGrid />
       </section>
       <SiteFooter />
@@ -253,11 +256,11 @@ async function addNetwork() {
   await window.ethereum.request({ method: "wallet_addEthereumChain", params: [networkParams()] });
 }
 
-function formatNumber(value) { return Number.isFinite(Number(value)) ? new Intl.NumberFormat("en-US").format(Number(value)) : undefined; }
-function formatTime(value) { return value ? new Intl.DateTimeFormat("en", { hour: "2-digit", minute: "2-digit", second: "2-digit" }).format(new Date(value)) : "now"; }
+function formatNumber(value, locale = "en") { return Number.isFinite(Number(value)) ? new Intl.NumberFormat(locale).format(Number(value)) : undefined; }
+function formatTime(value, locale = "en") { return value ? new Intl.DateTimeFormat(locale, { hour: "2-digit", minute: "2-digit", second: "2-digit" }).format(new Date(value)) : (locale === "zh-CN" ? "现在" : "now"); }
 function shortRelease(value) { return value.startsWith("ynx-chain-") ? value.replace("ynx-chain-", "") : value; }
 
-createRoot(document.getElementById("root")).render(<App />);
+createRoot(document.getElementById("root")).render(<LocaleProvider><App /></LocaleProvider>);
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {

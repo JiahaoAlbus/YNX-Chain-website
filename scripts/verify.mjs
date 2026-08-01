@@ -26,6 +26,7 @@ const required = [
   "src/styles.css",
   "src/lib/api/ynxApi.js",
   "src/lib/address.js",
+  "src/lib/i18n.jsx",
   "src/components/AddressConverter.jsx",
   "src/components/SquareAccountPanel.jsx",
   "src/pages/AppsPage.jsx",
@@ -151,6 +152,7 @@ const exchangeManifest = JSON.parse(fs.readFileSync(`${exchangeReleaseRoot}/mani
 const exchangeProductRelease = JSON.parse(fs.readFileSync(`${exchangeReleaseRoot}/product-release.json`, "utf8"));
 const exchangePublicMetadata = JSON.parse(fs.readFileSync(`${exchangeReleaseRoot}/public-product-metadata.json`, "utf8"));
 const header = fs.readFileSync("src/components/SiteHeader.jsx", "utf8");
+const i18n = fs.readFileSync("src/lib/i18n.jsx", "utf8");
 const commandPalette = fs.readFileSync("src/components/CommandPalette.jsx", "utf8");
 const routePage = fs.readFileSync("src/components/RoutePage.jsx", "utf8");
 const manualPage = fs.readFileSync("src/pages/ManualPage.jsx", "utf8");
@@ -292,6 +294,10 @@ if (!main.includes('navigator.serviceWorker.register("/sw.js")') || !indexHtml.i
   console.error("installable PWA shell is incomplete");
   process.exit(1);
 }
+if (!indexHtml.includes('class="notranslate"') || !indexHtml.includes('translate="no"') || !indexHtml.includes('<meta name="google" content="notranslate"')) {
+  console.error("browser machine-translation opt-out is missing; native locale content could be mistranslated or mirrored");
+  process.exit(1);
+}
 if (!header.includes('src="/ynx-logo.png"') || !indexHtml.includes('/ynx-favicon-48.png') || !indexHtml.includes('/ynx-icon-512.png') || manifest.icons?.length !== 2 || manifest.icons[0]?.src !== "/ynx-icon-512.png" || manifest.icons[1]?.src !== "/ynx-icon-maskable-512.png") {
   console.error("official YNX logo is not wired through navigation, favicon, and PWA icons");
   process.exit(1);
@@ -302,15 +308,26 @@ for (const boundary of ['url.origin !== self.location.origin', 'url.pathname.sta
     process.exit(1);
   }
 }
-if (!header.includes('["DApps", "/dapp"]') || !header.includes('["Download", "/dapp/download"]') || !header.includes('["Docs", "/docs"]') || !header.includes('["Status", "/status"]')) {
+if (!header.includes('["dapps", "/dapp"]') || !header.includes('["download", "/dapp/download"]') || !header.includes('["docs", "/docs"]') || !header.includes('["status", "/status"]')) {
   console.error("stable DApps, Download, Docs, and Status navigation is missing");
   process.exit(1);
 }
-for (const requiredText of ["metaKey", "ctrlKey", "ynx-theme", "localStorage.removeItem(\"ynx-direction\")", "CommandPalette", "Skip to content"]) {
+for (const requiredText of ["metaKey", "ctrlKey", "ynx-theme", "localStorage.removeItem(\"ynx-direction\")", "CommandPalette", 't("skip")']) {
   if (!header.includes(requiredText)) {
     console.error(`global navigation capability missing: ${requiredText}`);
     process.exit(1);
   }
+}
+for (const requiredText of ["LocaleProvider", "SUPPORTED_LOCALES", '"zh-CN"', "ynx-locale", 'document.documentElement.dir = "ltr"', "navigator.language"]) {
+  const localeSource = requiredText === "LocaleProvider" ? main : i18n;
+  if (!localeSource.includes(requiredText)) {
+    console.error(`native locale capability missing: ${requiredText}`);
+    process.exit(1);
+  }
+}
+if (!header.includes("localeButton") || !header.includes('setLocale(locale === "en" ? "zh-CN" : "en")')) {
+  console.error("native English/Simplified Chinese locale control is missing");
+  process.exit(1);
 }
 for (const requiredText of ["role=\"dialog\"", "aria-modal=\"true\"", "ArrowDown", "ArrowUp", "No matching YNX resource", "API reference"]) {
   if (!commandPalette.includes(requiredText)) {

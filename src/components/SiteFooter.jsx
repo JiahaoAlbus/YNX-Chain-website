@@ -1,28 +1,30 @@
 import React from "react";
 import { apiConfig } from "../lib/api/ynxApi.js";
+import { useLocale } from "../lib/i18n.jsx";
 
 export function SiteFooter() {
+  const { t } = useLocale();
   return (
     <footer className="siteFooter">
-      <div><strong>YNX Chain</strong><p>Web4 L1 ecosystem built around YNXT.</p></div>
+      <div><strong>YNX Chain</strong><p>{t("footerLead")}</p></div>
       <div className="footerLinks">
-        <a href="/dapp/download">Download</a>
-        <a href="/manual">User manual</a>
-        <a href="/docs">Developer docs</a>
-        <a href="/api">API</a>
-        <a href="/faq">FAQ</a>
-        <a href="/dapp">DApps</a>
-        <a href="/status">Status</a>
-        <a href="/security">Security</a>
-        <a href="/support">Support</a>
-        <a href="/dapp/square">Square</a>
-        <a href={apiConfig.explorerUrl}>Explorer</a>
-        <a href="/readiness">Readiness</a>
-        <a href="/risk">Risk</a>
-        <a href="/privacy">Privacy</a>
-        <a href="/terms">Terms</a>
+        <a href="/dapp/download">{t("download")}</a>
+        <a href="/manual">{t("userManual")}</a>
+        <a href="/docs">{t("developerDocs")}</a>
+        <a href="/api">{t("api")}</a>
+        <a href="/faq">{t("faq")}</a>
+        <a href="/dapp">{t("dapps")}</a>
+        <a href="/status">{t("status")}</a>
+        <a href="/security">{t("security")}</a>
+        <a href="/support">{t("support")}</a>
+        <a href="/dapp/square">{t("square")}</a>
+        <a href={apiConfig.explorerUrl}>{t("explorer")}</a>
+        <a href="/readiness">{t("readiness")}</a>
+        <a href="/risk">{t("risk")}</a>
+        <a href="/privacy">{t("privacy")}</a>
+        <a href="/terms">{t("terms")}</a>
       </div>
-      <p className="footerBoundary">Public testnet project. No mainnet launch, exchange listing, stablecoin issuer support, wallet default support, or third-party partnership is claimed.</p>
+      <p className="footerBoundary">{t("footerBoundary")}</p>
     </footer>
   );
 }

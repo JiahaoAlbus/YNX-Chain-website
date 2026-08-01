@@ -1,8 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, CheckCircle2, Move3d, WalletCards } from "lucide-react";
 import { apiConfig } from "../lib/api/ynxApi.js";
+import { useLocale } from "../lib/i18n.jsx";
 
 export function Hero({ snapshot, connectionState, onAddNetwork }) {
+  const { locale } = useLocale();
+  const zh = locale === "zh-CN";
   const status = snapshot.status || {};
   const live = !status.error && status.chainId === 6423;
   const stageRef = useRef(null);
@@ -81,7 +84,7 @@ export function Hero({ snapshot, connectionState, onAddNetwork }) {
         className={`heroStage ${motion.dragging ? "isPulling" : ""} ${expanded ? "isExpanded" : ""}`}
         role="button"
         tabIndex="0"
-        aria-label={expanded ? "Collapse execution layers" : "Drag or press Enter to separate execution layers"}
+        aria-label={expanded ? (zh ? "收起执行层" : "Collapse execution layers") : (zh ? "拖动或按回车键分离执行层" : "Drag or press Enter to separate execution layers")}
         aria-pressed={expanded}
         onPointerDown={startPull}
         onPointerMove={move}
@@ -129,21 +132,21 @@ export function Hero({ snapshot, connectionState, onAddNetwork }) {
       <div className="heroInner">
         <div className={`liveBadge ${live ? "isLive" : ""}`}>
           <span className="statusDot" />
-          {live ? "YNX Testnet live" : connectionState === "loading" ? "Connecting to testnet" : "Live status unavailable"}
+          {live ? (zh ? "YNX 测试网运行中" : "YNX Testnet live") : connectionState === "loading" ? (zh ? "正在连接测试网" : "Connecting to testnet") : (zh ? "实时状态不可用" : "Live status unavailable")}
         </div>
         <h1 id="hero-title">YNX Chain</h1>
         <p className="heroLead">
-          A full-stack Web4 L1 ecosystem built around YNXT, EVM-compatible execution, resource economics, AI-native services, payments, Trust tracing, and developer infrastructure.
+          {zh ? "围绕 YNXT 构建的全栈 Web4 L1 生态系统，包含 EVM 兼容执行、资源经济、原生 AI 服务、支付、Trust 追踪与开发者基础设施。" : "A full-stack Web4 L1 ecosystem built around YNXT, EVM-compatible execution, resource economics, AI-native services, payments, Trust tracing, and developer infrastructure."}
         </p>
         <div className="heroActions">
-          <a className="button primary" href={apiConfig.explorerUrl}>Open Explorer <ArrowUpRight size={18} /></a>
-          <button className="button secondary" onClick={onAddNetwork}><WalletCards size={18} /> Add YNX Testnet</button>
+          <a className="button primary" href={apiConfig.explorerUrl}>{zh ? "打开区块浏览器" : "Open Explorer"} <ArrowUpRight size={18} /></a>
+          <button className="button secondary" onClick={onAddNetwork}><WalletCards size={18} /> {zh ? "添加 YNX 测试网" : "Add YNX Testnet"}</button>
         </div>
         <div className="heroFacts" aria-label="Current network boundaries">
-          <span><CheckCircle2 size={16} /> Chain ID 6423</span>
-          <span><CheckCircle2 size={16} /> Native coin YNXT</span>
-          <span><CheckCircle2 size={16} /> Four public validator roles</span>
-          <span className="boundary">Authoritative replication today; public BFT migration pending</span>
+          <span><CheckCircle2 size={16} /> {zh ? "链 ID 6423" : "Chain ID 6423"}</span>
+          <span><CheckCircle2 size={16} /> {zh ? "原生资产 YNXT" : "Native coin YNXT"}</span>
+          <span><CheckCircle2 size={16} /> {zh ? "四个公开验证者角色" : "Four public validator roles"}</span>
+          <span className="boundary">{zh ? "当前为权威复制；公开 BFT 迁移仍待完成" : "Authoritative replication today; public BFT migration pending"}</span>
         </div>
       </div>
     </section>

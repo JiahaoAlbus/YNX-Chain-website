@@ -3,17 +3,19 @@ import { ExternalLink, Menu, Moon, Search, Sun, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { apiConfig } from "../lib/api/ynxApi.js";
 import { CommandPalette } from "./CommandPalette.jsx";
+import { useLocale } from "../lib/i18n.jsx";
 
 const navigation = [
-  ["Products", "/#ecosystem"],
-  ["DApps", "/dapp"],
-  ["Download", "/dapp/download"],
-  ["Manual", "/manual"],
-  ["Docs", "/docs"],
-  ["Status", "/status"]
+  ["products", "/#ecosystem"],
+  ["dapps", "/dapp"],
+  ["download", "/dapp/download"],
+  ["manual", "/manual"],
+  ["docs", "/docs"],
+  ["status", "/status"]
 ];
 
 export function SiteHeader({ scrollProgress = 0 }) {
+  const { locale, setLocale, t } = useLocale();
   const [open, setOpen] = useState(false);
   const [commandOpen, setCommandOpen] = useState(false);
   const [theme, setTheme] = useState(() => {
@@ -47,22 +49,25 @@ export function SiteHeader({ scrollProgress = 0 }) {
 
   return (
     <>
-      <a className="skipLink" href="#main-content">Skip to content</a>
+      <a className="skipLink" href="#main-content">{t("skip")}</a>
       <header className="siteHeader">
         <span className="scrollProgress" style={{ transform: `scaleX(${scrollProgress})` }} aria-hidden="true" />
-        <a className="brand" href="/" aria-label="YNX Chain home"><img src="/ynx-logo.png" alt="" /><small>CHAIN</small></a>
-        <nav className={open ? "open" : ""} aria-label="Primary navigation">
-          {navigation.map(([label, href]) => <a key={label} href={href} onClick={() => setOpen(false)}>{label}</a>)}
-          <a className="navExplorer" href={apiConfig.explorerUrl}>Explorer <ExternalLink size={14} /></a>
+        <a className="brand" href="/" aria-label={t("home")}><img src="/ynx-logo.png" alt="" /><small>CHAIN</small></a>
+        <nav className={open ? "open" : ""} aria-label={t("primaryNav")}>
+          {navigation.map(([key, href]) => <a key={key} href={href} onClick={() => setOpen(false)}>{t(key)}</a>)}
+          <a className="navExplorer" href={apiConfig.explorerUrl}>{t("explorer")} <ExternalLink size={14} /></a>
         </nav>
         <div className="headerTools">
-          <button type="button" className="toolButton searchButton" onClick={() => setCommandOpen(true)} aria-label="Search and open command palette">
-            <Search /><span>Search</span><kbd>⌘K</kbd>
+          <button type="button" className="toolButton searchButton" onClick={() => setCommandOpen(true)} aria-label={t("searchOpen")}>
+            <Search /><span>{t("search")}</span><kbd>⌘K</kbd>
           </button>
-          <button type="button" className="toolButton" onClick={() => setTheme(theme === "dark" ? "light" : "dark")} aria-label={`Use ${theme === "dark" ? "light" : "dark"} mode`}>
+          <button type="button" className="toolButton localeButton" onClick={() => setLocale(locale === "en" ? "zh-CN" : "en")} aria-label={t("switchLanguage")} title={t("switchLanguage")}>
+            <span>{locale === "en" ? "中文" : "EN"}</span>
+          </button>
+          <button type="button" className="toolButton" onClick={() => setTheme(theme === "dark" ? "light" : "dark")} aria-label={t(theme === "dark" ? "light" : "dark")}>
             {theme === "dark" ? <Sun /> : <Moon />}
           </button>
-          <button type="button" className="menuButton" aria-expanded={open} aria-label={open ? "Close navigation" : "Open navigation"} onClick={() => setOpen(!open)}>
+          <button type="button" className="menuButton" aria-expanded={open} aria-label={t(open ? "closeNav" : "openNav")} onClick={() => setOpen(!open)}>
             {open ? <X /> : <Menu />}
           </button>
         </div>

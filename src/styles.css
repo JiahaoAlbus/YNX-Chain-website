@@ -48,6 +48,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .toolButton:hover { color: var(--blue); border-color: rgba(0,47,167,.35); }
 .toolButton svg { width: 17px; }
 .toolButton span { font-size: 12px; font-weight: 700; }
+.localeButton { min-width: 48px; color: var(--blue); }
 .toolButton kbd { padding: 2px 5px; border: 1px solid var(--line); border-radius: 4px; color: var(--muted); background: var(--soft); font-size: 10px; }
 .commandBackdrop { position: fixed; z-index: 110; inset: 0; display: grid; place-items: start center; padding: min(16vh, 130px) 18px 18px; background: rgba(2,8,24,.52); backdrop-filter: blur(10px); }
 .commandPalette { width: min(680px, 100%); max-height: min(690px, 78svh); overflow: hidden; display: grid; grid-template-rows: auto auto minmax(0,1fr) auto; border: 1px solid rgba(255,255,255,.35); border-radius: 14px; color: var(--ink); background: var(--surface-raised); box-shadow: 0 34px 90px rgba(0,15,60,.28); }
