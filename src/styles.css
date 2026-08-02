@@ -468,6 +468,68 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .commentList article p { line-height: 1.55; }
 .commentList article small, .commentEmpty { color: var(--muted); }
 .docsHeader { max-width: 860px; }
+.docsReadableHeader { padding-bottom: 72px; }
+.docsHeaderActions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+.docsHeaderActions .button { display: inline-flex; align-items: center; gap: 8px; }
+.docsIntro, .docsManualBrowser, .docsEcosystemLogic { scroll-margin-top: 92px; padding: 72px 0; border-top: 1px solid var(--blue); }
+.docsIntro .sectionHeader, .docsEcosystemLogic .sectionHeader { max-width: 820px; }
+.docsCoreFacts { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); margin: 34px 0 0; border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+.docsCoreFacts div { min-height: 150px; padding: 24px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.docsCoreFacts dt { margin-bottom: 10px; color: var(--blue); font-size: 13px; font-weight: 800; }
+.docsCoreFacts dd { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.66; }
+.docsStartSteps { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); margin-top: 36px; }
+.docsStartSteps article { min-height: 210px; padding: 22px; border-top: 1px solid var(--blue); border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.docsStartSteps article:first-child { border-left: 1px solid var(--line); }
+.docsStartSteps article > span { display: inline-flex; width: 30px; height: 30px; align-items: center; justify-content: center; border-radius: 50%; color: white; background: var(--blue); font-size: 12px; font-weight: 800; }
+.docsStartSteps h3 { margin: 26px 0 10px; font-size: 17px; }
+.docsStartSteps p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.62; }
+.docsNetworkStrip { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); margin-top: 20px; background: var(--blue); color: white; }
+.docsNetworkStrip > span { min-height: 78px; display: flex; flex-direction: column; justify-content: center; gap: 7px; padding: 16px 20px; border-right: 1px solid rgba(255,255,255,.18); }
+.docsNetworkStrip small { color: rgba(255,255,255,.66); font-size: 11px; }
+.docsNetworkStrip strong, .docsNetworkStrip a { color: white; font-size: 13px; text-decoration: none; }
+.docsNetworkStrip a { display: inline-flex; align-items: center; gap: 6px; font-weight: 750; }
+.docsTruthGrid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); margin-top: 36px; border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+.docsTruthGrid article { min-height: 160px; padding: 22px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.docsTruthGrid h3 { margin: 0 0 10px; font-size: 16px; }
+.docsTruthGrid p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.62; }
+.docsManualHeader { display: grid; grid-template-columns: minmax(0,1fr) minmax(320px,520px); gap: 44px; align-items: end; margin-bottom: 42px; }
+.docsManualHeader h2 { margin: 4px 0 12px; font-size: 38px; }
+.docsManualHeader > div > p:last-child { max-width: 680px; margin: 0; color: var(--muted); line-height: 1.62; }
+.docsManualHeader .docsSearch { width: 100%; margin: 0; }
+.docsManualLayout { grid-template-columns: 270px minmax(0,1fr); gap: 58px; }
+.docsNav button { width: 100%; padding: 14px 8px; border: 0; border-bottom: 1px solid var(--line); color: var(--muted); background: transparent; text-align: left; cursor: pointer; }
+.docsNav button span { display: block; color: inherit; font: 750 13px/1.35 inherit; }
+.docsNav button small { display: -webkit-box; margin-top: 6px; overflow: hidden; color: var(--muted); font-size: 11px; line-height: 1.45; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.docsNav button:hover, .docsNav button.active { padding-left: 13px; color: var(--blue); background: var(--soft); }
+.docsNav button.active { box-shadow: inset 3px 0 var(--blue); }
+.docsFullArticle > header { display: grid; grid-template-columns: 48px minmax(0,1fr); gap: 18px; padding-bottom: 26px; border-bottom: 1px solid var(--line); }
+.docsFullArticle > header > svg { width: 48px; height: 48px; padding: 13px; border-radius: 8px; color: white; background: var(--blue); }
+.docsFullArticle > header h2 { margin: 3px 0 10px; font-size: clamp(30px,4vw,46px); line-height: 1.08; }
+.docsFullArticle > header p:last-child { margin: 0; color: var(--muted); line-height: 1.62; }
+.docsFullArticle .authorityArticle { padding-top: 10px; }
+.docsProductGuides { margin-top: 34px; border-top: 1px solid var(--blue); }
+.docsProductGuides details { border-bottom: 1px solid var(--line); }
+.docsProductGuides summary { min-height: 84px; display: grid; grid-template-columns: 260px minmax(0,1fr); gap: 28px; align-items: center; padding: 16px 8px; cursor: pointer; list-style: none; }
+.docsProductGuides summary::-webkit-details-marker { display: none; }
+.docsProductGuides summary > span { display: flex; align-items: center; gap: 12px; color: var(--blue); }
+.docsProductGuides summary > small { color: var(--muted); font-size: 13px; line-height: 1.55; }
+.docsProductGuides details[open] summary { background: var(--soft); }
+.docsProductGuides details > div { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 40px; padding: 30px 34px 34px; background: var(--soft); }
+.docsProductGuides h3 { margin: 0 0 14px; font-size: 17px; }
+.docsProductGuides ol, .docsProductGuides ul { margin: 0; padding-left: 20px; }
+.docsProductGuides li { margin-bottom: 10px; color: var(--muted); font-size: 13px; line-height: 1.58; }
+.docsProductGuides ul { padding: 0; list-style: none; }
+.docsProductGuides ul li { display: grid; grid-template-columns: 16px minmax(0,1fr); gap: 8px; }
+.docsProductGuides ul svg { margin-top: 3px; color: var(--blue); }
+.docsProductGuides .textLink { grid-column: 1 / -1; justify-self: start; }
+.docsSafetyNote { display: grid; grid-template-columns: 28px minmax(0,1fr); gap: 16px; margin: 40px 0 24px; padding: 22px; color: white; background: var(--blue); }
+.docsSafetyNote p { margin: 6px 0 0; color: rgba(255,255,255,.72); line-height: 1.55; }
+.docsBundleExport { margin-top: 18px; border: 1px solid var(--line); }
+.docsBundleExport summary { min-height: 54px; display: flex; align-items: center; gap: 9px; padding: 13px 16px; color: var(--muted); cursor: pointer; font-size: 13px; }
+.docsBundleExport > div { padding: 0 16px 18px 42px; }
+.docsBundleExport p { color: var(--muted); font-size: 13px; }
+.docsBundleExport a { color: var(--blue); font-weight: 750; }
+.docsBundleExport small { display: block; margin-top: 8px; overflow-wrap: anywhere; color: var(--muted); font: 10px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; }
 .docsBundleDownload { display: inline-flex; align-items: flex-start; gap: 10px; max-width: 100%; margin: 18px 0 10px; padding: 14px 16px; border: 1px solid var(--line); color: var(--blue); text-decoration: none; background: #fff; }
 .docsBundleDownload span { display: grid; gap: 4px; min-width: 0; }
 .docsBundleDownload small { color: var(--muted); overflow-wrap: anywhere; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; line-height: 1.5; }
@@ -831,6 +893,13 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
   .docsLayout { grid-template-columns: 1fr; gap: 34px; }
   .docsNav { position: static; display: flex; flex-direction: row; overflow-x: auto; border-left: 0; border-bottom: 1px solid var(--line); scroll-snap-type: x proximity; scrollbar-width: thin; }
   .docsNav a { flex: 0 0 auto; min-height: 44px; padding: 13px 16px; border-right: 1px solid var(--line); scroll-snap-align: start; }
+  .docsNav button { flex: 0 0 230px; border-right: 1px solid var(--line); scroll-snap-align: start; }
+  .docsCoreFacts, .docsStartSteps, .docsNetworkStrip, .docsTruthGrid, .docsManualHeader, .docsProductGuides details > div { grid-template-columns: 1fr; }
+  .docsStartSteps article { min-height: 0; border-left: 1px solid var(--line); }
+  .docsNetworkStrip > span { border-right: 0; border-bottom: 1px solid rgba(255,255,255,.18); }
+  .docsManualHeader { align-items: start; gap: 24px; }
+  .docsProductGuides summary { grid-template-columns: 1fr; gap: 7px; }
+  .docsProductGuides details > div { gap: 24px; padding: 24px 18px; }
   .docSection { margin-bottom: 50px; padding-bottom: 54px; }
   .docRows div { grid-template-columns: 1fr; gap: 6px; padding: 13px 0; }
   .codeBlock pre { padding-left: 16px; padding-right: 16px; }
