@@ -176,7 +176,7 @@ const evidence = {
     }
   },
   shop: {
-    commit: "091bc3d4131c",
+    commit: "6fa2d6c5",
     productRelease: {
       href: "/releases/ecosystem-release-registry.json",
       release: "shop-v0.3.0-testnet-preview.1"
@@ -184,7 +184,7 @@ const evidence = {
     statusNote: "The public Testnet storefront, persistent catalog, Wallet-bound cart/order flows, Pay/Trust/AI integrations, and a debug-signed Android Testnet Preview are available. Tax, carrier verification, production signing, and store release remain unavailable.",
     downloads: {
       web: { status: PRODUCT_STATUS.LIVE, href: "https://shop.ynxweb4.com/shop/", external: true, downloadHosted: false, note: "Public YNX Testnet storefront with three clearly labelled demo listings." },
-      android: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-shop-0.3.0-testnet-preview-debug-signed.apk", "Debug-signed Android Testnet Preview · SHA-256 53e8041d…e5196 · 290,289 bytes · min Android API 26.", "/downloads/ynx-shop-0.3.0-testnet-preview-debug-signed.apk"),
+      android: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-shop-0.3.0-testnet-preview-6fa2d6c5-debug-signed.apk", "Debug-signed Android Testnet Preview · source 6fa2d6c5 · SHA-256 a7466e02…2c72d · 253,733 bytes · min Android API 26.", "/downloads/ynx-shop-0.3.0-testnet-preview-6fa2d6c5-debug-signed.apk"),
       ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS source and simulator CI pass; no production-signed or hosted iOS package is claimed." },
       macos: { status: PRODUCT_STATUS.NOT_READY, note: "No published Shop macOS package in this candidate." },
       windows: { status: PRODUCT_STATUS.NOT_READY, note: "No published Shop Windows package in this candidate." }

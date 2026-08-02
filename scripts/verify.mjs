@@ -449,7 +449,7 @@ const requiredOfficialDownloads = new Map([
   ["/downloads/ynx-developer-testnet-preview-macos-unsigned.zip", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-developer-testnet-preview-macos-unsigned.zip"],
   ["/downloads/ynx-developer-testnet-preview-windows-x64-unsigned.zip", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-developer-testnet-preview-windows-x64-unsigned.zip"],
   ["/downloads/ynx-trust-center-4d40557229b4-linux-amd64.tar.gz", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-trust-center-4d40557229b4-linux-amd64.tar.gz"],
-  ["/downloads/ynx-shop-0.3.0-testnet-preview-debug-signed.apk", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-shop-0.3.0-testnet-preview-debug-signed-KCZ4s9cOV8QZpFsQ3umJsyn1FrBxEC.apk"]
+  ["/downloads/ynx-shop-0.3.0-testnet-preview-6fa2d6c5-debug-signed.apk", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-shop-0.3.0-testnet-preview-6fa2d6c5-debug-signed.apk"]
 ]);
 for (const [source, destination] of requiredOfficialDownloads) {
   if (!vercel.rewrites?.some((rewrite) => rewrite.source === source && rewrite.destination === destination)) {
