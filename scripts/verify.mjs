@@ -178,6 +178,9 @@ if (releaseRegistry.products.some((product) => Object.hasOwn(product, "branch"))
   process.exit(1);
 }
 const ownerProductIds = ownerRecordIndex.records?.map((record) => record.productId) || [];
+const approvedOwnerPublicEvidence = new Map([
+  ["10", { sourceCommit: "88c0f3a546b463fb270c4bea5d944178865660a5", publicUrl: "https://seller.ynxweb4.com/seller/" }],
+]);
 if (
   ownerRecordIndex.owner !== "28-website" ||
   ownerRecordIndex.rules?.observedBranchIsNotCentralAcceptance !== true ||
@@ -185,13 +188,16 @@ if (
   ownerProductIds.length !== 35 ||
   new Set(ownerProductIds).size !== 35 ||
   ownerProductIds.includes("28") ||
-  ownerRecordIndex.records.some((record) =>
-    !/^\d{2}$/.test(record.productId) ||
-    !/^[0-9a-f]{40}$/.test(record.sourceCommit) ||
-    record.publicUrl !== null ||
-    typeof record.publicVerified !== "boolean" ||
-    typeof record.downloadHosted !== "boolean"
-  )
+  ownerRecordIndex.records.some((record) => {
+    const approved = approvedOwnerPublicEvidence.get(record.productId);
+    return !/^\d{2}$/.test(record.productId) ||
+      !/^[0-9a-f]{40}$/.test(record.sourceCommit) ||
+      typeof record.publicVerified !== "boolean" ||
+      typeof record.downloadHosted !== "boolean" ||
+      (approved
+        ? record.sourceCommit !== approved.sourceCommit || record.publicUrl !== approved.publicUrl || !record.publicVerified
+        : record.publicUrl !== null || record.publicVerified);
+  })
 ) {
   console.error("35-product owner record index is missing, duplicated, unbound, or overclaims public evidence");
   process.exit(1);
