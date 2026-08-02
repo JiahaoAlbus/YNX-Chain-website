@@ -66,6 +66,9 @@
     }
   ],
   "rewrites": [
+    { "source": "/downloads/ynx-developer-testnet-preview-macos-unsigned.zip", "destination": "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-developer-testnet-preview-macos-unsigned.zip" },
+    { "source": "/downloads/ynx-developer-testnet-preview-windows-x64-unsigned.zip", "destination": "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-developer-testnet-preview-windows-x64-unsigned.zip" },
+    { "source": "/downloads/ynx-trust-center-4d40557229b4-linux-amd64.tar.gz", "destination": "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-trust-center-4d40557229b4-linux-amd64.tar.gz" },
     { "source": "/(.*)", "destination": "/" }
   ]
 }

@@ -440,9 +440,21 @@ if (appGateway.includes("/chat/") || /method:\s*["']POST["']/.test(appGateway) |
   console.error("website app proxy must remain read-only Square-only");
   process.exit(1);
 }
-if (!vercel.cleanUrls || vercel.rewrites?.[0]?.source !== "/(.*)" || vercel.rewrites?.[0]?.destination !== "/") {
+const spaFallback = vercel.rewrites?.find((rewrite) => rewrite.source === "/(.*)");
+if (!vercel.cleanUrls || spaFallback?.destination !== "/") {
   console.error("Vercel SPA deep-link fallback is not configured for clean URLs");
   process.exit(1);
+}
+const requiredOfficialDownloads = new Map([
+  ["/downloads/ynx-developer-testnet-preview-macos-unsigned.zip", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-developer-testnet-preview-macos-unsigned.zip"],
+  ["/downloads/ynx-developer-testnet-preview-windows-x64-unsigned.zip", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-developer-testnet-preview-windows-x64-unsigned.zip"],
+  ["/downloads/ynx-trust-center-4d40557229b4-linux-amd64.tar.gz", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-trust-center-4d40557229b4-linux-amd64.tar.gz"]
+]);
+for (const [source, destination] of requiredOfficialDownloads) {
+  if (!vercel.rewrites?.some((rewrite) => rewrite.source === source && rewrite.destination === destination)) {
+    console.error(`official download rewrite is missing: ${source}`);
+    process.exit(1);
+  }
 }
 const requiredDAppRedirects = new Map([
   ["/apps", "/dapp"], ["/download", "/dapp/download"], ["/faucet", "/dapp/faucet"], ["/square", "/dapp/square"],

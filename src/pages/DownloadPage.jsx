@@ -3,7 +3,7 @@ import { ArrowUpRight, Download, FileJson2, ShieldCheck } from "lucide-react";
 import { getCatalog, DOWNLOAD_LABELS, PLATFORM_STATUS, PRODUCT_STATUS } from "../lib/ecosystemCatalog.js";
 import { useLocale } from "../lib/i18n.jsx";
 
-function renderTarget(platform, item, productName) {
+function renderTarget(platform, item, productName, zh) {
   const name = DOWNLOAD_LABELS[platform] || platform;
   const status = PLATFORM_STATUS[item.status] || { text: "Not ready" };
   const canOpen = item.href && (item.downloadHosted || item.status === PRODUCT_STATUS.LIVE);
@@ -14,9 +14,9 @@ function renderTarget(platform, item, productName) {
   return (
     <li key={`${productName}-${platform}`} className={`downloadItem ${item.status}`}>
       <span>{name}</span>
-      <a href={item.href} rel={item.external ? "noopener" : undefined}>
-        <span>{status.text}</span>
-        <ArrowUpRight size={14} />
+      <a href={item.href} rel={item.external ? "noopener" : undefined} download={item.downloadHosted ? item.artifactPath : undefined}>
+        <span>{item.downloadHosted ? (zh ? "从官网下载" : "Download from YNX") : status.text}</span>
+        {item.downloadHosted ? <Download size={14} /> : <ArrowUpRight size={14} />}
       </a>
       {item.note ? <small>{item.note}</small> : null}
     </li>
@@ -39,6 +39,30 @@ export function DownloadPage() {
     const nameSort = a.name.localeCompare(b.name);
     return scoreA - scoreB || nameSort;
   });
+  const hostedProducts = products.filter((product) => Object.values(product.downloads || {}).some((item) => item.downloadHosted && item.href));
+  const directoryProducts = products.filter((product) => !hostedProducts.includes(product));
+
+  const renderProduct = (product) => (
+    <article className="downloadCard" key={product.key}>
+      <div className="downloadHeader">
+        <strong>{product.name}</strong>
+        <span className={`appState ${product.status}`}>{product.status === PRODUCT_STATUS.LIVE ? (zh ? "公开网页" : "public web") : product.status === PRODUCT_STATUS.LOCAL ? (zh ? "候选版本" : "candidate") : product.status === PRODUCT_STATUS.PLANNED ? (zh ? "候选版本未完整" : "candidate incomplete") : (zh ? "尚未就绪" : "not ready")}</span>
+      </div>
+
+      <p>{product.detail}</p>
+      <ul className="downloadList">
+        {Object.entries(product.downloads)
+          .filter(([platform]) => ["web", "android", "ios", "macos", "windows", "linux"].includes(platform))
+          .map(([platform, item]) => renderTarget(platform, item, product.key, zh))}
+      </ul>
+
+      <a href={product.route}>
+        <Download size={14} />
+        {zh ? "查看发布状态" : "View release status"}
+        <span className="visuallyHidden"> for {product.name}</span>
+      </a>
+    </article>
+  );
 
   return (
     <main className="downloadPage">
@@ -48,28 +72,20 @@ export function DownloadPage() {
         <p>{zh ? "只有具备不可变托管地址，或已经验证的公开网页才提供链接。本地构建仍作为证据展示，但不能从这里下载。" : "Only immutable hosted artifacts or verified public web surfaces are links. Local builds remain visible as evidence, but cannot be downloaded here."}</p>
       </header>
 
-      <section className="downloadDirectory" aria-label="Download center">
-        {products.map((product) => (
-        <article className="downloadCard" key={product.key}>
-          <div className="downloadHeader">
-            <strong>{product.name}</strong>
-            <span className={`appState ${product.status}`}>{product.status === PRODUCT_STATUS.LIVE ? (zh ? "公开网页" : "public web") : product.status === PRODUCT_STATUS.LOCAL ? (zh ? "候选版本" : "candidate") : product.status === PRODUCT_STATUS.PLANNED ? (zh ? "候选版本未完整" : "candidate incomplete") : (zh ? "尚未就绪" : "not ready")}</span>
-          </div>
+      <section className="downloadGroup" aria-labelledby="available-downloads-title">
+        <div className="downloadGroupHeader">
+          <div><p className="sectionEyebrow">{zh ? "现在可下载" : "Available now"}</p><h2 id="available-downloads-title">{zh ? "已验证的官网安装包" : "Verified official downloads"}</h2></div>
+          <p>{zh ? "目前仅发布 3 个通过哈希登记的 Testnet Preview。点击后直接从 YNX 官方下载地址获取，不再跳转 GitHub。" : "Three hash-registered Testnet Preview artifacts are available. Downloads stay on the official YNX address instead of redirecting to GitHub."}</p>
+        </div>
+        <div className="downloadDirectory">{hostedProducts.map(renderProduct)}</div>
+      </section>
 
-          <p>{product.detail}</p>
-          <ul className="downloadList">
-            {Object.entries(product.downloads)
-              .filter(([platform]) => ["web", "android", "ios", "macos", "windows", "linux"].includes(platform))
-              .map(([platform, item]) => renderTarget(platform, item, product.key))}
-          </ul>
-
-          <a href={product.route}>
-            <Download size={14} />
-            {zh ? "查看发布状态" : "View release status"}
-            <span className="visuallyHidden"> for {product.name}</span>
-          </a>
-        </article>
-        ))}
+      <section className="downloadGroup" aria-labelledby="release-directory-title">
+        <div className="downloadGroupHeader">
+          <div><p className="sectionEyebrow">{zh ? "其他产品" : "Other products"}</p><h2 id="release-directory-title">{zh ? "网页入口与开发状态" : "Web entries and release status"}</h2></div>
+          <p>{zh ? "没有安装包的产品会明确显示网页入口、候选状态或尚未就绪，避免把本地构建误写成公开下载。" : "Products without installers show their web entry, candidate state, or not-ready status clearly."}</p>
+        </div>
+        <div className="downloadDirectory">{directoryProducts.map(renderProduct)}</div>
       </section>
 
       <aside className="evidenceBoundary">

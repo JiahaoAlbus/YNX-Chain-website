@@ -195,16 +195,16 @@ const evidence = {
   developer: {
     commit: "7f976c1e0629",
     productRelease: {
-      href: "https://github.com/JiahaoAlbus/YNX-Chain/releases/tag/developer-v0.2.0-testnet-preview.1",
+      href: "/releases/ecosystem-release-registry.json",
       release: "developer-v0.2.0-testnet-preview.1"
     },
-    statusNote: "Immutable macOS arm64 and Windows x64 unsigned Testnet Preview packages are hosted on GitHub. They are not production-signed or store releases.",
+    statusNote: "Immutable macOS arm64 and Windows x64 unsigned Testnet Preview packages are hosted by the official website. They are not production-signed or store releases.",
     downloads: {
       web: { status: PRODUCT_STATUS.LOCAL, href: "/docs#ide", note: "Web IDE candidate documentation; no public IDE deployment is registered." },
       android: { status: PRODUCT_STATUS.NOT_READY, note: "No native Android package published for Developer in this candidate." },
       ios: { status: PRODUCT_STATUS.NOT_READY, note: "No iOS package published for Developer in this candidate." },
-      macos: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-developer-testnet-preview-macos-unsigned.zip", "Unsigned macOS arm64 Testnet Preview · SHA-256 ff9ae3d4…903f7 · 38,450,128 bytes.", "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/developer-v0.2.0-testnet-preview.1/ynx-developer-testnet-preview-macos-unsigned.zip"),
-      windows: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-developer-testnet-preview-windows-x64-unsigned.zip", "Unsigned Windows x64 Testnet Preview · SHA-256 1efaf486…07fb29 · 106,341,644 bytes.", "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/developer-v0.2.0-testnet-preview.1/ynx-developer-testnet-preview-windows-x64-unsigned.zip")
+      macos: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-developer-testnet-preview-macos-unsigned.zip", "Unsigned macOS arm64 Testnet Preview · SHA-256 ff9ae3d4…903f7 · 38,450,128 bytes.", "/downloads/ynx-developer-testnet-preview-macos-unsigned.zip"),
+      windows: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-developer-testnet-preview-windows-x64-unsigned.zip", "Unsigned Windows x64 Testnet Preview · SHA-256 1efaf486…07fb29 · 106,341,644 bytes.", "/downloads/ynx-developer-testnet-preview-windows-x64-unsigned.zip")
     }
   },
   explorer: {
@@ -234,7 +234,7 @@ const evidence = {
   trust: {
     commit: "4d40557229b4",
     productRelease: {
-      href: "https://github.com/JiahaoAlbus/YNX-Chain/releases/tag/trust-center-v0.1.0-testnet-preview.2",
+      href: "/releases/ecosystem-release-registry.json",
       release: "trust-center-v0.1.0-testnet-preview.2"
     },
     statusNote: "The reproducible Linux amd64 Trust Center server and backup CLI bundle is hosted as an unsigned Testnet Preview. The Android debug build remains local-only.",
@@ -242,7 +242,7 @@ const evidence = {
       android: artifactDownload(PRODUCT_STATUS.LOCAL, "apps/trust-center/mobile/android/app/build/outputs/apk/debug/app-debug.apk", "Trust Center Android debug APK."),
       ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS project exists; simulator signing evidence pending." },
       web: { status: PRODUCT_STATUS.LOCAL, href: "https://trust.ynxweb4.com/health", external: true, note: "API/health route used as trust companion reference." },
-      linux: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-trust-center-4d40557229b4-linux-amd64.tar.gz", "Unsigned Linux amd64 Testnet Preview · SHA-256 48c1ee8e…a6eb85 · 4,526,591 bytes.", "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/trust-center-v0.1.0-testnet-preview.2/ynx-trust-center-4d40557229b4-linux-amd64.tar.gz")
+      linux: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-trust-center-4d40557229b4-linux-amd64.tar.gz", "Unsigned Linux amd64 Testnet Preview · SHA-256 48c1ee8e…a6eb85 · 4,526,591 bytes.", "/downloads/ynx-trust-center-4d40557229b4-linux-amd64.tar.gz")
     }
   },
   resource: {

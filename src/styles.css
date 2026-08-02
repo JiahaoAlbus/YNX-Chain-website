@@ -347,6 +347,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .appsNoResults p { color: var(--muted); }
 .downloadPage { width: min(1240px, calc(100% - 48px)); margin: 0 auto; padding: 84px 0 110px; }
 .downloadDirectory { width: 100%; margin: 0; }
+.downloadGroup { display: grid; gap: 20px; margin-bottom: 48px; }
+.downloadGroupHeader { display: grid; grid-template-columns: minmax(0, .8fr) minmax(320px, 1fr); gap: 40px; align-items: end; }
+.downloadGroupHeader h2 { margin: 4px 0 0; font-size: 32px; color: var(--ink); }
+.downloadGroupHeader > p { margin: 0; color: var(--muted); line-height: 1.6; }
 .downloadDirectory { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 0; border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
 .downloadCard { min-height: 186px; padding: 20px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); display: grid; gap: 12px; }
 .downloadCard p { margin: 0; color: var(--muted); max-width: 760px; }
@@ -910,6 +914,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
   .appGroupHeader > strong { grid-column: 1; }
   .appItem { min-height: 390px; gap: 16px; padding: 20px 16px; }
   .downloadDirectory { grid-template-columns: 1fr; }
+  .downloadGroupHeader { grid-template-columns: 1fr; gap: 12px; }
   .downloadItem { flex-direction: column; align-items: flex-start; }
   .downloadItem > small { flex: none; width: 100%; }
   .productStatusPage { width: calc(100% - 36px); padding: 48px 0 78px; }
