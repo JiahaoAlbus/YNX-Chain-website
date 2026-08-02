@@ -390,8 +390,8 @@ if (
   registryKeys.length !== 25 ||
   new Set(registryKeys).size !== 25 ||
   productKeys.some((key) => !registryKeys.includes(key)) ||
-  hostedPreviewProducts.length !== 2 ||
-  hostedPreviewProducts.map((product) => product.key).sort().join(",") !== "developer,trust" ||
+  hostedPreviewProducts.length !== 3 ||
+  hostedPreviewProducts.map((product) => product.key).sort().join(",") !== "developer,shop,trust" ||
   hostedPreviewProducts.some((product) => product.state !== "hosted-testnet-preview" || !product.releaseTag || !product.downloads?.length || product.downloads.some((download) => !/^[0-9a-f]{64}$/.test(download.sha256) || !(download.bytes > 0) || !download.signingClass)) ||
   acceptedProducts.length !== 1 ||
   exchangeRegistry?.key !== "exchange" ||
@@ -401,10 +401,10 @@ if (
   releaseRegistry.products.some((product) => !product.route.startsWith("/dapp/")) ||
   releaseRegistry.rules?.localArtifactIsDownload !== false
 ) {
-  console.error("release registry must preserve 25 truthful states, two source-bound hosted previews, and exactly one commit-bound accepted exchange candidate");
+  console.error("release registry must preserve 25 truthful states, three source-bound hosted previews, and exactly one commit-bound accepted exchange candidate");
   process.exit(1);
 }
-for (const requiredText of ["downloadHosted", "Local build only", "Download Testnet Preview", "candidate incomplete", "Product status", "developer-v0.2.0-testnet-preview.1", "trust-center-v0.1.0-testnet-preview.2"]) {
+for (const requiredText of ["downloadHosted", "Local build only", "Download Testnet Preview", "candidate incomplete", "Product status", "shop-v0.3.0-testnet-preview.1", "developer-v0.2.0-testnet-preview.1", "trust-center-v0.1.0-testnet-preview.2"]) {
   if (!ecosystemCatalog.includes(requiredText)) {
     console.error(`ecosystem release boundary missing: ${requiredText}`);
     process.exit(1);
@@ -448,7 +448,8 @@ if (!vercel.cleanUrls || spaFallback?.destination !== "/") {
 const requiredOfficialDownloads = new Map([
   ["/downloads/ynx-developer-testnet-preview-macos-unsigned.zip", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-developer-testnet-preview-macos-unsigned.zip"],
   ["/downloads/ynx-developer-testnet-preview-windows-x64-unsigned.zip", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-developer-testnet-preview-windows-x64-unsigned.zip"],
-  ["/downloads/ynx-trust-center-4d40557229b4-linux-amd64.tar.gz", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-trust-center-4d40557229b4-linux-amd64.tar.gz"]
+  ["/downloads/ynx-trust-center-4d40557229b4-linux-amd64.tar.gz", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-trust-center-4d40557229b4-linux-amd64.tar.gz"],
+  ["/downloads/ynx-shop-0.3.0-testnet-preview-debug-signed.apk", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-shop-0.3.0-testnet-preview-debug-signed-KCZ4s9cOV8QZpFsQ3umJsyn1FrBxEC.apk"]
 ]);
 for (const [source, destination] of requiredOfficialDownloads) {
   if (!vercel.rewrites?.some((rewrite) => rewrite.source === source && rewrite.destination === destination)) {
