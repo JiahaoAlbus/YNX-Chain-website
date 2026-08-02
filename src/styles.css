@@ -264,6 +264,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .statusLegend { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 26px; }
 .statusLegend span, .appState { display: inline-flex; width: max-content; align-items: center; min-height: 25px; padding: 0 8px; border: 1px solid var(--line); border-radius: 8px; font-size: 10px; font-weight: 800; text-transform: uppercase; }
 .statusLegend .live, .appState.live { color: var(--green); border-color: rgba(11,122,75,.28); background: #effaf5; }
+.statusLegend .preview, .appState.preview { color: var(--blue); border-color: rgba(0,47,167,.28); background: #eef3ff; }
 .statusLegend .beta, .appState.beta { color: var(--blue); border-color: rgba(0,47,167,.28); background: #eef3ff; }
 .statusLegend .local, .appState.local { color: #6d4c00; border-color: rgba(165,106,0,.26); background: #fff8e8; }
 .statusLegend .planned, .appState.planned { color: var(--muted); background: var(--soft); }
@@ -332,6 +333,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .downloadItem.disabled em { font-style: normal; font-size: 12px; color: var(--muted); }
 .downloadItem a { display: inline-flex; align-items: center; min-height: 44px; gap: 7px; text-decoration: none; color: var(--blue); font-weight: 700; font-size: 12px; }
 .downloadItem a:hover { text-decoration: underline; }
+.downloadItem.preview { border-color: rgba(0,47,167,.28); background: #f5f8ff; }
 .evidenceBoundary { margin-top: 38px; padding: 24px 0; display: grid; grid-template-columns: 32px minmax(0,1fr); gap: 16px; border-top: 1px solid var(--blue); border-bottom: 1px solid var(--line); }
 .evidenceBoundary svg { color: var(--blue); }
 .evidenceBoundary p { margin: 6px 0 0; max-width: 850px; color: var(--muted); line-height: 1.55; }

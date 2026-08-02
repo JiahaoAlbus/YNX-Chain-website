@@ -26,6 +26,7 @@ import { apiConfig } from "./api/ynxApi.js";
 
 export const PRODUCT_STATUS = {
   LIVE: "live",
+  PREVIEW: "preview",
   LOCAL: "local",
   PLANNED: "planned",
   NOT_READY: "not-ready"
@@ -37,6 +38,7 @@ const makeDownloads = (items = {}) => ({
   ios: { label: "iOS", status: PRODUCT_STATUS.NOT_READY },
   macos: { label: "macOS", status: PRODUCT_STATUS.NOT_READY },
   windows: { label: "Windows", status: PRODUCT_STATUS.NOT_READY },
+  linux: { label: "Linux", status: PRODUCT_STATUS.NOT_READY },
   ...items
 });
 
@@ -48,6 +50,7 @@ const artifactDownload = (status, artifactPath, note, href = null) => {
     status,
     label: hosted && status === PRODUCT_STATUS.LIVE ? "Web" : undefined,
     href: hosted ? href : null,
+    external: hosted && /^https?:\/\//.test(href || ""),
     downloadHosted: hosted,
     artifactPath,
     note: hosted ? note : `${note} (not hosted on this website)`
@@ -66,11 +69,13 @@ export const DOWNLOAD_LABELS = {
   android: "Android",
   ios: "iOS",
   macos: "macOS",
-  windows: "Windows"
+  windows: "Windows",
+  linux: "Linux"
 };
 
 export const PLATFORM_STATUS = {
   [PRODUCT_STATUS.LIVE]: { text: "Open public web", verb: "ready" },
+  [PRODUCT_STATUS.PREVIEW]: { text: "Download Testnet Preview", verb: "preview" },
   [PRODUCT_STATUS.LOCAL]: { text: "Local build only", verb: "local" },
   [PRODUCT_STATUS.PLANNED]: { text: "Incomplete", verb: "future" },
   [PRODUCT_STATUS.NOT_READY]: { text: "Not ready", verb: "blocked" }
@@ -188,14 +193,18 @@ const evidence = {
     }
   },
   developer: {
-    commit: "7c4d83f77d07",
-    statusNote: "Web IDE and local macOS Testnet Preview bundle are available. Windows local compile exists without packaged artifact.",
+    commit: "7f976c1e0629",
+    productRelease: {
+      href: "https://github.com/JiahaoAlbus/YNX-Chain/releases/tag/developer-v0.2.0-testnet-preview.1",
+      release: "developer-v0.2.0-testnet-preview.1"
+    },
+    statusNote: "Immutable macOS arm64 and Windows x64 unsigned Testnet Preview packages are hosted on GitHub. They are not production-signed or store releases.",
     downloads: {
       web: { status: PRODUCT_STATUS.LOCAL, href: "/docs#ide", note: "Web IDE candidate documentation; no public IDE deployment is registered." },
       android: { status: PRODUCT_STATUS.NOT_READY, note: "No native Android package published for Developer in this candidate." },
       ios: { status: PRODUCT_STATUS.NOT_READY, note: "No iOS package published for Developer in this candidate." },
-      macos: artifactDownload(PRODUCT_STATUS.LOCAL, "apps/developer/.ynx-developer-local/ynx-developer-testnet-preview-macos-unsigned.zip", "Unsigned Testnet Preview macOS zip; no production signature."),
-      windows: { status: PRODUCT_STATUS.PLANNED, note: "Windows WPF/WebView2 project exists; compiled package evidence pending." }
+      macos: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-developer-testnet-preview-macos-unsigned.zip", "Unsigned macOS arm64 Testnet Preview · SHA-256 ff9ae3d4…903f7 · 38,450,128 bytes.", "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/developer-v0.2.0-testnet-preview.1/ynx-developer-testnet-preview-macos-unsigned.zip"),
+      windows: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-developer-testnet-preview-windows-x64-unsigned.zip", "Unsigned Windows x64 Testnet Preview · SHA-256 1efaf486…07fb29 · 106,341,644 bytes.", "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/developer-v0.2.0-testnet-preview.1/ynx-developer-testnet-preview-windows-x64-unsigned.zip")
     }
   },
   explorer: {
@@ -223,12 +232,17 @@ const evidence = {
     }
   },
   trust: {
-    commit: "c7e4445598a7",
-    statusNote: "Trust-center Android debug package is generated for this candidate.",
+    commit: "4d40557229b4",
+    productRelease: {
+      href: "https://github.com/JiahaoAlbus/YNX-Chain/releases/tag/trust-center-v0.1.0-testnet-preview.2",
+      release: "trust-center-v0.1.0-testnet-preview.2"
+    },
+    statusNote: "The reproducible Linux amd64 Trust Center server and backup CLI bundle is hosted as an unsigned Testnet Preview. The Android debug build remains local-only.",
     downloads: {
       android: artifactDownload(PRODUCT_STATUS.LOCAL, "apps/trust-center/mobile/android/app/build/outputs/apk/debug/app-debug.apk", "Trust Center Android debug APK."),
       ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS project exists; simulator signing evidence pending." },
-      web: { status: PRODUCT_STATUS.LOCAL, href: "https://trust.ynxweb4.com/health", external: true, note: "API/health route used as trust companion reference." }
+      web: { status: PRODUCT_STATUS.LOCAL, href: "https://trust.ynxweb4.com/health", external: true, note: "API/health route used as trust companion reference." },
+      linux: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-trust-center-4d40557229b4-linux-amd64.tar.gz", "Unsigned Linux amd64 Testnet Preview · SHA-256 48c1ee8e…a6eb85 · 4,526,591 bytes.", "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/trust-center-v0.1.0-testnet-preview.2/ynx-trust-center-4d40557229b4-linux-amd64.tar.gz")
     }
   },
   resource: {
@@ -482,11 +496,11 @@ export const getCatalog = () => [
     name: "YNX Developer",
     icon: SquarePen,
     status: PRODUCT_STATUS.LOCAL,
-    detail: "Web IDE with bounded compiler/deploy checks is in candidate integration and needs central verifier completion for release.",
+    detail: "Web IDE and native desktop Testnet Preview with bounded compiler/deploy checks. Unsigned macOS arm64 and Windows x64 packages are available for public testing.",
     entry: { label: "Developer entry", href: "/dapp/developer" },
     docs: { ...docsAnchor("ide"), label: "Developer docs" },
     downloads: web(PRODUCT_STATUS.LOCAL, "/docs#ide", "Web IDE candidate path"),
-    metrics: [["Closure", "Parser, compile and deploy traces"], ["Risk", "Central verifier + native installer pending"], ["Readiness", "No production native package"]]
+    metrics: [["Closure", "Parser, compile and deploy traces"], ["Risk", "Unsigned preview; no production signature"], ["Readiness", "Hosted macOS + Windows Testnet Preview"]]
   },
   {
     key: "explorer",
@@ -526,11 +540,11 @@ export const getCatalog = () => [
     name: "YNX Trust Center",
     icon: ShieldCheck,
     status: PRODUCT_STATUS.LOCAL,
-    detail: "Trust signals, review, appeal and transparency records are implemented as governance-oriented candidate routes.",
+    detail: "Evidence review, appeals, corrections, transparency and verified backup/restore are available as a bounded Testnet Preview; AI cannot make final decisions or control YNXT.",
     entry: { label: "Trust entry", href: "https://trust.ynxweb4.com/health", external: true },
     docs: { ...docsAnchor("trust"), label: "Trust docs" },
     downloads: web(PRODUCT_STATUS.LOCAL, "/docs#trust", "Trust docs path + visibility"),
-    metrics: [["Closure", "Request validity and appeal"], ["Risk", "No external governance override"], ["Readiness", "No public full governance package"]]
+    metrics: [["Closure", "Request validity, appeal, export + restore"], ["Risk", "Unsigned preview; no asset-control authority"], ["Readiness", "Hosted Linux server + CLI Testnet Preview"]]
   },
   {
     key: "resource",

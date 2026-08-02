@@ -1,6 +1,7 @@
 import React from "react";
 import { ArrowUpRight, Download, FileJson2, ShieldCheck } from "lucide-react";
 import { getCatalog, DOWNLOAD_LABELS, PLATFORM_STATUS, PRODUCT_STATUS } from "../lib/ecosystemCatalog.js";
+import { useLocale } from "../lib/i18n.jsx";
 
 function renderTarget(platform, item, productName) {
   const name = DOWNLOAD_LABELS[platform] || platform;
@@ -23,6 +24,8 @@ function renderTarget(platform, item, productName) {
 }
 
 export function DownloadPage() {
+  const { locale } = useLocale();
+  const zh = locale === "zh-CN";
   const catalog = getCatalog();
   const priority = {
     [PRODUCT_STATUS.LIVE]: 0,
@@ -40,9 +43,9 @@ export function DownloadPage() {
   return (
     <main className="downloadPage">
       <header className="productPageHeader">
-        <p className="sectionEyebrow">Download center</p>
-        <h1>Public products and installable releases, separated.</h1>
-        <p>Only immutable hosted artifacts or verified public web surfaces are links. Local builds remain visible as evidence, but cannot be downloaded here.</p>
+        <p className="sectionEyebrow">{zh ? "下载中心" : "Download center"}</p>
+        <h1>{zh ? "公开网页与可安装测试版本，状态清楚分开。" : "Public products and installable releases, separated."}</h1>
+        <p>{zh ? "只有具备不可变托管地址，或已经验证的公开网页才提供链接。本地构建仍作为证据展示，但不能从这里下载。" : "Only immutable hosted artifacts or verified public web surfaces are links. Local builds remain visible as evidence, but cannot be downloaded here."}</p>
       </header>
 
       <section className="downloadDirectory" aria-label="Download center">
@@ -50,19 +53,19 @@ export function DownloadPage() {
         <article className="downloadCard" key={product.key}>
           <div className="downloadHeader">
             <strong>{product.name}</strong>
-            <span className={`appState ${product.status}`}>{product.status === PRODUCT_STATUS.LIVE ? "public web" : product.status === PRODUCT_STATUS.LOCAL ? "candidate" : product.status === PRODUCT_STATUS.PLANNED ? "candidate incomplete" : "not ready"}</span>
+            <span className={`appState ${product.status}`}>{product.status === PRODUCT_STATUS.LIVE ? (zh ? "公开网页" : "public web") : product.status === PRODUCT_STATUS.LOCAL ? (zh ? "候选版本" : "candidate") : product.status === PRODUCT_STATUS.PLANNED ? (zh ? "候选版本未完整" : "candidate incomplete") : (zh ? "尚未就绪" : "not ready")}</span>
           </div>
 
           <p>{product.detail}</p>
           <ul className="downloadList">
             {Object.entries(product.downloads)
-              .filter(([platform]) => ["web", "android", "ios", "macos", "windows"].includes(platform))
+              .filter(([platform]) => ["web", "android", "ios", "macos", "windows", "linux"].includes(platform))
               .map(([platform, item]) => renderTarget(platform, item, product.key))}
           </ul>
 
           <a href={product.route}>
             <Download size={14} />
-            View release status
+            {zh ? "查看发布状态" : "View release status"}
             <span className="visuallyHidden"> for {product.name}</span>
           </a>
         </article>
@@ -72,9 +75,9 @@ export function DownloadPage() {
       <aside className="evidenceBoundary">
         <ShieldCheck />
         <div>
-          <strong>No fake release states.</strong>
-          <p>Test signatures and local build folders are not production releases. A download appears only after URL, hash, size, signing class, and installation evidence are registered.</p>
-          <a className="textLink" href="/releases/ecosystem-release-registry.json"><FileJson2 size={16} /> Machine-readable release registry</a>
+          <strong>{zh ? "不伪造发布状态。" : "No fake release states."}</strong>
+          <p>{zh ? "测试签名和本地构建目录都不是生产发布。只有登记了 URL、哈希、字节数、签名类别和安装证据后，下载才会出现。所有 Testnet Preview 都可能变更或重置，请勿导入真实资产或生产私钥。" : "Test signatures and local build folders are not production releases. A download appears only after URL, hash, size, signing class, and installation evidence are registered. Testnet Previews may change or reset; never import real assets or production private keys."}</p>
+          <a className="textLink" href="/releases/ecosystem-release-registry.json"><FileJson2 size={16} /> {zh ? "机器可读发布登记表" : "Machine-readable release registry"}</a>
         </div>
       </aside>
     </main>

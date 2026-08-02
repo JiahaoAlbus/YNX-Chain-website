@@ -142,6 +142,7 @@ export function AppsPage() {
               <footer className="appCardActions">
                 <a className="appPrimaryLink" href={product.route}>{zh ? "查看产品" : "View product"} <ArrowUpRight /></a>
                 {renderProductLink(product.docs, zh ? "尚未就绪" : "Not ready")}
+                {product.release?.productRelease?.href ? renderProductLink({ label: zh ? "发布证据" : "Release evidence", href: product.release.productRelease.href, external: /^https?:\/\//.test(product.release.productRelease.href) }, zh ? "尚未就绪" : "Not ready") : null}
                 {product.status === PRODUCT_STATUS.LIVE && product.entry?.href ? renderProductLink(product.entry, zh ? "尚未就绪" : "Not ready") : null}
               </footer>
             </article>

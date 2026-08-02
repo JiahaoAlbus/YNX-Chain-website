@@ -384,12 +384,15 @@ if (productKeys.length !== 25 || new Set(productKeys).size !== 25 || !productKey
 }
 const registryKeys = releaseRegistry.products?.map((product) => product.key) || [];
 const acceptedProducts = releaseRegistry.products?.filter((product) => product.centralAccepted === true) || [];
+const hostedPreviewProducts = releaseRegistry.products?.filter((product) => product.downloadHosted === true) || [];
 const exchangeRegistry = acceptedProducts[0];
 if (
   registryKeys.length !== 25 ||
   new Set(registryKeys).size !== 25 ||
   productKeys.some((key) => !registryKeys.includes(key)) ||
-  releaseRegistry.products.some((product) => product.downloadHosted !== false) ||
+  hostedPreviewProducts.length !== 2 ||
+  hostedPreviewProducts.map((product) => product.key).sort().join(",") !== "developer,trust" ||
+  hostedPreviewProducts.some((product) => product.state !== "hosted-testnet-preview" || !product.releaseTag || !product.downloads?.length || product.downloads.some((download) => !/^[0-9a-f]{64}$/.test(download.sha256) || !(download.bytes > 0) || !download.signingClass)) ||
   acceptedProducts.length !== 1 ||
   exchangeRegistry?.key !== "exchange" ||
   exchangeRegistry.commit !== "fc2276e1ce4c" ||
@@ -398,10 +401,10 @@ if (
   releaseRegistry.products.some((product) => !product.route.startsWith("/dapp/")) ||
   releaseRegistry.rules?.localArtifactIsDownload !== false
 ) {
-  console.error("release registry must preserve 25 truthful states and exactly one commit-bound accepted exchange candidate");
+  console.error("release registry must preserve 25 truthful states, two source-bound hosted previews, and exactly one commit-bound accepted exchange candidate");
   process.exit(1);
 }
-for (const requiredText of ["downloadHosted", "Local build only", "candidate incomplete", "Product status"]) {
+for (const requiredText of ["downloadHosted", "Local build only", "Download Testnet Preview", "candidate incomplete", "Product status", "developer-v0.2.0-testnet-preview.1", "trust-center-v0.1.0-testnet-preview.2"]) {
   if (!ecosystemCatalog.includes(requiredText)) {
     console.error(`ecosystem release boundary missing: ${requiredText}`);
     process.exit(1);
