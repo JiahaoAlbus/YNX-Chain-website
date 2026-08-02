@@ -75,7 +75,7 @@ export function DownloadPage() {
       <section className="downloadGroup" aria-labelledby="available-downloads-title">
         <div className="downloadGroupHeader">
           <div><p className="sectionEyebrow">{zh ? "现在可下载" : "Available now"}</p><h2 id="available-downloads-title">{zh ? "已验证的官网安装包" : "Verified official downloads"}</h2></div>
-          <p>{zh ? "目前仅发布 3 个通过哈希登记的 Testnet Preview。点击后直接从 YNX 官方下载地址获取，不再跳转 GitHub。" : "Three hash-registered Testnet Preview artifacts are available. Downloads stay on the official YNX address instead of redirecting to GitHub."}</p>
+          <p>{zh ? "目前发布 4 个通过哈希登记的 Testnet Preview，其中包括 YNX Shop Android 测试版。点击后直接从 YNX 官方下载地址获取，不再跳转 GitHub。" : "Four hash-registered Testnet Preview artifacts are available, including YNX Shop for Android. Downloads stay on the official YNX address instead of redirecting to GitHub."}</p>
         </div>
         <div className="downloadDirectory">{hostedProducts.map(renderProduct)}</div>
       </section>

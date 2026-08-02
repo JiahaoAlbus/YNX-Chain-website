@@ -176,11 +176,16 @@ const evidence = {
     }
   },
   shop: {
-    commit: "ef0456a6111e",
-    statusNote: "Buyer Android debug package exists; seller console is web/desktop pending separate package work.",
+    commit: "6fa2d6c5",
+    productRelease: {
+      href: "/releases/ecosystem-release-registry.json",
+      release: "shop-v0.3.0-testnet-preview.1"
+    },
+    statusNote: "The public Testnet storefront, persistent catalog, Wallet-bound cart/order flows, Pay/Trust/AI integrations, and a debug-signed Android Testnet Preview are available. Tax, carrier verification, production signing, and store release remain unavailable.",
     downloads: {
-      android: artifactDownload(PRODUCT_STATUS.LOCAL, "apps/shop/native/android/app/build/outputs/apk/debug/app-debug.apk", "Android debug APK (local-only test verification).") ,
-      ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS project exists; simulator evidence pending." },
+      web: { status: PRODUCT_STATUS.LIVE, href: "https://shop.ynxweb4.com/shop/", external: true, downloadHosted: false, note: "Public YNX Testnet storefront with three clearly labelled demo listings." },
+      android: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-shop-0.3.0-testnet-preview-6fa2d6c5-debug-signed.apk", "Debug-signed Android Testnet Preview · source 6fa2d6c5 · SHA-256 a7466e02…2c72d · 253,733 bytes · min Android API 26.", "/downloads/ynx-shop-0.3.0-testnet-preview-6fa2d6c5-debug-signed.apk"),
+      ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS source and simulator CI pass; no production-signed or hosted iOS package is claimed." },
       macos: { status: PRODUCT_STATUS.NOT_READY, note: "No published Shop macOS package in this candidate." },
       windows: { status: PRODUCT_STATUS.NOT_READY, note: "No published Shop Windows package in this candidate." }
     }
@@ -473,12 +478,12 @@ export const getCatalog = () => [
     key: "shop",
     name: "YNX Shop",
     icon: Store,
-    status: PRODUCT_STATUS.PLANNED,
-    detail: "Marketplace buyer flow has partial product scaffolding. Payment and settlement coupling remains partial in candidate scope.",
-    entry: { label: "Shop entry", href: "/docs#shop" },
+    status: PRODUCT_STATUS.LIVE,
+    detail: "A public Testnet marketplace with original demo products, persistent inventory, Wallet-bound profiles and orders, YNXT Pay handoff, Trust evidence, explicit AI permission, privacy export/delete, and twelve UI languages. It is test infrastructure, not a production retail claim.",
+    entry: { label: "Open YNX Shop", href: "https://shop.ynxweb4.com/shop/", external: true },
     docs: { ...docsAnchor("shop"), label: "Shop docs" },
-    downloads: makeDownloads(),
-    metrics: [["Closure", "Catalog + cart flow"], ["Risk", "Delivery and refund lifecycle incomplete"], ["Readiness", "No storefront app released"]]
+    downloads: web(PRODUCT_STATUS.LIVE, "https://shop.ynxweb4.com/shop/", "Public Testnet storefront"),
+    metrics: [["Closure", "Catalog, cart, order, Pay, Trust, AI and privacy flows"], ["Risk", "Tax and carrier providers remain unavailable"], ["Readiness", "Public web + debug-signed Android Testnet Preview"]]
   },
   {
     key: "sellerConsole",
