@@ -21,6 +21,7 @@ import { ProductStatusPage } from "./pages/ProductStatusPage.jsx";
 import { SquarePage } from "./pages/SquarePage.jsx";
 import { ManualPage } from "./pages/ManualPage.jsx";
 import { ApiPage } from "./pages/ApiPage.jsx";
+import { FaucetPage } from "./pages/FaucetPage.jsx";
 import { getLegacyDAppRedirect, getProductByRoute } from "./lib/ecosystemCatalog.js";
 import docsAuthority from "virtual:ynx-docs-authority";
 import { LocaleProvider, useLocale } from "./lib/i18n.jsx";
@@ -105,6 +106,7 @@ function App() {
     if (route === "/docs") page = <DocsPage />;
     if (route === "/manual") page = <ManualPage />;
     if (route === "/api") page = <ApiPage />;
+    if (route === "/dapp/faucet") page = <FaucetPage />;
     if (route === "/dapp/square" || route.startsWith("/dapp/square/")) page = <SquarePage path={route} />;
     return <><SiteHeader scrollProgress={scrollProgress} /><div id="main-content">{page}</div><SiteFooter /></>;
   }
@@ -231,6 +233,7 @@ function getLegacyRouteTarget(path) {
   if (path === "/square") return "/dapp/square";
   if (path.startsWith("/square/")) return `/dapp/square/${path.slice("/square/".length)}`;
   if (path === "/quant") return "/dapp/quant";
+  if (path === "/faucet") return "/dapp/faucet";
   return getLegacyDAppRedirect(path);
 }
 
