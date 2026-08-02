@@ -191,10 +191,14 @@ const evidence = {
     }
   },
   sellerConsole: {
-    commit: "ef0456a6111e",
-    statusNote: "Seller console remains web/product API driven. Native app package not provided yet.",
+    commit: "88c0f3a5",
+    productRelease: {
+      href: "/releases/ecosystem-release-registry.json",
+      release: "seller-v0.4.0-testnet-preview.1"
+    },
+    statusNote: "The public Seller Testnet Console provides Wallet-bound store operations, catalog and inventory control, order/refund workflows, eight least-privilege roles, invitation/revocation evidence, provider governance, store data export, audit history, and integrity-protected recovery boundaries. Native desktop/mobile packages are not claimed because Seller is a public web product.",
     downloads: {
-      web: { status: PRODUCT_STATUS.LOCAL, href: "/docs#shop", note: "Seller controls are exposed via dedicated companion docs and product routes." }
+      web: { status: PRODUCT_STATUS.LIVE, href: "https://seller.ynxweb4.com/seller/", external: true, downloadHosted: false, note: "Public YNX Testnet Seller Console; Wallet session required for private store records." }
     }
   },
   developer: {
@@ -489,12 +493,12 @@ export const getCatalog = () => [
     key: "sellerConsole",
     name: "Seller Console",
     icon: FileSpreadsheet,
-    status: PRODUCT_STATUS.PLANNED,
-    detail: "Seller-side workflow has candidate controls only and needs fulfillment/audit hardening.",
-    entry: { label: "Seller entry", href: "/docs#shop" },
+    status: PRODUCT_STATUS.LIVE,
+    detail: "A public Testnet seller workspace for store policy, catalog, inventory, orders, fulfillment, refunds, settlement evidence, eight-role team authority, Wallet-bound invitations/revocations, external provider governance, data export and audit history. It does not claim tax/carrier availability or production commerce.",
+    entry: { label: "Open Seller Console", href: "https://seller.ynxweb4.com/seller/", external: true },
     docs: { ...docsAnchor("shop"), label: "Seller docs" },
-    downloads: makeDownloads(),
-    metrics: [["Closure", "Orders + payout path"], ["Risk", "No production seller identity flow"], ["Readiness", "No seller console package"]]
+    downloads: web(PRODUCT_STATUS.LIVE, "https://seller.ynxweb4.com/seller/", "Public Testnet Seller Console"),
+    metrics: [["Closure", "Store → catalog → order → settlement/refund → audit"], ["Risk", "Tax/carrier unavailable; Wallet session required"], ["Readiness", "Public web + 8 roles + governed integrations"]]
   },
   {
     key: "developer",
