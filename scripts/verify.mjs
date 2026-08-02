@@ -180,7 +180,7 @@ if (releaseRegistry.products.some((product) => Object.hasOwn(product, "branch"))
 const ownerProductIds = ownerRecordIndex.records?.map((record) => record.productId) || [];
 const approvedOwnerPublicEvidence = new Map([
   ["10", { sourceCommit: "88c0f3a546b463fb270c4bea5d944178865660a5", publicUrl: "https://seller.ynxweb4.com/seller/" }],
-  ["11", { sourceCommit: "5367814e39406f9a7645d66c18d2255b9530c265", publicUrl: "https://developer.ynxweb4.com/" }],
+  ["11", { sourceCommit: "70f7c3ca7540327aca3736b398c52a67b8e86f34", publicUrl: "https://developer.ynxweb4.com/" }],
 ]);
 if (
   ownerRecordIndex.owner !== "28-website" ||

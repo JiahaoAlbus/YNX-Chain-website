@@ -202,7 +202,7 @@ const evidence = {
     }
   },
   developer: {
-    commit: "5367814e",
+    commit: "70f7c3ca",
     productRelease: {
       href: "/releases/ecosystem-release-registry.json",
       release: "developer-v0.2.0-testnet-preview.1"
