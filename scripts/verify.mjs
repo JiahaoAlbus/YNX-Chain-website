@@ -180,6 +180,7 @@ if (releaseRegistry.products.some((product) => Object.hasOwn(product, "branch"))
 const ownerProductIds = ownerRecordIndex.records?.map((record) => record.productId) || [];
 const approvedOwnerPublicEvidence = new Map([
   ["10", { sourceCommit: "88c0f3a546b463fb270c4bea5d944178865660a5", publicUrl: "https://seller.ynxweb4.com/seller/" }],
+  ["11", { sourceCommit: "5367814e39406f9a7645d66c18d2255b9530c265", publicUrl: "https://developer.ynxweb4.com/" }],
 ]);
 if (
   ownerRecordIndex.owner !== "28-website" ||
@@ -398,7 +399,7 @@ if (
   productKeys.some((key) => !registryKeys.includes(key)) ||
   hostedPreviewProducts.length !== 3 ||
   hostedPreviewProducts.map((product) => product.key).sort().join(",") !== "developer,shop,trust" ||
-  hostedPreviewProducts.some((product) => product.state !== "hosted-testnet-preview" || !product.releaseTag || !product.downloads?.length || product.downloads.some((download) => !/^[0-9a-f]{64}$/.test(download.sha256) || !(download.bytes > 0) || !download.signingClass)) ||
+  hostedPreviewProducts.some((product) => (product.key === "developer" ? product.state !== "public-testnet-web-and-desktop-preview" : product.state !== "hosted-testnet-preview") || !product.releaseTag || !product.downloads?.length || product.downloads.some((download) => !/^[0-9a-f]{64}$/.test(download.sha256) || !(download.bytes > 0) || !download.signingClass)) ||
   acceptedProducts.length !== 1 ||
   exchangeRegistry?.key !== "exchange" ||
   exchangeRegistry.commit !== "fc2276e1ce4c" ||
@@ -452,8 +453,8 @@ if (!vercel.cleanUrls || spaFallback?.destination !== "/") {
   process.exit(1);
 }
 const requiredOfficialDownloads = new Map([
-  ["/downloads/ynx-developer-testnet-preview-macos-unsigned.zip", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-developer-testnet-preview-macos-unsigned.zip"],
-  ["/downloads/ynx-developer-testnet-preview-windows-x64-unsigned.zip", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-developer-testnet-preview-windows-x64-unsigned.zip"],
+  ["/downloads/ynx-developer-testnet-preview-macos-unsigned.zip", "https://developer.ynxweb4.com/downloads/ynx-developer-0.2.0-testnet-preview-macos-arm64-unsigned.zip"],
+  ["/downloads/ynx-developer-testnet-preview-windows-x64-unsigned.zip", "https://developer.ynxweb4.com/downloads/ynx-developer-0.2.0-testnet-preview-windows-x64-unsigned.zip"],
   ["/downloads/ynx-trust-center-4d40557229b4-linux-amd64.tar.gz", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-trust-center-4d40557229b4-linux-amd64.tar.gz"],
   ["/downloads/ynx-shop-0.3.0-testnet-preview-6fa2d6c5-debug-signed.apk", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-shop-0.3.0-testnet-preview-6fa2d6c5-debug-signed.apk"]
 ]);

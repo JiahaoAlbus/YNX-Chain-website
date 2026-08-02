@@ -202,14 +202,14 @@ const evidence = {
     }
   },
   developer: {
-    commit: "7f976c1e0629",
+    commit: "5367814e",
     productRelease: {
       href: "/releases/ecosystem-release-registry.json",
       release: "developer-v0.2.0-testnet-preview.1"
     },
-    statusNote: "Immutable macOS arm64 and Windows x64 unsigned Testnet Preview packages are hosted by the official website. They are not production-signed or store releases.",
+    statusNote: "The public YNX Developer Web IDE is live against chain ID 6423, with bounded compiler, test, API Studio, checkpoint and Wallet-only deployment-review workflows. Official macOS arm64 and Windows x64 unsigned Testnet Preview packages are hosted for direct download. Provider-backed AI, central Wallet acceptance, production signing and store release are not claimed.",
     downloads: {
-      web: { status: PRODUCT_STATUS.LOCAL, href: "/docs#ide", note: "Web IDE candidate documentation; no public IDE deployment is registered." },
+      web: { status: PRODUCT_STATUS.LIVE, href: "https://developer.ynxweb4.com/", external: true, downloadHosted: false, note: "Public Testnet Web IDE with live chain status and fail-closed signing/provider boundaries." },
       android: { status: PRODUCT_STATUS.NOT_READY, note: "No native Android package published for Developer in this candidate." },
       ios: { status: PRODUCT_STATUS.NOT_READY, note: "No iOS package published for Developer in this candidate." },
       macos: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-developer-testnet-preview-macos-unsigned.zip", "Unsigned macOS arm64 Testnet Preview · SHA-256 ff9ae3d4…903f7 · 38,450,128 bytes.", "/downloads/ynx-developer-testnet-preview-macos-unsigned.zip"),
@@ -504,12 +504,12 @@ export const getCatalog = () => [
     key: "developer",
     name: "YNX Developer",
     icon: SquarePen,
-    status: PRODUCT_STATUS.LOCAL,
-    detail: "Web IDE and native desktop Testnet Preview with bounded compiler/deploy checks. Unsigned macOS arm64 and Windows x64 packages are available for public testing.",
-    entry: { label: "Developer entry", href: "/dapp/developer" },
+    status: PRODUCT_STATUS.LIVE,
+    detail: "A public Testnet Web IDE and native desktop preview for projects, Solidity diagnostics, tests, API Studio, checkpoints, permissioned AI proposals and Wallet-only deployment review. It never stores a deploy private key and does not convert compile output into a deployment claim.",
+    entry: { label: "Open YNX Developer", href: "https://developer.ynxweb4.com/", external: true },
     docs: { ...docsAnchor("ide"), label: "Developer docs" },
-    downloads: web(PRODUCT_STATUS.LOCAL, "/docs#ide", "Web IDE candidate path"),
-    metrics: [["Closure", "Parser, compile and deploy traces"], ["Risk", "Unsigned preview; no production signature"], ["Readiness", "Hosted macOS + Windows Testnet Preview"]]
+    downloads: web(PRODUCT_STATUS.LIVE, "https://developer.ynxweb4.com/", "Public Testnet Web IDE"),
+    metrics: [["Closure", "Project → edit → diagnose → test → build → Wallet review → Explorer proof"], ["Risk", "Unsigned desktop preview; AI/provider and central Wallet paths fail closed"], ["Readiness", "Public web + official macOS/Windows downloads"]]
   },
   {
     key: "explorer",
