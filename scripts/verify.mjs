@@ -256,7 +256,7 @@ if (!main.includes("Exchange Integration Candidate") || !main.includes("No excha
   console.error("website does not expose the verified exchange candidate boundary");
   process.exit(1);
 }
-if (!main.includes('route === "/dapp"') || !main.includes('route === "/dapp/download"') || !main.includes('route === "/docs"') || !main.includes('route === "/dapp/square"') || !main.includes("getProductByRoute(route)") || !main.includes("getLegacyDAppRedirect") || !main.includes("LegacyRouteRedirect")) {
+if (!main.includes('route === "/dapp"') || !main.includes('route === "/dapp/download"') || !main.includes('route === "/dapp/faucet"') || !main.includes('route === "/docs"') || !main.includes('route === "/dapp/square"') || !main.includes("getProductByRoute(route)") || !main.includes("getLegacyDAppRedirect") || !main.includes("LegacyRouteRedirect")) {
   console.error("canonical DApp, download, product-status, Square, docs, or legacy compatibility routes are not configured");
   process.exit(1);
 }
@@ -445,7 +445,7 @@ if (!vercel.cleanUrls || vercel.rewrites?.[0]?.source !== "/(.*)" || vercel.rewr
   process.exit(1);
 }
 const requiredDAppRedirects = new Map([
-  ["/apps", "/dapp"], ["/download", "/dapp/download"], ["/square", "/dapp/square"],
+  ["/apps", "/dapp"], ["/download", "/dapp/download"], ["/faucet", "/dapp/faucet"], ["/square", "/dapp/square"],
   ["/wallet", "/dapp/wallet"], ["/social", "/dapp/social"], ["/pay", "/dapp/pay"],
   ["/merchant", "/dapp/merchant"], ["/card", "/dapp/card"], ["/exchange", "/dapp/exchange"],
   ["/quant", "/dapp/quant"],
@@ -461,7 +461,7 @@ const configuredRedirects = new Map((vercel.redirects || []).map((redirect) => [
 if (
   [...requiredDAppRedirects].some(([source, destination]) => configuredRedirects.get(source)?.destination !== destination || configuredRedirects.get(source)?.permanent !== true) ||
   configuredRedirects.get("/square/:path*")?.destination !== "/dapp/square/:path*" ||
-  !Array.isArray(siteMap.dappRoutes) || siteMap.dappRoutes.length !== 29 ||
+  !Array.isArray(siteMap.dappRoutes) || siteMap.dappRoutes.length !== 30 ||
   siteMap.dappRoutes.some((route) => !route.startsWith("dapp")) ||
   !prerender.includes("releaseRegistry.products.map((product) => product.route)")
 ) {
@@ -471,7 +471,7 @@ if (
 const csp = vercel.headers
   ?.find((entry) => entry.source === "/(.*)")
   ?.headers?.find((header) => header.key === "Content-Security-Policy")?.value || "";
-if (!csp.includes("script-src 'self'") || !csp.includes("worker-src 'self'") || !csp.includes("connect-src 'self' https://api.ynxweb4.com") || !csp.includes("object-src 'none'")) {
+if (!csp.includes("script-src 'self'") || !csp.includes("worker-src 'self'") || !csp.includes("connect-src 'self' https://api.ynxweb4.com https://faucet.ynxweb4.com") || !csp.includes("object-src 'none'")) {
   console.error("strict browser signer CSP is missing");
   process.exit(1);
 }

@@ -269,6 +269,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .statusLegend .local, .appState.local { color: #6d4c00; border-color: rgba(165,106,0,.26); background: #fff8e8; }
 .statusLegend .planned, .appState.planned { color: var(--muted); background: var(--soft); }
 .statusLegend .not-ready, .appState.not-ready { color: #734a0b; border-color: rgba(115,74,11,.28); background: #fff5e1; }
+.appTryNow { display: grid; grid-template-columns: 58px minmax(0,1fr) auto; gap: 22px; align-items: center; margin: -12px 0 34px; padding: 22px; border: 1px solid rgba(0,47,167,.25); border-top: 2px solid var(--blue); border-radius: 10px; background: #f5f8ff; }
+.appTryNow h2 { margin: 3px 0 6px; font-size: 23px; }
+.appTryNow p:last-child { margin: 0; color: var(--muted); line-height: 1.5; }
+.appTryNow .button { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
 .appDiscovery { margin: 0 0 68px; padding: 22px; border: 1px solid var(--line); border-top: 2px solid var(--blue); border-radius: 10px; background: var(--soft); }
 .appSearch { height: 54px; display: grid; grid-template-columns: 48px minmax(0,1fr); align-items: center; border: 1px solid var(--line); border-radius: 8px; background: white; }
 .appSearch:focus-within { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(0,47,167,.1); }
@@ -376,6 +380,63 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .productStatusAside > p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.55; }
 .productStatusAside .button.secondary { border-color: var(--line); color: var(--blue); background: white; }
 .productStatusAside .textLink { margin-top: 2px; font-size: 13px; }
+.faucetPage { width: min(1180px, calc(100% - 48px)); min-height: 78svh; margin: 0 auto; padding: 76px 0 110px; }
+.faucetHero { display: grid; grid-template-columns: minmax(0,1fr) 300px; gap: 56px; align-items: end; padding-bottom: 54px; border-bottom: 1px solid var(--blue); }
+.faucetHeroCopy h1 { max-width: 780px; margin: 4px 0 20px; color: var(--blue); font-size: clamp(44px,6vw,72px); line-height: 1; letter-spacing: -.035em; }
+.faucetHeroCopy > p:last-child { max-width: 720px; margin: 0; color: var(--muted); font-size: 18px; line-height: 1.65; }
+.faucetService { min-height: 104px; display: grid; grid-template-columns: 22px minmax(0,1fr); gap: 13px; align-items: start; padding: 18px; border: 1px solid var(--line); border-top: 2px solid var(--blue); border-radius: 8px; background: var(--soft); }
+.faucetService > span { width: 10px; height: 10px; margin: 5px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 5px rgba(11,122,75,.11); }
+.faucetService > svg { width: 20px; color: var(--muted); }
+.faucetService.error > svg { color: var(--danger); }
+.faucetService > div { min-width: 0; display: grid; gap: 4px; }
+.faucetService small, .faucetService em { color: var(--muted); font-size: 11px; font-style: normal; }
+.faucetService button { width: max-content; padding: 0; border: 0; color: var(--blue); background: transparent; font: 750 12px/1.4 inherit; cursor: pointer; }
+.faucetLayout { display: grid; grid-template-columns: minmax(0,1.2fr) minmax(340px,.8fr); gap: 70px; padding-top: 58px; }
+.faucetFormPanel { min-width: 0; }
+.faucetAmount { min-height: 112px; display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 24px; color: white; background: var(--blue); }
+.faucetAmount > span { display: flex; align-items: center; gap: 12px; }
+.faucetAmount > span svg { width: 30px; height: 30px; }
+.faucetAmount small { color: rgba(255,255,255,.7); font-size: 12px; }
+.faucetAmount strong { font-size: 34px; }
+.faucetAmount em { font-size: 14px; font-style: normal; }
+.faucetFormPanel form { display: grid; gap: 12px; padding: 30px 24px 26px; border: 1px solid var(--line); border-top: 0; }
+.faucetFormPanel form > label:first-child { font-size: 13px; font-weight: 800; }
+.faucetInput { min-height: 60px; display: grid; grid-template-columns: minmax(0,1fr) 44px; align-items: center; border: 1px solid var(--line); border-radius: 8px; background: white; }
+.faucetInput:focus-within { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(0,47,167,.1); }
+.faucetInput.invalid { border-color: var(--danger); }
+.faucetInput.valid { border-color: rgba(11,122,75,.5); }
+.faucetInput input { min-width: 0; height: 58px; padding: 0 16px; border: 0; outline: 0; color: var(--ink); background: transparent; font: 13px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; }
+.faucetInput svg { width: 19px; color: var(--green); }
+.faucetFieldError { display: flex; align-items: flex-start; gap: 7px; margin: 0; color: var(--danger); font-size: 12px; line-height: 1.45; }
+.faucetFieldError svg { width: 15px; flex: 0 0 auto; }
+.faucetCanonical { min-width: 0; display: grid; gap: 5px; padding: 10px 12px; background: var(--soft); }
+.faucetCanonical small { color: var(--muted); font-size: 10px; text-transform: uppercase; }
+.faucetCanonical code { overflow-wrap: anywhere; color: var(--blue); font-size: 11px; }
+.faucetConsent { display: grid; grid-template-columns: 18px minmax(0,1fr); gap: 9px; align-items: start; margin-top: 8px; color: var(--muted); font-size: 12px; line-height: 1.55; }
+.faucetConsent input { margin-top: 3px; accent-color: var(--blue); }
+.faucetSubmit { min-height: 52px; margin-top: 8px; display: inline-flex; align-items: center; justify-content: center; gap: 9px; }
+.faucetSubmit:disabled { opacity: .5; cursor: not-allowed; }
+.faucetSubmit svg { width: 18px; }
+.spin { animation: faucet-spin .9s linear infinite; }
+@keyframes faucet-spin { to { transform: rotate(360deg); } }
+.faucetResult { display: grid; grid-template-columns: 28px minmax(0,1fr); gap: 14px; margin-top: 18px; padding: 20px; border: 1px solid var(--line); }
+.faucetResult > svg { color: var(--green); }
+.faucetResult.error > svg { color: var(--danger); }
+.faucetResult p { margin: 7px 0; color: var(--muted); line-height: 1.5; }
+.faucetResult code { overflow-wrap: anywhere; font-size: 11px; }
+.faucetHash { display: block; padding: 10px; background: var(--soft); }
+.faucetResult button, .faucetResult a { min-height: 38px; display: inline-flex; align-items: center; gap: 6px; padding: 0 11px; border: 1px solid var(--line); border-radius: 6px; color: var(--blue); background: white; font: 750 12px/1 inherit; text-decoration: none; cursor: pointer; }
+.faucetResultActions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.faucetResultActions svg { width: 14px; }
+.faucetRules { align-self: start; padding: 28px; border: 1px solid var(--line); border-top: 2px solid var(--blue); border-radius: 8px; background: var(--soft); }
+.faucetRules h2 { margin: 4px 0 24px; font-size: 30px; }
+.faucetRules ol { margin: 0; padding: 0; list-style: none; }
+.faucetRules li { display: grid; grid-template-columns: 30px minmax(0,1fr); gap: 12px; padding: 17px 0; border-top: 1px solid var(--line); }
+.faucetRules li > span { width: 26px; height: 26px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; color: white; background: var(--blue); font-size: 11px; font-weight: 800; }
+.faucetRules li p { margin: 5px 0 0; color: var(--muted); font-size: 12px; line-height: 1.5; }
+.faucetSecurity { display: grid; grid-template-columns: 24px minmax(0,1fr); gap: 12px; margin-top: 20px; padding: 18px; color: white; background: var(--blue); }
+.faucetSecurity p { display: grid; gap: 6px; margin: 0; }
+.faucetSecurity span { color: rgba(255,255,255,.72); font-size: 12px; line-height: 1.55; }
 .squareHeader { display: flex; justify-content: space-between; align-items: end; gap: 30px; }
 .squareBack { display: inline-flex; align-items: center; gap: 7px; margin-bottom: 28px; color: var(--blue); text-decoration: none; font-size: 13px; font-weight: 750; }
 .squareBack svg { width: 17px; }
@@ -713,6 +774,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
 [data-theme="dark"] .scenePlane,
 [data-theme="dark"] .appSearch,
 [data-theme="dark"] .appFilterRow button { color: var(--ink); background: var(--surface-raised); }
+[data-theme="dark"] .appTryNow,
+[data-theme="dark"] .faucetInput,
+[data-theme="dark"] .faucetResult button,
+[data-theme="dark"] .faucetResult a { color: var(--ink); background: var(--surface-raised); }
 [data-theme="dark"] .networkBand,
 [data-theme="dark"] .squareEmpty,
 [data-theme="dark"] .docsSearch,
@@ -755,6 +820,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
   .appDirectory { grid-template-columns: repeat(2,minmax(0,1fr)); }
   .productStatusLayout { grid-template-columns: 1fr; gap: 46px; }
   .productStatusAside { position: static; }
+  .faucetHero, .faucetLayout { grid-template-columns: 1fr; }
+  .faucetHero { align-items: start; gap: 28px; }
+  .faucetService { max-width: 420px; }
   .recoverySection { grid-template-columns: 1fr; gap: 34px; }
   .supportCallout { grid-template-columns: 58px 1fr; }
   .supportCallout > div:last-child { grid-column: 2; }
@@ -776,6 +844,14 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
   .siteHeader nav a { padding: 13px 4px; }
   .siteHeader nav > a::after { display: none; }
   .siteHeader .navExplorer { margin-top: 8px; justify-content: center; }
+  .faucetPage { width: calc(100% - 36px); padding: 58px 0 78px; }
+  .faucetHeroCopy h1 { font-size: 42px; }
+  .faucetHeroCopy > p:last-child { font-size: 16px; }
+  .faucetLayout { gap: 34px; padding-top: 40px; }
+  .faucetAmount, .faucetFormPanel form, .faucetRules { padding-left: 18px; padding-right: 18px; }
+  .faucetAmount strong { font-size: 27px; }
+  .appTryNow { grid-template-columns: 52px minmax(0,1fr); }
+  .appTryNow .button { grid-column: 1 / -1; justify-content: center; }
   .hero { min-height: min(740px, calc(100svh - 48px)); max-height: none; align-items: end; }
   .heroGrid::before { left: 50%; }
   .heroGrid::after { top: 40%; }

@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { ArrowUpRight, Search, ShieldCheck } from "lucide-react";
+import { ArrowUpRight, Droplets, Search, ShieldCheck } from "lucide-react";
 import { getCatalog, STATUS_CONFIG, DOWNLOAD_LABELS, PRODUCT_STATUS } from "../lib/ecosystemCatalog.js";
 import { useLocale } from "../lib/i18n.jsx";
 
@@ -98,6 +98,12 @@ export function AppsPage() {
           <span className="not-ready">{zh ? "尚未就绪" : "Not ready"}</span>
         </div>
       </header>
+
+      <section className="appTryNow" aria-labelledby="try-now-title">
+        <span className="appIcon"><Droplets /></span>
+        <div><p className="sectionEyebrow">{zh ? "现在就试" : "Try it now"}</p><h2 id="try-now-title">YNX Testnet Faucet</h2><p>{zh ? "直接在官网领取 100 YNXT 测试币，随后跳转 Explorer 验证真实链上交易。" : "Claim 100 Testnet YNXT directly on the official website, then verify the real transaction in Explorer."}</p></div>
+        <a className="button primary" href="/dapp/faucet">{zh ? "打开 Faucet" : "Open Faucet"}<ArrowUpRight /></a>
+      </section>
 
       <section className="appDiscovery" aria-label={zh ? "筛选 YNX DApp" : "Filter YNX DApps"}>
         <label className="appSearch">
