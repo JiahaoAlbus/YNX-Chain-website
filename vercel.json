@@ -7,6 +7,38 @@
   "functions": {
     "api/**/*.js": { "maxDuration": 30 }
   },
+  "redirects": [
+    { "source": "/apps", "destination": "/dapp", "permanent": true },
+    { "source": "/download", "destination": "/dapp/download", "permanent": true },
+    { "source": "/square", "destination": "/dapp/square", "permanent": true },
+    { "source": "/square/:path*", "destination": "/dapp/square/:path*", "permanent": true },
+    { "source": "/wallet", "destination": "/dapp/wallet", "permanent": true },
+    { "source": "/social", "destination": "/dapp/social", "permanent": true },
+    { "source": "/pay", "destination": "/dapp/pay", "permanent": true },
+    { "source": "/merchant", "destination": "/dapp/merchant", "permanent": true },
+    { "source": "/card", "destination": "/dapp/card", "permanent": true },
+    { "source": "/exchange", "destination": "/dapp/exchange", "permanent": true },
+    { "source": "/quant", "destination": "/dapp/quant", "permanent": true },
+    { "source": "/shop", "destination": "/dapp/shop", "permanent": true },
+    { "source": "/seller", "destination": "/dapp/seller", "permanent": true },
+    { "source": "/developer", "destination": "/dapp/developer", "permanent": true },
+    { "source": "/explorer", "destination": "/dapp/explorer", "permanent": true },
+    { "source": "/monitor", "destination": "/dapp/monitor", "permanent": true },
+    { "source": "/ai", "destination": "/dapp/ai", "permanent": true },
+    { "source": "/trust", "destination": "/dapp/trust", "permanent": true },
+    { "source": "/resource", "destination": "/dapp/resource", "permanent": true },
+    { "source": "/music", "destination": "/dapp/music", "permanent": true },
+    { "source": "/video", "destination": "/dapp/video", "permanent": true },
+    { "source": "/creator", "destination": "/dapp/creator", "permanent": true },
+    { "source": "/cloud", "destination": "/dapp/cloud", "permanent": true },
+    { "source": "/docs-app", "destination": "/dapp/docs-app", "permanent": true },
+    { "source": "/browser", "destination": "/dapp/browser", "permanent": true },
+    { "source": "/search", "destination": "/dapp/search", "permanent": true },
+    { "source": "/finance", "destination": "/dapp/finance", "permanent": true },
+    { "source": "/mail", "destination": "/dapp/mail", "permanent": true },
+    { "source": "/calendar", "destination": "/dapp/calendar", "permanent": true },
+    { "source": "/dex", "destination": "/dapp/dex", "permanent": true }
+  ],
   "headers": [
     {
       "source": "/releases/exchange/fc2276e1ce4c/(.*)",

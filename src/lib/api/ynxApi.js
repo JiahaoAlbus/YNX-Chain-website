@@ -6,7 +6,7 @@ const DEFAULTS = {
   docsUrl: "/docs",
   docsRepoUrl: "https://github.com/JiahaoAlbus/YNX-Chain/tree/main/docs",
   grantUrl: "https://github.com/JiahaoAlbus/YNX-Chain/tree/main/docs/grants",
-  ecosystemUrl: "/apps",
+  ecosystemUrl: "/dapp",
   ecosystemRepoUrl: "https://github.com/JiahaoAlbus/YNX-Chain/tree/main/docs/ecosystem",
   exchangeUrl: "/trading",
   exchangeRepoUrl: "https://github.com/JiahaoAlbus/YNX-Chain/tree/main/docs/exchange-listing"

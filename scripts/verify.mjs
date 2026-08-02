@@ -13,6 +13,7 @@ const required = [
   "public/ynx-icon-maskable-512.png",
   "public/ynx-favicon-48.png",
   "public/releases/ecosystem-release-registry.json",
+  "public/releases/owner-record-index.json",
   "public/releases/exchange/fc2276e1ce4c/exchange-status.json",
   "public/releases/exchange/fc2276e1ce4c/manifest.json",
   "public/releases/exchange/fc2276e1ce4c/product-release.json",
@@ -25,6 +26,7 @@ const required = [
   "src/styles.css",
   "src/lib/api/ynxApi.js",
   "src/lib/address.js",
+  "src/lib/i18n.jsx",
   "src/components/AddressConverter.jsx",
   "src/components/SquareAccountPanel.jsx",
   "src/pages/AppsPage.jsx",
@@ -144,11 +146,13 @@ const indexHtml = fs.readFileSync("index.html", "utf8");
 const serviceWorker = fs.readFileSync("public/sw.js", "utf8");
 const manifest = JSON.parse(fs.readFileSync("public/manifest.webmanifest", "utf8"));
 const releaseRegistry = JSON.parse(fs.readFileSync("public/releases/ecosystem-release-registry.json", "utf8"));
+const ownerRecordIndex = JSON.parse(fs.readFileSync("public/releases/owner-record-index.json", "utf8"));
 const exchangeReleaseRoot = "public/releases/exchange/fc2276e1ce4c";
 const exchangeManifest = JSON.parse(fs.readFileSync(`${exchangeReleaseRoot}/manifest.json`, "utf8"));
 const exchangeProductRelease = JSON.parse(fs.readFileSync(`${exchangeReleaseRoot}/product-release.json`, "utf8"));
 const exchangePublicMetadata = JSON.parse(fs.readFileSync(`${exchangeReleaseRoot}/public-product-metadata.json`, "utf8"));
 const header = fs.readFileSync("src/components/SiteHeader.jsx", "utf8");
+const i18n = fs.readFileSync("src/lib/i18n.jsx", "utf8");
 const commandPalette = fs.readFileSync("src/components/CommandPalette.jsx", "utf8");
 const routePage = fs.readFileSync("src/components/RoutePage.jsx", "utf8");
 const manualPage = fs.readFileSync("src/pages/ManualPage.jsx", "utf8");
@@ -162,6 +166,8 @@ const squareAccountPanel = fs.readFileSync("src/components/SquareAccountPanel.js
 const docsPage = fs.readFileSync("src/pages/DocsPage.jsx", "utf8");
 const appGateway = fs.readFileSync("server/app-gateway.mjs", "utf8");
 const vercel = JSON.parse(fs.readFileSync("vercel.json", "utf8"));
+const siteMap = JSON.parse(fs.readFileSync("content/site-map.json", "utf8"));
+const prerender = fs.readFileSync("scripts/prerender.mjs", "utf8");
 const packageJson = JSON.parse(fs.readFileSync("package.json", "utf8"));
 const indexNowKey = fs.readFileSync("public/da45868fe3e0818f27f187b21a56ccb5.txt", "utf8").trim();
 const indexNowScript = fs.readFileSync("scripts/indexnow.mjs", "utf8");
@@ -169,6 +175,25 @@ const viteConfig = fs.readFileSync("vite.config.js", "utf8");
 const signerSource = JSON.parse(fs.readFileSync("src/lib/ynx-signer/SOURCE.json", "utf8"));
 if (releaseRegistry.products.some((product) => Object.hasOwn(product, "branch"))) {
   console.error("public release registry exposes internal branch names");
+  process.exit(1);
+}
+const ownerProductIds = ownerRecordIndex.records?.map((record) => record.productId) || [];
+if (
+  ownerRecordIndex.owner !== "28-website" ||
+  ownerRecordIndex.rules?.observedBranchIsNotCentralAcceptance !== true ||
+  ownerRecordIndex.rules?.missingPublicEvidenceRemainsNull !== true ||
+  ownerProductIds.length !== 35 ||
+  new Set(ownerProductIds).size !== 35 ||
+  ownerProductIds.includes("28") ||
+  ownerRecordIndex.records.some((record) =>
+    !/^\d{2}$/.test(record.productId) ||
+    !/^[0-9a-f]{40}$/.test(record.sourceCommit) ||
+    record.publicUrl !== null ||
+    typeof record.publicVerified !== "boolean" ||
+    typeof record.downloadHosted !== "boolean"
+  )
+) {
+  console.error("35-product owner record index is missing, duplicated, unbound, or overclaims public evidence");
   process.exit(1);
 }
 if (
@@ -231,8 +256,8 @@ if (!main.includes("Exchange Integration Candidate") || !main.includes("No excha
   console.error("website does not expose the verified exchange candidate boundary");
   process.exit(1);
 }
-if (!main.includes('route === "/apps"') || !main.includes('route === "/download"') || !main.includes('route === "/docs"') || !main.includes('route === "/square"') || !main.includes("getProductByRoute(route)")) {
-  console.error("first-party app, download, product-status, Square, and docs routes are not configured");
+if (!main.includes('route === "/dapp"') || !main.includes('route === "/dapp/download"') || !main.includes('route === "/docs"') || !main.includes('route === "/dapp/square"') || !main.includes("getProductByRoute(route)") || !main.includes("getLegacyDAppRedirect") || !main.includes("LegacyRouteRedirect")) {
+  console.error("canonical DApp, download, product-status, Square, docs, or legacy compatibility routes are not configured");
   process.exit(1);
 }
 if (!main.includes("AuthorityArticlePage") || !main.includes("docsAuthority.articles") || !viteConfig.includes("docsAuthorityPlugin")) {
@@ -269,6 +294,16 @@ if (!main.includes('navigator.serviceWorker.register("/sw.js")') || !indexHtml.i
   console.error("installable PWA shell is incomplete");
   process.exit(1);
 }
+if (!indexHtml.includes('class="notranslate"') || !indexHtml.includes('translate="no"') || !indexHtml.includes('<meta name="google" content="notranslate"') || !indexHtml.includes('<body class="notranslate" translate="no" dir="ltr">')) {
+  console.error("browser machine-translation opt-out is missing; native locale content could be mistranslated or mirrored");
+  process.exit(1);
+}
+for (const requiredText of ['direction: ltr !important', 'body, #root { direction: ltr !important; }']) {
+  if (!styles.includes(requiredText)) {
+    console.error(`native LTR layout guard is missing: ${requiredText}`);
+    process.exit(1);
+  }
+}
 if (!header.includes('src="/ynx-logo.png"') || !indexHtml.includes('/ynx-favicon-48.png') || !indexHtml.includes('/ynx-icon-512.png') || manifest.icons?.length !== 2 || manifest.icons[0]?.src !== "/ynx-icon-512.png" || manifest.icons[1]?.src !== "/ynx-icon-maskable-512.png") {
   console.error("official YNX logo is not wired through navigation, favicon, and PWA icons");
   process.exit(1);
@@ -279,15 +314,26 @@ for (const boundary of ['url.origin !== self.location.origin', 'url.pathname.sta
     process.exit(1);
   }
 }
-if (!header.includes('["Apps", "/apps"]') || !header.includes('["Download", "/download"]') || !header.includes('["Docs", "/docs"]') || !header.includes('["Status", "/status"]')) {
-  console.error("stable Apps, Download, Docs, and Status navigation is missing");
+if (!header.includes('["dapps", "/dapp"]') || !header.includes('["download", "/dapp/download"]') || !header.includes('["docs", "/docs"]') || !header.includes('["status", "/status"]')) {
+  console.error("stable DApps, Download, Docs, and Status navigation is missing");
   process.exit(1);
 }
-for (const requiredText of ["metaKey", "ctrlKey", "ynx-theme", "ynx-direction", "CommandPalette", "Skip to content"]) {
+for (const requiredText of ["metaKey", "ctrlKey", "ynx-theme", "localStorage.removeItem(\"ynx-direction\")", "CommandPalette", 't("skip")']) {
   if (!header.includes(requiredText)) {
     console.error(`global navigation capability missing: ${requiredText}`);
     process.exit(1);
   }
+}
+for (const requiredText of ["LocaleProvider", "SUPPORTED_LOCALES", '"zh-CN"', "ynx-locale", "enforceNativeLtr", "MutationObserver", 'style.setProperty("direction", "ltr", "important")', "navigator.language"]) {
+  const localeSource = requiredText === "LocaleProvider" ? main : i18n;
+  if (!localeSource.includes(requiredText)) {
+    console.error(`native locale capability missing: ${requiredText}`);
+    process.exit(1);
+  }
+}
+if (!header.includes("localeButton") || !header.includes('setLocale(locale === "en" ? "zh-CN" : "en")')) {
+  console.error("native English/Simplified Chinese locale control is missing");
+  process.exit(1);
 }
 for (const requiredText of ["role=\"dialog\"", "aria-modal=\"true\"", "ArrowDown", "ArrowUp", "No matching YNX resource", "API reference"]) {
   if (!commandPalette.includes(requiredText)) {
@@ -301,7 +347,7 @@ for (const requiredText of ['"/manual"', '"/api"', "Page unavailable", "Get supp
     process.exit(1);
   }
 }
-for (const requiredText of ["From zero to a verified testnet action", "Recovery", "A timeout is not proof", "Security boundary"]) {
+for (const requiredText of ["From zero to a verified testnet action", "Recovery", "A timeout is not proof", "Security boundary", "Node join manual", "Validator manual", "Mining manual", "no active automatic one-YNXT-per-block issuance", "external submission is disabled", "historical block cannot receive a new transaction"]) {
   if (!manualPage.includes(requiredText)) {
     console.error(`user manual capability missing: ${requiredText}`);
     process.exit(1);
@@ -313,15 +359,21 @@ for (const requiredText of ["Chain status", "Validator roles", "EVM JSON-RPC", "
     process.exit(1);
   }
 }
-for (const requiredText of ['[data-theme="dark"]', '[dir="rtl"]', ":focus-visible", ".commandPalette"]) {
+for (const requiredText of ['[data-theme="dark"]', ":focus-visible", ".commandPalette"]) {
   if (!styles.includes(requiredText)) {
     console.error(`accessibility or adaptive appearance styles missing: ${requiredText}`);
     process.exit(1);
   }
 }
-for (const requiredText of ["Public web", "Candidate", "Candidate incomplete", "Not ready", "evidence-backed status"]) {
+for (const requiredText of ["Public web", "Candidate", "Candidate incomplete", "Not ready", "evidence-backed status", "Money & commerce", "Identity & community", "Build & operate", "AI, media & data", "Trust & infrastructure", "Find a product, workflow, or capability", "Available surfaces", "View product", "appCardFacts"]) {
   if (!appsPage.includes(requiredText)) {
     console.error(`application truth status missing: ${requiredText}`);
+    process.exit(1);
+  }
+}
+for (const requiredText of ["Transactions & blocks", "Node operations", "Validator candidate", "Mining truth", "Bridge evidence", "Historical block mutation", "Finalized locally; no external submission"]) {
+  if (!docsPage.includes(requiredText)) {
+    console.error(`detailed documentation capability missing: ${requiredText}`);
     process.exit(1);
   }
 }
@@ -332,23 +384,27 @@ if (productKeys.length !== 25 || new Set(productKeys).size !== 25 || !productKey
 }
 const registryKeys = releaseRegistry.products?.map((product) => product.key) || [];
 const acceptedProducts = releaseRegistry.products?.filter((product) => product.centralAccepted === true) || [];
+const hostedPreviewProducts = releaseRegistry.products?.filter((product) => product.downloadHosted === true) || [];
 const exchangeRegistry = acceptedProducts[0];
 if (
   registryKeys.length !== 25 ||
   new Set(registryKeys).size !== 25 ||
   productKeys.some((key) => !registryKeys.includes(key)) ||
-  releaseRegistry.products.some((product) => product.downloadHosted !== false) ||
+  hostedPreviewProducts.length !== 2 ||
+  hostedPreviewProducts.map((product) => product.key).sort().join(",") !== "developer,trust" ||
+  hostedPreviewProducts.some((product) => product.state !== "hosted-testnet-preview" || !product.releaseTag || !product.downloads?.length || product.downloads.some((download) => !/^[0-9a-f]{64}$/.test(download.sha256) || !(download.bytes > 0) || !download.signingClass)) ||
   acceptedProducts.length !== 1 ||
   exchangeRegistry?.key !== "exchange" ||
   exchangeRegistry.commit !== "fc2276e1ce4c" ||
   exchangeRegistry.productRelease !== "/releases/exchange/fc2276e1ce4c/product-release.json" ||
   exchangeRegistry.publicProductMetadata !== "/releases/exchange/fc2276e1ce4c/public-product-metadata.json" ||
+  releaseRegistry.products.some((product) => !product.route.startsWith("/dapp/")) ||
   releaseRegistry.rules?.localArtifactIsDownload !== false
 ) {
-  console.error("release registry must preserve 25 truthful states and exactly one commit-bound accepted exchange candidate");
+  console.error("release registry must preserve 25 truthful states, two source-bound hosted previews, and exactly one commit-bound accepted exchange candidate");
   process.exit(1);
 }
-for (const requiredText of ["downloadHosted", "Local build only", "candidate incomplete", "Product status"]) {
+for (const requiredText of ["downloadHosted", "Local build only", "Download Testnet Preview", "candidate incomplete", "Product status", "developer-v0.2.0-testnet-preview.1", "trust-center-v0.1.0-testnet-preview.2"]) {
   if (!ecosystemCatalog.includes(requiredText)) {
     console.error(`ecosystem release boundary missing: ${requiredText}`);
     process.exit(1);
@@ -386,6 +442,30 @@ if (appGateway.includes("/chat/") || /method:\s*["']POST["']/.test(appGateway) |
 }
 if (!vercel.cleanUrls || vercel.rewrites?.[0]?.source !== "/(.*)" || vercel.rewrites?.[0]?.destination !== "/") {
   console.error("Vercel SPA deep-link fallback is not configured for clean URLs");
+  process.exit(1);
+}
+const requiredDAppRedirects = new Map([
+  ["/apps", "/dapp"], ["/download", "/dapp/download"], ["/square", "/dapp/square"],
+  ["/wallet", "/dapp/wallet"], ["/social", "/dapp/social"], ["/pay", "/dapp/pay"],
+  ["/merchant", "/dapp/merchant"], ["/card", "/dapp/card"], ["/exchange", "/dapp/exchange"],
+  ["/quant", "/dapp/quant"],
+  ["/shop", "/dapp/shop"], ["/seller", "/dapp/seller"], ["/developer", "/dapp/developer"],
+  ["/explorer", "/dapp/explorer"], ["/monitor", "/dapp/monitor"], ["/ai", "/dapp/ai"],
+  ["/trust", "/dapp/trust"], ["/resource", "/dapp/resource"], ["/music", "/dapp/music"],
+  ["/video", "/dapp/video"], ["/creator", "/dapp/creator"], ["/cloud", "/dapp/cloud"],
+  ["/docs-app", "/dapp/docs-app"], ["/browser", "/dapp/browser"], ["/search", "/dapp/search"],
+  ["/finance", "/dapp/finance"], ["/mail", "/dapp/mail"], ["/calendar", "/dapp/calendar"],
+  ["/dex", "/dapp/dex"]
+]);
+const configuredRedirects = new Map((vercel.redirects || []).map((redirect) => [redirect.source, redirect]));
+if (
+  [...requiredDAppRedirects].some(([source, destination]) => configuredRedirects.get(source)?.destination !== destination || configuredRedirects.get(source)?.permanent !== true) ||
+  configuredRedirects.get("/square/:path*")?.destination !== "/dapp/square/:path*" ||
+  !Array.isArray(siteMap.dappRoutes) || siteMap.dappRoutes.length !== 29 ||
+  siteMap.dappRoutes.some((route) => !route.startsWith("dapp")) ||
+  !prerender.includes("releaseRegistry.products.map((product) => product.route)")
+) {
+  console.error("DApp route hierarchy, permanent compatibility redirects, or discovery routes are incomplete");
   process.exit(1);
 }
 const csp = vercel.headers

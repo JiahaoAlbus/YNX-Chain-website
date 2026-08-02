@@ -9,7 +9,8 @@
     "readiness",
     "resources"
   ],
-  "productRoutes": ["apps", "download", "docs", "wallet", "social", "pay", "merchant", "card", "exchange", "quant", "shop", "seller", "developer", "explorer", "monitor", "ai", "trust", "resource", "music", "video", "creator", "cloud", "docs-app", "browser", "search", "finance", "mail", "calendar", "dex"],
-  "preservedRoutes": ["testnet", "validators", "builders", "readiness", "status", "square", "about", "privacy", "terms", "risk", "security", "support", "test-assets", "bridge", "withdraw", "trading"],
+  "dappRoutes": ["dapp", "dapp/download", "dapp/square", "dapp/wallet", "dapp/social", "dapp/pay", "dapp/merchant", "dapp/card", "dapp/exchange", "dapp/quant", "dapp/shop", "dapp/seller", "dapp/developer", "dapp/explorer", "dapp/monitor", "dapp/ai", "dapp/trust", "dapp/resource", "dapp/music", "dapp/video", "dapp/creator", "dapp/cloud", "dapp/docs-app", "dapp/browser", "dapp/search", "dapp/finance", "dapp/mail", "dapp/calendar", "dapp/dex"],
+  "legacyDappRoutes": ["apps", "download", "square", "wallet", "social", "pay", "merchant", "card", "exchange", "quant", "shop", "seller", "developer", "explorer", "monitor", "ai", "trust", "resource", "music", "video", "creator", "cloud", "docs-app", "browser", "search", "finance", "mail", "calendar", "dex"],
+  "preservedRoutes": ["testnet", "validators", "builders", "readiness", "status", "about", "privacy", "terms", "risk", "security", "support", "test-assets", "bridge", "withdraw", "trading"],
   "dynamicDataPolicy": "All network facts must come from real YNX Chain APIs or render an explicit unavailable state."
 }

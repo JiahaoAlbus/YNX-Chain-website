@@ -74,7 +74,7 @@ export function ProductStatusPage({ product, article, artifact }) {
           <a className="button primary" href={product.docs.href} rel={product.docs.external ? "noopener" : undefined}>Read product docs <ArrowUpRight size={16} /></a>
           {product.release?.productRelease?.href ? <a className="button secondary" href={product.release.productRelease.href}>Open release evidence <ArrowUpRight size={16} /></a> : null}
           {publicEntry?.href && (publicWeb || entryIsServiceHealth) ? <a className="button secondary" href={publicEntry.href} rel={publicEntry.external ? "noopener" : undefined}>{entryIsServiceHealth ? "Check service health" : publicEntry.label} <ArrowUpRight size={16} /></a> : null}
-          <a className="textLink" href="/download"><Download size={16} /> Download center</a>
+          <a className="textLink" href="/dapp/download"><Download size={16} /> Download center</a>
         </aside>
       </section>
 

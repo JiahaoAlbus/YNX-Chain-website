@@ -7,7 +7,7 @@ import docsAuthority from "virtual:ynx-docs-authority";
 import { getCatalog } from "../lib/ecosystemCatalog.js";
 
 const coreCommands = [
-  { title: "Products", description: "Browse every evidence-backed YNX product state", href: "/apps", icon: AppWindow, keywords: "apps ecosystem product" },
+  { title: "DApps", description: "Browse every evidence-backed YNX software product", href: "/dapp", icon: AppWindow, keywords: "dapp apps software ecosystem product" },
   { title: "User manual", description: "Connect, inspect, build, and recover safely", href: "/manual", icon: BookOpen, keywords: "guide help onboarding wallet testnet" },
   { title: "Developer documentation", description: "SDK, integration, and technical references", href: "/docs", icon: Braces, keywords: "developer sdk code docs" },
   { title: "API reference", description: "REST, EVM JSON-RPC, status, and service endpoints", href: "/api", icon: FileText, keywords: "rpc endpoint api reference" },

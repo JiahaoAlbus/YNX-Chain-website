@@ -12,6 +12,7 @@ const baseHtml = fs.readFileSync(basePath, "utf8");
 const authority = loadDocsAuthority(root);
 const siteUrl = authority.productMetadata.siteUrl.replace(/\/$/, "");
 const hostedArtifact = createHostedArtifactManifest(authority);
+const releaseRegistry = JSON.parse(fs.readFileSync(path.join(root, "public/releases/ecosystem-release-registry.json"), "utf8"));
 
 for (const article of authority.articles) {
   const jsonLd = article.route === "/faq" ? faqJsonLd(article) : articleJsonLd(article);
@@ -57,12 +58,15 @@ function writeRoute(route, { title, description, body, jsonLd }) {
 function writeDiscoveryFiles() {
   const routes = [
     "/",
-    "/apps",
-    "/download",
+    "/dapp",
+    "/dapp/download",
+    "/dapp/square",
+    "/dapp/quant",
     "/docs",
     "/manual",
     "/api",
     "/status",
+    ...releaseRegistry.products.map((product) => product.route),
     ...authority.articles.map((article) => article.route),
   ];
   const unique = [...new Set(routes)].sort();
