@@ -224,10 +224,10 @@ const evidence = {
     }
   },
   monitor: {
-    commit: "d4b4a3e5d7d6",
-    statusNote: "Monitor is web/operator-focused with protected deployment proof only; no native package published.",
+    commit: "5d42be02",
+    statusNote: "The public YNX Testnet status window is live with a signed, redacted feed built from seven bounded real-service probes. Public status and private operations are deliberately separated: anyone can inspect current availability, while incidents, audit, backup, recovery and rollback proposals require scoped operator authorization. Password login is disabled on the public deployment until canonical Wallet roles are centrally accepted.",
     downloads: {
-      web: { status: PRODUCT_STATUS.LOCAL, href: "/docs#monitor", note: "Monitor web companion with operator auth and audit views." }
+      web: { status: PRODUCT_STATUS.LIVE, href: "https://monitor.ynxweb4.com/", external: true, downloadHosted: false, note: "Live signed Testnet status; private operator controls remain authorization-gated." }
     }
   },
   ai: {
@@ -526,12 +526,12 @@ export const getCatalog = () => [
     key: "monitor",
     name: "YNX Monitor",
     icon: MonitorCog,
-    status: PRODUCT_STATUS.LOCAL,
-    detail: "Monitor provides alert, incident, and audit workflow candidates with operator authentication.",
-    entry: { label: "Monitor entry", href: "/docs#monitor" },
+    status: PRODUCT_STATUS.LIVE,
+    detail: "A public Testnet status window plus a separate private operations control plane. The public feed exposes only signed, fresh, redacted service availability; scoped operators handle alert acknowledgement, incident progression, evidence export, backup and restore verification, and non-executing rollback proposals.",
+    entry: { label: "Open YNX Monitor", href: "https://monitor.ynxweb4.com/", external: true },
     docs: { ...docsAnchor("monitor"), label: "Monitor docs" },
-    downloads: web(PRODUCT_STATUS.LOCAL, "/docs#monitor", "Candidate monitor web entry"),
-    metrics: [["Closure", "Alerting + operator audit"], ["Risk", "Protected deployment proof pending"], ["Readiness", "No public operator service package"]]
+    downloads: web(PRODUCT_STATUS.LIVE, "https://monitor.ynxweb4.com/", "Live signed Testnet status"),
+    metrics: [["Closure", "Probe → signed status → incident → independent recovery evidence"], ["Risk", "Canonical Wallet role acceptance and hosted recovery drill remain open"], ["Readiness", "Public HTTPS status + 25-worker concurrency evidence"]]
   },
   {
     key: "ai",
