@@ -459,7 +459,7 @@ const requiredOfficialDownloads = new Map([
   ["/downloads/ynx-developer-testnet-preview-windows-x64-unsigned.zip", "https://developer.ynxweb4.com/downloads/ynx-developer-0.2.0-testnet-preview-windows-x64-unsigned.zip"],
   ["/downloads/ynx-trust-center-4d40557229b4-linux-amd64.tar.gz", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-trust-center-4d40557229b4-linux-amd64.tar.gz"],
   ["/downloads/ynx-shop-0.3.0-testnet-preview-6fa2d6c5-debug-signed.apk", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-shop-0.3.0-testnet-preview-6fa2d6c5-debug-signed.apk"],
-  ["/downloads/ynx-wallet-1.0.0-testnet-preview-3f8e9105-test-signed.apk", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-wallet-1.0.0-testnet-preview-3f8e9105-test-signed-WtVbxWukUWnJ0vt7bdEMGFytdTEnKr.apk"]
+  ["/downloads/ynx-wallet-1.0.0-testnet-preview-ae8771c-test-signed.apk", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-wallet-1.0.0-testnet-preview-ae8771c-test-signed.apk"]
 ]);
 for (const [source, destination] of requiredOfficialDownloads) {
   if (!vercel.rewrites?.some((rewrite) => rewrite.source === source && rewrite.destination === destination)) {
