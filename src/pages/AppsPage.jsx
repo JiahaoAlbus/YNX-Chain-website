@@ -8,7 +8,7 @@ const categories = [
     id: "commerce",
     label: "Money & commerce",
     description: "Payments, markets, merchant operations, finance, and exchange workflows.",
-    keys: ["pay", "merchantConsole", "card", "exchange", "shop", "sellerConsole", "finance", "dex"],
+    keys: ["pay", "merchantConsole", "card", "exchange", "quant", "shop", "sellerConsole", "finance", "dex"],
   },
   {
     id: "community",
