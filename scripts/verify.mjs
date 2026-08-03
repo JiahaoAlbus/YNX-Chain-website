@@ -323,8 +323,8 @@ for (const boundary of ['url.origin !== self.location.origin', 'url.pathname.sta
     process.exit(1);
   }
 }
-if (!header.includes('["dapps", "/dapp"]') || !header.includes('["download", "/dapp/download"]') || !header.includes('["docs", "/docs"]') || !header.includes('["status", "/status"]')) {
-  console.error("stable DApps, Download, Docs, and Status navigation is missing");
+if (!header.includes('["dapps", "/dapp"]') || !header.includes('["ecosystem", "/dapp"]') || !header.includes('["docs", "/docs"]') || !header.includes('["status", "/status"]')) {
+  console.error("stable DApps, Ecosystem, Docs, and Status navigation is missing");
   process.exit(1);
 }
 for (const requiredText of ["metaKey", "ctrlKey", "ynx-theme", "localStorage.removeItem(\"ynx-direction\")", "CommandPalette", 't("skip")']) {

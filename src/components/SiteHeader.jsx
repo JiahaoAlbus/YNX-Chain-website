@@ -8,7 +8,7 @@ import { useLocale } from "../lib/i18n.jsx";
 const navigation = [
   ["products", "/#ecosystem"],
   ["dapps", "/dapp"],
-  ["download", "/dapp/download"],
+  ["ecosystem", "/dapp"],
   ["manual", "/manual"],
   ["docs", "/docs"],
   ["status", "/status"]
