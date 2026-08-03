@@ -1,6 +1,7 @@
 import React from "react";
 import { ArrowUpRight, CheckCircle2, CircleDashed, Download, GitBranch, ShieldCheck } from "lucide-react";
 import { DOWNLOAD_LABELS, PLATFORM_STATUS, PRODUCT_STATUS, STATUS_CONFIG } from "../lib/ecosystemCatalog.js";
+import { ECOSYSTEM_GUIDES } from "../content/ecosystemGuides.js";
 
 const platformOrder = ["web", "android", "ios", "macos", "windows"];
 
@@ -31,6 +32,7 @@ export function ProductStatusPage({ product, article, artifact }) {
   const publicEntry = product.publicEntry;
   const entryIsServiceHealth = publicEntry?.href?.includes("/health");
   const centralAccepted = product.release?.centralAccepted === true;
+  const guide = ECOSYSTEM_GUIDES[product.key];
 
   return (
     <main className="productStatusPage">
@@ -82,6 +84,26 @@ export function ProductStatusPage({ product, article, artifact }) {
         <ShieldCheck />
         <div><strong>Status is narrower than ambition.</strong><p>Candidate code, local packages, public APIs, hosted installers, production signing, and store acceptance are separate states.</p></div>
       </aside>
+
+      {guide && (
+        <section className="productLogic" aria-labelledby="product-logic-title">
+          <header>
+            <p className="sectionEyebrow">How this product works</p>
+            <h2 id="product-logic-title">Purpose, workflow and hard rules</h2>
+            <p>{guide.purpose}</p>
+          </header>
+          <div className="productLogicGrid">
+            <section>
+              <h3>User workflow</h3>
+              <ol>{guide.workflow.map((step) => <li key={step}>{step}</li>)}</ol>
+            </section>
+            <section>
+              <h3>Rules and boundaries</h3>
+              <ul>{guide.rules.map((rule) => <li key={rule}><CheckCircle2 size={16} /> <span>{rule}</span></li>)}</ul>
+            </section>
+          </div>
+        </section>
+      )}
 
       {article && (
         <section className="productAuthority" aria-labelledby="product-authority-title">

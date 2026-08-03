@@ -384,6 +384,19 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .productStatusAside > p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.55; }
 .productStatusAside .button.secondary { border-color: var(--line); color: var(--blue); background: white; }
 .productStatusAside .textLink { margin-top: 2px; font-size: 13px; }
+.productLogic { margin-top: 72px; padding-top: 36px; border-top: 1px solid var(--blue); }
+.productLogic > header { max-width: 820px; }
+.productLogic h2 { margin: 0; font-size: clamp(30px,4vw,46px); letter-spacing: -.025em; }
+.productLogic > header > p:not(.sectionEyebrow) { margin: 14px 0 0; color: var(--muted); font-size: 17px; line-height: 1.65; }
+.productLogicGrid { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 56px; margin-top: 36px; }
+.productLogicGrid h3 { margin: 0 0 16px; font-size: 20px; }
+.productLogicGrid ol, .productLogicGrid ul { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
+.productLogicGrid li { min-height: 58px; padding: 13px 4px; border-bottom: 1px solid var(--line); color: var(--muted); line-height: 1.55; }
+.productLogicGrid ol { counter-reset: product-step; }
+.productLogicGrid ol li { counter-increment: product-step; display: grid; grid-template-columns: 30px minmax(0,1fr); gap: 10px; }
+.productLogicGrid ol li::before { content: counter(product-step, decimal-leading-zero); color: var(--blue); font-size: 12px; font-weight: 800; }
+.productLogicGrid ul li { display: flex; align-items: flex-start; gap: 10px; }
+.productLogicGrid ul svg { flex: 0 0 auto; margin-top: 3px; color: var(--blue); }
 .faucetPage { width: min(1180px, calc(100% - 48px)); min-height: 78svh; margin: 0 auto; padding: 76px 0 110px; }
 .faucetHero { display: grid; grid-template-columns: minmax(0,1fr) 300px; gap: 56px; align-items: end; padding-bottom: 54px; border-bottom: 1px solid var(--blue); }
 .faucetHeroCopy h1 { max-width: 780px; margin: 4px 0 20px; color: var(--blue); font-size: clamp(44px,6vw,72px); line-height: 1; letter-spacing: -.035em; }
@@ -824,6 +837,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
   .appDirectory { grid-template-columns: repeat(2,minmax(0,1fr)); }
   .productStatusLayout { grid-template-columns: 1fr; gap: 46px; }
   .productStatusAside { position: static; }
+  .productLogicGrid { grid-template-columns: 1fr; gap: 38px; }
   .faucetHero, .faucetLayout { grid-template-columns: 1fr; }
   .faucetHero { align-items: start; gap: 28px; }
   .faucetService { max-width: 420px; }
