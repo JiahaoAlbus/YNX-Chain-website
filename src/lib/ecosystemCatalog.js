@@ -164,15 +164,16 @@ const evidence = {
     }
   },
   exchange: {
-    commit: "fc2276e1ce4c",
+    commit: "4a66cb5290a2",
     centralAccepted: true,
     productRelease: {
       href: "/releases/exchange/fc2276e1ce4c/product-release.json",
       release: "1.0.0-testnet-candidate"
     },
-    statusNote: "The deterministic Testnet exchange-integration package is centrally accepted and source-commit bound. Production custody, signing, listing, partnership, and mainnet remain unapproved.",
+    statusNote: "Release exchange-v1.0.0-testnet-preview.1: the public deterministic Testnet venue is live with bounded multi-user admission and 30 actual matches from the owned matching engine. The exact Wallet client is approved for sessions; order, cancel and withdrawal actions remain fail-closed until canonical action verification is deployed. Production custody, listing, partnership and mainnet are not claimed.",
     downloads: {
-      android: artifactDownload(PRODUCT_STATUS.LOCAL, "apps/exchange/mobile/android/app/build/outputs/apk/release/app-release.apk", "Android app release (debug-signed, testnet preview)"),
+      web: { status: PRODUCT_STATUS.LIVE, href: "https://exchange.ynxweb4.com", external: true, downloadHosted: false, note: "Public read-only Exchange Pro terminal with actual owned-engine matches." },
+      android: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-exchange-1.0.0-testnet-preview-4a66cb52-test-signed.apk", "Test-signed Android Testnet Preview · source 4a66cb52 · SHA-256 02025b4a…1a60 · 77,375,058 bytes · protected actions remain fail-closed.", "/downloads/ynx-exchange-1.0.0-testnet-preview-4a66cb52-test-signed.apk"),
       ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS project exists; simulator proof/ signing evidence pending." },
       macos: { status: PRODUCT_STATUS.NOT_READY, note: "No published Exchange macOS package in this candidate." },
       windows: { status: PRODUCT_STATUS.NOT_READY, note: "No published Exchange Windows package in this candidate." }
