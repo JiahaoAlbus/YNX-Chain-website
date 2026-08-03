@@ -8,7 +8,7 @@ export function SiteFooter() {
     <footer className="siteFooter">
       <div><strong>YNX Chain</strong><p>{t("footerLead")}</p></div>
       <div className="footerLinks">
-        <a href="/dapp/download">{t("download")}</a>
+        <a href="/dapp">{t("ecosystem")}</a>
         <a href="/manual">{t("userManual")}</a>
         <a href="/docs">{t("developerDocs")}</a>
         <a href="/api">{t("api")}</a>
