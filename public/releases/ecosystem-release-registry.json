@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "auditedAt": "2026-07-28",
+  "auditedAt": "2026-08-03",
   "scope": "YNX ecosystem central acceptance snapshot",
   "rules": {
     "localArtifactIsDownload": false,
@@ -11,9 +11,9 @@
   "products": [
     { "key": "wallet", "name": "YNX Wallet", "route": "/wallet", "state": "candidate", "commit": "efe827f46710", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
     { "key": "social", "name": "YNX Social", "route": "/social", "state": "candidate", "commit": "8c08bc3fff53", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
-    { "key": "pay", "name": "YNX Pay", "route": "/pay", "state": "candidate", "commit": "ffb528b4971b", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
-    { "key": "merchantConsole", "name": "Merchant Console", "route": "/merchant", "state": "candidate", "commit": "ffb528b4971b", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
-    { "key": "card", "name": "YNX Card", "route": "/card", "state": "candidate-incomplete", "commit": "ffb528b4971b", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
+    { "key": "pay", "name": "YNX Pay", "route": "/pay", "state": "public-preview-fail-closed", "commit": "53eb677c0e41", "centralAccepted": false, "publicWeb": "https://pay-app.ynxweb4.com", "downloadHosted": false },
+    { "key": "merchantConsole", "name": "Merchant Console", "route": "/merchant", "state": "public-preview-fail-closed", "commit": "e5c6cc0774be", "centralAccepted": false, "publicWeb": "https://merchant.ynxweb4.com", "downloadHosted": false },
+    { "key": "card", "name": "YNX Card", "route": "/card", "state": "public-sandbox-preview", "commit": "358fb555", "centralAccepted": false, "publicWeb": "https://card.ynxweb4.com", "downloadHosted": false },
     { "key": "exchange", "name": "YNX Exchange", "route": "/exchange", "state": "public-testnet-candidate", "commit": "fc2276e1ce4c", "centralAccepted": true, "publicWeb": "https://www.ynxweb4.com/exchange", "downloadHosted": false, "productRelease": "/releases/exchange/fc2276e1ce4c/product-release.json", "publicProductMetadata": "/releases/exchange/fc2276e1ce4c/public-product-metadata.json" },
     { "key": "shop", "name": "YNX Shop", "route": "/shop", "state": "candidate-incomplete", "commit": "ef0456a6111e", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
     { "key": "sellerConsole", "name": "Seller Console", "route": "/seller", "state": "candidate-incomplete", "commit": "ef0456a6111e", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
@@ -30,9 +30,11 @@
     { "key": "docs", "name": "YNX Docs", "route": "/docs-app", "state": "candidate", "commit": "7b3c5f427c17", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
     { "key": "browser", "name": "YNX Browser", "route": "/browser", "state": "candidate", "commit": "db8651b68c6e", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
     { "key": "search", "name": "YNX Search", "route": "/search", "state": "candidate-incomplete", "commit": "db8651b68c6e", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
-    { "key": "finance", "name": "YNX Finance", "route": "/finance", "state": "candidate", "commit": "bf0a592b2513", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
+    { "key": "finance", "name": "YNX Finance", "route": "/finance", "state": "public-read-only-preview", "commit": "7dc93a216e59", "centralAccepted": false, "publicWeb": "https://finance.ynxweb4.com", "downloadHosted": false },
     { "key": "mail", "name": "YNX Mail", "route": "/mail", "state": "candidate", "commit": "8126a2dae869", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
     { "key": "calendar", "name": "YNX Calendar", "route": "/calendar", "state": "candidate", "commit": "8126a2dae869", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
-    { "key": "dex", "name": "YNX DEX", "route": "/dex", "state": "candidate-incomplete", "commit": "719e1018267e", "centralAccepted": false, "publicWeb": null, "downloadHosted": false }
+    { "key": "dex", "name": "YNX DEX", "route": "/dex", "state": "public-read-only-preview", "commit": "d0f767d7", "centralAccepted": false, "publicWeb": "https://dex.ynxweb4.com", "downloadHosted": false },
+    { "key": "quant", "name": "YNX Quant", "route": "/quant", "state": "public-testnet-preview", "commit": "37d8bb9d9446", "centralAccepted": false, "publicWeb": "https://quant.ynxweb4.com", "downloadHosted": false },
+    { "key": "bridge", "name": "YNX Bridge", "route": "/bridge", "state": "public-monitor-transfer-disabled", "commit": "fc82c236", "centralAccepted": false, "publicWeb": "https://bridge-app.ynxweb4.com", "downloadHosted": false }
   ]
 }

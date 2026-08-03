@@ -137,6 +137,7 @@ export function Hero({ snapshot, connectionState, onAddNetwork }) {
         </p>
         <div className="heroActions">
           <a className="button primary" href={apiConfig.explorerUrl}>Open Explorer <ArrowUpRight size={18} /></a>
+          <a className="button secondary" href="/apps">Explore ecosystem <ArrowUpRight size={18} /></a>
           <button className="button secondary" onClick={onAddNetwork}><WalletCards size={18} /> Add YNX Testnet</button>
         </div>
         <div className="heroFacts" aria-label="Current network boundaries">

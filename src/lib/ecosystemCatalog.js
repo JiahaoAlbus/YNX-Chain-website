@@ -99,6 +99,8 @@ const PRODUCT_ROUTES = {
   browser: "/browser",
   search: "/search",
   finance: "/finance",
+  quant: "/quant",
+  bridge: "/bridge",
   mail: "/mail",
   calendar: "/calendar",
   dex: "/dex"
@@ -126,9 +128,10 @@ const evidence = {
     }
   },
   pay: {
-    commit: "ffb528b4971b",
-    statusNote: "Android release and debug packages are generated; web/API remains primary production-facing surface.",
+    commit: "53eb677c0e41",
+    statusNote: "The public Testnet Pay companion is deployed with twelve locales. Central payment actions remain fail-closed until the Pay product route is accepted by App Gateway.",
     downloads: {
+      web: { status: PRODUCT_STATUS.LIVE, href: "https://pay-app.ynxweb4.com", external: true, note: "Public Testnet invoice, Split Payment, and service-bill companion." },
       android: artifactDownload(PRODUCT_STATUS.LOCAL, "apps/pay/android/app/build/outputs/apk/release/app-release.apk", "Android app release (debug-signed, testnet preview)"),
       ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS project exists; simulator/signed App Store evidence pending." },
       macos: { status: PRODUCT_STATUS.NOT_READY, note: "No published macOS package for this candidate." },
@@ -136,17 +139,17 @@ const evidence = {
     }
   },
   merchantConsole: {
-    commit: "ffb528b4971b",
-    statusNote: "Merchant console surfaces are web-only in this candidate; no standalone merchant app package yet.",
+    commit: "e5c6cc0774be",
+    statusNote: "The public Merchant Console preview is deployed. Wallet sign-in and mutation routes remain fail-closed until the central merchant registry is deployed.",
     downloads: {
-      web: { status: PRODUCT_STATUS.LOCAL, href: "/docs#pay", note: "Console-in-product entry and API surface are available for verification." }
+      web: { status: PRODUCT_STATUS.LIVE, href: "https://merchant.ynxweb4.com", external: true, note: "Public Testnet merchant operations preview." }
     }
   },
   card: {
-    commit: "ffb528b4971b",
-    statusNote: "Card is a sandbox candidate in the Pay product. No issuing partner, production card, or downloadable client is claimed.",
+    commit: "358fb555",
+    statusNote: "The public Card Testnet preview is deployed. It is a deterministic sandbox with no BIN, issuer partnership, fiat balance, or real-world spendability.",
     downloads: {
-      web: { status: PRODUCT_STATUS.PLANNED, note: "Sandbox implementation exists locally; no public Card URL is registered." }
+      web: { status: PRODUCT_STATUS.LIVE, href: "https://card.ynxweb4.com", external: true, note: "Public fail-closed sandbox Card preview." }
     }
   },
   exchange: {
@@ -298,12 +301,12 @@ const evidence = {
     }
   },
   finance: {
-    commit: "bf0a592b2513",
-    statusNote: "Finance Android debug/release APK exists, including cold-start evidence; iOS simulator not available on this host.",
+    commit: "7dc93a216e59",
+    statusNote: "The public Finance companion is deployed as a source-bound read-only budget, category, portfolio, report, and AI-draft surface.",
     downloads: {
       android: artifactDownload(PRODUCT_STATUS.LOCAL, "apps/finance/mobile/android/app/build/outputs/apk/release/app-release.apk", "Finance Android release APK (debug-signed, testnet preview)"),
       ios: { status: PRODUCT_STATUS.PLANNED, note: "Xcode simulator/signed evidence is not currently available." },
-      web: { status: PRODUCT_STATUS.LOCAL, href: "/docs#finance", note: "Finance web companion." }
+      web: { status: PRODUCT_STATUS.LIVE, href: "https://finance.ynxweb4.com", external: true, note: "Public Testnet Finance companion." }
     }
   },
   mail: {
@@ -325,10 +328,24 @@ const evidence = {
     }
   },
   dex: {
-    commit: "719e1018267e",
-    statusNote: "DEX work is uncommitted candidate WIP on the audited base. No integrated UI, liquidity, audit, deployment, or download is claimed.",
+    commit: "d0f767d7",
+    statusNote: "The public DEX preview and concentrated-liquidity accounting core are deployed. Swap and liquidity mutations remain disabled because the current YNX runtime is not a general Solidity EVM.",
     downloads: {
-      web: { status: PRODUCT_STATUS.PLANNED, note: "Testnet DEX surface is not ready." }
+      web: { status: PRODUCT_STATUS.LIVE, href: "https://dex.ynxweb4.com", external: true, note: "Public read-only DEX preview; execution fails closed." }
+    }
+  },
+  quant: {
+    commit: "37d8bb9d9446",
+    statusNote: "The public Quant lab is deployed with deterministic strategy evidence, high-water-mark billing, and a review-only execution boundary.",
+    downloads: {
+      web: { status: PRODUCT_STATUS.LIVE, href: "https://quant.ynxweb4.com", external: true, note: "Public Testnet Quant lab." }
+    }
+  },
+  bridge: {
+    commit: "fc82c236",
+    statusNote: "The public Bridge monitor reads live coordinator, provider, route, contract, and safety evidence. External transfer submission remains disabled.",
+    downloads: {
+      web: { status: PRODUCT_STATUS.LIVE, href: "https://bridge-app.ynxweb4.com", external: true, note: "Public live-evidence Bridge route monitor." }
     }
   }
 };
@@ -408,20 +425,20 @@ export const getCatalog = () => [
     key: "pay",
     name: "YNX Pay",
     icon: CircleDollarSign,
-    status: PRODUCT_STATUS.LOCAL,
-    detail: "Invoice issuance, evidence, and refund records are implemented in candidate services.",
-    entry: { label: "Pay entry", href: "https://pay.ynxweb4.com/health", external: true },
+    status: PRODUCT_STATUS.LIVE,
+    detail: "Open signed invoices, Split Payments, and Quant service bills in a twelve-language public companion. Payment mutations stay disabled until central product routing is accepted.",
+    entry: { label: "Open YNX Pay", href: "https://pay-app.ynxweb4.com", external: true },
     docs: { ...docsAnchor("pay"), label: "Pay docs" },
     downloads: web(PRODUCT_STATUS.LOCAL, "/docs#pay", "Pay workflow documentation + API path"),
-    metrics: [["Closure", "Intent and invoice traces"], ["Risk", "Provider/provider settlement proof pending"], ["Readiness", "No public checkout app package"]]
+    metrics: [["Closure", "Invoice + split + service-bill review"], ["Risk", "Central mutation route pending"], ["Readiness", "Public companion live; payment fails closed"]]
   },
   {
     key: "merchantConsole",
     name: "Merchant Console",
     icon: Store,
-    status: PRODUCT_STATUS.LOCAL,
-    detail: "Merchant dashboard and reconciliation APIs are in candidate state; settlement controls need central integration hardening.",
-    entry: { ...exchangeLink(), label: "Merchant console entry" },
+    status: PRODUCT_STATUS.LIVE,
+    detail: "Public merchant operations console for invoices, orders, refunds, disputes, reconciliation, and evidence. Authenticated changes remain centrally gated.",
+    entry: { label: "Open Merchant Console", href: "https://merchant.ynxweb4.com", external: true },
     docs: { ...docsAnchor("pay"), label: "Merchant docs" },
     downloads: web(PRODUCT_STATUS.LOCAL, "/docs#pay", "Console-in-product entry path"),
     metrics: [["Closure", "Webhook, order and reconciliation surface"], ["Risk", "No public merchant onboarding approval"], ["Readiness", "No production merchant installer"]]
@@ -430,12 +447,12 @@ export const getCatalog = () => [
     key: "card",
     name: "YNX Card",
     icon: CreditCard,
-    status: PRODUCT_STATUS.PLANNED,
-    detail: "Card is a sandbox product candidate for Pay-linked authorization and review. No issuing, network, banking, or production-card capability is claimed.",
-    entry: { label: "Card status", href: "/card" },
+    status: PRODUCT_STATUS.LIVE,
+    detail: "A public, fail-closed card sandbox for lifecycle, spend controls, activity, disputes, and review-only AI. It is not a real-world payment card.",
+    entry: { label: "Open Card preview", href: "https://card.ynxweb4.com", external: true },
     docs: { ...docsAnchor("card"), label: "Card docs" },
     downloads: makeDownloads(),
-    metrics: [["Closure", "Sandbox authorization candidate"], ["Risk", "Issuer and regulatory approval absent"], ["Readiness", "No public Card product"]]
+    metrics: [["Closure", "Sandbox lifecycle + controls"], ["Risk", "Issuer and regulatory approval absent"], ["Readiness", "Public sandbox preview live"]]
   },
   {
     key: "exchange",
@@ -617,12 +634,12 @@ export const getCatalog = () => [
     key: "finance",
     name: "YNX Finance",
     icon: CircleDollarSign,
-    status: PRODUCT_STATUS.LOCAL,
-    detail: "Budget and ledger surfaces exist as candidate loops; reconciliation and legal text need platform hardening.",
-    entry: { label: "Finance entry", href: "/docs#finance" },
+    status: PRODUCT_STATUS.LIVE,
+    detail: "A public read-only financial center for portfolio totals, category budgets, cash-flow reports, source evidence, and review-only AI drafts.",
+    entry: { label: "Open Finance", href: "https://finance.ynxweb4.com", external: true },
     docs: { ...docsAnchor("finance"), label: "Finance docs" },
     downloads: web(PRODUCT_STATUS.LOCAL, "/docs#finance", "Finance web companion"),
-    metrics: [["Closure", "Budget and statement flows"], ["Risk", "Recovery and dispute handling"], ["Readiness", "No production finance package"]]
+    metrics: [["Closure", "Budget + reports + source evidence"], ["Risk", "Authenticated write registry pending"], ["Readiness", "Public read-only companion live"]]
   },
   {
     key: "mail",
@@ -650,12 +667,34 @@ export const getCatalog = () => [
     key: "dex",
     name: "YNX DEX",
     icon: Repeat2,
-    status: PRODUCT_STATUS.PLANNED,
-    detail: "DEX contracts and SDK work are an incomplete testnet candidate. There is no public liquidity, independent audit, deployed interface, or production trading claim.",
-    entry: { label: "DEX status", href: "/dex" },
+    status: PRODUCT_STATUS.LIVE,
+    detail: "A public DEX interface and concentrated-liquidity accounting preview. Current YNX runtime limits keep swaps and liquidity mutations disabled.",
+    entry: { label: "Open DEX preview", href: "https://dex.ynxweb4.com", external: true },
     docs: { ...docsAnchor("dex"), label: "DEX docs" },
     downloads: makeDownloads(),
-    metrics: [["Closure", "Contract and SDK WIP"], ["Risk", "No audit or real liquidity"], ["Readiness", "No public DEX surface"]]
+    metrics: [["Closure", "Public UI + accounting core"], ["Risk", "No general EVM contract execution"], ["Readiness", "Read-only preview live"]]
+  },
+  {
+    key: "quant",
+    name: "YNX Quant",
+    icon: MonitorCog,
+    status: PRODUCT_STATUS.LIVE,
+    detail: "Deterministic strategy research, signed run evidence, risk limits, performance reporting, and high-water-mark service billing without fabricated live-profit claims.",
+    entry: { label: "Open Quant", href: "https://quant.ynxweb4.com", external: true },
+    docs: { ...docsAnchor("quant"), label: "Quant docs" },
+    downloads: web(PRODUCT_STATUS.LIVE, "https://quant.ynxweb4.com", "Public Testnet Quant lab"),
+    metrics: [["Closure", "Strategy + risk + signed evidence"], ["Risk", "Review-only execution boundary"], ["Readiness", "Public Quant lab live"]]
+  },
+  {
+    key: "bridge",
+    name: "YNX Bridge",
+    icon: Repeat2,
+    status: PRODUCT_STATUS.LIVE,
+    detail: "Live route, provider, asset, contract, reconciliation, and coordinator evidence. The interface disables transfer submission when no executable route exists.",
+    entry: { label: "Open Bridge monitor", href: "https://bridge-app.ynxweb4.com", external: true },
+    docs: { ...docsAnchor("bridge"), label: "Bridge docs" },
+    downloads: web(PRODUCT_STATUS.LIVE, "https://bridge-app.ynxweb4.com", "Public live-evidence Bridge monitor"),
+    metrics: [["Closure", "Live provider + route monitoring"], ["Risk", "No verified executable route"], ["Readiness", "Monitor live; transfer disabled"]]
   }
 ].map(attachEvidence);
 

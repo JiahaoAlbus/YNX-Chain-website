@@ -279,8 +279,8 @@ for (const boundary of ['url.origin !== self.location.origin', 'url.pathname.sta
     process.exit(1);
   }
 }
-if (!header.includes('["Apps", "/apps"]') || !header.includes('["Download", "/download"]') || !header.includes('["Docs", "/docs"]') || !header.includes('["Status", "/status"]')) {
-  console.error("stable Apps, Download, Docs, and Status navigation is missing");
+if (!header.includes('["Ecosystem", "/apps"]') || !header.includes('["Docs", "/docs"]') || !header.includes('["Status", "/status"]')) {
+  console.error("stable Ecosystem, Docs, and Status navigation is missing");
   process.exit(1);
 }
 for (const requiredText of ["metaKey", "ctrlKey", "ynx-theme", "ynx-direction", "CommandPalette", "Skip to content"]) {
@@ -326,16 +326,16 @@ for (const requiredText of ["Public web", "Candidate", "Candidate incomplete", "
   }
 }
 const productKeys = [...ecosystemCatalog.matchAll(/^\s+key: "([^"]+)",$/gm)].map((match) => match[1]);
-if (productKeys.length !== 25 || new Set(productKeys).size !== 25 || !productKeys.includes("card") || !productKeys.includes("dex")) {
-  console.error(`ecosystem catalog must contain 25 unique products; found ${productKeys.length}`);
+if (productKeys.length !== 27 || new Set(productKeys).size !== 27 || !productKeys.includes("card") || !productKeys.includes("dex") || !productKeys.includes("quant") || !productKeys.includes("bridge")) {
+  console.error(`ecosystem catalog must contain 27 unique products; found ${productKeys.length}`);
   process.exit(1);
 }
 const registryKeys = releaseRegistry.products?.map((product) => product.key) || [];
 const acceptedProducts = releaseRegistry.products?.filter((product) => product.centralAccepted === true) || [];
 const exchangeRegistry = acceptedProducts[0];
 if (
-  registryKeys.length !== 25 ||
-  new Set(registryKeys).size !== 25 ||
+  registryKeys.length !== 27 ||
+  new Set(registryKeys).size !== 27 ||
   productKeys.some((key) => !registryKeys.includes(key)) ||
   releaseRegistry.products.some((product) => product.downloadHosted !== false) ||
   acceptedProducts.length !== 1 ||
@@ -345,7 +345,7 @@ if (
   exchangeRegistry.publicProductMetadata !== "/releases/exchange/fc2276e1ce4c/public-product-metadata.json" ||
   releaseRegistry.rules?.localArtifactIsDownload !== false
 ) {
-  console.error("release registry must preserve 25 truthful states and exactly one commit-bound accepted exchange candidate");
+  console.error("release registry must preserve 27 truthful states and exactly one commit-bound accepted exchange candidate");
   process.exit(1);
 }
 for (const requiredText of ["downloadHosted", "Local build only", "candidate incomplete", "Product status"]) {
