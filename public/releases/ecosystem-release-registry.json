@@ -9,7 +9,7 @@
     "externalClaimsRequireIndependentEvidence": true
   },
   "products": [
-    { "key": "wallet", "name": "YNX Wallet", "route": "/dapp/wallet", "state": "candidate", "commit": "efe827f46710", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
+    { "key": "wallet", "name": "YNX Wallet", "route": "/dapp/wallet", "state": "hosted-testnet-preview", "commit": "3f8e9105c4c8", "centralAccepted": false, "publicWeb": "https://www.ynxweb4.com/dapp/wallet", "gatewayUrl": "https://wallet-auth-testnet.43.153.202.237.sslip.io", "downloadHosted": true, "releaseTag": "wallet-auth-v1.0.0-testnet-preview.3", "downloads": [{"platform":"android-api24","url":"https://www.ynxweb4.com/downloads/ynx-wallet-1.0.0-testnet-preview-3f8e9105-test-signed.apk","sha256":"fe0375e9f81a8c1252eada126be369a4f7a9acda3d68552028cbba23344c4610","bytes":78203006,"signingClass":"android-test-signed-testnet-preview"}] },
     { "key": "social", "name": "YNX Social", "route": "/dapp/social", "state": "candidate", "commit": "8c08bc3fff53", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
     { "key": "pay", "name": "YNX Pay", "route": "/dapp/pay", "state": "candidate", "commit": "ffb528b4971b", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
     { "key": "merchantConsole", "name": "Merchant Console", "route": "/dapp/merchant", "state": "candidate", "commit": "ffb528b4971b", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
