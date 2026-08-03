@@ -164,16 +164,16 @@ const evidence = {
     }
   },
   exchange: {
-    commit: "1395dcdfe83d",
+    commit: "1e5f48d2",
     centralAccepted: true,
     productRelease: {
       href: "/releases/exchange/fc2276e1ce4c/product-release.json",
       release: "1.0.0-testnet-candidate"
     },
-    statusNote: "Release exchange-v1.0.0-testnet-preview.2: the Android client connects to the canonical public Exchange API and Wallet/Auth gateway by default. The venue is live with bounded multi-user admission and 30 actual owned-engine matches. Order, cancel and withdrawal actions remain fail-closed until canonical action verification is deployed. Production custody, listing, partnership and mainnet are not claimed.",
+    statusNote: "Release exchange-v1.0.0-testnet-preview.3: the Android client and public venue now display the 30 actual persisted matching-engine trades, including source type and proof digest. The canonical public Exchange API and Wallet/Auth gateway remain embedded with bounded multi-user admission. Order, cancel and withdrawal actions remain fail-closed until canonical action verification is deployed. Production custody, listing, partnership and mainnet are not claimed.",
     downloads: {
       web: { status: PRODUCT_STATUS.LIVE, href: "https://exchange.ynxweb4.com", external: true, downloadHosted: false, note: "Public read-only Exchange Pro terminal with actual owned-engine matches." },
-      android: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-exchange-1.0.0-testnet-preview-1395dcdf-test-signed.apk", "Test-signed Android Testnet Preview · source 1395dcdf · SHA-256 2709b5dd…7ca1 · 77,358,726 bytes · canonical Testnet API and Wallet gateway embedded.", "/downloads/ynx-exchange-1.0.0-testnet-preview-1395dcdf-test-signed.apk"),
+      android: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-exchange-1.0.0-testnet-preview-1e5f48d2-test-signed.apk", "Test-signed Android Testnet Preview · source 1e5f48d2 · SHA-256 9ac502ce…ae3 · 77,360,214 bytes · canonical Testnet API, Wallet gateway, and actual venue trade tape embedded.", "/downloads/ynx-exchange-1.0.0-testnet-preview-1e5f48d2-test-signed.apk"),
       ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS project exists; simulator proof/ signing evidence pending." },
       macos: { status: PRODUCT_STATUS.NOT_READY, note: "No published Exchange macOS package in this candidate." },
       windows: { status: PRODUCT_STATUS.NOT_READY, note: "No published Exchange Windows package in this candidate." }

@@ -71,7 +71,7 @@
     { "source": "/downloads/ynx-trust-center-4d40557229b4-linux-amd64.tar.gz", "destination": "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-trust-center-4d40557229b4-linux-amd64.tar.gz" },
     { "source": "/downloads/ynx-shop-0.3.0-testnet-preview-6fa2d6c5-debug-signed.apk", "destination": "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-shop-0.3.0-testnet-preview-6fa2d6c5-debug-signed.apk" },
     { "source": "/downloads/ynx-wallet-1.0.0-testnet-preview-ae8771c-test-signed.apk", "destination": "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-wallet-1.0.0-testnet-preview-ae8771c-test-signed.apk" },
-    { "source": "/downloads/ynx-exchange-1.0.0-testnet-preview-1395dcdf-test-signed.apk", "destination": "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-exchange-1.0.0-testnet-preview-1395dcdf-test-signed.apk" },
+    { "source": "/downloads/ynx-exchange-1.0.0-testnet-preview-1e5f48d2-test-signed.apk", "destination": "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-exchange-1.0.0-testnet-preview-1e5f48d2-test-signed.apk" },
     { "source": "/(.*)", "destination": "/" }
   ]
 }
