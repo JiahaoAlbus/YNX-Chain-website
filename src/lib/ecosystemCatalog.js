@@ -345,15 +345,15 @@ const evidence = {
     }
   },
   finance: {
-    commit: "6b6cb8f5b125",
+    commit: "307273b9",
     centralAccepted: true,
     productRelease: {
       href: "/releases/ecosystem-release-registry.json",
-      release: "1.2.0-public-testnet-candidate"
+      release: "finance-v1.2.0-testnet-preview.2"
     },
-    statusNote: "YNX Finance 1.2.0 is publicly deployed as a non-custodial, read-only Testnet workspace. It uses canonical proof-bound Wallet sessions, preserves account isolation, reads real Explorer and Pay evidence, and passed a 10-account / 100-request public concurrency test without cross-account leakage. The current mobile source and Android/iOS bundles pass, but no current immutable mobile installer is hosted yet.",
+    statusNote: "YNX Finance 1.2.0 is publicly deployed as a non-custodial, read-only Testnet workspace. It uses canonical proof-bound Wallet sessions, preserves account isolation, reads real Explorer and Pay evidence, and passed a 10-account / 100-request public concurrency test without cross-account leakage. The current test-signed Android Preview is hosted for direct download; production signing and store release are not claimed.",
     downloads: {
-      android: { status: PRODUCT_STATUS.LOCAL, note: "Canonical-session mobile source and platform bundles pass; the prior local-test APK is not published as the current release." },
+      android: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-finance-1.2.0-testnet-preview-307273b9-test-signed.apk", "Test-signed Android Testnet Preview · source 307273b9 · SHA-256 c795f8b5…60dc1 · 77,516,038 bytes · public Finance and canonical Wallet gateways embedded.", "/downloads/ynx-finance-1.2.0-testnet-preview-307273b9-test-signed.apk"),
       ios: { status: PRODUCT_STATUS.PLANNED, note: "Xcode simulator/signed evidence is not currently available." },
       web: { status: PRODUCT_STATUS.LIVE, href: "https://finance.ynxweb4.com/", external: true, downloadHosted: false, note: "Public canonical-Wallet Finance Testnet workspace." }
     }
