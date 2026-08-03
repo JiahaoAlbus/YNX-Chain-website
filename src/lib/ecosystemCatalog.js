@@ -164,16 +164,16 @@ const evidence = {
     }
   },
   exchange: {
-    commit: "4a66cb5290a2",
+    commit: "1395dcdfe83d",
     centralAccepted: true,
     productRelease: {
       href: "/releases/exchange/fc2276e1ce4c/product-release.json",
       release: "1.0.0-testnet-candidate"
     },
-    statusNote: "Release exchange-v1.0.0-testnet-preview.1: the public deterministic Testnet venue is live with bounded multi-user admission and 30 actual matches from the owned matching engine. The exact Wallet client is approved for sessions; order, cancel and withdrawal actions remain fail-closed until canonical action verification is deployed. Production custody, listing, partnership and mainnet are not claimed.",
+    statusNote: "Release exchange-v1.0.0-testnet-preview.2: the Android client connects to the canonical public Exchange API and Wallet/Auth gateway by default. The venue is live with bounded multi-user admission and 30 actual owned-engine matches. Order, cancel and withdrawal actions remain fail-closed until canonical action verification is deployed. Production custody, listing, partnership and mainnet are not claimed.",
     downloads: {
       web: { status: PRODUCT_STATUS.LIVE, href: "https://exchange.ynxweb4.com", external: true, downloadHosted: false, note: "Public read-only Exchange Pro terminal with actual owned-engine matches." },
-      android: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-exchange-1.0.0-testnet-preview-4a66cb52-test-signed.apk", "Test-signed Android Testnet Preview · source 4a66cb52 · SHA-256 02025b4a…1a60 · 77,375,058 bytes · protected actions remain fail-closed.", "/downloads/ynx-exchange-1.0.0-testnet-preview-4a66cb52-test-signed.apk"),
+      android: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-exchange-1.0.0-testnet-preview-1395dcdf-test-signed.apk", "Test-signed Android Testnet Preview · source 1395dcdf · SHA-256 2709b5dd…7ca1 · 77,358,726 bytes · canonical Testnet API and Wallet gateway embedded.", "/downloads/ynx-exchange-1.0.0-testnet-preview-1395dcdf-test-signed.apk"),
       ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS project exists; simulator proof/ signing evidence pending." },
       macos: { status: PRODUCT_STATUS.NOT_READY, note: "No published Exchange macOS package in this candidate." },
       windows: { status: PRODUCT_STATUS.NOT_READY, note: "No published Exchange Windows package in this candidate." }
