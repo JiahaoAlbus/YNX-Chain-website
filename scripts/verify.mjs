@@ -413,7 +413,7 @@ if (
   console.error("release registry must preserve 26 truthful states, four source-bound hosted previews, and exactly one commit-bound accepted exchange candidate");
   process.exit(1);
 }
-for (const requiredText of ["downloadHosted", "Local build only", "Download Testnet Preview", "candidate incomplete", "Product status", "wallet-auth-v1.0.0-testnet-preview.3", "shop-v0.3.0-testnet-preview.1", "developer-v0.2.0-testnet-preview.1", "trust-center-v0.1.0-testnet-preview.2"]) {
+for (const requiredText of ["downloadHosted", "Local build only", "Download Testnet Preview", "candidate incomplete", "Product status", "wallet-auth-v1.0.0-testnet-preview.4", "shop-v0.3.0-testnet-preview.1", "developer-v0.2.0-testnet-preview.1", "trust-center-v0.1.0-testnet-preview.2"]) {
   if (!ecosystemCatalog.includes(requiredText)) {
     console.error(`ecosystem release boundary missing: ${requiredText}`);
     process.exit(1);
