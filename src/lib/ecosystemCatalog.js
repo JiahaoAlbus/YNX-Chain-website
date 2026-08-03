@@ -119,10 +119,11 @@ const PRODUCT_ROUTES = Object.fromEntries(
 
 const evidence = {
   wallet: {
-    commit: "efe827f46710",
-    statusNote: "The local candidate has Android APK and web session tests; iOS/desktop not published.",
+    commit: "ae8771c3417f",
+    statusNote: "Release wallet-auth-v1.0.0-testnet-preview.4: the centrally accepted Android Testnet Preview is hosted for direct download. Canonical Wallet/Auth is publicly reachable through a proof-bound gateway with 64-request concurrency admission and 100/100 concurrent readiness evidence. This is test-signed software, not a production-signed or app-store release.",
     downloads: {
-      android: artifactDownload(PRODUCT_STATUS.LOCAL, "apps/wallet/android/app/build/outputs/apk/release/app-release.apk", "Android app release (debug-signed, testnet preview)"),
+      web: { status: PRODUCT_STATUS.LIVE, href: "https://wallet-auth.ynxweb4.com/health", external: true, downloadHosted: false, note: "Public canonical Wallet/Auth gateway health; product use remains proof-bound." },
+      android: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-1.0.0-testnet-preview-ae8771c-test-signed.apk", "Test-signed Android Testnet Preview · source ae8771c · SHA-256 3857ce0a…b9e5 · 78,311,082 bytes · never import production keys.", "/downloads/ynx-wallet-1.0.0-testnet-preview-ae8771c-test-signed.apk"),
       ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS project exists; simulator/launch evidence not completed on this host." },
       macos: { status: PRODUCT_STATUS.NOT_READY, note: "No macOS package is published for Wallet in this candidate." },
       windows: { status: PRODUCT_STATUS.NOT_READY, note: "No Windows package is published for Wallet in this candidate." }
