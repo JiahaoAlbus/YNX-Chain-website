@@ -402,8 +402,8 @@ if (
   registryKeys.length !== 26 ||
   new Set(registryKeys).size !== 26 ||
   productKeys.some((key) => !registryKeys.includes(key)) ||
-  hostedPreviewProducts.length !== 5 ||
-  hostedPreviewProducts.map((product) => product.key).sort().join(",") !== "developer,exchange,shop,trust,wallet" ||
+  hostedPreviewProducts.length !== 6 ||
+  hostedPreviewProducts.map((product) => product.key).sort().join(",") !== "developer,exchange,finance,shop,trust,wallet" ||
   hostedPreviewProducts.some((product) => (product.key === "developer" ? product.state !== "public-testnet-web-and-desktop-preview" : product.state !== "hosted-testnet-preview") || !product.releaseTag || !product.downloads?.length || product.downloads.some((download) => !/^[0-9a-f]{64}$/.test(download.sha256) || !(download.bytes > 0) || !download.signingClass)) ||
   acceptedProducts.length !== 3 ||
   [...acceptedByKey.keys()].sort().join(",") !== "exchange,finance,wallet" ||
@@ -415,13 +415,15 @@ if (
   walletRegistry?.commit !== "ae8771c3417f" ||
   walletRegistry.releaseTag !== "wallet-auth-v1.0.0-testnet-preview.4" ||
   walletRegistry.gatewayUrl !== "https://wallet-auth.ynxweb4.com" ||
-  financeRegistry?.commit !== "6b6cb8f5b125" ||
-  financeRegistry.state !== "public-testnet-candidate" ||
+  financeRegistry.state !== "hosted-testnet-preview" ||
+  financeRegistry.acceptedIntegrationCommit !== "6b6cb8f5b125" ||
+  financeRegistry.commit !== "307273b9" ||
+  financeRegistry.releaseTag !== "finance-v1.2.0-testnet-preview.2" ||
   financeRegistry.publicWeb !== "https://finance.ynxweb4.com/" ||
   releaseRegistry.products.some((product) => !product.route.startsWith("/dapp/")) ||
   releaseRegistry.rules?.localArtifactIsDownload !== false
 ) {
-  console.error("release registry must preserve 26 truthful states, five source-bound hosted previews, and the exact Wallet, Exchange and Finance central acceptance set");
+  console.error("release registry must preserve 26 truthful states, six source-bound hosted previews, and the exact Wallet, Exchange and Finance central acceptance set");
   process.exit(1);
 }
 for (const requiredText of ["downloadHosted", "Local build only", "Download Testnet Preview", "candidate incomplete", "Product status", "wallet-auth-v1.0.0-testnet-preview.4", "exchange-v1.0.0-testnet-preview.3", "shop-v0.3.0-testnet-preview.1", "developer-v0.2.0-testnet-preview.1", "trust-center-v0.1.0-testnet-preview.2"]) {
@@ -471,7 +473,8 @@ const requiredOfficialDownloads = new Map([
   ["/downloads/ynx-trust-center-4d40557229b4-linux-amd64.tar.gz", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-trust-center-4d40557229b4-linux-amd64.tar.gz"],
   ["/downloads/ynx-shop-0.3.0-testnet-preview-6fa2d6c5-debug-signed.apk", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-shop-0.3.0-testnet-preview-6fa2d6c5-debug-signed.apk"],
   ["/downloads/ynx-wallet-1.0.0-testnet-preview-ae8771c-test-signed.apk", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-wallet-1.0.0-testnet-preview-ae8771c-test-signed.apk"],
-  ["/downloads/ynx-exchange-1.0.0-testnet-preview-1e5f48d2-test-signed.apk", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-exchange-1.0.0-testnet-preview-1e5f48d2-test-signed.apk"]
+  ["/downloads/ynx-exchange-1.0.0-testnet-preview-1e5f48d2-test-signed.apk", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-exchange-1.0.0-testnet-preview-1e5f48d2-test-signed.apk"],
+  ["/downloads/ynx-finance-1.2.0-testnet-preview-307273b9-test-signed.apk", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-finance-1.2.0-testnet-preview-307273b9-test-signed-8WRdkqJCJnHBCsuyDsRj4XjEreyeYT.apk"]
 ]);
 for (const [source, destination] of requiredOfficialDownloads) {
   if (!vercel.rewrites?.some((rewrite) => rewrite.source === source && rewrite.destination === destination)) {
