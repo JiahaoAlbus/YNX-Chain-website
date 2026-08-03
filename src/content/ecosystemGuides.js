@@ -130,9 +130,9 @@ export const ECOSYSTEM_GUIDES = {
     rules: ["Time zone and recurrence are preserved explicitly.", "Invitation is not acceptance.", "Calendar cannot authorize payments or Wallet actions."],
   },
   dex: {
-    purpose: "A future non-custodial swap and liquidity surface for audited YNX contracts.",
-    workflow: ["Select assets and route.", "Quote price impact, fees and minimum received.", "Review Wallet approval and contract call.", "Verify the final transaction and position."],
-    rules: ["No public liquidity or audited production DEX is currently claimed.", "A quote is not execution.", "Slippage, approval, LP loss and contract risk must be explicit."],
+    purpose: "Expose an honest public Testnet view of indexed DEX tokens, pools and transactions while executable contract support remains unavailable.",
+    workflow: ["Open the public DEX preview.", "Read indexed token, pool and transaction state from the YNX Testnet service.", "Confirm whether an executable route and liquidity exist.", "When none exists, keep swap and liquidity controls disabled and link the user to source evidence."],
+    rules: ["Chain 6423 does not currently execute general EVM bytecode, so no swap or liquidity execution is claimed.", "An indexed token, pool shell or quote is not execution.", "No public liquidity, independent contract audit or production DEX is claimed.", "Unavailable actions fail closed and empty state is never filled with sample volume or fabricated transactions."],
   },
 };
 

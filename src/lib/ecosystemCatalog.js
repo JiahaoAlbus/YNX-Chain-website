@@ -120,6 +120,11 @@ const PRODUCT_ROUTES = Object.fromEntries(
 const evidence = {
   wallet: {
     commit: "ae8771c3417f",
+    centralAccepted: true,
+    productRelease: {
+      href: "/releases/ecosystem-release-registry.json",
+      release: "wallet-auth-v1.0.0-testnet-preview.4"
+    },
     statusNote: "Release wallet-auth-v1.0.0-testnet-preview.4: the centrally accepted Android Testnet Preview is hosted for direct download. Canonical Wallet/Auth is publicly reachable through a proof-bound gateway with 64-request concurrency admission and 100/100 concurrent readiness evidence. This is test-signed software, not a production-signed or app-store release.",
     downloads: {
       web: { status: PRODUCT_STATUS.LIVE, href: "https://wallet-auth.ynxweb4.com/health", external: true, downloadHosted: false, note: "Public canonical Wallet/Auth gateway health; product use remains proof-bound." },
@@ -182,7 +187,7 @@ const evidence = {
   quant: {
     commit: "18a73981b043",
     centralAccepted: false,
-    statusNote: "The public research workspace is source-bound and live with per-request state isolation and actual YNX matching-engine trade data. Public paper trading, Testnet order submission, live funds, production signing and central Wallet acceptance remain disabled.",
+    statusNote: "The public research workspace is source-bound and live with per-request state isolation and actual YNX matching-engine trade data. Quant's least-privilege Wallet scopes are centrally registered for future protected actions; the current public surface remains research-only, with paper trading, Testnet order submission, live funds and production signing disabled.",
     downloads: {
       web: { status: PRODUCT_STATUS.LIVE, href: "https://quant.ynxweb4.com/", external: true, downloadHosted: false, note: "Public isolated Quant research workspace." }
     }
@@ -340,12 +345,17 @@ const evidence = {
     }
   },
   finance: {
-    commit: "bf0a592b2513",
-    statusNote: "Finance Android debug/release APK exists, including cold-start evidence; iOS simulator not available on this host.",
+    commit: "6b6cb8f5b125",
+    centralAccepted: true,
+    productRelease: {
+      href: "/releases/ecosystem-release-registry.json",
+      release: "1.2.0-public-testnet-candidate"
+    },
+    statusNote: "YNX Finance 1.2.0 is publicly deployed as a non-custodial, read-only Testnet workspace. It uses canonical proof-bound Wallet sessions, preserves account isolation, reads real Explorer and Pay evidence, and passed a 10-account / 100-request public concurrency test without cross-account leakage. The current mobile source and Android/iOS bundles pass, but no current immutable mobile installer is hosted yet.",
     downloads: {
-      android: artifactDownload(PRODUCT_STATUS.LOCAL, "apps/finance/mobile/android/app/build/outputs/apk/release/app-release.apk", "Finance Android release APK (debug-signed, testnet preview)"),
+      android: { status: PRODUCT_STATUS.LOCAL, note: "Canonical-session mobile source and platform bundles pass; the prior local-test APK is not published as the current release." },
       ios: { status: PRODUCT_STATUS.PLANNED, note: "Xcode simulator/signed evidence is not currently available." },
-      web: { status: PRODUCT_STATUS.LOCAL, href: "/docs#finance", note: "Finance web companion." }
+      web: { status: PRODUCT_STATUS.LIVE, href: "https://finance.ynxweb4.com/", external: true, downloadHosted: false, note: "Public canonical-Wallet Finance Testnet workspace." }
     }
   },
   mail: {
@@ -367,10 +377,10 @@ const evidence = {
     }
   },
   dex: {
-    commit: "719e1018267e",
-    statusNote: "DEX work is uncommitted candidate WIP on the audited base. No integrated UI, liquidity, audit, deployment, or download is claimed.",
+    commit: "d0f767d7",
+    statusNote: "The public DEX Testnet preview is live as an indexed, read-only market surface with real token, pool and transaction endpoints and bounded multi-user access. It currently shows no pools or swaps because Chain 6423 does not execute general EVM bytecode; order routing, liquidity actions and Wallet signing therefore fail closed rather than fabricating activity.",
     downloads: {
-      web: { status: PRODUCT_STATUS.PLANNED, note: "Testnet DEX surface is not ready." }
+      web: { status: PRODUCT_STATUS.LIVE, href: "https://dex.ynxweb4.com/", external: true, downloadHosted: false, note: "Public read-only DEX Testnet preview backed by indexed YNX activity." }
     }
   }
 };
@@ -486,9 +496,9 @@ export const getCatalog = () => [
     icon: AppWindow,
     status: PRODUCT_STATUS.LIVE,
     detail: "The public Testnet exchange-integration candidate verifies signed transfers, replay safety, nonce, blocks, receipts, logs, restart persistence, and a fail-closed confirmation policy. No listing is claimed.",
-    entry: { ...exchangeLink(), label: "Exchange entry" },
+    entry: { label: "Open Exchange", href: "https://exchange.ynxweb4.com/", external: true },
     docs: { ...docsAnchor("exchange"), label: "Exchange docs" },
-    downloads: web(PRODUCT_STATUS.LIVE, "/trading", "Public Testnet exchange integration route"),
+    downloads: web(PRODUCT_STATUS.LIVE, "https://exchange.ynxweb4.com/", "Public Testnet exchange venue"),
     metrics: [["Closure", "Signed tx + receipts + evidence package"], ["Risk", "No exchange listing is claimed"], ["Readiness", "Production custody and independent review remain pending"]]
   },
   {
@@ -671,12 +681,12 @@ export const getCatalog = () => [
     key: "finance",
     name: "YNX Finance",
     icon: CircleDollarSign,
-    status: PRODUCT_STATUS.LOCAL,
-    detail: "Budget and ledger surfaces exist as candidate loops; reconciliation and legal text need platform hardening.",
-    entry: { label: "Finance entry", href: "/docs#finance" },
+    status: PRODUCT_STATUS.LIVE,
+    detail: "A public, non-custodial personal-finance workspace for real YNXT activity, evidence-linked Pay receipts, private budgets, notes, statements and reviewable AI drafts. Canonical Wallet proofs isolate every account and Finance cannot sign, trade, withdraw or move assets.",
+    entry: { label: "Open Finance", href: "https://finance.ynxweb4.com/", external: true },
     docs: { ...docsAnchor("finance"), label: "Finance docs" },
-    downloads: web(PRODUCT_STATUS.LOCAL, "/docs#finance", "Finance web companion"),
-    metrics: [["Closure", "Budget and statement flows"], ["Risk", "Recovery and dispute handling"], ["Readiness", "No production finance package"]]
+    downloads: web(PRODUCT_STATUS.LIVE, "https://finance.ynxweb4.com/", "Public canonical-Wallet Finance Testnet workspace"),
+    metrics: [["Closure", "Wallet → real sources → private planning → statements/export"], ["Concurrency", "10 accounts / 100 public reads; no cross-account leakage"], ["Boundary", "Read-only YNXT evidence; no custody, signing, trading or withdrawals"]]
   },
   {
     key: "mail",
@@ -704,12 +714,12 @@ export const getCatalog = () => [
     key: "dex",
     name: "YNX DEX",
     icon: Repeat2,
-    status: PRODUCT_STATUS.PLANNED,
-    detail: "DEX contracts and SDK work are an incomplete testnet candidate. There is no public liquidity, independent audit, deployed interface, or production trading claim.",
-    entry: { label: "DEX status", href: "/dex" },
+    status: PRODUCT_STATUS.LIVE,
+    detail: "A public read-only DEX Testnet preview for indexed tokens, pools and transfer activity. It currently has no executable swaps or liquidity because Chain 6423 does not yet execute general EVM bytecode; unavailable actions remain visibly disabled.",
+    entry: { label: "Open DEX", href: "https://dex.ynxweb4.com/", external: true },
     docs: { ...docsAnchor("dex"), label: "DEX docs" },
-    downloads: makeDownloads(),
-    metrics: [["Closure", "Contract and SDK WIP"], ["Risk", "No audit or real liquidity"], ["Readiness", "No public DEX surface"]]
+    downloads: web(PRODUCT_STATUS.LIVE, "https://dex.ynxweb4.com/", "Public indexed DEX Testnet preview"),
+    metrics: [["Closure", "Indexer → token/pool/transaction APIs → public UI"], ["Risk", "No EVM execution, audited liquidity or executable swap"], ["Readiness", "Public read-only surface; trading fails closed"]]
   }
 ].map(attachEvidence);
 

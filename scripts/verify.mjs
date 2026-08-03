@@ -394,7 +394,10 @@ if (productKeys.length !== 26 || new Set(productKeys).size !== 26 || !productKey
 const registryKeys = releaseRegistry.products?.map((product) => product.key) || [];
 const acceptedProducts = releaseRegistry.products?.filter((product) => product.centralAccepted === true) || [];
 const hostedPreviewProducts = releaseRegistry.products?.filter((product) => product.downloadHosted === true) || [];
-const exchangeRegistry = acceptedProducts[0];
+const acceptedByKey = new Map(acceptedProducts.map((product) => [product.key, product]));
+const exchangeRegistry = acceptedByKey.get("exchange");
+const walletRegistry = acceptedByKey.get("wallet");
+const financeRegistry = acceptedByKey.get("finance");
 if (
   registryKeys.length !== 26 ||
   new Set(registryKeys).size !== 26 ||
@@ -402,16 +405,23 @@ if (
   hostedPreviewProducts.length !== 5 ||
   hostedPreviewProducts.map((product) => product.key).sort().join(",") !== "developer,exchange,shop,trust,wallet" ||
   hostedPreviewProducts.some((product) => (product.key === "developer" ? product.state !== "public-testnet-web-and-desktop-preview" : product.state !== "hosted-testnet-preview") || !product.releaseTag || !product.downloads?.length || product.downloads.some((download) => !/^[0-9a-f]{64}$/.test(download.sha256) || !(download.bytes > 0) || !download.signingClass)) ||
-  acceptedProducts.length !== 1 ||
+  acceptedProducts.length !== 3 ||
+  [...acceptedByKey.keys()].sort().join(",") !== "exchange,finance,wallet" ||
   exchangeRegistry?.key !== "exchange" ||
   exchangeRegistry.commit !== "1e5f48d2" ||
   exchangeRegistry.acceptedIntegrationCommit !== "fc2276e1ce4c" ||
   exchangeRegistry.productRelease !== "/releases/exchange/fc2276e1ce4c/product-release.json" ||
   exchangeRegistry.publicProductMetadata !== "/releases/exchange/fc2276e1ce4c/public-product-metadata.json" ||
+  walletRegistry?.commit !== "ae8771c3417f" ||
+  walletRegistry.releaseTag !== "wallet-auth-v1.0.0-testnet-preview.4" ||
+  walletRegistry.gatewayUrl !== "https://wallet-auth.ynxweb4.com" ||
+  financeRegistry?.commit !== "6b6cb8f5b125" ||
+  financeRegistry.state !== "public-testnet-candidate" ||
+  financeRegistry.publicWeb !== "https://finance.ynxweb4.com/" ||
   releaseRegistry.products.some((product) => !product.route.startsWith("/dapp/")) ||
   releaseRegistry.rules?.localArtifactIsDownload !== false
 ) {
-  console.error("release registry must preserve 26 truthful states, five source-bound hosted previews, and exactly one commit-bound accepted exchange candidate");
+  console.error("release registry must preserve 26 truthful states, five source-bound hosted previews, and the exact Wallet, Exchange and Finance central acceptance set");
   process.exit(1);
 }
 for (const requiredText of ["downloadHosted", "Local build only", "Download Testnet Preview", "candidate incomplete", "Product status", "wallet-auth-v1.0.0-testnet-preview.4", "exchange-v1.0.0-testnet-preview.3", "shop-v0.3.0-testnet-preview.1", "developer-v0.2.0-testnet-preview.1", "trust-center-v0.1.0-testnet-preview.2"]) {
