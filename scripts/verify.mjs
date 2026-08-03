@@ -398,6 +398,10 @@ const acceptedByKey = new Map(acceptedProducts.map((product) => [product.key, pr
 const exchangeRegistry = acceptedByKey.get("exchange");
 const walletRegistry = acceptedByKey.get("wallet");
 const financeRegistry = acceptedByKey.get("finance");
+const registryByKey = new Map(releaseRegistry.products?.map((product) => [product.key, product]) || []);
+const payRegistry = registryByKey.get("pay");
+const merchantRegistry = registryByKey.get("merchantConsole");
+const cardRegistry = registryByKey.get("card");
 if (
   registryKeys.length !== 26 ||
   new Set(registryKeys).size !== 26 ||
@@ -420,6 +424,13 @@ if (
   financeRegistry.commit !== "307273b9" ||
   financeRegistry.releaseTag !== "finance-v1.2.0-testnet-preview.2" ||
   financeRegistry.publicWeb !== "https://finance.ynxweb4.com/" ||
+  payRegistry?.state !== "public-testnet-web" ||
+  payRegistry.publicWeb !== "https://pay-app.ynxweb4.com/" ||
+  payRegistry.apiUrl !== "https://pay.ynxweb4.com" ||
+  merchantRegistry?.state !== "public-testnet-web" ||
+  merchantRegistry.publicWeb !== "https://merchant.ynxweb4.com/" ||
+  cardRegistry?.state !== "public-testnet-web-sandbox" ||
+  cardRegistry.publicWeb !== "https://card.ynxweb4.com/" ||
   releaseRegistry.products.some((product) => !product.route.startsWith("/dapp/")) ||
   releaseRegistry.rules?.localArtifactIsDownload !== false
 ) {

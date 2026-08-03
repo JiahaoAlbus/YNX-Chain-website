@@ -145,9 +145,10 @@ const evidence = {
     }
   },
   pay: {
-    commit: "ffb528b4971b",
-    statusNote: "Android release and debug packages are generated; web/API remains primary production-facing surface.",
+    commit: "53eb677c0e41",
+    statusNote: "The public YNX Pay Testnet client is live at pay-app.ynxweb4.com and the authoritative authenticated payment API is live at pay.ynxweb4.com. The client supports reviewable invoice, tip, split, refund and recurring-draft flows; stable settlement, sponsorship providers, production signatures and store release are not claimed.",
     downloads: {
+      web: { status: PRODUCT_STATUS.LIVE, href: "https://pay-app.ynxweb4.com/", external: true, downloadHosted: false, note: "Public YNX Pay Testnet client; payment settlement uses the separate authenticated chain-backed Pay API." },
       android: artifactDownload(PRODUCT_STATUS.LOCAL, "apps/pay/android/app/build/outputs/apk/release/app-release.apk", "Android app release (debug-signed, testnet preview)"),
       ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS project exists; simulator/signed App Store evidence pending." },
       macos: { status: PRODUCT_STATUS.NOT_READY, note: "No published macOS package for this candidate." },
@@ -155,17 +156,17 @@ const evidence = {
     }
   },
   merchantConsole: {
-    commit: "ffb528b4971b",
-    statusNote: "Merchant console surfaces are web-only in this candidate; no standalone merchant app package yet.",
+    commit: "e5c6cc07",
+    statusNote: "The public multi-user Merchant Console Testnet preview is live with same-origin Gateway routing, tenant-scoped operations, exports and governed deletion requests. It is a web product; production acquiring, provider credentials, durable telemetry and independently reviewed compliance are not claimed.",
     downloads: {
-      web: { status: PRODUCT_STATUS.LOCAL, href: "/docs#pay", note: "Console-in-product entry and API surface are available for verification." }
+      web: { status: PRODUCT_STATUS.LIVE, href: "https://merchant.ynxweb4.com/", external: true, downloadHosted: false, note: "Public web console for Testnet merchant workflows; requires the canonical Wallet/merchant session for private views." }
     }
   },
   card: {
-    commit: "ffb528b4971b",
-    statusNote: "Card is a sandbox candidate in the Pay product. No issuing partner, production card, or downloadable client is claimed.",
+    commit: "358fb555",
+    statusNote: "The public YNX Card sandbox preview is live for Testnet UX review. It does not represent an issued card, banking relationship, card-network partnership, credit product or production payment instrument.",
     downloads: {
-      web: { status: PRODUCT_STATUS.PLANNED, note: "Sandbox implementation exists locally; no public Card URL is registered." }
+      web: { status: PRODUCT_STATUS.LIVE, href: "https://card.ynxweb4.com/", external: true, downloadHosted: false, note: "Public sandbox UI; no real card issuance or production card transaction is available." }
     }
   },
   exchange: {
