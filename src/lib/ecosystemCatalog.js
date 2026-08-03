@@ -20,7 +20,8 @@ import {
   SquarePen,
   Cloud,
   CreditCard,
-  Repeat2
+  Repeat2,
+  BarChart3
 } from "lucide-react";
 import { apiConfig } from "./api/ynxApi.js";
 
@@ -90,6 +91,7 @@ const LEGACY_PRODUCT_ROUTES = {
   merchantConsole: "/merchant",
   card: "/card",
   exchange: "/exchange",
+  quant: "/quant",
   shop: "/shop",
   sellerConsole: "/seller",
   developer: "/developer",
@@ -173,6 +175,14 @@ const evidence = {
       ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS project exists; simulator proof/ signing evidence pending." },
       macos: { status: PRODUCT_STATUS.NOT_READY, note: "No published Exchange macOS package in this candidate." },
       windows: { status: PRODUCT_STATUS.NOT_READY, note: "No published Exchange Windows package in this candidate." }
+    }
+  },
+  quant: {
+    commit: "18a73981b043",
+    centralAccepted: false,
+    statusNote: "The public research workspace is source-bound and live with per-request state isolation and actual YNX matching-engine trade data. Public paper trading, Testnet order submission, live funds, production signing and central Wallet acceptance remain disabled.",
+    downloads: {
+      web: { status: PRODUCT_STATUS.LIVE, href: "https://quant.ynxweb4.com/", external: true, downloadHosted: false, note: "Public isolated Quant research workspace." }
     }
   },
   shop: {
@@ -478,6 +488,17 @@ export const getCatalog = () => [
     docs: { ...docsAnchor("exchange"), label: "Exchange docs" },
     downloads: web(PRODUCT_STATUS.LIVE, "/trading", "Public Testnet exchange integration route"),
     metrics: [["Closure", "Signed tx + receipts + evidence package"], ["Risk", "No exchange listing is claimed"], ["Readiness", "Production custody and independent review remain pending"]]
+  },
+  {
+    key: "quant",
+    name: "YNX Quant",
+    icon: BarChart3,
+    status: PRODUCT_STATUS.LIVE,
+    detail: "A public, stateless Testnet research workspace runs reproducible out-of-sample studies on actual YNX Exchange matches. Every run is isolated; paper, Testnet execution and live funds remain disabled on the public service.",
+    entry: { label: "Open Quant", href: "https://quant.ynxweb4.com/", external: true },
+    docs: { ...docsAnchor("quant"), label: "Quant rules" },
+    downloads: web(PRODUCT_STATUS.LIVE, "https://quant.ynxweb4.com/", "Public isolated Quant research workspace"),
+    metrics: [["Closure", "Actual match tape → OOS engine → fees/slippage → result"], ["Concurrency", "100/100 public research runs and 100/100 status reads succeeded"], ["Boundary", "Per-request state; no shared user state, live funds or order submission"]]
   },
   {
     key: "shop",

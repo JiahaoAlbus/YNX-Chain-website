@@ -387,8 +387,8 @@ for (const requiredText of ["Transactions & blocks", "Node operations", "Validat
   }
 }
 const productKeys = [...ecosystemCatalog.matchAll(/^\s+key: "([^"]+)",$/gm)].map((match) => match[1]);
-if (productKeys.length !== 25 || new Set(productKeys).size !== 25 || !productKeys.includes("card") || !productKeys.includes("dex")) {
-  console.error(`ecosystem catalog must contain 25 unique products; found ${productKeys.length}`);
+if (productKeys.length !== 26 || new Set(productKeys).size !== 26 || !productKeys.includes("card") || !productKeys.includes("dex") || !productKeys.includes("quant")) {
+  console.error(`ecosystem catalog must contain 26 unique products; found ${productKeys.length}`);
   process.exit(1);
 }
 const registryKeys = releaseRegistry.products?.map((product) => product.key) || [];
@@ -396,8 +396,8 @@ const acceptedProducts = releaseRegistry.products?.filter((product) => product.c
 const hostedPreviewProducts = releaseRegistry.products?.filter((product) => product.downloadHosted === true) || [];
 const exchangeRegistry = acceptedProducts[0];
 if (
-  registryKeys.length !== 25 ||
-  new Set(registryKeys).size !== 25 ||
+  registryKeys.length !== 26 ||
+  new Set(registryKeys).size !== 26 ||
   productKeys.some((key) => !registryKeys.includes(key)) ||
   hostedPreviewProducts.length !== 3 ||
   hostedPreviewProducts.map((product) => product.key).sort().join(",") !== "developer,shop,trust" ||
@@ -410,7 +410,7 @@ if (
   releaseRegistry.products.some((product) => !product.route.startsWith("/dapp/")) ||
   releaseRegistry.rules?.localArtifactIsDownload !== false
 ) {
-  console.error("release registry must preserve 25 truthful states, three source-bound hosted previews, and exactly one commit-bound accepted exchange candidate");
+  console.error("release registry must preserve 26 truthful states, three source-bound hosted previews, and exactly one commit-bound accepted exchange candidate");
   process.exit(1);
 }
 for (const requiredText of ["downloadHosted", "Local build only", "Download Testnet Preview", "candidate incomplete", "Product status", "shop-v0.3.0-testnet-preview.1", "developer-v0.2.0-testnet-preview.1", "trust-center-v0.1.0-testnet-preview.2"]) {

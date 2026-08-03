@@ -37,7 +37,7 @@ export const ECOSYSTEM_GUIDES = {
   quant: {
     purpose: "Research strategies with real source-labelled data, deterministic backtests, paper fills and zero-submit shadow observation.",
     workflow: ["Ingest actual YNX-owned matched trades; fewer than 20 makes backtest unavailable.", "Build versioned features and run the signed deterministic built-in strategy worker.", "Evaluate fees, slippage, drawdown, leakage, capacity and walk-forward evidence.", "Run paper simulation, then shadow mode that observes but submits no order.", "Only a later Wallet mandate plus independent Risk approval can enable bounded Testnet execution."],
-    rules: ["No synthetic prices, arbitrary user code, Wallet keys or withdrawal authority.", "Paper results are not live PnL and backtest return never selects a strategy alone.", "Kill switch, revoke, stale data, sequence gaps, risk-limit breach or unknown outcome fail closed.", "No real-money execution adapter or public Quant deployment is currently claimed."],
+    rules: ["No synthetic prices, arbitrary user code, Wallet keys or withdrawal authority.", "Paper results are not live PnL and backtest return never selects a strategy alone.", "Kill switch, revoke, stale data, sequence gaps, risk-limit breach or unknown outcome fail closed.", "The public service is research-only and per-request isolated; paper, Testnet order submission and live funds are disabled."],
   },
   shop: {
     purpose: "A buyer marketplace whose checkout pays in YNXT while familiar catalog, cart, order and support flows stay conventional.",
