@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "generatedAt": "2026-07-29T02:07:31.785Z",
+  "generatedAt": "2026-08-02T09:30:00.000Z",
   "controllerSourceCommit": "40dcf3eeb152a1fb4887d0c7f6a79f095dd6f185",
   "owner": "28-website",
   "rules": {
@@ -22,7 +22,7 @@
     {"productId":"11","product":"YNX Developer / AI Build","owner":"11-developer","sourceCommit":"70f7c3ca7540327aca3736b398c52a67b8e86f34","centralStatus":"inProgress","publicVerified":true,"downloadHosted":true,"publicUrl":"https://developer.ynxweb4.com/"},
     {"productId":"12","product":"YNX Explorer","owner":"12-explorer","sourceCommit":"bb34e20994f04be2d5bef7cad220545887855ddc","centralStatus":"inProgress","publicVerified":false,"downloadHosted":false,"publicUrl":null},
     {"productId":"13","product":"YNX Monitor","owner":"13-monitor","sourceCommit":"5d42be028b22f10253facfc4f779fcccf0fd69b1","centralStatus":"deployedPublicTestnetStatus","publicVerified":true,"downloadHosted":false,"publicUrl":"https://monitor.ynxweb4.com/"},
-    {"productId":"14","product":"YNX AI","owner":"14-ai","sourceCommit":"36197076146c1e004a266d8e765c212abe77b5a0","centralStatus":"inProgress","publicVerified":false,"downloadHosted":false,"publicUrl":null},
+    {"productId":"14","product":"YNX AI","owner":"14-ai","sourceCommit":"16d6d71e2f93418e37fe9d024f58c492ca1baad4","centralStatus":"deployedPublicTestnet","publicVerified":true,"downloadHosted":false,"publicUrl":"https://assistant.ynxweb4.com/"},
     {"productId":"15","product":"YNX Trust Center","owner":"15-trust-center","sourceCommit":"b8c922900bb12fcd01f3e945d3bf72fea480bed5","centralStatus":"implementedLocal","publicVerified":false,"downloadHosted":false,"publicUrl":null},
     {"productId":"16","product":"YNX Resource Market","owner":"16-resource-market","sourceCommit":"be6ac6326e30f33f1da2ca51585ed52e1ce54382","centralStatus":"implementedLocal","publicVerified":false,"downloadHosted":false,"publicUrl":null},
     {"productId":"17","product":"YNXT Economics / Treasury / Stablecoin","owner":"17-tokenomics","sourceCommit":"4af13fe12c4031e29e61646305c9fa6dc267ebe3","centralStatus":"implementedLocal","publicVerified":false,"downloadHosted":false,"publicUrl":null},

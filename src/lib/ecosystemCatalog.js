@@ -231,9 +231,10 @@ const evidence = {
     }
   },
   ai: {
-    commit: "fb4afc0025e6",
-    statusNote: "Android release is generated. iOS/desktop package is under construction.",
+    commit: "16d6d71e2f93",
+    statusNote: "The public YNX AI Testnet workspace is live with a strict POST-body SSE Gateway, explicit context and permission review, and a fail-closed Wallet boundary. Gateway health is not presented as generation success: the latest bounded provider request returned HTTP 429, so generationLive remains false and no substitute answer is shown. The Android preview is verified locally but is not yet hosted; iOS runtime evidence and production signing remain pending.",
     downloads: {
+      web: { status: PRODUCT_STATUS.LIVE, href: "https://assistant.ynxweb4.com/", external: true, downloadHosted: false, note: "Public permission-bound YNX AI Testnet workspace with truthful provider status." },
       android: artifactDownload(PRODUCT_STATUS.LOCAL, "apps/ai/mobile/android/app/build/outputs/apk/release/app-release.apk", "Android app release (debug-signed, testnet preview)"),
       ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS project generated; simulator evidence pending." },
       macos: { status: PRODUCT_STATUS.NOT_READY, note: "No published AI macOS package in this candidate." },
@@ -537,12 +538,12 @@ export const getCatalog = () => [
     key: "ai",
     name: "YNX AI",
     icon: Brain,
-    status: PRODUCT_STATUS.LOCAL,
-    detail: "Policy-bounded intent proposal, action review, and replay-tolerant AI gateway path are in candidate service.",
-    entry: { label: "AI entry", href: "https://ai.ynxweb4.com/health", external: true },
+    status: PRODUCT_STATUS.LIVE,
+    detail: "A public, provider-neutral Testnet workspace for conversations, explicit product context, bounded attachments, streaming/cancel/retry, tool previews and privacy controls. AI may explain or propose, but it cannot sign, pay, trade, publish, delete external data or widen permissions. Gateway readiness and provider generation are separate: the latest real provider attempt was rate-limited, so the product shows unavailable instead of a fabricated answer.",
+    entry: { label: "Open YNX AI", href: "https://assistant.ynxweb4.com/", external: true },
     docs: { ...docsAnchor("ai"), label: "AI docs" },
-    downloads: web(PRODUCT_STATUS.LOCAL, "/dapp/ai", "AI gateway web companion"),
-    metrics: [["Closure", "Tool proposal and approval"], ["Risk", "Provider dependency and fallback"], ["Readiness", "No production AI client package"]]
+    downloads: web(PRODUCT_STATUS.LIVE, "https://assistant.ynxweb4.com/", "Public permission-bound YNX AI Testnet workspace"),
+    metrics: [["Closure", "Context → stream → review → approved-not-executed audit"], ["Risk", "Provider generation is currently rate-limited; Wallet central acceptance is pending"], ["Readiness", "Public HTTPS Web + 25-worker concurrency evidence; native downloads not hosted"]]
   },
   {
     key: "trust",
