@@ -119,16 +119,16 @@ const PRODUCT_ROUTES = Object.fromEntries(
 
 const evidence = {
   wallet: {
-    commit: "ae8771c3417f",
+    commit: "ccaf878cdeeb",
     centralAccepted: true,
     productRelease: {
       href: "/releases/ecosystem-release-registry.json",
-      release: "wallet-auth-v1.0.0-testnet-preview.4"
+      release: "wallet-auth-v1.0.0-testnet-preview.5"
     },
-    statusNote: "Release wallet-auth-v1.0.0-testnet-preview.4: the centrally accepted Android Testnet Preview is hosted for direct download. Canonical Wallet/Auth is publicly reachable through a proof-bound gateway with 64-request concurrency admission and 100/100 concurrent readiness evidence. This is test-signed software, not a production-signed or app-store release.",
+    statusNote: "Release wallet-auth-v1.0.0-testnet-preview.5: the centrally accepted Android Testnet Preview is hosted for direct download. It locally reviews the exact approved Exchange, Finance, Quant and Shop bindings; long permission reviews remain scrollable to reject or approve. Canonical Wallet/Auth is publicly reachable through a proof-bound gateway with 64-request concurrency admission and 100/100 concurrent readiness evidence. This is test-signed software, not a production-signed or app-store release.",
     downloads: {
       web: { status: PRODUCT_STATUS.LIVE, href: "https://wallet-auth.ynxweb4.com/health", external: true, downloadHosted: false, note: "Public canonical Wallet/Auth gateway health; product use remains proof-bound." },
-      android: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-1.0.0-testnet-preview-ae8771c-test-signed.apk", "Test-signed Android Testnet Preview · source ae8771c · SHA-256 3857ce0a…b9e5 · 78,311,082 bytes · never import production keys.", "/downloads/ynx-wallet-1.0.0-testnet-preview-ae8771c-test-signed.apk"),
+      android: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-1.0.0-testnet-preview-ccaf878c-test-signed.apk", "Test-signed Android Testnet Preview · source ccaf878c · SHA-256 68d7cec9…b746 · 78,313,394 bytes · never import production keys.", "/downloads/ynx-wallet-1.0.0-testnet-preview-ccaf878c-test-signed.apk"),
       ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS project exists; simulator/launch evidence not completed on this host." },
       macos: { status: PRODUCT_STATUS.NOT_READY, note: "No macOS package is published for Wallet in this candidate." },
       windows: { status: PRODUCT_STATUS.NOT_READY, note: "No Windows package is published for Wallet in this candidate." }
