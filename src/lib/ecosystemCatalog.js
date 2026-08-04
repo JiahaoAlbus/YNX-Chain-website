@@ -311,6 +311,7 @@ const evidence = {
   },
   video: {
     commit: "f3a20484",
+    centralAccepted: true,
     productRelease: { href: "/releases/ecosystem-release-registry.json", release: "video-v0.2.0-testnet-preview.1" },
     statusNote: "The public Video Testnet Preview is live with an empty-by-default catalog, real ClamAV scanning and FFmpeg processing readiness, twelve locales, fail-closed private APIs and 100/100 Viewer plus API concurrency evidence. Central Wallet registration, production HA/object storage, licensed content, live AI/Pay/Trust integrations and native production signing remain pending.",
     downloads: {
