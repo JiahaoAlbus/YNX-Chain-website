@@ -324,6 +324,7 @@ const evidence = {
   },
   creatorStudio: {
     commit: "3353bdfa",
+    centralAccepted: true,
     productRelease: { href: "/releases/ecosystem-release-registry.json", release: "creator-studio-v0.3.0-testnet-preview.1" },
     statusNote: "Creator Studio is publicly hosted beside Video with team RBAC, immediate revocation, source-bound rights declarations, authoritative analytics coverage, independent publication review, scheduling, unpublish and immutable version history. Its API, Viewer and Studio each passed 100/100 concurrent requests. Private operations require central Wallet registration and fail closed today; no live AI provider, Pay settlement or production creator revenue is claimed.",
     downloads: {
