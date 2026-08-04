@@ -135,10 +135,11 @@ const evidence = {
     }
   },
   social: {
-    commit: "8c08bc3fff53",
-    statusNote: "Android release exists locally, web companion is available through Square feed route.",
+    commit: "aa852496",
+    statusNote: "YNX Social 1.0.0 is publicly connected to the shared Testnet through its Wallet-bound Social API. The test-signed Android Preview opens the exact central Wallet review for ynx-social-v1 / com.ynx.social, passed a 1.328-second cold launch, and the public health route passed 100/100 requests at concurrency 10. Strong biometric approval remains mandatory; production signing, app-store release, iOS runtime proof and independently operated capacity evidence are not claimed.",
     downloads: {
-      android: artifactDownload(PRODUCT_STATUS.LOCAL, "apps/social/android/app/build/outputs/apk/release/app-release.apk", "Android app release (debug-signed, testnet preview)"),
+      web: { status: PRODUCT_STATUS.LIVE, href: "https://api.ynxweb4.com/social/health", external: true, downloadHosted: false, note: "Public Social Testnet API health; user workflows run in the Android app after Wallet authorization." },
+      android: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-social-1.0.0-testnet-preview-aa852496-test-signed.apk", "Test-signed Android Testnet Preview · source aa852496 · SHA-256 ea596daf…dcba · 103,546,656 bytes · exact central Wallet binding and public Social API embedded.", "/downloads/ynx-social-1.0.0-testnet-preview-aa852496-test-signed.apk"),
       ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS project exists; simulator/app-store evidence pending." },
       macos: { status: PRODUCT_STATUS.NOT_READY, note: "No published macOS package for this candidate." },
       windows: { status: PRODUCT_STATUS.NOT_READY, note: "No published Windows package for this candidate." }

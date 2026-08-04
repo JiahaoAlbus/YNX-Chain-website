@@ -11,7 +11,7 @@
   "records": [
     {"productId":"01","product":"YNX Chain Core / StreamBFT","owner":"01-chain-core","sourceCommit":"09dd4facd427dee6b0e56ff94fcf326bd362c189","centralStatus":"inProgress","publicVerified":false,"downloadHosted":false,"publicUrl":null},
     {"productId":"02","product":"YNX Wallet / Auth","owner":"02-wallet-auth","sourceCommit":"61df5559c647d880cc1d435bece9d89ff66a07e1","centralStatus":"inProgress","publicVerified":false,"downloadHosted":false,"publicUrl":null},
-    {"productId":"03","product":"YNX Social","owner":"03-social","sourceCommit":"6625e4be17011371c5e06f347caab87cdf57938f","centralStatus":"implementedLocal","publicVerified":false,"downloadHosted":false,"publicUrl":null},
+    {"productId":"03","product":"YNX Social","owner":"03-social","sourceCommit":"aa8524960d6efd9881598fb65832c6237e5af056","centralStatus":"deployedPublicTestnetPreview","publicVerified":true,"downloadHosted":true,"publicUrl":"https://www.ynxweb4.com/dapp/social"},
     {"productId":"04","product":"YNX Pay","owner":"04-pay","sourceCommit":"8a35e3cc8418589255a1c94781d1011d49d32b2f","centralStatus":"implementedLocal","publicVerified":false,"downloadHosted":false,"publicUrl":null},
     {"productId":"05","product":"Merchant Console","owner":"05-merchant-console","sourceCommit":"dd68953a94d43f6f5ac140da7c7aa94298601238","centralStatus":"inProgress","publicVerified":false,"downloadHosted":false,"publicUrl":null},
     {"productId":"06","product":"YNX Card","owner":"06-card","sourceCommit":"5a9c881400994955af47389a52f76740775c2537","centralStatus":"inProgress","publicVerified":false,"downloadHosted":false,"publicUrl":null},

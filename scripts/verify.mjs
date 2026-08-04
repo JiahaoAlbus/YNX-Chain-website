@@ -179,6 +179,7 @@ if (releaseRegistry.products.some((product) => Object.hasOwn(product, "branch"))
 }
 const ownerProductIds = ownerRecordIndex.records?.map((record) => record.productId) || [];
 const approvedOwnerPublicEvidence = new Map([
+  ["03", { sourceCommit: "aa8524960d6efd9881598fb65832c6237e5af056", publicUrl: "https://www.ynxweb4.com/dapp/social" }],
   ["10", { sourceCommit: "88c0f3a546b463fb270c4bea5d944178865660a5", publicUrl: "https://seller.ynxweb4.com/seller/" }],
   ["11", { sourceCommit: "70f7c3ca7540327aca3736b398c52a67b8e86f34", publicUrl: "https://developer.ynxweb4.com/" }],
   ["13", { sourceCommit: "5d42be028b22f10253facfc4f779fcccf0fd69b1", publicUrl: "https://monitor.ynxweb4.com/" }],
@@ -402,12 +403,13 @@ const registryByKey = new Map(releaseRegistry.products?.map((product) => [produc
 const payRegistry = registryByKey.get("pay");
 const merchantRegistry = registryByKey.get("merchantConsole");
 const cardRegistry = registryByKey.get("card");
+const socialRegistry = registryByKey.get("social");
 if (
   registryKeys.length !== 26 ||
   new Set(registryKeys).size !== 26 ||
   productKeys.some((key) => !registryKeys.includes(key)) ||
-  hostedPreviewProducts.length !== 6 ||
-  hostedPreviewProducts.map((product) => product.key).sort().join(",") !== "developer,exchange,finance,shop,trust,wallet" ||
+  hostedPreviewProducts.length !== 7 ||
+  hostedPreviewProducts.map((product) => product.key).sort().join(",") !== "developer,exchange,finance,shop,social,trust,wallet" ||
   hostedPreviewProducts.some((product) => (product.key === "developer" ? product.state !== "public-testnet-web-and-desktop-preview" : product.state !== "hosted-testnet-preview") || !product.releaseTag || !product.downloads?.length || product.downloads.some((download) => !/^[0-9a-f]{64}$/.test(download.sha256) || !(download.bytes > 0) || !download.signingClass)) ||
   acceptedProducts.length !== 3 ||
   [...acceptedByKey.keys()].sort().join(",") !== "exchange,finance,wallet" ||
@@ -431,10 +433,14 @@ if (
   merchantRegistry.publicWeb !== "https://merchant.ynxweb4.com/" ||
   cardRegistry?.state !== "public-testnet-web-sandbox" ||
   cardRegistry.publicWeb !== "https://card.ynxweb4.com/" ||
+  socialRegistry?.state !== "hosted-testnet-preview" ||
+  socialRegistry.commit !== "aa852496" ||
+  socialRegistry.apiUrl !== "https://api.ynxweb4.com/social" ||
+  socialRegistry.releaseTag !== "social-v1.0.0-testnet-preview.1" ||
   releaseRegistry.products.some((product) => !product.route.startsWith("/dapp/")) ||
   releaseRegistry.rules?.localArtifactIsDownload !== false
 ) {
-  console.error("release registry must preserve 26 truthful states, six source-bound hosted previews, and the exact Wallet, Exchange and Finance central acceptance set");
+  console.error("release registry must preserve 26 truthful states, seven source-bound hosted previews, and the exact Wallet, Exchange and Finance central acceptance set");
   process.exit(1);
 }
 for (const requiredText of ["downloadHosted", "Local build only", "Download Testnet Preview", "candidate incomplete", "Product status", "wallet-auth-v1.0.0-testnet-preview.5", "exchange-v1.0.0-testnet-preview.3", "shop-v0.3.0-testnet-preview.1", "developer-v0.2.0-testnet-preview.1", "trust-center-v0.1.0-testnet-preview.2"]) {
@@ -485,7 +491,8 @@ const requiredOfficialDownloads = new Map([
   ["/downloads/ynx-shop-0.3.0-testnet-preview-6fa2d6c5-debug-signed.apk", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-shop-0.3.0-testnet-preview-6fa2d6c5-debug-signed.apk"],
   ["/downloads/ynx-wallet-1.0.0-testnet-preview-ccaf878c-test-signed.apk", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-wallet-1.0.0-testnet-preview-ccaf878c-test-signed-gwrQJydXGTCeQfwpnIUokylkukF8CD.apk"],
   ["/downloads/ynx-exchange-1.0.0-testnet-preview-1e5f48d2-test-signed.apk", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-exchange-1.0.0-testnet-preview-1e5f48d2-test-signed.apk"],
-  ["/downloads/ynx-finance-1.2.0-testnet-preview-307273b9-test-signed.apk", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-finance-1.2.0-testnet-preview-307273b9-test-signed-8WRdkqJCJnHBCsuyDsRj4XjEreyeYT.apk"]
+  ["/downloads/ynx-finance-1.2.0-testnet-preview-307273b9-test-signed.apk", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-finance-1.2.0-testnet-preview-307273b9-test-signed-8WRdkqJCJnHBCsuyDsRj4XjEreyeYT.apk"],
+  ["/downloads/ynx-social-1.0.0-testnet-preview-aa852496-test-signed.apk", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-social-1.0.0-testnet-preview-aa852496-test-signed-15JR16t0lzmvyKU06tyaYXcUGC0sjQ.apk"]
 ]);
 for (const [source, destination] of requiredOfficialDownloads) {
   if (!vercel.rewrites?.some((rewrite) => rewrite.source === source && rewrite.destination === destination)) {
