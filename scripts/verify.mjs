@@ -406,6 +406,7 @@ const videoAcceptedRegistry = acceptedByKey.get("video");
 const creatorAcceptedRegistry = acceptedByKey.get("creatorStudio");
 const cloudAcceptedRegistry = acceptedByKey.get("cloud");
 const docsAcceptedRegistry = acceptedByKey.get("docs");
+const browserAcceptedRegistry = acceptedByKey.get("browser");
 const registryByKey = new Map(releaseRegistry.products?.map((product) => [product.key, product]) || []);
 const payRegistry = registryByKey.get("pay");
 const merchantRegistry = registryByKey.get("merchantConsole");
@@ -428,12 +429,12 @@ if (
     const expectedState = product.key === "developer"
       ? "public-testnet-web-and-desktop-preview"
       : product.key === "browser"
-        ? "hosted-testnet-preview-central-pending"
+        ? "hosted-testnet-preview"
         : "hosted-testnet-preview";
     return product.state !== expectedState || !product.releaseTag || !product.downloads?.length || product.downloads.some((download) => !/^[0-9a-f]{64}$/.test(download.sha256) || !(download.bytes > 0) || !download.signingClass);
   }) ||
-  acceptedProducts.length !== 10 ||
-  [...acceptedByKey.keys()].sort().join(",") !== "cloud,creatorStudio,docs,exchange,finance,music,resource,social,video,wallet" ||
+  acceptedProducts.length !== 11 ||
+  [...acceptedByKey.keys()].sort().join(",") !== "browser,cloud,creatorStudio,docs,exchange,finance,music,resource,social,video,wallet" ||
   exchangeRegistry?.key !== "exchange" ||
   exchangeRegistry.commit !== "1e5f48d2" ||
   exchangeRegistry.acceptedIntegrationCommit !== "fc2276e1ce4c" ||
@@ -468,6 +469,8 @@ if (
   cloudAcceptedRegistry.releaseTag !== "cloud-v1.0.0-testnet-preview.1" ||
   docsAcceptedRegistry?.acceptedIntegrationCommit !== "5acec59fa572" ||
   docsAcceptedRegistry.releaseTag !== "docs-v1.0.0-testnet-preview.1" ||
+  browserAcceptedRegistry?.acceptedIntegrationCommit !== "2a78ace0a647" ||
+  browserAcceptedRegistry.releaseTag !== "browser-v0.2.5-testnet-preview.1" ||
   payRegistry?.state !== "public-testnet-web" ||
   payRegistry.publicWeb !== "https://pay-app.ynxweb4.com/" ||
   payRegistry.apiUrl !== "https://pay.ynxweb4.com" ||
@@ -514,8 +517,8 @@ if (
   docsRegistry.centralAccepted !== true ||
   docsRegistry.downloadHosted !== false ||
   browserRegistry?.commit !== "96dfc528ddd6" ||
-  browserRegistry.state !== "hosted-testnet-preview-central-pending" ||
-  browserRegistry.centralAccepted !== false ||
+  browserRegistry.state !== "hosted-testnet-preview" ||
+  browserRegistry.centralAccepted !== true ||
   browserRegistry.downloads?.[0]?.sha256 !== "939c50454720be24e8de109f758a49e5f58342542d18d6d513639a2f90c84448" ||
   browserRegistry.downloads?.[0]?.bytes !== 138203 ||
   crypto.createHash("sha256").update(fs.readFileSync("public/downloads/ynx-browser-0.2.5-testnet-preview-96dfc528-macos-arm64-adhoc.zip")).digest("hex") !== browserRegistry.downloads?.[0]?.sha256 ||

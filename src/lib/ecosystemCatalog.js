@@ -193,7 +193,7 @@ const evidence = {
   },
   quant: {
     commit: "18a73981b043",
-    centralAccepted: false,
+    centralAccepted: true,
     statusNote: "The public research workspace is source-bound and live with per-request state isolation and actual YNX matching-engine trade data. Quant's least-privilege Wallet scopes are centrally registered for future protected actions; the current public surface remains research-only, with paper trading, Testnet order submission, live funds and production signing disabled.",
     downloads: {
       web: { status: PRODUCT_STATUS.LIVE, href: "https://quant.ynxweb4.com/", external: true, downloadHosted: false, note: "Public isolated Quant research workspace." }
@@ -361,7 +361,7 @@ const evidence = {
       href: "/releases/ecosystem-release-registry.json",
       release: "browser-v0.2.5-testnet-preview.1"
     },
-    statusNote: "The exact arm64 macOS Browser Testnet Preview is hosted directly by YNX and bound to source candidate 96dfc528, ZIP SHA-256 939c5045…4448 and 138,203 bytes. It passed 18 Browser tests, 20 native Swift tests, 15 Wallet/permission contract tests and two same-host reproducible builds. It is ad-hoc signed, rejected by Gatekeeper, not notarized or production signed, and older copies with the same Bundle ID can retain the ynxbrowser callback registration. Central acceptance remains pending.",
+    statusNote: "The exact arm64 macOS Browser Testnet Preview is hosted directly by YNX and bound to source candidate 96dfc528, ZIP SHA-256 939c5045…4448 and 138,203 bytes. Central integration 2a78ace0a647 passed CI, disclosure, governance, Android package policy, macOS cold start, iOS Simulator install/cold start and Windows compile/cold start. It is ad-hoc signed, rejected by Gatekeeper, not notarized or production signed, and older copies with the same Bundle ID can retain the ynxbrowser callback registration.",
     downloads: {
       android: artifactDownload(PRODUCT_STATUS.LOCAL, "apps/browser/android/.manual-build/ynx-browser-debug.apk", "Browser Android debug APK (manual build)."),
       ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS WKWebView source exists; no public device-signed package is claimed." },
