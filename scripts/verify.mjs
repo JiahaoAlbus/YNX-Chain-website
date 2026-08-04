@@ -412,6 +412,7 @@ const resourceRegistry = registryByKey.get("resource");
 const musicRegistry = registryByKey.get("music");
 const videoRegistry = registryByKey.get("video");
 const creatorRegistry = registryByKey.get("creatorStudio");
+const cloudRegistry = registryByKey.get("cloud");
 if (
   registryKeys.length !== 26 ||
   new Set(registryKeys).size !== 26 ||
@@ -479,9 +480,14 @@ if (
   videoRegistry.apiUrl !== "https://web4.ynxweb4.com/video/api" ||
   videoRegistry.centralAccepted !== true ||
   creatorRegistry?.state !== "public-testnet-web-preview" ||
-  creatorRegistry.commit !== "f3a20484" ||
+  creatorRegistry.commit !== "3353bdfa" ||
   creatorRegistry.publicWeb !== "https://web4.ynxweb4.com/video/studio/" ||
   creatorRegistry.centralAccepted !== false ||
+  cloudRegistry?.state !== "public-testnet-web-preview" ||
+  cloudRegistry.commit !== "42636a3e" ||
+  cloudRegistry.publicWeb !== "https://web4.ynxweb4.com/cloud/" ||
+  cloudRegistry.apiUrl !== "https://web4.ynxweb4.com/cloud/api" ||
+  cloudRegistry.centralAccepted !== false ||
   releaseRegistry.products.some((product) => !product.route.startsWith("/dapp/")) ||
   releaseRegistry.rules?.localArtifactIsDownload !== false
 ) {

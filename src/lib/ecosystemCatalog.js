@@ -323,20 +323,20 @@ const evidence = {
     }
   },
   creatorStudio: {
-    commit: "f3a20484",
-    productRelease: { href: "/releases/ecosystem-release-registry.json", release: "creator-studio-v0.2.0-testnet-preview.1" },
-    statusNote: "Creator Studio is publicly hosted beside Video for rights metadata, uploads, captions, review, disputes and settlement-intent evidence. Private operations require central Wallet registration and fail closed today; no live AI provider, Pay settlement or production creator revenue is claimed.",
+    commit: "3353bdfa",
+    productRelease: { href: "/releases/ecosystem-release-registry.json", release: "creator-studio-v0.3.0-testnet-preview.1" },
+    statusNote: "Creator Studio is publicly hosted beside Video with team RBAC, immediate revocation, source-bound rights declarations, authoritative analytics coverage, independent publication review, scheduling, unpublish and immutable version history. Its API, Viewer and Studio each passed 100/100 concurrent requests. Private operations require central Wallet registration and fail closed today; no live AI provider, Pay settlement or production creator revenue is claimed.",
     downloads: {
       web: { status: PRODUCT_STATUS.LIVE, href: "https://web4.ynxweb4.com/video/studio/", external: true, note: "Public Creator Studio Testnet Preview; private operations remain Wallet-gated." }
     }
   },
   cloud: {
-    commit: "7b3c5f427c17",
-    statusNote: "Cloud Android release and docs app release packages are generated; iOS desktop/Windows are pending publication.",
+    commit: "42636a3e",
+    statusNote: "The public single-host Cloud Testnet Preview provides files, folders, version restore, sharing, lifecycle transitions, portable export, product-data erasure and selected-context AI boundaries. Public UI and liveness each passed 100/100 requests at concurrency 20. Central Wallet verification remains unavailable, so private workflows fail closed; production durability, provider replication, signing and HA are not claimed.",
     downloads: {
       android: artifactDownload(PRODUCT_STATUS.LOCAL, "apps/cloud/mobile/android/app/build/outputs/apk/release/app-release.apk", "Cloud Android release APK (debug-signed, testnet preview)"),
       ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS project exists; simulator/signed evidence pending." },
-      web: { status: PRODUCT_STATUS.LOCAL, href: "/docs#cloud", note: "Cloud web companion." }
+      web: { status: PRODUCT_STATUS.LIVE, href: "https://web4.ynxweb4.com/cloud/", external: true, note: "Public single-host Cloud Testnet Preview; private operations require central Wallet verification." }
     }
   },
   docs: {
@@ -648,22 +648,22 @@ export const getCatalog = () => [
     name: "Creator Studio",
     icon: Brush,
     status: PRODUCT_STATUS.LIVE,
-    detail: "A public Creator Studio Testnet workspace for channels, uploads, rights metadata, captions, visibility, reports, appeals, disputes and review-required AI/payout intents. Private operations fail closed until Wallet registration is accepted.",
+    detail: "A public Creator Studio Testnet workspace for channel teams, role revocation, source-bound rights, uploads, captions, independent review, scheduling, unpublish, immutable versions, reports, appeals, disputes and review-required AI/payout intents. Private operations fail closed until Wallet registration is accepted.",
     entry: { label: "Open Creator Studio", href: "https://web4.ynxweb4.com/video/studio/", external: true },
     docs: { ...docsAnchor("creator"), label: "Creator docs" },
     downloads: web(PRODUCT_STATUS.LIVE, "https://web4.ynxweb4.com/video/studio/", "Public Creator Studio Testnet Preview"),
-    metrics: [["Closure", "Channel → upload → rights → publish/review workspace"], ["Risk", "No live AI, Pay settlement or authoritative revenue"], ["Readiness", "Public HTTPS Web; Wallet-gated private actions"]]
+    metrics: [["Closure", "Team → upload → rights → independent review → scheduled publish"], ["Risk", "No live AI, Pay settlement or authoritative revenue"], ["Readiness", "API + Viewer + Studio each 100/100 concurrency"]]
   },
   {
     key: "cloud",
     name: "YNX Cloud",
     icon: Cloud,
-    status: PRODUCT_STATUS.LOCAL,
-    detail: "File store namespace, version markers and sharing loop are in candidate state with recovery work pending.",
-    entry: { label: "Cloud entry", href: "/docs#cloud" },
+    status: PRODUCT_STATUS.LIVE,
+    detail: "A public single-host Testnet file workspace with folders, immutable versions, scoped sharing, access requests, lifecycle transitions, verified export, explicit erasure and selected-context AI controls. Central Wallet verification is not yet registered, so private operations fail closed.",
+    entry: { label: "Open YNX Cloud", href: "https://web4.ynxweb4.com/cloud/", external: true },
     docs: { ...docsAnchor("cloud"), label: "Cloud docs" },
-    downloads: web(PRODUCT_STATUS.LOCAL, "/docs#cloud", "Cloud web companion"),
-    metrics: [["Closure", "Version + share semantics"], ["Risk", "Recovery and conflict handling"], ["Readiness", "No production package" ]]
+    downloads: web(PRODUCT_STATUS.LIVE, "https://web4.ynxweb4.com/cloud/", "Public Cloud Testnet Preview"),
+    metrics: [["Closure", "Files + versions + sharing + export + erasure"], ["Risk", "Single-host; no production durability or provider replication"], ["Readiness", "Public UI + liveness 100/100 at concurrency 20"]]
   },
   {
     key: "docs",
