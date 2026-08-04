@@ -294,13 +294,18 @@ const evidence = {
     }
   },
   music: {
-    commit: "3cf997b16664",
-    statusNote: "Music debug APK is generated locally; iOS and playback packages are pending.",
+    commit: "09b658b0",
+    productRelease: {
+      href: "/releases/ecosystem-release-registry.json",
+      release: "music-v0.3.0-testnet-preview.2"
+    },
+    statusNote: "The public YNX Music Testnet Web Preview is live with an empty-by-default lawful catalog, HTTP range playback support, creator and library workspaces, twelve locales, verified backup/restore and a Wallet-gated API. Its public health path passed 100/100 requests at concurrency 10. No licensed public catalog, production streaming, paid settlement, production signature or store release is claimed.",
     downloads: {
       android: artifactDownload(PRODUCT_STATUS.LOCAL, "apps/music/android/app/build/outputs/apk/debug/app-debug.apk", "Music Android debug APK."),
       ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS project exists; simulator evidence pending." },
       macos: { status: PRODUCT_STATUS.NOT_READY, note: "No published Music macOS package in this candidate." },
-      windows: { status: PRODUCT_STATUS.NOT_READY, note: "No published Music Windows package in this candidate." }
+      windows: { status: PRODUCT_STATUS.NOT_READY, note: "No published Music Windows package in this candidate." },
+      web: { status: PRODUCT_STATUS.LIVE, href: "https://web4.ynxweb4.com/music/", external: true, note: "Public Web Testnet Preview; protected catalog and creator APIs require canonical Wallet authorization." }
     }
   },
   video: {
@@ -616,12 +621,12 @@ export const getCatalog = () => [
     key: "music",
     name: "YNX Music",
     icon: Headphones,
-    status: PRODUCT_STATUS.LOCAL,
-    detail: "Music catalog, playback and identity-aware access loops are in candidate web scope.",
-    entry: { label: "Music entry", href: "/docs#music" },
+    status: PRODUCT_STATUS.LIVE,
+    detail: "A public rights-aware Testnet music workspace for lawful catalog discovery, library and playlist management, HTTP range playback, creator uploads, disputes and review-required settlement records. Empty means empty: no commercial songs, fake plays or fake royalty numbers are bundled.",
+    entry: { label: "Open YNX Music", href: "https://web4.ynxweb4.com/music/", external: true },
     docs: { ...docsAnchor("music"), label: "Music docs" },
-    downloads: web(PRODUCT_STATUS.LOCAL, "/docs#music", "Candidate music web flow"),
-    metrics: [["Closure", "Catalog + playback"], ["Risk", "Rights and revenue pipeline partial"], ["Readiness", "No production music app"]]
+    downloads: web(PRODUCT_STATUS.LIVE, "https://web4.ynxweb4.com/music/", "Public Wallet-gated Music Testnet Preview"),
+    metrics: [["Closure", "Creator → lawful catalog → library/playback → dispute/settlement review"], ["Risk", "No licensed public catalog or production settlement"], ["Readiness", "Public HTTPS Web + verified restore + 100/100 concurrency evidence"]]
   },
   {
     key: "video",

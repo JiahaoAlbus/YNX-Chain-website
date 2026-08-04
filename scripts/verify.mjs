@@ -407,6 +407,7 @@ const merchantRegistry = registryByKey.get("merchantConsole");
 const cardRegistry = registryByKey.get("card");
 const socialRegistry = registryByKey.get("social");
 const resourceRegistry = registryByKey.get("resource");
+const musicRegistry = registryByKey.get("music");
 if (
   registryKeys.length !== 26 ||
   new Set(registryKeys).size !== 26 ||
@@ -455,6 +456,13 @@ if (
   resourceRegistry.centralAccepted !== true ||
   resourceRegistry.downloadHosted !== false ||
   resourceRegistry.releaseTag !== "resource-market-v0.3.0-public-testnet-preview.1" ||
+  musicRegistry?.state !== "public-testnet-web-preview" ||
+  musicRegistry.commit !== "09b658b0" ||
+  musicRegistry.publicWeb !== "https://web4.ynxweb4.com/music/" ||
+  musicRegistry.apiUrl !== "https://web4.ynxweb4.com/music" ||
+  musicRegistry.centralAccepted !== false ||
+  musicRegistry.downloadHosted !== false ||
+  musicRegistry.releaseTag !== "music-v0.3.0-testnet-preview.2" ||
   releaseRegistry.products.some((product) => !product.route.startsWith("/dapp/")) ||
   releaseRegistry.rules?.localArtifactIsDownload !== false
 ) {
