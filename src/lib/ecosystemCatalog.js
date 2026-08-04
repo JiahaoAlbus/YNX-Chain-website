@@ -355,12 +355,17 @@ const evidence = {
     }
   },
   browser: {
-    commit: "db8651b68c6e",
-    statusNote: "Browser Android build package is available for test; native macOS executable exists but not packaged.",
+    commit: "96dfc528ddd6",
+    centralAccepted: false,
+    productRelease: {
+      href: "/releases/ecosystem-release-registry.json",
+      release: "browser-v0.2.5-testnet-preview.1"
+    },
+    statusNote: "The exact arm64 macOS Browser Testnet Preview is hosted directly by YNX and bound to source candidate 96dfc528, ZIP SHA-256 939c5045…4448 and 138,203 bytes. It passed 18 Browser tests, 20 native Swift tests, 15 Wallet/permission contract tests and two same-host reproducible builds. It is ad-hoc signed, rejected by Gatekeeper, not notarized or production signed, and older copies with the same Bundle ID can retain the ynxbrowser callback registration. Central acceptance remains pending.",
     downloads: {
       android: artifactDownload(PRODUCT_STATUS.LOCAL, "apps/browser/android/.manual-build/ynx-browser-debug.apk", "Browser Android debug APK (manual build)."),
-      ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS WKWebView project exists; simulator evidence pending." },
-      macos: artifactDownload(PRODUCT_STATUS.LOCAL, "apps/browser/native/.build/arm64-apple-macosx/release/YNXBrowserNative", "macOS native binary is present in .build, not installer-packaged."),
+      ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS WKWebView source exists; no public device-signed package is claimed." },
+      macos: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-browser-0.2.5-testnet-preview-96dfc528-macos-arm64-adhoc.zip", "arm64 macOS Testnet Preview · source 96dfc528 · SHA-256 939c5045…4448 · 138,203 bytes · ad-hoc signed and not notarized; remove older YNX Browser previews before Wallet callback testing.", "/downloads/ynx-browser-0.2.5-testnet-preview-96dfc528-macos-arm64-adhoc.zip"),
       web: { status: PRODUCT_STATUS.LOCAL, href: "/docs#browser", note: "Browser web companion route." }
     }
   },
@@ -686,12 +691,14 @@ export const getCatalog = () => [
     key: "browser",
     name: "YNX Browser",
     icon: Globe,
-    status: PRODUCT_STATUS.PLANNED,
-    detail: "Browser permissions and safe navigation are in earlier candidate stage; privacy guardrail and provider contracts are not productionized.",
-    entry: { label: "Browser entry", href: "/docs#browser" },
+    status: PRODUCT_STATUS.LOCAL,
+    detail: "A platform-native-engine Browser candidate with normal/private state isolation, crash recovery, origin-scoped permissions, mediated downloads and an exact fail-closed Wallet handoff. The arm64 macOS Testnet Preview is directly downloadable; it is ad-hoc signed and not notarized.",
+    entry: { label: "Read Browser guide", href: "/docs#browser" },
     docs: { ...docsAnchor("browser"), label: "Browser docs" },
-    downloads: makeDownloads(),
-    metrics: [["Closure", "Permissions + safe browsing"], ["Risk", "Provider privacy and phishing controls"], ["Readiness", "No browser installer"]]
+    downloads: makeDownloads({
+      macos: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-browser-0.2.5-testnet-preview-96dfc528-macos-arm64-adhoc.zip", "arm64 macOS Testnet Preview · source 96dfc528 · SHA-256 939c5045…4448 · 138,203 bytes · ad-hoc signed, Gatekeeper rejected and not notarized.", "/downloads/ynx-browser-0.2.5-testnet-preview-96dfc528-macos-arm64-adhoc.zip")
+    }),
+    metrics: [["Closure", "Tabs + history + private isolation + permissions + downloads + Wallet handoff"], ["Risk", "Ad-hoc signing; old same-Bundle-ID copies can retain callback registration"], ["Readiness", "18 Node + 20 Swift + 15 contract tests; arm64 macOS preview hosted"]]
   },
   {
     key: "search",

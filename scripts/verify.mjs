@@ -417,13 +417,21 @@ const videoRegistry = registryByKey.get("video");
 const creatorRegistry = registryByKey.get("creatorStudio");
 const cloudRegistry = registryByKey.get("cloud");
 const docsRegistry = registryByKey.get("docs");
+const browserRegistry = registryByKey.get("browser");
 if (
   registryKeys.length !== 26 ||
   new Set(registryKeys).size !== 26 ||
   productKeys.some((key) => !registryKeys.includes(key)) ||
-  hostedPreviewProducts.length !== 7 ||
-  hostedPreviewProducts.map((product) => product.key).sort().join(",") !== "developer,exchange,finance,shop,social,trust,wallet" ||
-  hostedPreviewProducts.some((product) => (product.key === "developer" ? product.state !== "public-testnet-web-and-desktop-preview" : product.state !== "hosted-testnet-preview") || !product.releaseTag || !product.downloads?.length || product.downloads.some((download) => !/^[0-9a-f]{64}$/.test(download.sha256) || !(download.bytes > 0) || !download.signingClass)) ||
+  hostedPreviewProducts.length !== 8 ||
+  hostedPreviewProducts.map((product) => product.key).sort().join(",") !== "browser,developer,exchange,finance,shop,social,trust,wallet" ||
+  hostedPreviewProducts.some((product) => {
+    const expectedState = product.key === "developer"
+      ? "public-testnet-web-and-desktop-preview"
+      : product.key === "browser"
+        ? "hosted-testnet-preview-central-pending"
+        : "hosted-testnet-preview";
+    return product.state !== expectedState || !product.releaseTag || !product.downloads?.length || product.downloads.some((download) => !/^[0-9a-f]{64}$/.test(download.sha256) || !(download.bytes > 0) || !download.signingClass);
+  }) ||
   acceptedProducts.length !== 10 ||
   [...acceptedByKey.keys()].sort().join(",") !== "cloud,creatorStudio,docs,exchange,finance,music,resource,social,video,wallet" ||
   exchangeRegistry?.key !== "exchange" ||
@@ -505,10 +513,16 @@ if (
   docsRegistry.apiUrl !== "https://web4.ynxweb4.com/docs-app/api" ||
   docsRegistry.centralAccepted !== true ||
   docsRegistry.downloadHosted !== false ||
+  browserRegistry?.commit !== "96dfc528ddd6" ||
+  browserRegistry.state !== "hosted-testnet-preview-central-pending" ||
+  browserRegistry.centralAccepted !== false ||
+  browserRegistry.downloads?.[0]?.sha256 !== "939c50454720be24e8de109f758a49e5f58342542d18d6d513639a2f90c84448" ||
+  browserRegistry.downloads?.[0]?.bytes !== 138203 ||
+  crypto.createHash("sha256").update(fs.readFileSync("public/downloads/ynx-browser-0.2.5-testnet-preview-96dfc528-macos-arm64-adhoc.zip")).digest("hex") !== browserRegistry.downloads?.[0]?.sha256 ||
   releaseRegistry.products.some((product) => !product.route.startsWith("/dapp/")) ||
   releaseRegistry.rules?.localArtifactIsDownload !== false
 ) {
-  console.error("release registry must preserve 26 truthful states, seven source-bound hosted previews, and the exact Wallet, Exchange, Finance, Social, Resource, Music, Video, Creator Studio, Cloud and Docs central acceptance set");
+  console.error("release registry must preserve 26 truthful states, eight source-bound hosted previews, and the exact centrally accepted product set");
   process.exit(1);
 }
 for (const requiredText of ["downloadHosted", "Local build only", "Download Testnet Preview", "candidate incomplete", "Product status", "wallet-auth-v1.0.0-testnet-preview.5", "exchange-v1.0.0-testnet-preview.3", "shop-v0.3.0-testnet-preview.1", "developer-v0.2.0-testnet-preview.1", "trust-center-v0.1.0-testnet-preview.2"]) {
