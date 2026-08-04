@@ -405,6 +405,7 @@ const musicAcceptedRegistry = acceptedByKey.get("music");
 const videoAcceptedRegistry = acceptedByKey.get("video");
 const creatorAcceptedRegistry = acceptedByKey.get("creatorStudio");
 const cloudAcceptedRegistry = acceptedByKey.get("cloud");
+const docsAcceptedRegistry = acceptedByKey.get("docs");
 const registryByKey = new Map(releaseRegistry.products?.map((product) => [product.key, product]) || []);
 const payRegistry = registryByKey.get("pay");
 const merchantRegistry = registryByKey.get("merchantConsole");
@@ -415,6 +416,7 @@ const musicRegistry = registryByKey.get("music");
 const videoRegistry = registryByKey.get("video");
 const creatorRegistry = registryByKey.get("creatorStudio");
 const cloudRegistry = registryByKey.get("cloud");
+const docsRegistry = registryByKey.get("docs");
 if (
   registryKeys.length !== 26 ||
   new Set(registryKeys).size !== 26 ||
@@ -422,8 +424,8 @@ if (
   hostedPreviewProducts.length !== 7 ||
   hostedPreviewProducts.map((product) => product.key).sort().join(",") !== "developer,exchange,finance,shop,social,trust,wallet" ||
   hostedPreviewProducts.some((product) => (product.key === "developer" ? product.state !== "public-testnet-web-and-desktop-preview" : product.state !== "hosted-testnet-preview") || !product.releaseTag || !product.downloads?.length || product.downloads.some((download) => !/^[0-9a-f]{64}$/.test(download.sha256) || !(download.bytes > 0) || !download.signingClass)) ||
-  acceptedProducts.length !== 9 ||
-  [...acceptedByKey.keys()].sort().join(",") !== "cloud,creatorStudio,exchange,finance,music,resource,social,video,wallet" ||
+  acceptedProducts.length !== 10 ||
+  [...acceptedByKey.keys()].sort().join(",") !== "cloud,creatorStudio,docs,exchange,finance,music,resource,social,video,wallet" ||
   exchangeRegistry?.key !== "exchange" ||
   exchangeRegistry.commit !== "1e5f48d2" ||
   exchangeRegistry.acceptedIntegrationCommit !== "fc2276e1ce4c" ||
@@ -456,6 +458,8 @@ if (
   creatorAcceptedRegistry.releaseTag !== "creator-studio-v0.3.0-testnet-preview.1" ||
   cloudAcceptedRegistry?.acceptedIntegrationCommit !== "cfcaa6accad6" ||
   cloudAcceptedRegistry.releaseTag !== "cloud-v1.0.0-testnet-preview.1" ||
+  docsAcceptedRegistry?.acceptedIntegrationCommit !== "5acec59fa572" ||
+  docsAcceptedRegistry.releaseTag !== "docs-v1.0.0-testnet-preview.1" ||
   payRegistry?.state !== "public-testnet-web" ||
   payRegistry.publicWeb !== "https://pay-app.ynxweb4.com/" ||
   payRegistry.apiUrl !== "https://pay.ynxweb4.com" ||
@@ -491,14 +495,20 @@ if (
   creatorRegistry.publicWeb !== "https://web4.ynxweb4.com/video/studio/" ||
   creatorRegistry.centralAccepted !== true ||
   cloudRegistry?.state !== "public-testnet-web-preview" ||
-  cloudRegistry.commit !== "42636a3e" ||
+  cloudRegistry.commit !== "fd90fa64" ||
   cloudRegistry.publicWeb !== "https://web4.ynxweb4.com/cloud/" ||
   cloudRegistry.apiUrl !== "https://web4.ynxweb4.com/cloud/api" ||
   cloudRegistry.centralAccepted !== true ||
+  docsRegistry?.state !== "public-testnet-web-preview" ||
+  docsRegistry.commit !== "fd90fa64" ||
+  docsRegistry.publicWeb !== "https://web4.ynxweb4.com/docs-app/" ||
+  docsRegistry.apiUrl !== "https://web4.ynxweb4.com/docs-app/api" ||
+  docsRegistry.centralAccepted !== true ||
+  docsRegistry.downloadHosted !== false ||
   releaseRegistry.products.some((product) => !product.route.startsWith("/dapp/")) ||
   releaseRegistry.rules?.localArtifactIsDownload !== false
 ) {
-  console.error("release registry must preserve 26 truthful states, seven source-bound hosted previews, and the exact Wallet, Exchange, Finance, Social, Resource, Music, Video, Creator Studio and Cloud central acceptance set");
+  console.error("release registry must preserve 26 truthful states, seven source-bound hosted previews, and the exact Wallet, Exchange, Finance, Social, Resource, Music, Video, Creator Studio, Cloud and Docs central acceptance set");
   process.exit(1);
 }
 for (const requiredText of ["downloadHosted", "Local build only", "Download Testnet Preview", "candidate incomplete", "Product status", "wallet-auth-v1.0.0-testnet-preview.5", "exchange-v1.0.0-testnet-preview.3", "shop-v0.3.0-testnet-preview.1", "developer-v0.2.0-testnet-preview.1", "trust-center-v0.1.0-testnet-preview.2"]) {

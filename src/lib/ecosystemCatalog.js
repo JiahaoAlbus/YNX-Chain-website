@@ -332,21 +332,26 @@ const evidence = {
     }
   },
   cloud: {
-    commit: "42636a3e",
+    commit: "fd90fa64",
     statusNote: "The public single-host Cloud Testnet Preview provides files, folders, version restore, sharing, lifecycle transitions, portable export, product-data erasure and selected-context AI boundaries. Public UI and liveness each passed 100/100 requests at concurrency 20. Central Wallet verification remains unavailable, so private workflows fail closed; production durability, provider replication, signing and HA are not claimed.",
     downloads: {
       android: artifactDownload(PRODUCT_STATUS.LOCAL, "apps/cloud/mobile/android/app/build/outputs/apk/release/app-release.apk", "Cloud Android release APK (debug-signed, testnet preview)"),
-      ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS project exists; simulator/signed evidence pending." },
+      ios: { status: PRODUCT_STATUS.PREVIEW, note: "Unsigned iOS Simulator Release build passed central CI; device installation, production signing and store release are not claimed." },
       web: { status: PRODUCT_STATUS.LIVE, href: "https://web4.ynxweb4.com/cloud/", external: true, note: "Public single-host Cloud Testnet Preview; private operations require central Wallet verification." }
     }
   },
   docs: {
-    commit: "7b3c5f427c17",
-    statusNote: "Docs Android release package is generated; web companion remains primary.",
+    commit: "fd90fa64",
+    centralAccepted: true,
+    productRelease: {
+      href: "/releases/ecosystem-release-registry.json",
+      release: "docs-v1.0.0-testnet-preview.1"
+    },
+    statusNote: "The public single-host Docs Testnet Preview provides versioned autosave, offline draft recovery, explicit conflict handling, version-bound comments, bounded presence, export, reviewed AI revisions and 12 languages. UI and health each passed 100/100 requests at concurrency 20; private objects returned 100/100 HTTP 401 without a Wallet session. Production durability, HA, signing and store release are not claimed.",
     downloads: {
       android: artifactDownload(PRODUCT_STATUS.LOCAL, "apps/docs/mobile/android/app/build/outputs/apk/release/app-release.apk", "Docs Android release APK (debug-signed, testnet preview)"),
-      ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS project exists; simulator/signed evidence pending." },
-      web: { status: PRODUCT_STATUS.LOCAL, href: "/docs", note: "Docs web companion and in-site documentation center." }
+      ios: { status: PRODUCT_STATUS.PREVIEW, note: "Unsigned iOS Simulator Release build passed central CI; device installation and production signing are not claimed." },
+      web: { status: PRODUCT_STATUS.LIVE, href: "https://web4.ynxweb4.com/docs-app/", external: true, note: "Public Docs Testnet Preview; private workflows require central Wallet verification." }
     }
   },
   browser: {
@@ -670,12 +675,12 @@ export const getCatalog = () => [
     key: "docs",
     name: "YNX Docs",
     icon: AppWindow,
-    status: PRODUCT_STATUS.LOCAL,
-    detail: "Collaborative docs and revision surfaces are candidate ready with in-product editor path.",
-    entry: { label: "Docs entry", href: "/docs#docs" },
+    status: PRODUCT_STATUS.LIVE,
+    detail: "A public Testnet document workspace with versioned autosave, offline draft recovery, explicit conflict resolution, version-bound comments, bounded presence, export and review-required AI revisions. Central Wallet verification remains unavailable publicly, so private operations fail closed.",
+    entry: { label: "Open YNX Docs", href: "https://web4.ynxweb4.com/docs-app/", external: true },
     docs: { ...docsAnchor("docs"), label: "Docs docs" },
-    downloads: web(PRODUCT_STATUS.LOCAL, "/docs#docs", "Docs web companion"),
-    metrics: [["Closure", "Edit + history + export"], ["Risk", "Offline conflict and recovery"], ["Readiness", "No production docs package"]]
+    downloads: web(PRODUCT_STATUS.LIVE, "https://web4.ynxweb4.com/docs-app/", "Public Docs Testnet Preview"),
+    metrics: [["Closure", "Write + versions + recovery + comments + export + AI review"], ["Risk", "Single-host; no CRDT coediting, production durability or HA"], ["Readiness", "UI + health + private isolation each 100/100 concurrency"]]
   },
   {
     key: "browser",
