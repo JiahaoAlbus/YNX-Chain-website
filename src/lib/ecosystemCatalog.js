@@ -295,6 +295,7 @@ const evidence = {
   },
   music: {
     commit: "09b658b0",
+    centralAccepted: true,
     productRelease: {
       href: "/releases/ecosystem-release-registry.json",
       release: "music-v0.3.0-testnet-preview.2"
@@ -309,21 +310,23 @@ const evidence = {
     }
   },
   video: {
-    commit: "0d13f8f86932",
-    statusNote: "Video debug APK is generated for local tests; creator studio packaging is still separate work.",
+    commit: "f3a20484",
+    productRelease: { href: "/releases/ecosystem-release-registry.json", release: "video-v0.2.0-testnet-preview.1" },
+    statusNote: "The public Video Testnet Preview is live with an empty-by-default catalog, real ClamAV scanning and FFmpeg processing readiness, twelve locales, fail-closed private APIs and 100/100 Viewer plus API concurrency evidence. Central Wallet registration, production HA/object storage, licensed content, live AI/Pay/Trust integrations and native production signing remain pending.",
     downloads: {
       android: artifactDownload(PRODUCT_STATUS.LOCAL, "apps/video/android/app/build/outputs/apk/debug/app-debug.apk", "Video Android debug APK."),
       ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS project exists; simulator/signing evidence pending." },
-      web: { status: PRODUCT_STATUS.LOCAL, href: "/docs#video", note: "Video web companion is testnet-facing." },
+      web: { status: PRODUCT_STATUS.LIVE, href: "https://web4.ynxweb4.com/video/", external: true, note: "Public Video Web Testnet Preview; private actions require central Wallet registration." },
       macos: { status: PRODUCT_STATUS.NOT_READY, note: "No published Video macOS package in this candidate." },
       windows: { status: PRODUCT_STATUS.NOT_READY, note: "No published Video Windows package in this candidate." }
     }
   },
   creatorStudio: {
-    commit: "0d13f8f86932",
-    statusNote: "Creator Studio remains part of Video work; no dedicated production package has been published yet.",
+    commit: "f3a20484",
+    productRelease: { href: "/releases/ecosystem-release-registry.json", release: "creator-studio-v0.2.0-testnet-preview.1" },
+    statusNote: "Creator Studio is publicly hosted beside Video for rights metadata, uploads, captions, review, disputes and settlement-intent evidence. Private operations require central Wallet registration and fail closed today; no live AI provider, Pay settlement or production creator revenue is claimed.",
     downloads: {
-      web: { status: PRODUCT_STATUS.PLANNED, href: "/docs#video", note: "Creator controls are tested inside Video companion surfaces for now." }
+      web: { status: PRODUCT_STATUS.LIVE, href: "https://web4.ynxweb4.com/video/studio/", external: true, note: "Public Creator Studio Testnet Preview; private operations remain Wallet-gated." }
     }
   },
   cloud: {
@@ -632,23 +635,23 @@ export const getCatalog = () => [
     key: "video",
     name: "YNX Video",
     icon: PlaySquare,
-    status: PRODUCT_STATUS.LOCAL,
-    detail: "Playback and upload candidates exist with metadata and moderation hooks.",
-    entry: { label: "Video entry", href: "/docs#video" },
+    status: PRODUCT_STATUS.LIVE,
+    detail: "A public empty-by-default Testnet video workspace with discovery, playback, comments, history, subscriptions, playlists and reports. Uploads are scanned by ClamAV and processed by FFmpeg; authenticated actions stay closed until central Wallet registration is accepted.",
+    entry: { label: "Open YNX Video", href: "https://web4.ynxweb4.com/video/", external: true },
     docs: { ...docsAnchor("video"), label: "Video docs" },
-    downloads: web(PRODUCT_STATUS.LOCAL, "/docs#video", "Candidate video web flow"),
-    metrics: [["Closure", "Viewer + uploader path"], ["Risk", "Moderation and copyright pipeline"], ["Readiness", "No production media app package"]]
+    downloads: web(PRODUCT_STATUS.LIVE, "https://web4.ynxweb4.com/video/", "Public Video Testnet Preview"),
+    metrics: [["Closure", "Viewer + rights-aware creator pipeline"], ["Risk", "No central Wallet, licensed catalog or production settlement"], ["Readiness", "Public HTTPS + real scanner/transcoder + 100/100 concurrency"]]
   },
   {
     key: "creatorStudio",
     name: "Creator Studio",
     icon: Brush,
-    status: PRODUCT_STATUS.PLANNED,
-    detail: "Creator workflow tooling is not yet separated as a closed-loop production app.",
-    entry: { label: "Creator entry", href: "/docs#video" },
+    status: PRODUCT_STATUS.LIVE,
+    detail: "A public Creator Studio Testnet workspace for channels, uploads, rights metadata, captions, visibility, reports, appeals, disputes and review-required AI/payout intents. Private operations fail closed until Wallet registration is accepted.",
+    entry: { label: "Open Creator Studio", href: "https://web4.ynxweb4.com/video/studio/", external: true },
     docs: { ...docsAnchor("creator"), label: "Creator docs" },
-    downloads: makeDownloads(),
-    metrics: [["Closure", "Upload metadata + subtitle"], ["Risk", "Monetization and rights audit"], ["Readiness", "No production creator package"]]
+    downloads: web(PRODUCT_STATUS.LIVE, "https://web4.ynxweb4.com/video/studio/", "Public Creator Studio Testnet Preview"),
+    metrics: [["Closure", "Channel → upload → rights → publish/review workspace"], ["Risk", "No live AI, Pay settlement or authoritative revenue"], ["Readiness", "Public HTTPS Web; Wallet-gated private actions"]]
   },
   {
     key: "cloud",

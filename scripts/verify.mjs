@@ -401,6 +401,7 @@ const walletRegistry = acceptedByKey.get("wallet");
 const financeRegistry = acceptedByKey.get("finance");
 const socialAcceptedRegistry = acceptedByKey.get("social");
 const resourceAcceptedRegistry = acceptedByKey.get("resource");
+const musicAcceptedRegistry = acceptedByKey.get("music");
 const registryByKey = new Map(releaseRegistry.products?.map((product) => [product.key, product]) || []);
 const payRegistry = registryByKey.get("pay");
 const merchantRegistry = registryByKey.get("merchantConsole");
@@ -408,6 +409,8 @@ const cardRegistry = registryByKey.get("card");
 const socialRegistry = registryByKey.get("social");
 const resourceRegistry = registryByKey.get("resource");
 const musicRegistry = registryByKey.get("music");
+const videoRegistry = registryByKey.get("video");
+const creatorRegistry = registryByKey.get("creatorStudio");
 if (
   registryKeys.length !== 26 ||
   new Set(registryKeys).size !== 26 ||
@@ -415,8 +418,8 @@ if (
   hostedPreviewProducts.length !== 7 ||
   hostedPreviewProducts.map((product) => product.key).sort().join(",") !== "developer,exchange,finance,shop,social,trust,wallet" ||
   hostedPreviewProducts.some((product) => (product.key === "developer" ? product.state !== "public-testnet-web-and-desktop-preview" : product.state !== "hosted-testnet-preview") || !product.releaseTag || !product.downloads?.length || product.downloads.some((download) => !/^[0-9a-f]{64}$/.test(download.sha256) || !(download.bytes > 0) || !download.signingClass)) ||
-  acceptedProducts.length !== 5 ||
-  [...acceptedByKey.keys()].sort().join(",") !== "exchange,finance,resource,social,wallet" ||
+  acceptedProducts.length !== 6 ||
+  [...acceptedByKey.keys()].sort().join(",") !== "exchange,finance,music,resource,social,wallet" ||
   exchangeRegistry?.key !== "exchange" ||
   exchangeRegistry.commit !== "1e5f48d2" ||
   exchangeRegistry.acceptedIntegrationCommit !== "fc2276e1ce4c" ||
@@ -435,9 +438,12 @@ if (
   socialAcceptedRegistry.releaseTag !== "social-v1.0.0-testnet-preview.1" ||
   socialAcceptedRegistry.apiUrl !== "https://api.ynxweb4.com/social" ||
   resourceAcceptedRegistry?.commit !== "11bd6b7c" ||
-  resourceAcceptedRegistry.acceptedIntegrationCommit !== "0aca20d543ef" ||
+  resourceAcceptedRegistry.acceptedIntegrationCommit !== "805df7556031" ||
   resourceAcceptedRegistry.releaseTag !== "resource-market-v0.3.0-public-testnet-preview.1" ||
   resourceAcceptedRegistry.publicWeb !== "https://resource.ynxweb4.com/app/" ||
+  musicAcceptedRegistry?.commit !== "09b658b0" ||
+  musicAcceptedRegistry.acceptedIntegrationCommit !== "805df7556031" ||
+  musicAcceptedRegistry.releaseTag !== "music-v0.3.0-testnet-preview.2" ||
   payRegistry?.state !== "public-testnet-web" ||
   payRegistry.publicWeb !== "https://pay-app.ynxweb4.com/" ||
   payRegistry.apiUrl !== "https://pay.ynxweb4.com" ||
@@ -460,13 +466,22 @@ if (
   musicRegistry.commit !== "09b658b0" ||
   musicRegistry.publicWeb !== "https://web4.ynxweb4.com/music/" ||
   musicRegistry.apiUrl !== "https://web4.ynxweb4.com/music" ||
-  musicRegistry.centralAccepted !== false ||
+  musicRegistry.centralAccepted !== true ||
   musicRegistry.downloadHosted !== false ||
   musicRegistry.releaseTag !== "music-v0.3.0-testnet-preview.2" ||
+  videoRegistry?.state !== "public-testnet-web-preview" ||
+  videoRegistry.commit !== "f3a20484" ||
+  videoRegistry.publicWeb !== "https://web4.ynxweb4.com/video/" ||
+  videoRegistry.apiUrl !== "https://web4.ynxweb4.com/video/api" ||
+  videoRegistry.centralAccepted !== false ||
+  creatorRegistry?.state !== "public-testnet-web-preview" ||
+  creatorRegistry.commit !== "f3a20484" ||
+  creatorRegistry.publicWeb !== "https://web4.ynxweb4.com/video/studio/" ||
+  creatorRegistry.centralAccepted !== false ||
   releaseRegistry.products.some((product) => !product.route.startsWith("/dapp/")) ||
   releaseRegistry.rules?.localArtifactIsDownload !== false
 ) {
-  console.error("release registry must preserve 26 truthful states, seven source-bound hosted previews, and the exact Wallet, Exchange, Finance, Social and Resource central acceptance set");
+  console.error("release registry must preserve 26 truthful states, seven source-bound hosted previews, and the exact Wallet, Exchange, Finance, Social, Resource and Music central acceptance set");
   process.exit(1);
 }
 for (const requiredText of ["downloadHosted", "Local build only", "Download Testnet Preview", "candidate incomplete", "Product status", "wallet-auth-v1.0.0-testnet-preview.5", "exchange-v1.0.0-testnet-preview.3", "shop-v0.3.0-testnet-preview.1", "developer-v0.2.0-testnet-preview.1", "trust-center-v0.1.0-testnet-preview.2"]) {
