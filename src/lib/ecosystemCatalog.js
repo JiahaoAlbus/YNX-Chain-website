@@ -136,6 +136,11 @@ const evidence = {
   },
   social: {
     commit: "aa852496",
+    centralAccepted: true,
+    productRelease: {
+      href: "/releases/ecosystem-release-registry.json",
+      release: "social-v1.0.0-testnet-preview.1"
+    },
     statusNote: "YNX Social 1.0.0 is publicly connected to the shared Testnet through its Wallet-bound Social API. The test-signed Android Preview opens the exact central Wallet review for ynx-social-v1 / com.ynx.social, passed a 1.328-second cold launch, and the public health route passed 100/100 requests at concurrency 10. Strong biometric approval remains mandatory; production signing, app-store release, iOS runtime proof and independently operated capacity evidence are not claimed.",
     downloads: {
       web: { status: PRODUCT_STATUS.LIVE, href: "https://api.ynxweb4.com/social/health", external: true, downloadHosted: false, note: "Public Social Testnet API health; user workflows run in the Android app after Wallet authorization." },
