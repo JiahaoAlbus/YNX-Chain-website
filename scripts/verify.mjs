@@ -405,6 +405,7 @@ const payRegistry = registryByKey.get("pay");
 const merchantRegistry = registryByKey.get("merchantConsole");
 const cardRegistry = registryByKey.get("card");
 const socialRegistry = registryByKey.get("social");
+const resourceRegistry = registryByKey.get("resource");
 if (
   registryKeys.length !== 26 ||
   new Set(registryKeys).size !== 26 ||
@@ -442,6 +443,13 @@ if (
   socialRegistry.commit !== "aa852496" ||
   socialRegistry.apiUrl !== "https://api.ynxweb4.com/social" ||
   socialRegistry.releaseTag !== "social-v1.0.0-testnet-preview.1" ||
+  resourceRegistry?.state !== "public-testnet-web-preview" ||
+  resourceRegistry.commit !== "11bd6b7c" ||
+  resourceRegistry.publicWeb !== "https://resource.ynxweb4.com/app/" ||
+  resourceRegistry.apiUrl !== "https://resource.ynxweb4.com" ||
+  resourceRegistry.centralAccepted !== false ||
+  resourceRegistry.downloadHosted !== false ||
+  resourceRegistry.releaseTag !== "resource-market-v0.3.0-public-testnet-preview.1" ||
   releaseRegistry.products.some((product) => !product.route.startsWith("/dapp/")) ||
   releaseRegistry.rules?.localArtifactIsDownload !== false
 ) {

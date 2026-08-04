@@ -280,12 +280,16 @@ const evidence = {
     }
   },
   resource: {
-    commit: "c7e4445598a7",
-    statusNote: "Resource market Android debug package is generated for this candidate.",
+    commit: "11bd6b7c",
+    productRelease: {
+      href: "/releases/ecosystem-release-registry.json",
+      release: "resource-market-v0.3.0-public-testnet-preview.1"
+    },
+    statusNote: "The public Resource Market Testnet Preview is live beside the chain-backed Resource gateway. It exposes provider, buyer, quote, auction, metering, dispute and receipt workspaces, but private state and mutations require an exact Wallet-bound Product Session. The public health path passed 100/100 requests at concurrency 10. Central Wallet acceptance and authoritative settlement proof remain pending, so those operations fail closed.",
     downloads: {
       android: artifactDownload(PRODUCT_STATUS.LOCAL, "apps/resource-market/mobile/android/app/build/outputs/apk/debug/app-debug.apk", "Resource Market Android debug APK."),
       ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS project exists; simulator/signing evidence pending." },
-      web: { status: PRODUCT_STATUS.LOCAL, href: "/docs#resource", note: "Resource market companion docs and API surfaces are available." }
+      web: { status: PRODUCT_STATUS.LIVE, href: "https://resource.ynxweb4.com/app/", external: true, note: "Public Testnet Resource Market workspace; chain gateway remains available at the domain root." }
     }
   },
   music: {
@@ -600,12 +604,12 @@ export const getCatalog = () => [
     key: "resource",
     name: "YNX Resource Market",
     icon: Database,
-    status: PRODUCT_STATUS.PLANNED,
-    detail: "Resource quote, intent and settlement path is in candidate design, but deployment evidence remains pending.",
-    entry: { label: "Resource entry", href: "/docs#resource" },
+    status: PRODUCT_STATUS.LIVE,
+    detail: "A public Testnet workspace for evidenced providers, capacity offers, matching, sealed procurement, exact quote intents, signed metering, disputes and reconciled receipts. It never treats a quote as reservation or settlement, and YNXT movement remains outside the product.",
+    entry: { label: "Open Resource Market", href: "https://resource.ynxweb4.com/app/", external: true },
     docs: { ...docsAnchor("resource"), label: "Resource docs" },
-    downloads: makeDownloads(),
-    metrics: [["Closure", "Quote and settlement logic"], ["Risk", "No production settlement proof"], ["Readiness", "No released resource marketplace package"]]
+    downloads: web(PRODUCT_STATUS.LIVE, "https://resource.ynxweb4.com/app/", "Public Wallet-gated Resource Market Testnet Preview"),
+    metrics: [["Closure", "Provider → quote → intent → meter → dispute/receipt workspace"], ["Risk", "Central Wallet acceptance and public settlement proof remain pending"], ["Readiness", "Public HTTPS Web + 100/100 concurrency evidence"]]
   },
   {
     key: "music",
