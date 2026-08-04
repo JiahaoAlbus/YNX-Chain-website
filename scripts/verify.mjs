@@ -400,6 +400,7 @@ const exchangeRegistry = acceptedByKey.get("exchange");
 const walletRegistry = acceptedByKey.get("wallet");
 const financeRegistry = acceptedByKey.get("finance");
 const socialAcceptedRegistry = acceptedByKey.get("social");
+const resourceAcceptedRegistry = acceptedByKey.get("resource");
 const registryByKey = new Map(releaseRegistry.products?.map((product) => [product.key, product]) || []);
 const payRegistry = registryByKey.get("pay");
 const merchantRegistry = registryByKey.get("merchantConsole");
@@ -413,8 +414,8 @@ if (
   hostedPreviewProducts.length !== 7 ||
   hostedPreviewProducts.map((product) => product.key).sort().join(",") !== "developer,exchange,finance,shop,social,trust,wallet" ||
   hostedPreviewProducts.some((product) => (product.key === "developer" ? product.state !== "public-testnet-web-and-desktop-preview" : product.state !== "hosted-testnet-preview") || !product.releaseTag || !product.downloads?.length || product.downloads.some((download) => !/^[0-9a-f]{64}$/.test(download.sha256) || !(download.bytes > 0) || !download.signingClass)) ||
-  acceptedProducts.length !== 4 ||
-  [...acceptedByKey.keys()].sort().join(",") !== "exchange,finance,social,wallet" ||
+  acceptedProducts.length !== 5 ||
+  [...acceptedByKey.keys()].sort().join(",") !== "exchange,finance,resource,social,wallet" ||
   exchangeRegistry?.key !== "exchange" ||
   exchangeRegistry.commit !== "1e5f48d2" ||
   exchangeRegistry.acceptedIntegrationCommit !== "fc2276e1ce4c" ||
@@ -432,6 +433,10 @@ if (
   socialAcceptedRegistry.acceptedIntegrationCommit !== "5b2c10c753c1" ||
   socialAcceptedRegistry.releaseTag !== "social-v1.0.0-testnet-preview.1" ||
   socialAcceptedRegistry.apiUrl !== "https://api.ynxweb4.com/social" ||
+  resourceAcceptedRegistry?.commit !== "11bd6b7c" ||
+  resourceAcceptedRegistry.acceptedIntegrationCommit !== "0aca20d543ef" ||
+  resourceAcceptedRegistry.releaseTag !== "resource-market-v0.3.0-public-testnet-preview.1" ||
+  resourceAcceptedRegistry.publicWeb !== "https://resource.ynxweb4.com/app/" ||
   payRegistry?.state !== "public-testnet-web" ||
   payRegistry.publicWeb !== "https://pay-app.ynxweb4.com/" ||
   payRegistry.apiUrl !== "https://pay.ynxweb4.com" ||
@@ -447,13 +452,13 @@ if (
   resourceRegistry.commit !== "11bd6b7c" ||
   resourceRegistry.publicWeb !== "https://resource.ynxweb4.com/app/" ||
   resourceRegistry.apiUrl !== "https://resource.ynxweb4.com" ||
-  resourceRegistry.centralAccepted !== false ||
+  resourceRegistry.centralAccepted !== true ||
   resourceRegistry.downloadHosted !== false ||
   resourceRegistry.releaseTag !== "resource-market-v0.3.0-public-testnet-preview.1" ||
   releaseRegistry.products.some((product) => !product.route.startsWith("/dapp/")) ||
   releaseRegistry.rules?.localArtifactIsDownload !== false
 ) {
-  console.error("release registry must preserve 26 truthful states, seven source-bound hosted previews, and the exact Wallet, Exchange, Finance and Social central acceptance set");
+  console.error("release registry must preserve 26 truthful states, seven source-bound hosted previews, and the exact Wallet, Exchange, Finance, Social and Resource central acceptance set");
   process.exit(1);
 }
 for (const requiredText of ["downloadHosted", "Local build only", "Download Testnet Preview", "candidate incomplete", "Product status", "wallet-auth-v1.0.0-testnet-preview.5", "exchange-v1.0.0-testnet-preview.3", "shop-v0.3.0-testnet-preview.1", "developer-v0.2.0-testnet-preview.1", "trust-center-v0.1.0-testnet-preview.2"]) {

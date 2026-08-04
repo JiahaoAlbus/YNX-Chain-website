@@ -281,6 +281,7 @@ const evidence = {
   },
   resource: {
     commit: "11bd6b7c",
+    centralAccepted: true,
     productRelease: {
       href: "/releases/ecosystem-release-registry.json",
       release: "resource-market-v0.3.0-public-testnet-preview.1"
