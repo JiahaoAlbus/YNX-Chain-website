@@ -16,6 +16,7 @@ export function SiteFooter() {
         <a href="/security">Security</a>
         <a href="/support">Support</a>
         <a href="/square">Square</a>
+        <a href="/community">Community</a>
         <a href={apiConfig.explorerUrl}>Explorer</a>
         <a href="/readiness">Readiness</a>
         <a href="/risk">Risk</a>

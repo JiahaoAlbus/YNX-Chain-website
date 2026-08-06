@@ -253,6 +253,14 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .routeFacts div { min-height: 100px; padding: 18px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--soft); display: flex; flex-direction: column; gap: 14px; }
 .routeFacts span { color: var(--muted); font-size: 11px; text-transform: uppercase; font-weight: 800; }
 .routeLinks { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px; }
+.communityGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.communityCard { display: flex; flex-direction: column; gap: 10px; padding: 22px; border: 1px solid var(--line); border-radius: 14px; background: var(--soft); color: var(--ink); text-decoration: none; transition: border-color .2s ease, transform .2s ease; }
+.communityCard:hover { border-color: rgba(0,47,167,.4); transform: translateY(-2px); }
+.communityIcon { display: inline-flex; width: 44px; height: 44px; align-items: center; justify-content: center; border-radius: 10px; color: white; background: var(--blue); }
+.communityCard strong { color: var(--blue); font-size: 18px; }
+.communityCard p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.6; flex: 1; }
+.communityAction { display: inline-flex; gap: 6px; align-items: center; color: var(--blue); font-size: 13px; font-weight: 700; }
+.communityBoundary { margin-top: 44px; }
 .productPageHeader, .appsPage, .squarePage, .docsPage { width: min(1240px, calc(100% - 48px)); margin: 0 auto; }
 .appsPage, .squarePage, .docsPage { min-height: 78svh; padding: 84px 0 110px; }
 .productPageHeader { width: 100%; margin-bottom: 48px; }
@@ -705,6 +713,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
   .routePage h1 { font-size: 42px; }
   .routeLead { font-size: 17px; }
   .routeFacts { grid-template-columns: repeat(2, 1fr); }
+  .communityGrid { grid-template-columns: 1fr; }
   .appsPage, .squarePage, .docsPage, .downloadPage { width: calc(100% - 36px); padding: 58px 0 78px; }
   .productPageHeader h1, .squareHeader h1, .docsHeader h1 { font-size: 42px; }
   .productPageHeader > p:not(.sectionEyebrow), .squareHeader > div > p:not(.sectionEyebrow), .docsHeader > p:not(.sectionEyebrow) { font-size: 16px; }
