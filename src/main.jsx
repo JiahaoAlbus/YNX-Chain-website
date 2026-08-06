@@ -21,6 +21,7 @@ import { ProductStatusPage } from "./pages/ProductStatusPage.jsx";
 import { SquarePage } from "./pages/SquarePage.jsx";
 import { ManualPage } from "./pages/ManualPage.jsx";
 import { ApiPage } from "./pages/ApiPage.jsx";
+import { CommunityPage } from "./pages/CommunityPage.jsx";
 import { getProductByRoute } from "./lib/ecosystemCatalog.js";
 import docsAuthority from "virtual:ynx-docs-authority";
 import "./styles.css";
@@ -98,6 +99,8 @@ function App() {
     if (route === "/docs") page = <DocsPage />;
     if (route === "/manual") page = <ManualPage />;
     if (route === "/api") page = <ApiPage />;
+    if (route === "/community") page = <CommunityPage />;
+    if (route === "/community") page = <CommunityPage />;
     if (route === "/square" || route.startsWith("/square/")) page = <SquarePage path={route} />;
     return <><SiteHeader scrollProgress={scrollProgress} /><div id="main-content">{page}</div><SiteFooter /></>;
   }

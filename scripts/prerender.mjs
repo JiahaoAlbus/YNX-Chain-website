@@ -35,6 +35,18 @@ writeRoute("/docs", {
   },
 });
 
+writeRoute("/community", {
+  title: "YNX Chain Community — Build in Public",
+  description: "Join the official YNX Chain community on Discord, X, Reddit, YouTube and GitHub, and read the developer documentation. YNX Chain is built in public.",
+  body: `<main class="authorityPage"><header class="authorityHeader"><p class="sectionEyebrow">Community</p><h1>Build in public with the YNX community.</h1><p>Developers, researchers, and creators can follow the public testnet, review the code, and join the conversation on every official channel.</p></header><nav class="authorityIndex" aria-label="YNX official community channels"><a href="https://discord.gg/t8KpAF2KE"><strong>Discord</strong><span>Real-time discussion, builder support, and build-in-public updates.</span></a><a href="https://x.com/YNXChain"><strong>X</strong><span>Announcements, release notes, and public testnet progress.</span></a><a href="https://www.reddit.com/r/YNX_Chain/"><strong>Reddit</strong><span>Long-form discussion and community threads.</span></a><a href="https://www.youtube.com/@YNX-Chain"><strong>YouTube</strong><span>Walkthroughs, demos, and public testnet evidence videos.</span></a><a href="https://github.com/JiahaoAlbus/YNX-Chain"><strong>GitHub</strong><span>Source code, issues, and pull requests.</span></a><a href="/docs"><strong>Documentation</strong><span>Developer docs, SDKs, and evidence-linked public documentation.</span></a></nav></main>`,
+  jsonLd: {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "YNX Chain Community",
+    url: `${siteUrl}/community`,
+  },
+});
+
 emitDocsAuthority(path.join(dist, "docs-authority"), root);
 writePublicMetadata();
 writeDiscoveryFiles();
@@ -58,6 +70,7 @@ function writeDiscoveryFiles() {
   const routes = [
     "/",
     "/apps",
+    "/community",
     "/download",
     "/docs",
     "/manual",
