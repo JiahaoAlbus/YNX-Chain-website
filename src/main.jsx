@@ -100,7 +100,6 @@ function App() {
     if (route === "/manual") page = <ManualPage />;
     if (route === "/api") page = <ApiPage />;
     if (route === "/community") page = <CommunityPage />;
-    if (route === "/community") page = <CommunityPage />;
     if (route === "/square" || route.startsWith("/square/")) page = <SquarePage path={route} />;
     return <><SiteHeader scrollProgress={scrollProgress} /><div id="main-content">{page}</div><SiteFooter /></>;
   }
