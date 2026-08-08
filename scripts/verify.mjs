@@ -584,7 +584,6 @@ if (!vercel.cleanUrls || spaFallback?.destination !== "/") {
   process.exit(1);
 }
 const requiredOfficialDownloads = new Map([
-  ["/downloads/ynx-developer-testnet-preview-macos-unsigned.zip", "https://developer.ynxweb4.com/downloads/ynx-developer-0.2.0-testnet-preview-macos-arm64-unsigned.zip"],
   ["/downloads/ynx-developer-testnet-preview-windows-x64-unsigned.zip", "https://developer.ynxweb4.com/downloads/ynx-developer-0.2.0-testnet-preview-windows-x64-unsigned.zip"],
   ["/downloads/ynx-trust-center-4d40557229b4-linux-amd64.tar.gz", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-trust-center-4d40557229b4-linux-amd64.tar.gz"],
   ["/downloads/ynx-shop-0.3.0-testnet-preview-6fa2d6c5-debug-signed.apk", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-shop-0.3.0-testnet-preview-6fa2d6c5-debug-signed.apk"],
@@ -598,6 +597,14 @@ for (const [source, destination] of requiredOfficialDownloads) {
     console.error(`official download rewrite is missing: ${source}`);
     process.exit(1);
   }
+}
+const developerMacPackage = fs.readFileSync("public/downloads/ynx-developer-testnet-preview-macos-unsigned.zip");
+if (
+  developerMacPackage.byteLength !== 44381828 ||
+  crypto.createHash("sha256").update(developerMacPackage).digest("hex") !== "426153557fff6ed3c44e12978524ccee46375f8f134ee4d05fa105751a20d058"
+) {
+  console.error("Developer macOS package must be a complete, directly hosted, source-bound archive");
+  process.exit(1);
 }
 const requiredDAppRedirects = new Map([
   ["/apps", "/dapp"], ["/download", "/dapp/download"], ["/faucet", "/dapp/faucet"], ["/square", "/dapp/square"],
