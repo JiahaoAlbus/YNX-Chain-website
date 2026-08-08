@@ -125,7 +125,7 @@ const evidence = {
       href: "/releases/ecosystem-release-registry.json",
       release: "wallet-auth-v1.0.0-testnet-preview.5"
     },
-    statusNote: "Release wallet-auth-v1.0.0-testnet-preview.5: the centrally accepted Android Testnet Preview is hosted for direct download. It locally reviews the exact approved Exchange, Finance, Quant and Shop bindings; long permission reviews remain scrollable to reject or approve. Canonical Wallet/Auth is publicly reachable through a proof-bound gateway with 64-request concurrency admission and 100/100 concurrent readiness evidence. This is test-signed software, not a production-signed or app-store release.",
+    statusNote: "Release wallet-auth-v1.0.0-testnet-preview.5: the centrally accepted Android Testnet Preview is hosted for direct download. The exact hosted APK passed install, first cold start, force-stop and second cold start on Android 16; the same Testnet account and ynx_6423-1 binding remained visible. It locally reviews the exact approved Exchange, Finance, Quant and Shop bindings; long permission reviews remain scrollable to reject or approve. Canonical Wallet/Auth is publicly reachable through a proof-bound gateway with 64-request concurrency admission and 100/100 concurrent readiness evidence. This is test-signed software, not a production-signed or app-store release.",
     downloads: {
       web: { status: PRODUCT_STATUS.LIVE, href: "https://wallet-auth.ynxweb4.com/health", external: true, downloadHosted: false, note: "Public canonical Wallet/Auth gateway health; product use remains proof-bound." },
       android: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-1.0.0-testnet-preview-ccaf878c-test-signed.apk", "Test-signed Android Testnet Preview · source ccaf878c · SHA-256 68d7cec9…b746 · 78,313,394 bytes · never import production keys.", "/downloads/ynx-wallet-1.0.0-testnet-preview-ccaf878c-test-signed.apk"),
@@ -141,7 +141,7 @@ const evidence = {
       href: "/releases/ecosystem-release-registry.json",
       release: "social-v1.0.0-testnet-preview.1"
     },
-    statusNote: "YNX Social 1.0.0 is publicly connected to the shared Testnet through its Wallet-bound Social API. The test-signed Android Preview opens the exact central Wallet review for ynx-social-v1 / com.ynx.social, passed a 1.328-second cold launch, and the public health route passed 100/100 requests at concurrency 10. Strong biometric approval remains mandatory; production signing, app-store release, iOS runtime proof and independently operated capacity evidence are not claimed.",
+    statusNote: "YNX Social 1.0.0 is publicly connected to the shared Testnet through its Wallet-bound Social API. The exact hosted test-signed Android Preview passed install, first cold start, force-stop and second cold start, and retains its central Wallet entry without recovery-key handling. The public health route passed 100/100 requests at concurrency 10. Strong biometric approval remains mandatory; production signing, app-store release, iOS runtime proof and independently operated capacity evidence are not claimed.",
     downloads: {
       web: { status: PRODUCT_STATUS.LIVE, href: "https://api.ynxweb4.com/social/health", external: true, downloadHosted: false, note: "Public Social Testnet API health; user workflows run in the Android app after Wallet authorization." },
       android: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-social-1.0.0-testnet-preview-aa852496-test-signed.apk", "Test-signed Android Testnet Preview · source aa852496 · SHA-256 ea596daf…dcba · 103,546,656 bytes · exact central Wallet binding and public Social API embedded.", "/downloads/ynx-social-1.0.0-testnet-preview-aa852496-test-signed.apk"),
@@ -182,7 +182,7 @@ const evidence = {
       href: "/releases/exchange/fc2276e1ce4c/product-release.json",
       release: "1.0.0-testnet-candidate"
     },
-    statusNote: "Release exchange-v1.0.0-testnet-preview.3: the Android client and public venue now display the 30 actual persisted matching-engine trades, including source type and proof digest. The canonical public Exchange API and Wallet/Auth gateway remain embedded with bounded multi-user admission. Order, cancel and withdrawal actions remain fail-closed until canonical action verification is deployed. Production custody, listing, partnership and mainnet are not claimed.",
+    statusNote: "Release exchange-v1.0.0-testnet-preview.3: the exact hosted Android client passed install, first cold start, force-stop and second cold start; both launches read the real persisted owned-engine trade tape. After the second launch, its Wallet handoff opened the exact ynx-exchange-v1 / com.ynxweb4.exchange review for ynx_6423-1. The canonical public Exchange API and Wallet/Auth gateway remain embedded with bounded multi-user admission. Order, cancel and withdrawal actions remain fail-closed until canonical action verification is deployed. Production custody, listing, partnership and mainnet are not claimed.",
     downloads: {
       web: { status: PRODUCT_STATUS.LIVE, href: "https://exchange.ynxweb4.com", external: true, downloadHosted: false, note: "Public read-only Exchange Pro terminal with actual owned-engine matches." },
       android: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-exchange-1.0.0-testnet-preview-1e5f48d2-test-signed.apk", "Test-signed Android Testnet Preview · source 1e5f48d2 · SHA-256 9ac502ce…ae3 · 77,360,214 bytes · canonical Testnet API, Wallet gateway, and actual venue trade tape embedded.", "/downloads/ynx-exchange-1.0.0-testnet-preview-1e5f48d2-test-signed.apk"),
@@ -205,7 +205,7 @@ const evidence = {
       href: "/releases/ecosystem-release-registry.json",
       release: "shop-v0.3.0-testnet-preview.1"
     },
-    statusNote: "The public Testnet storefront, persistent catalog, Wallet-bound cart/order flows, Pay/Trust/AI integrations, and a debug-signed Android Testnet Preview are available. Tax, carrier verification, production signing, and store release remain unavailable.",
+    statusNote: "The public Testnet storefront, persistent catalog, Wallet-bound cart/order flows, Pay/Trust/AI integrations, and a debug-signed Android Testnet Preview are available. The exact hosted APK passed install, first cold start, force-stop and second cold start; both launches loaded the three clearly labelled public Testnet demo listings. Tax, carrier verification, production signing, and store release remain unavailable.",
     downloads: {
       web: { status: PRODUCT_STATUS.LIVE, href: "https://shop.ynxweb4.com/shop/", external: true, downloadHosted: false, note: "Public YNX Testnet storefront with three clearly labelled demo listings." },
       android: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-shop-0.3.0-testnet-preview-6fa2d6c5-debug-signed.apk", "Debug-signed Android Testnet Preview · source 6fa2d6c5 · SHA-256 a7466e02…2c72d · 253,733 bytes · min Android API 26.", "/downloads/ynx-shop-0.3.0-testnet-preview-6fa2d6c5-debug-signed.apk"),
@@ -271,7 +271,7 @@ const evidence = {
       href: "/releases/ecosystem-release-registry.json",
       release: "trust-center-v0.1.0-testnet-preview.2"
     },
-    statusNote: "The reproducible Linux amd64 Trust Center server and backup CLI bundle is hosted as an unsigned Testnet Preview. The Android debug build remains local-only.",
+    statusNote: "The reproducible Linux amd64 Trust Center server and backup CLI bundle is hosted as an unsigned Testnet Preview. The exact hosted archive hash was reverified and the amd64 server passed two independent container cold starts; both returned the same build identity, state format 2, tamper-evident persistence boundary and public transparency endpoint. Central Wallet and AI providers are not embedded in the standalone archive, production signing is unavailable, and the Android debug build remains local-only.",
     downloads: {
       android: artifactDownload(PRODUCT_STATUS.LOCAL, "apps/trust-center/mobile/android/app/build/outputs/apk/debug/app-debug.apk", "Trust Center Android debug APK."),
       ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS project exists; simulator signing evidence pending." },
@@ -356,12 +356,12 @@ const evidence = {
   },
   browser: {
     commit: "96dfc528ddd6",
-    centralAccepted: false,
+    centralAccepted: true,
     productRelease: {
       href: "/releases/ecosystem-release-registry.json",
       release: "browser-v0.2.5-testnet-preview.1"
     },
-    statusNote: "The exact arm64 macOS Browser Testnet Preview is hosted directly by YNX and bound to source candidate 96dfc528, ZIP SHA-256 939c5045…4448 and 138,203 bytes. Central integration 2a78ace0a647 passed CI, disclosure, governance, Android package policy, macOS cold start, iOS Simulator install/cold start and Windows compile/cold start. It is ad-hoc signed, rejected by Gatekeeper, not notarized or production signed, and older copies with the same Bundle ID can retain the ynxbrowser callback registration.",
+    statusNote: "The exact arm64 macOS Browser Testnet Preview is hosted directly by YNX and bound to source candidate 96dfc528, ZIP SHA-256 939c5045…4448 and 138,203 bytes. The hosted ZIP passed two independent native cold starts and the second start completed its WebKit main-page load. Central integration 2a78ace0a647 passed CI, disclosure, governance, Android package policy, iOS Simulator install/cold start and Windows compile/cold start. It is ad-hoc signed, rejected by Gatekeeper, not notarized or production signed, and older copies with the same Bundle ID can retain the ynxbrowser callback registration.",
     downloads: {
       android: artifactDownload(PRODUCT_STATUS.LOCAL, "apps/browser/android/.manual-build/ynx-browser-debug.apk", "Browser Android debug APK (manual build)."),
       ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS WKWebView source exists; no public device-signed package is claimed." },
@@ -383,7 +383,7 @@ const evidence = {
       href: "/releases/ecosystem-release-registry.json",
       release: "finance-v1.2.0-testnet-preview.2"
     },
-    statusNote: "YNX Finance 1.2.0 is publicly deployed as a non-custodial, read-only Testnet workspace. It uses canonical proof-bound Wallet sessions, preserves account isolation, reads real Explorer and Pay evidence, and passed a 10-account / 100-request public concurrency test without cross-account leakage. The current test-signed Android Preview is hosted for direct download; production signing and store release are not claimed.",
+    statusNote: "YNX Finance 1.2.0 is publicly deployed as a non-custodial, read-only Testnet workspace. The exact hosted Android Preview passed install, first cold start, force-stop and second cold start; after the second start its Wallet handoff opened the exact ynx-finance-v1 / com.ynxweb4.finance review for ynx_6423-1. It uses canonical proof-bound Wallet sessions, preserves account isolation, reads real Explorer and Pay evidence, and passed a 10-account / 100-request public concurrency test without cross-account leakage. Production signing and store release are not claimed.",
     downloads: {
       android: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-finance-1.2.0-testnet-preview-307273b9-test-signed.apk", "Test-signed Android Testnet Preview · source 307273b9 · SHA-256 c795f8b5…60dc1 · 77,516,038 bytes · public Finance and canonical Wallet gateways embedded.", "/downloads/ynx-finance-1.2.0-testnet-preview-307273b9-test-signed.apk"),
       ios: { status: PRODUCT_STATUS.PLANNED, note: "Xcode simulator/signed evidence is not currently available." },
