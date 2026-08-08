@@ -441,7 +441,7 @@ if (
   hostedPreviewProducts.map((product) => product.key).sort().join(",") !== "browser,developer,exchange,finance,shop,social,trust,wallet" ||
   hostedPreviewProducts.some((product) => {
     const expectedState = product.key === "developer"
-      ? "public-testnet-web-with-0.3-desktop-preview"
+      ? "public-testnet-web-with-updated-desktop-preview"
       : "hosted-testnet-preview";
     return product.state !== expectedState || !product.releaseTag || !product.downloads?.length || product.downloads.some((download) => !/^[0-9a-f]{64}$/.test(download.sha256) || !(download.bytes > 0) || !download.signingClass);
   }) ||
@@ -542,7 +542,7 @@ if (
   console.error("release registry must preserve 26 truthful states, eight distributable source-bound hosted previews, the system-verified Browser package, and the exact centrally accepted product set");
   process.exit(1);
 }
-for (const requiredText of ["downloadHosted", "Local build only", "Download Testnet Preview", "candidate incomplete", "Product status", "wallet-auth-v1.0.0-testnet-preview.5", "exchange-v1.0.0-testnet-preview.3", "shop-v0.3.0-testnet-preview.1", "developer-v0.3.0-testnet-preview.1", "trust-center-v0.1.0-testnet-preview.2"]) {
+for (const requiredText of ["downloadHosted", "Local build only", "Download Testnet Preview", "candidate incomplete", "Product status", "wallet-auth-v1.0.0-testnet-preview.5", "exchange-v1.0.0-testnet-preview.3", "shop-v0.3.0-testnet-preview.1", "developer-v0.2.0-testnet-preview.2", "trust-center-v0.1.0-testnet-preview.2"]) {
   if (!ecosystemCatalog.includes(requiredText)) {
     console.error(`ecosystem release boundary missing: ${requiredText}`);
     process.exit(1);

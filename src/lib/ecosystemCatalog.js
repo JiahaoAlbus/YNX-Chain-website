@@ -230,9 +230,9 @@ const evidence = {
     commit: "9c4d75be",
     productRelease: {
       href: "/releases/ecosystem-release-registry.json",
-      release: "developer-v0.3.0-testnet-preview.1"
+      release: "developer-v0.2.0-testnet-preview.2"
     },
-    statusNote: "The public YNX Developer Web IDE remains the current Testnet service against chain ID 6423 with pinned Solidity 0.8.24 compilation and YNX-hosted qwen3:4b AI Build. The newer 0.3 desktop previews add the Monaco editor, language-aware editing, a declarative local language-pack importer, bounded native toolchain adapters, and reviewed project-local TypeScript. A language is marked compilable only when its real toolchain is detected; arbitrary VS Code extensions are not claimed. Central Wallet acceptance, production signing and store release are not claimed.",
+    statusNote: "The public YNX Developer Web IDE remains the current Testnet service against chain ID 6423 with pinned Solidity 0.8.24 compilation and YNX-hosted qwen3:4b AI Build. The updated 0.2.0 desktop Preview 2 packages add the Monaco editor, language-aware editing, a declarative local language-pack importer, bounded native toolchain adapters, and reviewed project-local TypeScript. A language is marked compilable only when its real toolchain is detected; arbitrary VS Code extensions are not claimed. Central Wallet acceptance, production signing and store release are not claimed.",
     downloads: {
       web: { status: PRODUCT_STATUS.LIVE, href: "https://developer.ynxweb4.com/", external: true, downloadHosted: false, note: "Public Testnet Web IDE · live chain · real solc · YNX-hosted qwen3:4b · optional xAI/OpenAI API." },
       android: { status: PRODUCT_STATUS.NOT_READY, note: "No native Android package published for Developer in this candidate." },
