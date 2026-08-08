@@ -193,7 +193,7 @@ const ownerProductIds = ownerRecordIndex.records?.map((record) => record.product
 const approvedOwnerPublicEvidence = new Map([
   ["03", { sourceCommit: "aa8524960d6efd9881598fb65832c6237e5af056", publicUrl: "https://www.ynxweb4.com/dapp/social" }],
   ["10", { sourceCommit: "88c0f3a546b463fb270c4bea5d944178865660a5", publicUrl: "https://seller.ynxweb4.com/seller/" }],
-  ["11", { sourceCommit: "70f7c3ca7540327aca3736b398c52a67b8e86f34", publicUrl: "https://developer.ynxweb4.com/" }],
+  ["11", { sourceCommit: "ed81241ec11dcc9fdd59bbddeae6fae9ccb91f54", publicUrl: "https://developer.ynxweb4.com/" }],
   ["13", { sourceCommit: "5d42be028b22f10253facfc4f779fcccf0fd69b1", publicUrl: "https://monitor.ynxweb4.com/" }],
   ["14", { sourceCommit: "16d6d71e2f93418e37fe9d024f58c492ca1baad4", publicUrl: "https://assistant.ynxweb4.com/" }],
 ]);

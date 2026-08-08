@@ -226,18 +226,18 @@ const evidence = {
     }
   },
   developer: {
-    commit: "70f7c3ca",
+    commit: "ed81241e",
     productRelease: {
       href: "/releases/ecosystem-release-registry.json",
       release: "developer-v0.2.0-testnet-preview.1"
     },
-    statusNote: "The public YNX Developer Web IDE is live against chain ID 6423, with bounded compiler, test, API Studio, checkpoint and Wallet-only deployment-review workflows. Official macOS arm64 and Windows x64 unsigned Testnet Preview packages are hosted for direct download. Provider-backed AI, central Wallet acceptance, production signing and store release are not claimed.",
+    statusNote: "The public YNX Developer Web IDE is live against chain ID 6423 with real pinned Solidity 0.8.24 compilation, YNX-hosted qwen3:4b AI Build, request-only xAI/OpenAI bring-your-own-key modes, API Studio, checkpoints and Wallet-only deployment review. Current macOS arm64 and Windows x64 unsigned Testnet Preview packages connect back to the public chain/compiler/AI service, bundle npm, install one reviewed package without lifecycle scripts, and persist isolated project dependencies across restarts. Central Wallet acceptance, production signing and store release are not claimed.",
     downloads: {
-      web: { status: PRODUCT_STATUS.LIVE, href: "https://developer.ynxweb4.com/", external: true, downloadHosted: false, note: "Public Testnet Web IDE with live chain status and fail-closed signing/provider boundaries." },
+      web: { status: PRODUCT_STATUS.LIVE, href: "https://developer.ynxweb4.com/", external: true, downloadHosted: false, note: "Public Testnet Web IDE · live chain · real solc · YNX-hosted qwen3:4b · optional xAI/OpenAI API." },
       android: { status: PRODUCT_STATUS.NOT_READY, note: "No native Android package published for Developer in this candidate." },
       ios: { status: PRODUCT_STATUS.NOT_READY, note: "No iOS package published for Developer in this candidate." },
-      macos: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-developer-testnet-preview-macos-unsigned.zip", "Unsigned macOS arm64 Testnet Preview · SHA-256 ff9ae3d4…903f7 · 38,450,128 bytes.", "/downloads/ynx-developer-testnet-preview-macos-unsigned.zip"),
-      windows: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-developer-testnet-preview-windows-x64-unsigned.zip", "Unsigned Windows x64 Testnet Preview · SHA-256 1efaf486…07fb29 · 106,341,644 bytes.", "/downloads/ynx-developer-testnet-preview-windows-x64-unsigned.zip")
+      macos: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-developer-testnet-preview-macos-unsigned.zip", "Unsigned macOS arm64 Testnet Preview · SHA-256 42615355…d058 · 44,381,828 bytes · package install/test and second-launch persistence verified.", "/downloads/ynx-developer-testnet-preview-macos-unsigned.zip"),
+      windows: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-developer-testnet-preview-windows-x64-unsigned.zip", "Unsigned Windows x64 Testnet Preview · SHA-256 43d4b321…46b4 · 110,949,464 bytes · Windows runner cold launch verified.", "/downloads/ynx-developer-testnet-preview-windows-x64-unsigned.zip")
     }
   },
   explorer: {
