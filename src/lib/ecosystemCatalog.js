@@ -737,12 +737,12 @@ export const getCatalog = () => [
     key: "calendar",
     name: "YNX Calendar",
     icon: CalendarDays,
-    status: PRODUCT_STATUS.LOCAL,
-    detail: "Calendar event lifecycle is in candidate scope with invite/repeat/time-zone edge cases flagged for final closure.",
-    entry: { label: "Calendar entry", href: "/docs#calendar" },
+    status: PRODUCT_STATUS.LIVE,
+    detail: "Public Testnet Calendar with canonical Wallet-bound sessions, explicit change approval, invitations and RSVP, DST-safe recurrence, restart persistence, and bounded concurrent access. Mail delivery, the AI provider, Data Fabric transport, current-source native packages, and production signing are still pending.",
+    entry: { label: "Open Calendar", href: "https://calendar-testnet.43.153.202.237.sslip.io/" },
     docs: { ...docsAnchor("calendar"), label: "Calendar docs" },
-    downloads: web(PRODUCT_STATUS.LOCAL, "/docs#calendar", "Calendar web companion"),
-    metrics: [["Closure", "Invite + reminder flow"], ["Risk", "Time-zone and repeat conflicts"], ["Readiness", "No production calendar package"]]
+    downloads: web(PRODUCT_STATUS.LIVE, "https://calendar-testnet.43.153.202.237.sslip.io/", "Calendar Testnet web app"),
+    metrics: [["Public proof", "2-user invite / RSVP / update / cancel"], ["Concurrency", "100 / 100 authenticated reads"], ["Readiness", "Public preview; no production package"]]
   },
   {
     key: "dex",

@@ -33,7 +33,7 @@
     { "key": "search", "name": "YNX Search", "route": "/dapp/search", "state": "candidate-incomplete", "commit": "db8651b68c6e", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
     { "key": "finance", "name": "YNX Finance", "route": "/dapp/finance", "state": "hosted-testnet-preview", "commit": "307273b9", "acceptedIntegrationCommit": "6b6cb8f5b125", "centralAccepted": true, "publicWeb": "https://finance.ynxweb4.com/", "downloadHosted": true, "releaseTag": "finance-v1.2.0-testnet-preview.2", "downloads": [{"platform":"android-api24","url":"https://www.ynxweb4.com/downloads/ynx-finance-1.2.0-testnet-preview-307273b9-test-signed.apk","sha256":"c795f8b5e94ca51b40844f9c736b281a407a709bfc384e0dc7c5cdd215e60dc1","bytes":77516038,"signingClass":"android-test-signed-testnet-preview"}] },
     { "key": "mail", "name": "YNX Mail", "route": "/dapp/mail", "state": "candidate", "commit": "8126a2dae869", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
-    { "key": "calendar", "name": "YNX Calendar", "route": "/dapp/calendar", "state": "candidate", "commit": "8126a2dae869", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
+    { "key": "calendar", "name": "YNX Calendar", "route": "/dapp/calendar", "state": "public-testnet-web-preview", "commit": "cf92caa3de1e", "centralAccepted": false, "publicWeb": "https://calendar-testnet.43.153.202.237.sslip.io/", "downloadHosted": false },
     { "key": "dex", "name": "YNX DEX", "route": "/dapp/dex", "state": "public-testnet-readonly", "commit": "d0f767d7", "centralAccepted": false, "publicWeb": "https://dex.ynxweb4.com/", "downloadHosted": false }
   ]
 }
