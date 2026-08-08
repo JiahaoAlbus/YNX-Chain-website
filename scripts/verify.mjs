@@ -594,8 +594,10 @@ const requiredOfficialDownloads = new Map([
   ["/downloads/ynx-social-1.0.0-testnet-preview-aa852496-test-signed.apk", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-social-1.0.0-testnet-preview-aa852496-test-signed-15JR16t0lzmvyKU06tyaYXcUGC0sjQ.apk"]
 ]);
 for (const [source, destination] of requiredOfficialDownloads) {
-  if (!vercel.rewrites?.some((rewrite) => rewrite.source === source && rewrite.destination === destination)) {
-    console.error(`official download rewrite is missing: ${source}`);
+  const rewriteMatches = vercel.rewrites?.some((rewrite) => rewrite.source === source && rewrite.destination === destination);
+  const redirectMatches = vercel.redirects?.some((redirect) => redirect.source === source && redirect.destination === destination);
+  if (!rewriteMatches && !redirectMatches) {
+    console.error(`official download route is missing: ${source}`);
     process.exit(1);
   }
 }
