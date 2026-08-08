@@ -227,18 +227,18 @@ const evidence = {
     }
   },
   developer: {
-    commit: "4013995f",
+    commit: "63a678ac",
     productRelease: {
       href: "/releases/ecosystem-release-registry.json",
-      release: "developer-v0.2.0-testnet-preview.3"
+      release: "developer-v0.2.0-testnet-preview.4"
     },
-    statusNote: "The public YNX Developer Web IDE remains the current Testnet service against chain ID 6423 with pinned Solidity 0.8.24 compilation and YNX-hosted qwen3:4b AI Build. The updated 0.2.0 desktop Preview 3 packages provide Monaco, language-aware editing, declarative language packs, built-in detected toolchains, reviewed project-local TypeScript, and user-registered compiler adapters. Custom adapters require explicit registration and per-compile approval, reject shell syntax and built-in overrides, run without network in a bounded project workspace, and report real exits. Central Wallet acceptance, production signing and store release are not claimed.",
+    statusNote: "The public YNX Developer Web IDE runs Monaco against chain ID 6423 with pinned Solidity 0.8.24 compilation and YNX-hosted qwen3:4b AI Build. Preview 4 adds a dedicated Extensions workspace: users can inspect editing languages, install/remove declarative language packs, detect real device toolchains, and install/remove reviewed compiler adapters. Custom adapters require separate registration, removal and per-compile approvals, reject shell syntax and built-in overrides, run without network in a bounded project workspace, and report real exits. Editing support is never presented as an installed compiler. Central Wallet acceptance, production signing and store release are not claimed.",
     downloads: {
       web: { status: PRODUCT_STATUS.LIVE, href: "https://developer.ynxweb4.com/", external: true, downloadHosted: false, note: "Public Testnet Web IDE · live chain · real solc · YNX-hosted qwen3:4b · optional xAI/OpenAI API." },
       android: { status: PRODUCT_STATUS.NOT_READY, note: "No native Android package published for Developer in this candidate." },
       ios: { status: PRODUCT_STATUS.NOT_READY, note: "No iOS package published for Developer in this candidate." },
-      macos: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-developer-testnet-preview-macos-unsigned.zip", "Unsigned macOS arm64 Testnet Preview · SHA-256 85e308dc…c3e8 · 48,250,583 bytes · extraction, cold launch, real bounded C++ compile, second launch and child cleanup verified.", "/downloads/ynx-developer-testnet-preview-macos-unsigned.zip"),
-      windows: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-developer-testnet-preview-windows-x64-unsigned.zip", "Unsigned Windows x64 Testnet Preview · SHA-256 e63056b0…9342 · 114,786,550 bytes · Windows runner tests, extraction, cold launch, bundled server and child cleanup verified.", "/downloads/ynx-developer-testnet-preview-windows-x64-unsigned.zip")
+      macos: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-developer-testnet-preview-macos-unsigned.zip", "Unsigned macOS arm64 Testnet Preview · source 63a678ac · SHA-256 f8988f01…5351 · 48,252,013 bytes · extraction, cold launch, real bounded C++ compile, second launch, cleanup and full public re-download verified.", "/downloads/ynx-developer-testnet-preview-macos-unsigned.zip"),
+      windows: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-developer-testnet-preview-windows-x64-unsigned.zip", "Unsigned Windows x64 Testnet Preview · source 63a678ac · SHA-256 d07163e6…8c7d · 114,787,990 bytes · Windows tests, extraction, cold launch, bundled server, cleanup and full public re-download verified.", "/downloads/ynx-developer-testnet-preview-windows-x64-unsigned.zip")
     }
   },
   explorer: {
