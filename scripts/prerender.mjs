@@ -14,6 +14,13 @@ const siteUrl = authority.productMetadata.siteUrl.replace(/\/$/, "");
 const hostedArtifact = createHostedArtifactManifest(authority);
 const releaseRegistry = JSON.parse(fs.readFileSync(path.join(root, "public/releases/ecosystem-release-registry.json"), "utf8"));
 
+writeRoute("/community", {
+  title: "YNX Chain Official Community",
+  description: "Official YNX Chain Discord, Reddit, YouTube and X community channels for testnet help, feedback and release updates.",
+  body: `<main class="authorityPage"><header class="authorityHeader"><p class="sectionEyebrow">Official community</p><h1>Join the public build of YNX Chain</h1><p>Get testnet help, report issues, discuss products and follow releases through official YNX Chain channels.</p></header><nav class="authorityIndex" aria-label="Official YNX Chain community channels"><a href="https://discord.gg/t8KpAF2KE"><strong>Discord</strong><span>Real-time testnet help and contributor coordination.</span></a><a href="https://www.reddit.com/r/YNX_Chain/"><strong>Reddit</strong><span>Long-form discussions, proposals and tutorials.</span></a><a href="https://www.youtube.com/@YNX-Chain"><strong>YouTube</strong><span>Product demonstrations and walkthroughs.</span></a><a href="https://x.com/YNXChain"><strong>X</strong><span>Release notices and service updates.</span></a></nav></main>`,
+  jsonLd: { "@context": "https://schema.org", "@type": "CollectionPage", name: "YNX Chain Official Community", url: `${siteUrl}/community` },
+});
+
 for (const article of authority.articles) {
   const jsonLd = article.route === "/faq" ? faqJsonLd(article) : articleJsonLd(article);
   writeRoute(article.route, {
@@ -66,6 +73,7 @@ function writeDiscoveryFiles() {
     "/manual",
     "/api",
     "/status",
+    "/community",
     ...releaseRegistry.products.map((product) => product.route),
     ...authority.articles.map((article) => article.route),
   ];

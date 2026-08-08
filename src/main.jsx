@@ -22,6 +22,7 @@ import { SquarePage } from "./pages/SquarePage.jsx";
 import { ManualPage } from "./pages/ManualPage.jsx";
 import { ApiPage } from "./pages/ApiPage.jsx";
 import { FaucetPage } from "./pages/FaucetPage.jsx";
+import { CommunityPage, communityChannels } from "./pages/CommunityPage.jsx";
 import { getLegacyDAppRedirect, getProductByRoute } from "./lib/ecosystemCatalog.js";
 import docsAuthority from "virtual:ynx-docs-authority";
 import { LocaleProvider, useLocale } from "./lib/i18n.jsx";
@@ -107,6 +108,7 @@ function App() {
     if (route === "/manual") page = <ManualPage />;
     if (route === "/api") page = <ApiPage />;
     if (route === "/dapp/faucet") page = <FaucetPage />;
+    if (route === "/community") page = <CommunityPage />;
     if (route === "/dapp/square" || route.startsWith("/dapp/square/")) page = <SquarePage path={route} />;
     return <><SiteHeader scrollProgress={scrollProgress} /><div id="main-content">{page}</div><SiteFooter /></>;
   }
@@ -206,6 +208,16 @@ function App() {
       <section className="resourceSection" aria-labelledby="resources-title" data-reveal>
         <div className="sectionHeader"><div><p className="sectionEyebrow">{zh ? "开始构建" : "Start building"}</p><h2 id="resources-title">{zh ? "公开入口" : "Public entry points"}</h2></div></div>
         <LinkGrid />
+      </section>
+      <section className="homeCommunity" aria-labelledby="home-community-title" data-reveal>
+        <div className="sectionHeader">
+          <div><p className="sectionEyebrow">{zh ? "社区" : "Community"}</p><h2 id="home-community-title">{zh ? "与测试者和建设者一起参与" : "Join testers and builders"}</h2></div>
+          <p>{zh ? "获取帮助、报告问题、跟踪版本，并参与 YNX Chain 的公开建设。" : "Get help, report issues, follow releases, and take part in the public build of YNX Chain."}</p>
+        </div>
+        <div className="homeCommunityLinks">
+          {communityChannels.map(({ name, href }) => <a href={href} target="_blank" rel="noopener noreferrer" key={name}>{name} <span aria-hidden="true">↗</span></a>)}
+          <a className="communityAll" href="/community">{zh ? "查看社区指南" : "Community guide"} <span aria-hidden="true">→</span></a>
+        </div>
       </section>
       <SiteFooter />
     </main>

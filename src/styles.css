@@ -245,6 +245,30 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .footerLinks { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 20px; }
 .footerLinks a { display: inline-flex; align-items: center; min-height: 44px; color: white; text-decoration: none; font-size: 13px; }
 .footerLinks a:hover { text-decoration: underline; }
+
+.homeCommunity { padding: 96px max(24px, calc((100vw - 1240px) / 2)); background: #eef3ff; border-top: 1px solid var(--line); }
+.homeCommunityLinks { display: grid; grid-template-columns: repeat(5, 1fr); border: 1px solid #b9c9f0; background: white; }
+.homeCommunityLinks a { min-height: 82px; padding: 22px; color: var(--blue); text-decoration: none; display: flex; align-items: center; justify-content: space-between; border-right: 1px solid #d6dff3; font-weight: 750; }
+.homeCommunityLinks a:last-child { border-right: 0; }
+.homeCommunityLinks a:hover { background: #f5f8ff; }
+.communityAll { background: var(--blue); color: white !important; }
+.communityAll:hover { background: #173ea8 !important; }
+
+.communityPage { min-height: 76svh; padding: 96px max(24px, calc((100vw - 1240px) / 2)); background: #f7f9fe; }
+.communityHero { max-width: 820px; margin-bottom: 54px; }
+.communityHero h1 { color: var(--blue); font-size: clamp(42px, 6vw, 72px); line-height: 1.02; margin: 12px 0 24px; }
+.communityHero > p:last-child { max-width: 720px; color: var(--muted); font-size: 19px; line-height: 1.7; }
+.communityGrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.communityCard { min-height: 164px; padding: 30px; display: grid; grid-template-columns: auto 1fr auto; gap: 20px; align-items: start; color: var(--ink); text-decoration: none; background: white; border: 1px solid var(--line); box-shadow: 0 14px 34px rgba(30,55,120,.06); }
+.communityCard:hover { border-color: var(--blue); transform: translateY(-2px); }
+.communityCard strong { display: block; color: var(--blue); font-size: 24px; margin-bottom: 9px; }
+.communityCard small { display: block; color: var(--muted); font-size: 15px; line-height: 1.6; }
+.communityIcon { width: 48px; height: 48px; display: grid; place-items: center; color: white; background: var(--blue); }
+.communityRules { margin-top: 24px; padding: 40px; display: grid; grid-template-columns: .9fr 1.1fr; gap: 48px; background: var(--blue); color: white; }
+.communityRules h2 { font-size: 32px; margin: 8px 0 0; }
+.communityRules .sectionEyebrow { color: #bcd0ff; }
+.communityRules ol { margin: 0; padding-left: 22px; }
+.communityRules li { padding: 8px 0 12px 8px; line-height: 1.55; }
 .footerBoundary { grid-column: 1 / -1; padding-top: 26px; border-top: 1px solid rgba(255,255,255,.26); font-size: 12px; }
 .routePage { min-height: 76svh; background: white; padding: 100px 24px; }
 .routeInner { width: min(920px, 100%); margin: 0 auto; }
@@ -820,6 +844,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
 [data-theme="dark"] .sceneCore,
 [data-theme="dark"] .ecosystemSection,
 [data-theme="dark"] .siteFooter { color: white; background: #173ea8; }
+[data-theme="dark"] .homeCommunity, [data-theme="dark"] .communityPage { background: var(--surface); }
+[data-theme="dark"] .homeCommunityLinks, [data-theme="dark"] .communityCard { background: var(--surface-strong); }
 [data-theme="dark"] .metric.emphasis { color: white; background: #315edb; }
 [data-theme="dark"] .codeBlock { background: #050914; }
 [data-theme="dark"] .manualCode { background: #050914; }
@@ -909,6 +935,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
   .readinessColumns, .linkGrid { grid-template-columns: 1fr; }
   .resourceLink:nth-child(odd) { border-right: 0; }
   .siteFooter { grid-template-columns: 1fr; padding: 46px 18px; }
+  .homeCommunity { padding: 70px 18px; }
+  .homeCommunityLinks, .communityGrid, .communityRules { grid-template-columns: 1fr; }
+  .homeCommunityLinks a { border-right: 0; border-bottom: 1px solid #d6dff3; }
+  .communityPage { padding: 70px 18px; }
+  .communityRules { padding: 28px; gap: 20px; }
   .footerLinks { justify-content: flex-start; }
   .routePage { padding: 70px 18px; }
   .backLink { margin-bottom: 48px; }

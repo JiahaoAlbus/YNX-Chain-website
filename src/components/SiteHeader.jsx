@@ -9,6 +9,7 @@ const navigation = [
   ["products", "/#ecosystem"],
   ["dapps", "/dapp"],
   ["ecosystem", "/dapp"],
+  ["community", "/community"],
   ["manual", "/manual"],
   ["docs", "/docs"],
   ["status", "/status"]

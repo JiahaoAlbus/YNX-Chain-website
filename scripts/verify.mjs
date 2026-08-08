@@ -152,6 +152,7 @@ const exchangeManifest = JSON.parse(fs.readFileSync(`${exchangeReleaseRoot}/mani
 const exchangeProductRelease = JSON.parse(fs.readFileSync(`${exchangeReleaseRoot}/product-release.json`, "utf8"));
 const exchangePublicMetadata = JSON.parse(fs.readFileSync(`${exchangeReleaseRoot}/public-product-metadata.json`, "utf8"));
 const header = fs.readFileSync("src/components/SiteHeader.jsx", "utf8");
+const footer = fs.readFileSync("src/components/SiteFooter.jsx", "utf8");
 const i18n = fs.readFileSync("src/lib/i18n.jsx", "utf8");
 const commandPalette = fs.readFileSync("src/components/CommandPalette.jsx", "utf8");
 const routePage = fs.readFileSync("src/components/RoutePage.jsx", "utf8");
@@ -164,6 +165,7 @@ const ecosystemCatalog = fs.readFileSync("src/lib/ecosystemCatalog.js", "utf8");
 const squarePage = fs.readFileSync("src/pages/SquarePage.jsx", "utf8");
 const squareAccountPanel = fs.readFileSync("src/components/SquareAccountPanel.jsx", "utf8");
 const docsPage = fs.readFileSync("src/pages/DocsPage.jsx", "utf8");
+const communityPage = fs.readFileSync("src/pages/CommunityPage.jsx", "utf8");
 const appGateway = fs.readFileSync("server/app-gateway.mjs", "utf8");
 const vercel = JSON.parse(fs.readFileSync("vercel.json", "utf8"));
 const siteMap = JSON.parse(fs.readFileSync("content/site-map.json", "utf8"));
@@ -173,6 +175,16 @@ const indexNowKey = fs.readFileSync("public/da45868fe3e0818f27f187b21a56ccb5.txt
 const indexNowScript = fs.readFileSync("scripts/indexnow.mjs", "utf8");
 const viteConfig = fs.readFileSync("vite.config.js", "utf8");
 const signerSource = JSON.parse(fs.readFileSync("src/lib/ynx-signer/SOURCE.json", "utf8"));
+for (const officialUrl of ["https://discord.gg/t8KpAF2KE", "https://www.reddit.com/r/YNX_Chain/", "https://www.youtube.com/@YNX-Chain", "https://x.com/YNXChain"]) {
+  if (!communityPage.includes(officialUrl) || !footer.includes(officialUrl) || !prerender.includes(officialUrl)) {
+    console.error(`official community link missing from a required surface: ${officialUrl}`);
+    process.exit(1);
+  }
+}
+if (!header.includes('["community", "/community"]') || !prerender.includes('"/community"')) {
+  console.error("community route is missing from navigation or discovery output");
+  process.exit(1);
+}
 if (releaseRegistry.products.some((product) => Object.hasOwn(product, "branch"))) {
   console.error("public release registry exposes internal branch names");
   process.exit(1);

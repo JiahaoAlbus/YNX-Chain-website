@@ -5,7 +5,7 @@ export const SUPPORTED_LOCALES = ["en", "zh-CN"];
 const messages = {
   en: {
     skip: "Skip to content", home: "YNX Chain home", primaryNav: "Primary navigation",
-    products: "Products", dapps: "DApps", ecosystem: "Ecosystem", download: "Download", manual: "Manual", docs: "Docs", status: "Status", explorer: "Explorer",
+    products: "Products", dapps: "DApps", ecosystem: "Ecosystem", community: "Community", download: "Download", manual: "Manual", docs: "Docs", status: "Status", explorer: "Explorer",
     search: "Search", searchOpen: "Search and open command palette", light: "Use light mode", dark: "Use dark mode",
     openNav: "Open navigation", closeNav: "Close navigation", language: "Language", switchLanguage: "切换到简体中文",
     footerLead: "Web4 L1 ecosystem built around YNXT.", userManual: "User manual", developerDocs: "Developer docs", api: "API", faq: "FAQ",
@@ -14,7 +14,7 @@ const messages = {
   },
   "zh-CN": {
     skip: "跳到正文", home: "YNX Chain 首页", primaryNav: "主导航",
-    products: "产品", dapps: "DApp", ecosystem: "生态", download: "下载", manual: "使用手册", docs: "文档", status: "状态", explorer: "浏览器",
+    products: "产品", dapps: "DApp", ecosystem: "生态", community: "社区", download: "下载", manual: "使用手册", docs: "文档", status: "状态", explorer: "浏览器",
     search: "搜索", searchOpen: "搜索并打开命令面板", light: "切换到浅色模式", dark: "切换到深色模式",
     openNav: "打开导航", closeNav: "关闭导航", language: "语言", switchLanguage: "Switch to English",
     footerLead: "围绕 YNXT 构建的 Web4 L1 生态系统。", userManual: "用户手册", developerDocs: "开发者文档", api: "API", faq: "常见问题",

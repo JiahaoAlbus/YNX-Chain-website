@@ -8,6 +8,11 @@ export function SiteFooter() {
     <footer className="siteFooter">
       <div><strong>YNX Chain</strong><p>{t("footerLead")}</p></div>
       <div className="footerLinks">
+        <a href="/community">{t("community")}</a>
+        <a href="https://discord.gg/t8KpAF2KE" target="_blank" rel="noopener noreferrer">Discord</a>
+        <a href="https://www.reddit.com/r/YNX_Chain/" target="_blank" rel="noopener noreferrer">Reddit</a>
+        <a href="https://www.youtube.com/@YNX-Chain" target="_blank" rel="noopener noreferrer">YouTube</a>
+        <a href="https://x.com/YNXChain" target="_blank" rel="noopener noreferrer">X</a>
         <a href="/dapp">{t("ecosystem")}</a>
         <a href="/manual">{t("userManual")}</a>
         <a href="/docs">{t("developerDocs")}</a>
