@@ -542,7 +542,7 @@ if (
   console.error("release registry must preserve 26 truthful states, eight distributable source-bound hosted previews, the system-verified Browser package, and the exact centrally accepted product set");
   process.exit(1);
 }
-for (const requiredText of ["downloadHosted", "Local build only", "Download Testnet Preview", "candidate incomplete", "Product status", "wallet-auth-v1.0.0-testnet-preview.5", "exchange-v1.0.0-testnet-preview.3", "shop-v0.3.0-testnet-preview.1", "developer-v0.2.0-testnet-preview.2", "trust-center-v0.1.0-testnet-preview.2"]) {
+for (const requiredText of ["downloadHosted", "Local build only", "Download Testnet Preview", "candidate incomplete", "Product status", "wallet-auth-v1.0.0-testnet-preview.5", "exchange-v1.0.0-testnet-preview.3", "shop-v0.3.0-testnet-preview.1", "developer-v0.2.0-testnet-preview.3", "trust-center-v0.1.0-testnet-preview.2"]) {
   if (!ecosystemCatalog.includes(requiredText)) {
     console.error(`ecosystem release boundary missing: ${requiredText}`);
     process.exit(1);
@@ -584,8 +584,8 @@ if (!vercel.cleanUrls || spaFallback?.destination !== "/") {
   process.exit(1);
 }
 const requiredOfficialDownloads = new Map([
-  ["/downloads/ynx-developer-testnet-preview-macos-unsigned.zip", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-developer-0.3.0-testnet-preview-9c4d75be-macos-arm64-adhoc-G88Gcxi6dvTBJvYp0Z3VhiEh6qQGpp.zip"],
-  ["/downloads/ynx-developer-testnet-preview-windows-x64-unsigned.zip", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-developer-0.3.0-testnet-preview-9c4d75be-windows-x64-unsigned.zip"],
+  ["/downloads/ynx-developer-testnet-preview-macos-unsigned.zip", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-developer-0.3.0-testnet-preview-9c4d75be-macos-arm64-adhoc-G88Gcxi6dvTBJvYp0Z3VhiEh6qQGpp-x1mnIvjlpa41zrBaPERbKzlUrGDksA.zip"],
+  ["/downloads/ynx-developer-testnet-preview-windows-x64-unsigned.zip", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-developer-0.2.0-testnet-preview-4013995f-windows-x64-unsigned.zip"],
   ["/downloads/ynx-trust-center-4d40557229b4-linux-amd64.tar.gz", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-trust-center-4d40557229b4-linux-amd64.tar.gz"],
   ["/downloads/ynx-shop-0.3.0-testnet-preview-6fa2d6c5-debug-signed.apk", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-shop-0.3.0-testnet-preview-6fa2d6c5-debug-signed.apk"],
   ["/downloads/ynx-wallet-1.0.0-testnet-preview-ccaf878c-test-signed.apk", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-wallet-1.0.0-testnet-preview-ccaf878c-test-signed-gwrQJydXGTCeQfwpnIUokylkukF8CD.apk"],

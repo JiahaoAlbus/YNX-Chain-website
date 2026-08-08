@@ -39,8 +39,8 @@
     { "source": "/mail", "destination": "/dapp/mail", "permanent": true },
     { "source": "/calendar", "destination": "/dapp/calendar", "permanent": true },
     { "source": "/dex", "destination": "/dapp/dex", "permanent": true },
-    { "source": "/downloads/ynx-developer-testnet-preview-macos-unsigned.zip", "destination": "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-developer-0.3.0-testnet-preview-9c4d75be-macos-arm64-adhoc-G88Gcxi6dvTBJvYp0Z3VhiEh6qQGpp.zip", "permanent": false },
-    { "source": "/downloads/ynx-developer-testnet-preview-windows-x64-unsigned.zip", "destination": "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-developer-0.3.0-testnet-preview-9c4d75be-windows-x64-unsigned.zip", "permanent": false }
+    { "source": "/downloads/ynx-developer-testnet-preview-macos-unsigned.zip", "destination": "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-developer-0.3.0-testnet-preview-9c4d75be-macos-arm64-adhoc-G88Gcxi6dvTBJvYp0Z3VhiEh6qQGpp-x1mnIvjlpa41zrBaPERbKzlUrGDksA.zip", "permanent": false },
+    { "source": "/downloads/ynx-developer-testnet-preview-windows-x64-unsigned.zip", "destination": "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-developer-0.2.0-testnet-preview-4013995f-windows-x64-unsigned.zip", "permanent": false }
   ],
   "headers": [
     {
