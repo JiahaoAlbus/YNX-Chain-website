@@ -196,6 +196,7 @@ const approvedOwnerPublicEvidence = new Map([
   ["11", { sourceCommit: "ed81241ec11dcc9fdd59bbddeae6fae9ccb91f54", publicUrl: "https://developer.ynxweb4.com/" }],
   ["13", { sourceCommit: "5d42be028b22f10253facfc4f779fcccf0fd69b1", publicUrl: "https://monitor.ynxweb4.com/" }],
   ["14", { sourceCommit: "16d6d71e2f93418e37fe9d024f58c492ca1baad4", publicUrl: "https://assistant.ynxweb4.com/" }],
+  ["22", { sourceCommit: "d8c1ad24bc88c481fd9350456124f353c8c43e35", publicUrl: "https://www.ynxweb4.com/downloads/ynx-browser-0.2.6-testnet-preview-d8c1ad24-macos-arm64-adhoc.zip" }],
   ["25", { sourceCommit: "e13b5d7ac191d2d0b163d9b94cf22ae3d47350a1", publicUrl: "https://mail-testnet.43.153.202.237.sslip.io/" }],
 ]);
 if (
@@ -436,8 +437,8 @@ if (
   registryKeys.length !== 26 ||
   new Set(registryKeys).size !== 26 ||
   productKeys.some((key) => !registryKeys.includes(key)) ||
-  hostedPreviewProducts.length !== 7 ||
-  hostedPreviewProducts.map((product) => product.key).sort().join(",") !== "developer,exchange,finance,shop,social,trust,wallet" ||
+  hostedPreviewProducts.length !== 8 ||
+  hostedPreviewProducts.map((product) => product.key).sort().join(",") !== "browser,developer,exchange,finance,shop,social,trust,wallet" ||
   hostedPreviewProducts.some((product) => {
     const expectedState = product.key === "developer"
       ? "public-testnet-web-and-desktop-preview"
@@ -481,7 +482,7 @@ if (
   docsAcceptedRegistry?.acceptedIntegrationCommit !== "5acec59fa572" ||
   docsAcceptedRegistry.releaseTag !== "docs-v1.0.0-testnet-preview.1" ||
   browserAcceptedRegistry?.acceptedIntegrationCommit !== "2a78ace0a647" ||
-  browserAcceptedRegistry.releaseTag !== "browser-v0.2.5-testnet-preview.1" ||
+  browserAcceptedRegistry.releaseTag !== "browser-v0.2.6-testnet-preview.1" ||
   payRegistry?.state !== "public-testnet-web" ||
   payRegistry.publicWeb !== "https://pay-app.ynxweb4.com/" ||
   payRegistry.apiUrl !== "https://pay.ynxweb4.com" ||
@@ -527,17 +528,18 @@ if (
   docsRegistry.apiUrl !== "https://web4.ynxweb4.com/docs-app/api" ||
   docsRegistry.centralAccepted !== true ||
   docsRegistry.downloadHosted !== false ||
-  browserRegistry?.commit !== "96dfc528ddd6" ||
-  browserRegistry.state !== "distribution-suspended-visual-qa" ||
+  browserRegistry?.commit !== "d8c1ad24bc88" ||
+  browserRegistry.state !== "hosted-testnet-preview" ||
   browserRegistry.centralAccepted !== true ||
-  browserRegistry.downloadHosted !== false ||
-  browserRegistry.suspendedArtifact?.sha256 !== "939c50454720be24e8de109f758a49e5f58342542d18d6d513639a2f90c84448" ||
-  browserRegistry.suspendedArtifact?.bytes !== 138203 ||
-  crypto.createHash("sha256").update(fs.readFileSync("public/downloads/ynx-browser-0.2.5-testnet-preview-96dfc528-macos-arm64-adhoc.zip")).digest("hex") !== browserRegistry.suspendedArtifact?.sha256 ||
+  browserRegistry.downloadHosted !== true ||
+  browserRegistry.downloads?.[0]?.sha256 !== "3d8544efea04132b53ce53e3227e7e96bc494f301d964da5d1d55911d030af45" ||
+  browserRegistry.downloads?.[0]?.bytes !== 146068 ||
+  browserRegistry.downloads?.[0]?.visualQa !== "windowserver-standard-minimum-second-launch-light-dark-fullscreen-pass" ||
+  crypto.createHash("sha256").update(fs.readFileSync("public/downloads/ynx-browser-0.2.6-testnet-preview-d8c1ad24-macos-arm64-adhoc.zip")).digest("hex") !== browserRegistry.downloads?.[0]?.sha256 ||
   releaseRegistry.products.some((product) => !product.route.startsWith("/dapp/")) ||
   releaseRegistry.rules?.localArtifactIsDownload !== false
 ) {
-  console.error("release registry must preserve 26 truthful states, seven distributable source-bound hosted previews, the suspended Browser evidence, and the exact centrally accepted product set");
+  console.error("release registry must preserve 26 truthful states, eight distributable source-bound hosted previews, the system-verified Browser package, and the exact centrally accepted product set");
   process.exit(1);
 }
 for (const requiredText of ["downloadHosted", "Local build only", "Download Testnet Preview", "candidate incomplete", "Product status", "wallet-auth-v1.0.0-testnet-preview.5", "exchange-v1.0.0-testnet-preview.3", "shop-v0.3.0-testnet-preview.1", "developer-v0.2.0-testnet-preview.1", "trust-center-v0.1.0-testnet-preview.2"]) {

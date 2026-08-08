@@ -60,6 +60,7 @@ const artifactDownload = (status, artifactPath, note, href = null) => {
 
 export const STATUS_CONFIG = {
   [PRODUCT_STATUS.LIVE]: { label: "public web", tone: "live" },
+  [PRODUCT_STATUS.PREVIEW]: { label: "testnet preview", tone: "preview" },
   [PRODUCT_STATUS.LOCAL]: { label: "candidate", tone: "local" },
   [PRODUCT_STATUS.PLANNED]: { label: "candidate incomplete", tone: "planned" },
   [PRODUCT_STATUS.NOT_READY]: { label: "not ready", tone: "not-ready" }
@@ -355,17 +356,17 @@ const evidence = {
     }
   },
   browser: {
-    commit: "96dfc528ddd6",
+    commit: "d8c1ad24bc88",
     centralAccepted: true,
     productRelease: {
       href: "/releases/ecosystem-release-registry.json",
-      release: "browser-v0.2.5-testnet-preview.1"
+      release: "browser-v0.2.6-testnet-preview.1"
     },
-    statusNote: "The previously hosted arm64 macOS Browser preview is suspended after real-user visual evidence showed that its window can restore at an unusably narrow width. Build, cold-start and second-launch checks passed, but that evidence did not prove visual usability. It must pass default-size, minimum-size, relaunch, light/dark and full-screen screenshot gates before distribution resumes.",
+    statusNote: "The arm64 macOS Browser Testnet Preview now fixes the Auto Layout conflict that collapsed the real system window to 57 points. The exact hosted package passed external WindowServer size checks and screenshot gates at standard size, minimum size, second launch, light mode, dark mode and full screen. It is ad-hoc signed, Gatekeeper-rejected and not notarized, so it is a technical Testnet Preview rather than a production macOS release.",
     downloads: {
       android: artifactDownload(PRODUCT_STATUS.LOCAL, "apps/browser/android/.manual-build/ynx-browser-debug.apk", "Browser Android debug APK (manual build)."),
       ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS WKWebView source exists; no public device-signed package is claimed." },
-      macos: { status: PRODUCT_STATUS.LOCAL, href: null, downloadHosted: false, artifactPath: "ynx-browser-0.2.5-testnet-preview-96dfc528-macos-arm64-adhoc.zip", note: "Distribution suspended: the current package failed real-user window-width visual QA. A locally built artifact is not an available macOS surface." },
+      macos: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-browser-0.2.6-testnet-preview-d8c1ad24-macos-arm64-adhoc.zip", "arm64 macOS Testnet Preview · source d8c1ad24 · SHA-256 3d8544ef…af45 · 146,068 bytes · external WindowServer visual QA passed · ad-hoc signed, Gatekeeper-rejected, not notarized.", "/downloads/ynx-browser-0.2.6-testnet-preview-d8c1ad24-macos-arm64-adhoc.zip"),
       web: { status: PRODUCT_STATUS.LOCAL, href: "/docs#browser", note: "Browser web companion route." }
     }
   },
@@ -691,12 +692,12 @@ export const getCatalog = () => [
     key: "browser",
     name: "YNX Browser",
     icon: Globe,
-    status: PRODUCT_STATUS.LOCAL,
-    detail: "A platform-native-engine Browser candidate with normal/private state isolation, crash recovery, origin-scoped permissions, mediated downloads and an exact fail-closed Wallet handoff. macOS distribution is suspended because the current package failed real-user window-width visual QA.",
+    status: PRODUCT_STATUS.PREVIEW,
+    detail: "A platform-native-engine Browser candidate with normal/private state isolation, crash recovery, origin-scoped permissions, mediated downloads and an exact fail-closed Wallet handoff. The corrected arm64 macOS package passed system-measured default, minimum, relaunch, light/dark and full-screen visual gates.",
     entry: { label: "Read Browser guide", href: "/docs#browser" },
     docs: { ...docsAnchor("browser"), label: "Browser docs" },
-    downloads: makeDownloads({}),
-    metrics: [["Closure", "Tabs + history + private isolation + permissions + downloads + Wallet handoff"], ["Risk", "Current macOS window can restore at an unusable width"], ["Readiness", "Distribution suspended pending platform visual QA"]]
+    downloads: makeDownloads({ macos: evidence.browser.downloads.macos }),
+    metrics: [["Closure", "Tabs + history + private isolation + permissions + downloads + Wallet handoff"], ["Risk", "Ad-hoc signed; Gatekeeper-rejected; not notarized"], ["Readiness", "arm64 macOS preview hosted; five system-level visual gates passed"]]
   },
   {
     key: "search",
