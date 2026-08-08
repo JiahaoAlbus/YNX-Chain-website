@@ -471,9 +471,9 @@ export const getCatalog = () => [
     key: "wallet",
     name: "YNX Wallet",
     icon: WalletCards,
-    status: PRODUCT_STATUS.LOCAL,
-    detail: "Wallet-first login exists for testnet workflows. Canonical envelope and wallet-only session binding remain central-environment dependent.",
-    entry: { label: "Wallet entry", href: "/docs#wallet" },
+    status: PRODUCT_STATUS.LIVE,
+    detail: "Canonical Wallet/Auth is live on Testnet with proof-bound product sessions, immutable product registry selection, replay protection and bounded admission. The hosted Android build is test-signed, not production-signed or store-released.",
+    entry: { label: "Wallet status and downloads", href: "/dapp/wallet" },
     docs: { ...docsAnchor("wallet"), label: "Wallet docs" },
     downloads: web(PRODUCT_STATUS.LOCAL, "/docs#wallet", "In-browser session entry + local testnet workflow"),
     metrics: [["Closure", "Wallet-bound identity and vault session"], ["Risk", "No production custody sign-off"], ["Readiness", "Native release not yet published"]]
@@ -482,9 +482,9 @@ export const getCatalog = () => [
     key: "social",
     name: "YNX Social",
     icon: MessageCircle,
-    status: PRODUCT_STATUS.LOCAL,
-    detail: "Social messaging and profile surfaces exist as candidate loop, but public address-book and full moderation loop are still incomplete.",
-    entry: { label: "Social entry", href: "/dapp/square" },
+    status: PRODUCT_STATUS.LIVE,
+    detail: "Wallet-bound Social Testnet API and hosted Android preview support account-scoped social workflows with integrity-protected persistence. Production signing, iOS proof, independent capacity review and full public address discovery remain incomplete.",
+    entry: { label: "Social status and downloads", href: "/dapp/social" },
     docs: { ...docsAnchor("chat"), label: "Social docs" },
     downloads: web(PRODUCT_STATUS.LOCAL, "/dapp/square", "Social web read/write flow"),
     metrics: [["Closure", "Encrypted thread + profile path"], ["Risk", "No public cross-app address discovery yet"], ["Readiness", "Standalone social install is not shipped"]]
@@ -493,34 +493,34 @@ export const getCatalog = () => [
     key: "pay",
     name: "YNX Pay",
     icon: CircleDollarSign,
-    status: PRODUCT_STATUS.LOCAL,
-    detail: "Invoice issuance, evidence, and refund records are implemented in candidate services.",
-    entry: { label: "Pay entry", href: "https://pay.ynxweb4.com/health", external: true },
+    status: PRODUCT_STATUS.LIVE,
+    detail: "Public YNX Pay Testnet client plus chain-backed payment API for reviewable invoices, tips, splits, recurring drafts, settlement evidence and refund requests. Stable settlement providers, production signatures and store release are not claimed.",
+    entry: { label: "Open YNX Pay", href: "https://pay-app.ynxweb4.com/", external: true },
     docs: { ...docsAnchor("pay"), label: "Pay docs" },
     downloads: web(PRODUCT_STATUS.LOCAL, "/docs#pay", "Pay workflow documentation + API path"),
-    metrics: [["Closure", "Intent and invoice traces"], ["Risk", "Provider/provider settlement proof pending"], ["Readiness", "No public checkout app package"]]
+    metrics: [["Closure", "Client → invoice/intent → chain evidence → refund request"], ["Risk", "Stable and provider settlement remain pending"], ["Readiness", "Public Testnet client + authenticated Pay API"]]
   },
   {
     key: "merchantConsole",
     name: "Merchant Console",
     icon: Store,
-    status: PRODUCT_STATUS.LOCAL,
-    detail: "Merchant dashboard and reconciliation APIs are in candidate state; settlement controls need central integration hardening.",
-    entry: { ...exchangeLink(), label: "Merchant console entry" },
+    status: PRODUCT_STATUS.LIVE,
+    detail: "Public multi-user Merchant Console Testnet preview for tenant-scoped invoices, reconciliation, webhooks, cases, roles, governed providers and exports. Private records require a canonical Wallet merchant session; production acquiring is not claimed.",
+    entry: { label: "Open Merchant Console", href: "https://merchant.ynxweb4.com/", external: true },
     docs: { ...docsAnchor("pay"), label: "Merchant docs" },
     downloads: web(PRODUCT_STATUS.LOCAL, "/docs#pay", "Console-in-product entry path"),
-    metrics: [["Closure", "Webhook, order and reconciliation surface"], ["Risk", "No public merchant onboarding approval"], ["Readiness", "No production merchant installer"]]
+    metrics: [["Closure", "Invoice + reconciliation + webhook + cases + roles"], ["Risk", "No production acquiring or merchant approval"], ["Readiness", "Public Wallet-gated multi-user web console"]]
   },
   {
     key: "card",
     name: "YNX Card",
     icon: CreditCard,
-    status: PRODUCT_STATUS.PLANNED,
-    detail: "Card is a sandbox product candidate for Pay-linked authorization and review. No issuing, network, banking, or production-card capability is claimed.",
-    entry: { label: "Card status", href: "/card" },
+    status: PRODUCT_STATUS.LIVE,
+    detail: "Public Testnet Card sandbox for Pay-linked authorization review and explicit sandbox controls. It is not an issued card and makes no card-network, bank, regulated issuer or production payment claim.",
+    entry: { label: "Open Card sandbox", href: "https://card.ynxweb4.com/", external: true },
     docs: { ...docsAnchor("card"), label: "Card docs" },
     downloads: makeDownloads(),
-    metrics: [["Closure", "Sandbox authorization candidate"], ["Risk", "Issuer and regulatory approval absent"], ["Readiness", "No public Card product"]]
+    metrics: [["Closure", "Public sandbox authorization and review UI"], ["Risk", "Issuer, network and regulatory approval absent"], ["Readiness", "Public Testnet sandbox only"]]
   },
   {
     key: "exchange",
@@ -704,12 +704,12 @@ export const getCatalog = () => [
     key: "search",
     name: "YNX Search",
     icon: ScanSearch,
-    status: PRODUCT_STATUS.PLANNED,
-    detail: "Search index and ranking candidate exists; provider contract and privacy handling remain incomplete.",
-    entry: { label: "Search entry", href: "/docs#search" },
+    status: PRODUCT_STATUS.LIVE,
+    detail: "Public Testnet search across explicitly authorized YNX sources with source URLs, freshness timestamps, index receipts, bounded lexical ranking, correction and removal paths. It does not claim global web coverage; external provider search and fully verified Wallet sessions remain unavailable.",
+    entry: { label: "Open Search", href: "https://web4.ynxweb4.com/search/", external: true },
     docs: { ...docsAnchor("search"), label: "Search docs" },
-    downloads: makeDownloads(),
-    metrics: [["Closure", "Query + result pipeline"], ["Risk", "Unavailable error behavior"], ["Readiness", "No public package"]]
+    downloads: web(PRODUCT_STATUS.LIVE, "https://web4.ynxweb4.com/search/", "Authorized-source Search web app"),
+    metrics: [["Coverage", "7 authorized YNX sources"], ["Evidence", "Source URL + freshness + receipt digest"], ["Boundary", "No global-web claim"]]
   },
   {
     key: "finance",
