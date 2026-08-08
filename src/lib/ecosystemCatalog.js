@@ -401,12 +401,16 @@ const evidence = {
     }
   },
   calendar: {
-    commit: "8126a2dae869",
-    statusNote: "Calendar Android debug APK is generated for testnet workflow.",
+    commit: "cf92caa3de1e",
+    productRelease: {
+      href: "/releases/ecosystem-release-registry.json",
+      release: "ynx-calendar-0.2.0-testnet-public"
+    },
+    statusNote: "The public Calendar Web/API is running source cf92caa3de1e with real day, week and month views, preview-before-approval event mutations, conflict detection, IANA time zones, DST-safe daily/weekly/monthly recurrence, invitations, RSVP, sharing, reminders, audit and bounded concurrent access. Canonical Wallet is accepted by the public Gateway. Mail delivery, Data Fabric transport, AI provider acceptance, current-source hosted native packages, production signing and store release remain incomplete.",
     downloads: {
-      android: artifactDownload(PRODUCT_STATUS.LOCAL, "apps/calendar/native/android/app/build/outputs/apk/debug/app-debug.apk", "Calendar Android debug APK."),
-      ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS project exists; simulator evidence pending." },
-      web: { status: PRODUCT_STATUS.LOCAL, href: "/docs#calendar", note: "Calendar web companion." }
+      android: artifactDownload(PRODUCT_STATUS.LOCAL, "apps/calendar/native/android/app/build/outputs/apk/debug/app-debug.apk", "Android source/debug workflow exists locally; no current-source hosted APK or production signature is claimed."),
+      ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS source and parse evidence exist; no signed or hosted iOS package is claimed." },
+      web: { status: PRODUCT_STATUS.LIVE, href: "https://calendar-testnet.43.153.202.237.sslip.io/", external: true, downloadHosted: false, note: "Public Calendar Web/API · source cf92caa3de1e · health verified." }
     }
   },
   dex: {

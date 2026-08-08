@@ -554,7 +554,7 @@ for (const requiredText of ["Only immutable hosted artifacts or verified public 
     process.exit(1);
   }
 }
-for (const requiredText of ["No committed product-release.json", "Hosted installer", "Production signing / store release", "Status is narrower than ambition"]) {
+for (const requiredText of ["central integration acceptance is still pending", "No owner product-release.json", "Hosted installer", "Production signing / store release", "Status is narrower than ambition"]) {
   if (!productStatusPage.includes(requiredText)) {
     console.error(`product status evidence boundary missing: ${requiredText}`);
     process.exit(1);
