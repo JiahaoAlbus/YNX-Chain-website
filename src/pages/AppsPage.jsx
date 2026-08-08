@@ -133,7 +133,7 @@ export function AppsPage() {
           const statusLabel = zh ? ({ [PRODUCT_STATUS.LIVE]: "公开网页", [PRODUCT_STATUS.LOCAL]: "候选版本", [PRODUCT_STATUS.PLANNED]: "候选版本未完整" }[product.status] || product.status) : (STATUS_CONFIG[product.status]?.label || product.status);
           const statusTone = STATUS_CONFIG[product.status]?.tone || product.status;
           const surfaces = Object.entries(product.downloads || {})
-            .filter(([, item]) => item?.href)
+            .filter(([, item]) => item?.href && (item.downloadHosted || item.status === PRODUCT_STATUS.LIVE))
             .map(([platform]) => DOWNLOAD_LABELS[platform] || platform);
 
           return (

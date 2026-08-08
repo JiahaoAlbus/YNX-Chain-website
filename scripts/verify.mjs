@@ -196,6 +196,7 @@ const approvedOwnerPublicEvidence = new Map([
   ["11", { sourceCommit: "ed81241ec11dcc9fdd59bbddeae6fae9ccb91f54", publicUrl: "https://developer.ynxweb4.com/" }],
   ["13", { sourceCommit: "5d42be028b22f10253facfc4f779fcccf0fd69b1", publicUrl: "https://monitor.ynxweb4.com/" }],
   ["14", { sourceCommit: "16d6d71e2f93418e37fe9d024f58c492ca1baad4", publicUrl: "https://assistant.ynxweb4.com/" }],
+  ["25", { sourceCommit: "e13b5d7ac191d2d0b163d9b94cf22ae3d47350a1", publicUrl: "https://mail-testnet.43.153.202.237.sslip.io/" }],
 ]);
 if (
   ownerRecordIndex.owner !== "28-website" ||
@@ -435,14 +436,12 @@ if (
   registryKeys.length !== 26 ||
   new Set(registryKeys).size !== 26 ||
   productKeys.some((key) => !registryKeys.includes(key)) ||
-  hostedPreviewProducts.length !== 8 ||
-  hostedPreviewProducts.map((product) => product.key).sort().join(",") !== "browser,developer,exchange,finance,shop,social,trust,wallet" ||
+  hostedPreviewProducts.length !== 7 ||
+  hostedPreviewProducts.map((product) => product.key).sort().join(",") !== "developer,exchange,finance,shop,social,trust,wallet" ||
   hostedPreviewProducts.some((product) => {
     const expectedState = product.key === "developer"
       ? "public-testnet-web-and-desktop-preview"
-      : product.key === "browser"
-        ? "hosted-testnet-preview"
-        : "hosted-testnet-preview";
+      : "hosted-testnet-preview";
     return product.state !== expectedState || !product.releaseTag || !product.downloads?.length || product.downloads.some((download) => !/^[0-9a-f]{64}$/.test(download.sha256) || !(download.bytes > 0) || !download.signingClass);
   }) ||
   acceptedProducts.length !== 11 ||
@@ -529,15 +528,16 @@ if (
   docsRegistry.centralAccepted !== true ||
   docsRegistry.downloadHosted !== false ||
   browserRegistry?.commit !== "96dfc528ddd6" ||
-  browserRegistry.state !== "hosted-testnet-preview" ||
+  browserRegistry.state !== "distribution-suspended-visual-qa" ||
   browserRegistry.centralAccepted !== true ||
-  browserRegistry.downloads?.[0]?.sha256 !== "939c50454720be24e8de109f758a49e5f58342542d18d6d513639a2f90c84448" ||
-  browserRegistry.downloads?.[0]?.bytes !== 138203 ||
-  crypto.createHash("sha256").update(fs.readFileSync("public/downloads/ynx-browser-0.2.5-testnet-preview-96dfc528-macos-arm64-adhoc.zip")).digest("hex") !== browserRegistry.downloads?.[0]?.sha256 ||
+  browserRegistry.downloadHosted !== false ||
+  browserRegistry.suspendedArtifact?.sha256 !== "939c50454720be24e8de109f758a49e5f58342542d18d6d513639a2f90c84448" ||
+  browserRegistry.suspendedArtifact?.bytes !== 138203 ||
+  crypto.createHash("sha256").update(fs.readFileSync("public/downloads/ynx-browser-0.2.5-testnet-preview-96dfc528-macos-arm64-adhoc.zip")).digest("hex") !== browserRegistry.suspendedArtifact?.sha256 ||
   releaseRegistry.products.some((product) => !product.route.startsWith("/dapp/")) ||
   releaseRegistry.rules?.localArtifactIsDownload !== false
 ) {
-  console.error("release registry must preserve 26 truthful states, eight source-bound hosted previews, and the exact centrally accepted product set");
+  console.error("release registry must preserve 26 truthful states, seven distributable source-bound hosted previews, the suspended Browser evidence, and the exact centrally accepted product set");
   process.exit(1);
 }
 for (const requiredText of ["downloadHosted", "Local build only", "Download Testnet Preview", "candidate incomplete", "Product status", "wallet-auth-v1.0.0-testnet-preview.5", "exchange-v1.0.0-testnet-preview.3", "shop-v0.3.0-testnet-preview.1", "developer-v0.2.0-testnet-preview.1", "trust-center-v0.1.0-testnet-preview.2"]) {

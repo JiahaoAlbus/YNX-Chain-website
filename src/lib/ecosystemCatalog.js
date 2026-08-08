@@ -361,11 +361,11 @@ const evidence = {
       href: "/releases/ecosystem-release-registry.json",
       release: "browser-v0.2.5-testnet-preview.1"
     },
-    statusNote: "The exact arm64 macOS Browser Testnet Preview is hosted directly by YNX and bound to source candidate 96dfc528, ZIP SHA-256 939c5045…4448 and 138,203 bytes. The hosted ZIP passed two independent native cold starts and the second start completed its WebKit main-page load. Central integration 2a78ace0a647 passed CI, disclosure, governance, Android package policy, iOS Simulator install/cold start and Windows compile/cold start. It is ad-hoc signed, rejected by Gatekeeper, not notarized or production signed, and older copies with the same Bundle ID can retain the ynxbrowser callback registration.",
+    statusNote: "The previously hosted arm64 macOS Browser preview is suspended after real-user visual evidence showed that its window can restore at an unusably narrow width. Build, cold-start and second-launch checks passed, but that evidence did not prove visual usability. It must pass default-size, minimum-size, relaunch, light/dark and full-screen screenshot gates before distribution resumes.",
     downloads: {
       android: artifactDownload(PRODUCT_STATUS.LOCAL, "apps/browser/android/.manual-build/ynx-browser-debug.apk", "Browser Android debug APK (manual build)."),
       ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS WKWebView source exists; no public device-signed package is claimed." },
-      macos: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-browser-0.2.5-testnet-preview-96dfc528-macos-arm64-adhoc.zip", "arm64 macOS Testnet Preview · source 96dfc528 · SHA-256 939c5045…4448 · 138,203 bytes · ad-hoc signed and not notarized; remove older YNX Browser previews before Wallet callback testing.", "/downloads/ynx-browser-0.2.5-testnet-preview-96dfc528-macos-arm64-adhoc.zip"),
+      macos: { status: PRODUCT_STATUS.LOCAL, href: null, downloadHosted: false, artifactPath: "ynx-browser-0.2.5-testnet-preview-96dfc528-macos-arm64-adhoc.zip", note: "Distribution suspended: the current package failed real-user window-width visual QA. A locally built artifact is not an available macOS surface." },
       web: { status: PRODUCT_STATUS.LOCAL, href: "/docs#browser", note: "Browser web companion route." }
     }
   },
@@ -391,12 +391,12 @@ const evidence = {
     }
   },
   mail: {
-    commit: "8126a2dae869",
-    statusNote: "Mail Android debug APK is generated and cold-start test evidence exists.",
+    commit: "e13b5d7ac191",
+    statusNote: "The YNX Mail Web/API Testnet Preview is publicly deployed with a bounded 128-active / 256-queued single-host capacity boundary and verified service restart. Central Wallet registration remains disabled, so account workflows fail closed. Internet Provider delivery, public Android/iOS/desktop packages and production signing are not available.",
     downloads: {
       android: artifactDownload(PRODUCT_STATUS.LOCAL, "apps/mail/native/android/app/build/outputs/apk/debug/app-debug.apk", "Mail Android debug APK."),
       ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS project exists; simulator evidence pending." },
-      web: { status: PRODUCT_STATUS.LOCAL, href: "/docs#mail", note: "Mail web companion." }
+      web: { status: PRODUCT_STATUS.LIVE, href: "https://mail-testnet.43.153.202.237.sslip.io/", external: true, downloadHosted: false, note: "Public Mail Web/API Testnet Preview; account workflows remain unavailable until central Wallet registration is accepted." }
     }
   },
   calendar: {
@@ -692,13 +692,11 @@ export const getCatalog = () => [
     name: "YNX Browser",
     icon: Globe,
     status: PRODUCT_STATUS.LOCAL,
-    detail: "A platform-native-engine Browser candidate with normal/private state isolation, crash recovery, origin-scoped permissions, mediated downloads and an exact fail-closed Wallet handoff. The arm64 macOS Testnet Preview is directly downloadable; it is ad-hoc signed and not notarized.",
+    detail: "A platform-native-engine Browser candidate with normal/private state isolation, crash recovery, origin-scoped permissions, mediated downloads and an exact fail-closed Wallet handoff. macOS distribution is suspended because the current package failed real-user window-width visual QA.",
     entry: { label: "Read Browser guide", href: "/docs#browser" },
     docs: { ...docsAnchor("browser"), label: "Browser docs" },
-    downloads: makeDownloads({
-      macos: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-browser-0.2.5-testnet-preview-96dfc528-macos-arm64-adhoc.zip", "arm64 macOS Testnet Preview · source 96dfc528 · SHA-256 939c5045…4448 · 138,203 bytes · ad-hoc signed, Gatekeeper rejected and not notarized.", "/downloads/ynx-browser-0.2.5-testnet-preview-96dfc528-macos-arm64-adhoc.zip")
-    }),
-    metrics: [["Closure", "Tabs + history + private isolation + permissions + downloads + Wallet handoff"], ["Risk", "Ad-hoc signing; old same-Bundle-ID copies can retain callback registration"], ["Readiness", "18 Node + 20 Swift + 15 contract tests; arm64 macOS preview hosted"]]
+    downloads: makeDownloads({}),
+    metrics: [["Closure", "Tabs + history + private isolation + permissions + downloads + Wallet handoff"], ["Risk", "Current macOS window can restore at an unusable width"], ["Readiness", "Distribution suspended pending platform visual QA"]]
   },
   {
     key: "search",
@@ -726,12 +724,12 @@ export const getCatalog = () => [
     key: "mail",
     name: "YNX Mail",
     icon: Mail,
-    status: PRODUCT_STATUS.LOCAL,
-    detail: "Mail draft/send/retrieve candidate is in review with provider contract, delivery, and recovery loops incomplete.",
-    entry: { label: "Mail entry", href: "/docs#mail" },
+    status: PRODUCT_STATUS.LIVE,
+    detail: "A public YNX-native Mail Web/API Testnet Preview with drafts, threads, search, bounded attachments, explicit delivery facts, recovery and a bounded concurrent request queue. Central Wallet registration is still disabled, so account workflows fail closed; Internet delivery is not configured.",
+    entry: { label: "Open Mail preview", href: "https://mail-testnet.43.153.202.237.sslip.io/", external: true },
     docs: { ...docsAnchor("mail"), label: "Mail docs" },
-    downloads: web(PRODUCT_STATUS.LOCAL, "/docs#mail", "Mail web companion"),
-    metrics: [["Closure", "Draft + attachment logic"], ["Risk", "Provider delivery proof"], ["Readiness", "No production mail package"]]
+    downloads: web(PRODUCT_STATUS.LIVE, "https://mail-testnet.43.153.202.237.sslip.io/", "Public Web/API Testnet Preview; central Wallet remains disabled"),
+    metrics: [["Public proof", "HTTPS UI + health + restart"], ["Capacity", "128 active + 256 queued, bounded single host"], ["Boundary", "Wallet disabled; Internet Provider unconfigured"]]
   },
   {
     key: "calendar",
