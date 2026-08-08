@@ -401,16 +401,16 @@ const evidence = {
     }
   },
   calendar: {
-    commit: "cf92caa3de1e",
+    commit: "fb98415c9037",
     productRelease: {
       href: "/releases/ecosystem-release-registry.json",
       release: "ynx-calendar-0.2.0-testnet-public"
     },
-    statusNote: "The public Calendar Web/API is running source cf92caa3de1e with real day, week and month views, preview-before-approval event mutations, conflict detection, IANA time zones, DST-safe daily/weekly/monthly recurrence, invitations, RSVP, sharing, reminders, audit and bounded concurrent access. Canonical Wallet is accepted by the public Gateway. Mail delivery, Data Fabric transport, AI provider acceptance, current-source hosted native packages, production signing and store release remain incomplete.",
+    statusNote: "The public Calendar Web/API is running source fb98415c9037 with real day, week and month views, a seven-day 390px week view without horizontal scrolling, preview-before-approval event mutations, conflict detection, IANA time zones, DST-safe recurrence, invitations, RSVP, sharing, reminders, audit and bounded concurrent access. Canonical Wallet is accepted by the public Gateway. Mail delivery, Data Fabric transport, AI provider acceptance, current-source hosted native packages, production signing and store release remain incomplete.",
     downloads: {
       android: artifactDownload(PRODUCT_STATUS.LOCAL, "apps/calendar/native/android/app/build/outputs/apk/debug/app-debug.apk", "Android source/debug workflow exists locally; no current-source hosted APK or production signature is claimed."),
       ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS source and parse evidence exist; no signed or hosted iOS package is claimed." },
-      web: { status: PRODUCT_STATUS.LIVE, href: "https://calendar-testnet.43.153.202.237.sslip.io/", external: true, downloadHosted: false, note: "Public Calendar Web/API · source cf92caa3de1e · health verified." }
+      web: { status: PRODUCT_STATUS.LIVE, href: "https://calendar-testnet.43.153.202.237.sslip.io/", external: true, downloadHosted: false, note: "Public Calendar Web/API · source fb98415c9037 · seven-day mobile viewport and health verified." }
     }
   },
   dex: {
@@ -741,11 +741,11 @@ export const getCatalog = () => [
     name: "YNX Calendar",
     icon: CalendarDays,
     status: PRODUCT_STATUS.LIVE,
-    detail: "Public Testnet Calendar with canonical Wallet-bound sessions, explicit change approval, invitations and RSVP, DST-safe recurrence, restart persistence, and bounded concurrent access. Mail delivery, the AI provider, Data Fabric transport, current-source native packages, and production signing are still pending.",
+    detail: "Public Testnet Calendar with canonical Wallet-bound sessions, explicit change approval, invitations and RSVP, DST-safe recurrence, seven-day mobile week view, restart persistence, and bounded concurrent access. Mail delivery, the AI provider, Data Fabric transport, current-source native packages, and production signing are still pending.",
     entry: { label: "Open Calendar", href: "https://calendar-testnet.43.153.202.237.sslip.io/" },
     docs: { ...docsAnchor("calendar"), label: "Calendar docs" },
     downloads: web(PRODUCT_STATUS.LIVE, "https://calendar-testnet.43.153.202.237.sslip.io/", "Calendar Testnet web app"),
-    metrics: [["Public proof", "2-user invite / RSVP / update / cancel"], ["Concurrency", "100 / 100 authenticated reads"], ["Readiness", "Public preview; no production package"]]
+    metrics: [["Public proof", "2-user invite / RSVP / update / cancel"], ["Mobile week", "7 / 7 days · no horizontal overflow"], ["Concurrency", "100 / 100 authenticated reads"], ["Readiness", "Public preview; no production package"]]
   },
   {
     key: "dex",
