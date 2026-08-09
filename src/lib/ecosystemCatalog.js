@@ -227,7 +227,7 @@ const evidence = {
     }
   },
   developer: {
-    commit: "63a678ac",
+    commit: "f179654d",
     productRelease: {
       href: "/releases/ecosystem-release-registry.json",
       release: "developer-v0.2.0-testnet-preview.4"
@@ -237,8 +237,8 @@ const evidence = {
       web: { status: PRODUCT_STATUS.LIVE, href: "https://developer.ynxweb4.com/", external: true, downloadHosted: false, note: "Public Testnet Web IDE · live chain · real solc · YNX-hosted qwen3:4b · optional xAI/OpenAI API." },
       android: { status: PRODUCT_STATUS.NOT_READY, note: "No native Android package published for Developer in this candidate." },
       ios: { status: PRODUCT_STATUS.NOT_READY, note: "No iOS package published for Developer in this candidate." },
-      macos: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-developer-testnet-preview-macos-unsigned.zip", "Unsigned macOS arm64 Testnet Preview · source 63a678ac · SHA-256 f8988f01…5351 · 48,252,013 bytes · extraction, cold launch, real bounded C++ compile, second launch, cleanup and full public re-download verified.", "/downloads/ynx-developer-testnet-preview-macos-unsigned.zip"),
-      windows: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-developer-testnet-preview-windows-x64-unsigned.zip", "Unsigned Windows x64 Testnet Preview · source 63a678ac · SHA-256 d07163e6…8c7d · 114,787,990 bytes · Windows tests, extraction, cold launch, bundled server, cleanup and full public re-download verified.", "/downloads/ynx-developer-testnet-preview-windows-x64-unsigned.zip")
+      macos: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-developer-testnet-preview-macos-unsigned.zip", "Unsigned macOS arm64 Testnet Preview · source f179654d · SHA-256 172c0c5b…b52a · 48,253,431 bytes · extraction, cold launch, real bounded C++ compile, second launch, cleanup and full public re-download verified.", "/downloads/ynx-developer-testnet-preview-macos-unsigned.zip"),
+      windows: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-developer-testnet-preview-windows-x64-unsigned.zip", "Unsigned Windows x64 Testnet Preview · source f179654d · SHA-256 5ea83a0d…4822 · 114,789,406 bytes · Windows tests, extraction, cold launch, bundled server, cleanup and full public re-download verified.", "/downloads/ynx-developer-testnet-preview-windows-x64-unsigned.zip")
     }
   },
   explorer: {

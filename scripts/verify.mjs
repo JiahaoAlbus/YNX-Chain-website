@@ -193,7 +193,7 @@ const ownerProductIds = ownerRecordIndex.records?.map((record) => record.product
 const approvedOwnerPublicEvidence = new Map([
   ["03", { sourceCommit: "aa8524960d6efd9881598fb65832c6237e5af056", publicUrl: "https://www.ynxweb4.com/dapp/social" }],
   ["10", { sourceCommit: "88c0f3a546b463fb270c4bea5d944178865660a5", publicUrl: "https://seller.ynxweb4.com/seller/" }],
-  ["11", { sourceCommit: "63a678ac3c423b53c9628fa35c415d554827eccb", publicUrl: "https://developer.ynxweb4.com/" }],
+  ["11", { sourceCommit: "f179654dd6e1361711ee480e2c6f3f614ad38002", publicUrl: "https://developer.ynxweb4.com/" }],
   ["13", { sourceCommit: "5d42be028b22f10253facfc4f779fcccf0fd69b1", publicUrl: "https://monitor.ynxweb4.com/" }],
   ["14", { sourceCommit: "16d6d71e2f93418e37fe9d024f58c492ca1baad4", publicUrl: "https://assistant.ynxweb4.com/" }],
   ["22", { sourceCommit: "d8c1ad24bc88c481fd9350456124f353c8c43e35", publicUrl: "https://www.ynxweb4.com/downloads/ynx-browser-0.2.6-testnet-preview-d8c1ad24-macos-arm64-adhoc.zip" }],
@@ -441,7 +441,7 @@ if (
   hostedPreviewProducts.map((product) => product.key).sort().join(",") !== "browser,developer,exchange,finance,shop,social,trust,wallet" ||
   hostedPreviewProducts.some((product) => {
     const expectedState = product.key === "developer"
-      ? "public-testnet-web-with-extension-workspace-and-current-desktop-preview"
+      ? "public-testnet-web-with-vscode-style-extensible-toolchains-and-current-desktop-preview"
       : "hosted-testnet-preview";
     return product.state !== expectedState || !product.releaseTag || !product.downloads?.length || product.downloads.some((download) => !/^[0-9a-f]{64}$/.test(download.sha256) || !(download.bytes > 0) || !download.signingClass);
   }) ||
@@ -584,8 +584,8 @@ if (!vercel.cleanUrls || spaFallback?.destination !== "/") {
   process.exit(1);
 }
 const requiredOfficialDownloads = new Map([
-  ["/downloads/ynx-developer-testnet-preview-macos-unsigned.zip", "https://developer.ynxweb4.com/downloads/ynx-developer-0.2.0-testnet-preview-63a678ac-macos-arm64-unsigned.zip"],
-  ["/downloads/ynx-developer-testnet-preview-windows-x64-unsigned.zip", "https://developer.ynxweb4.com/downloads/ynx-developer-0.2.0-testnet-preview-63a678ac-windows-x64-unsigned.zip"],
+  ["/downloads/ynx-developer-testnet-preview-macos-unsigned.zip", "https://developer.ynxweb4.com/downloads/ynx-developer-0.2.0-testnet-preview-f179654d-macos-arm64-unsigned.zip"],
+  ["/downloads/ynx-developer-testnet-preview-windows-x64-unsigned.zip", "https://developer.ynxweb4.com/downloads/ynx-developer-0.2.0-testnet-preview-f179654d-windows-x64-unsigned.zip"],
   ["/downloads/ynx-trust-center-4d40557229b4-linux-amd64.tar.gz", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-trust-center-4d40557229b4-linux-amd64.tar.gz"],
   ["/downloads/ynx-shop-0.3.0-testnet-preview-6fa2d6c5-debug-signed.apk", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-shop-0.3.0-testnet-preview-6fa2d6c5-debug-signed.apk"],
   ["/downloads/ynx-wallet-1.0.0-testnet-preview-ccaf878c-test-signed.apk", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-wallet-1.0.0-testnet-preview-ccaf878c-test-signed-gwrQJydXGTCeQfwpnIUokylkukF8CD.apk"],
