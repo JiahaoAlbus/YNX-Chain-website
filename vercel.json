@@ -44,8 +44,8 @@
     { "source": "/mail", "destination": "/dapp/mail", "permanent": true },
     { "source": "/calendar", "destination": "/dapp/calendar", "permanent": true },
     { "source": "/dex", "destination": "/dapp/dex", "permanent": true },
-    { "source": "/downloads/ynx-developer-testnet-preview-macos-unsigned.zip", "destination": "https://developer.ynxweb4.com/downloads/ynx-developer-0.2.0-testnet-preview-f179654d-macos-arm64-unsigned.zip", "permanent": false },
-    { "source": "/downloads/ynx-developer-testnet-preview-windows-x64-unsigned.zip", "destination": "https://developer.ynxweb4.com/downloads/ynx-developer-0.2.0-testnet-preview-f179654d-windows-x64-unsigned.zip", "permanent": false }
+    { "source": "/downloads/ynx-developer-testnet-preview-macos-unsigned.zip", "destination": "https://developer.ynxweb4.com/downloads/ynx-developer-0.2.0-testnet-preview-76322af5-macos-arm64-unsigned.zip", "permanent": false },
+    { "source": "/downloads/ynx-developer-testnet-preview-windows-x64-unsigned.zip", "destination": "https://developer.ynxweb4.com/downloads/ynx-developer-0.2.0-testnet-preview-76322af5-windows-x64-unsigned.zip", "permanent": false }
   ],
   "headers": [
     {
