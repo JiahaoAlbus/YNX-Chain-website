@@ -456,6 +456,7 @@ if (
   walletRegistry.releaseTag !== "wallet-v1.0.1-testnet-preview.1" ||
   walletRegistry.downloads?.[0]?.sha256 !== "fd924ef853cf17d42ca2d36504528ef879c73fcb4b01ea72b1bfe7ae85085fef" ||
   walletRegistry.downloads?.[0]?.bytes !== 78392878 ||
+  walletRegistry.downloads?.[0]?.fullBrowserDownloadVerified !== true ||
   walletRegistry.downloads?.[0]?.upgradeFrom1_0_0 !== "uninstall-required-different-test-certificate" ||
   walletRegistry.gatewayUrl !== "https://wallet-auth.ynxweb4.com" ||
   financeRegistry.state !== "hosted-testnet-preview" ||
@@ -591,7 +592,7 @@ const requiredOfficialDownloads = new Map([
   ["/downloads/ynx-developer-testnet-preview-windows-x64-unsigned.zip", "https://developer.ynxweb4.com/downloads/ynx-developer-0.2.0-testnet-preview-f179654d-windows-x64-unsigned.zip"],
   ["/downloads/ynx-trust-center-4d40557229b4-linux-amd64.tar.gz", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-trust-center-4d40557229b4-linux-amd64.tar.gz"],
   ["/downloads/ynx-shop-0.3.0-testnet-preview-6fa2d6c5-debug-signed.apk", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-shop-0.3.0-testnet-preview-6fa2d6c5-debug-signed.apk"],
-  ["/downloads/ynx-wallet-1.0.1-testnet-preview-bb751ce3-test-signed.apk", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-wallet-1.0.1-testnet-preview-bb751ce3-test-signed-qzqLf6yXzQQWhURWSYy9Xxb42rIi9U.apk"],
+  ["/downloads/ynx-wallet-1.0.1-testnet-preview-dc31c9a8-test-signed.apk", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-wallet-1.0.1-testnet-preview-dc31c9a8-test-signed-7mY7bsrspttg7FGR7qj7q8wUBKhUxW.apk"],
   ["/downloads/ynx-exchange-1.0.0-testnet-preview-1e5f48d2-test-signed.apk", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-exchange-1.0.0-testnet-preview-1e5f48d2-test-signed.apk"],
   ["/downloads/ynx-finance-1.2.0-testnet-preview-307273b9-test-signed.apk", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-finance-1.2.0-testnet-preview-307273b9-test-signed-8WRdkqJCJnHBCsuyDsRj4XjEreyeYT.apk"],
   ["/downloads/ynx-social-1.0.0-testnet-preview-aa852496-test-signed.apk", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-social-1.0.0-testnet-preview-aa852496-test-signed-15JR16t0lzmvyKU06tyaYXcUGC0sjQ.apk"]
