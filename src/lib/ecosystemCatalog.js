@@ -480,8 +480,11 @@ export const getCatalog = () => [
     detail: "Canonical Wallet/Auth is live on Testnet with proof-bound product sessions, immutable product registry selection, replay protection and bounded admission. The hosted Android build is test-signed, not production-signed or store-released.",
     entry: { label: "Wallet status and downloads", href: "/dapp/wallet" },
     docs: { ...docsAnchor("wallet"), label: "Wallet docs" },
-    downloads: web(PRODUCT_STATUS.LOCAL, "/docs#wallet", "In-browser session entry + local testnet workflow"),
-    metrics: [["Closure", "Wallet-bound identity and vault session"], ["Risk", "No production custody sign-off"], ["Readiness", "Native release not yet published"]]
+    downloads: makeDownloads({
+      web: { status: PRODUCT_STATUS.LIVE, href: "/dapp/wallet", downloadHosted: false, note: "Public Wallet status, installation and Testnet session entry." },
+      android: evidence.wallet.downloads.android
+    }),
+    metrics: [["Closure", "Wallet-bound identity, vault session and product authorization"], ["Risk", "Test-signed preview; no production custody sign-off"], ["Readiness", "Hosted Android Testnet Preview + public Wallet/Auth Gateway"]]
   },
   {
     key: "social",
