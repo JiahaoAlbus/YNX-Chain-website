@@ -414,10 +414,15 @@ const evidence = {
     }
   },
   dex: {
-    commit: "d0f767d7",
-    statusNote: "The public DEX Testnet preview is live as an indexed, read-only market surface with real token, pool and transaction endpoints and bounded multi-user access. It currently shows no pools or swaps because Chain 6423 does not execute general EVM bytecode; order routing, liquidity actions and Wallet signing therefore fail closed rather than fabricating activity.",
+    commit: "2e76d7f3dd5a",
+    centralAccepted: true,
+    productRelease: {
+      href: "/releases/ecosystem-release-registry.json",
+      release: "dex-v0.1.0-testnet-preview.2"
+    },
+    statusNote: "The public DEX now reads the authoritative chain-native YNX Testnet market and exposes one labelled YNXT/YUSDT test-liquidity pool, deterministic exact-input and exact-output quotes, indexed swaps, LP actions and confirmed one-minute K-line candles. YNX Wallet remains the proof-bound path for account positions and separately reviewed chain-native actions. The connection chooser also offers the official Wallet 1.0.1 download and real MetaMask add/switch/recheck support for EVM chain 0x1917, without treating a MetaMask account as a YNX Product Session. This is Testnet liquidity, not production liquidity; EVM Router deployment and an external audit remain absent.",
     downloads: {
-      web: { status: PRODUCT_STATUS.LIVE, href: "https://dex.ynxweb4.com/", external: true, downloadHosted: false, note: "Public read-only DEX Testnet preview backed by indexed YNX activity." }
+      web: { status: PRODUCT_STATUS.LIVE, href: "https://dex.ynxweb4.com/", external: true, downloadHosted: false, note: "Executable chain-native DEX Testnet preview · release ynx-dex-2e76d7f3dd5a · one labelled test-liquidity pool · guest market data plus Wallet-reviewed actions." }
     }
   }
 };
@@ -755,11 +760,11 @@ export const getCatalog = () => [
     name: "YNX DEX",
     icon: Repeat2,
     status: PRODUCT_STATUS.LIVE,
-    detail: "A public read-only DEX Testnet preview for indexed tokens, pools and transfer activity. It currently has no executable swaps or liquidity because Chain 6423 does not yet execute general EVM bytecode; unavailable actions remain visibly disabled.",
+    detail: "Public chain-native DEX Testnet market with deterministic exact-input/output quotes, Wallet-reviewed swaps and liquidity actions, indexed receipts and confirmed K-line candles. Guest market data needs no login; private positions and chain-native execution require YNX Wallet. MetaMask is available only for the EVM compatibility surface.",
     entry: { label: "Open DEX", href: "https://dex.ynxweb4.com/", external: true },
     docs: { ...docsAnchor("dex"), label: "DEX docs" },
-    downloads: web(PRODUCT_STATUS.LIVE, "https://dex.ynxweb4.com/", "Public indexed DEX Testnet preview"),
-    metrics: [["Closure", "Indexer → token/pool/transaction APIs → public UI"], ["Risk", "No EVM execution, audited liquidity or executable swap"], ["Readiness", "Public read-only surface; trading fails closed"]]
+    downloads: web(PRODUCT_STATUS.LIVE, "https://dex.ynxweb4.com/", "Executable chain-native DEX Testnet preview"),
+    metrics: [["Closure", "Pool → exact quote → Wallet review → chain receipt → K-line"], ["Risk", "Labelled Testnet liquidity; no external audit or production EVM Router"], ["Readiness", "Public executable Testnet surface; production liquidity remains false"]]
   }
 ].map(attachEvidence);
 

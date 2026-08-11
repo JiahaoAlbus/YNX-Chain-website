@@ -433,6 +433,7 @@ const creatorRegistry = registryByKey.get("creatorStudio");
 const cloudRegistry = registryByKey.get("cloud");
 const docsRegistry = registryByKey.get("docs");
 const browserRegistry = registryByKey.get("browser");
+const dexRegistry = registryByKey.get("dex");
 if (
   registryKeys.length !== 26 ||
   new Set(registryKeys).size !== 26 ||
@@ -445,8 +446,8 @@ if (
       : "hosted-testnet-preview";
     return product.state !== expectedState || !product.releaseTag || !product.downloads?.length || product.downloads.some((download) => !/^[0-9a-f]{64}$/.test(download.sha256) || !(download.bytes > 0) || !download.signingClass);
   }) ||
-  acceptedProducts.length !== 11 ||
-  [...acceptedByKey.keys()].sort().join(",") !== "browser,cloud,creatorStudio,docs,exchange,finance,music,resource,social,video,wallet" ||
+  acceptedProducts.length !== 12 ||
+  [...acceptedByKey.keys()].sort().join(",") !== "browser,cloud,creatorStudio,dex,docs,exchange,finance,music,resource,social,video,wallet" ||
   exchangeRegistry?.key !== "exchange" ||
   exchangeRegistry.commit !== "1e5f48d2" ||
   exchangeRegistry.acceptedIntegrationCommit !== "fc2276e1ce4c" ||
@@ -539,6 +540,13 @@ if (
   browserRegistry.downloads?.[0]?.sha256 !== "3d8544efea04132b53ce53e3227e7e96bc494f301d964da5d1d55911d030af45" ||
   browserRegistry.downloads?.[0]?.bytes !== 146068 ||
   browserRegistry.downloads?.[0]?.visualQa !== "windowserver-standard-minimum-second-launch-light-dark-fullscreen-pass" ||
+  dexRegistry?.state !== "public-testnet-executable-chain-native" ||
+  dexRegistry.commit !== "2e76d7f3dd5a" ||
+  dexRegistry.acceptedIntegrationCommit !== "754e7742" ||
+  dexRegistry.runtimeRelease !== "ynx-dex-2e76d7f3dd5a" ||
+  dexRegistry.marketSourceConfigured !== true || dexRegistry.marketAvailable !== true || dexRegistry.executionAvailable !== true ||
+  dexRegistry.testnetLiquidity !== true || dexRegistry.productionLiquidity !== false ||
+  dexRegistry.walletChooser?.metaMaskEvmChainId !== "0x1917" || dexRegistry.walletChooser?.guestMode !== true ||
   crypto.createHash("sha256").update(fs.readFileSync("public/downloads/ynx-browser-0.2.6-testnet-preview-d8c1ad24-macos-arm64-adhoc.zip")).digest("hex") !== browserRegistry.downloads?.[0]?.sha256 ||
   releaseRegistry.products.some((product) => !product.route.startsWith("/dapp/")) ||
   releaseRegistry.rules?.localArtifactIsDownload !== false
