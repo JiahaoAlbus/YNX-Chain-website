@@ -120,16 +120,16 @@ const PRODUCT_ROUTES = Object.fromEntries(
 
 const evidence = {
   wallet: {
-    commit: "ccaf878cdeeb",
+    commit: "bb751ce3",
     centralAccepted: true,
     productRelease: {
       href: "/releases/ecosystem-release-registry.json",
-      release: "wallet-auth-v1.0.0-testnet-preview.5"
+      release: "wallet-v1.0.1-testnet-preview.1"
     },
-    statusNote: "Release wallet-auth-v1.0.0-testnet-preview.5: the centrally accepted Android Testnet Preview is hosted for direct download. The exact hosted APK passed install, first cold start, force-stop and second cold start on Android 16; the same Testnet account and ynx_6423-1 binding remained visible. It locally reviews the exact approved Exchange, Finance, Quant and Shop bindings; long permission reviews remain scrollable to reject or approve. Canonical Wallet/Auth is publicly reachable through a proof-bound gateway with 64-request concurrency admission and 100/100 concurrent readiness evidence. This is test-signed software, not a production-signed or app-store release.",
+    statusNote: "Release wallet-v1.0.1-testnet-preview.1: the Android Testnet Preview is hosted for direct download. The exact APK passed a fresh install, first cold launch, product-independent ynxwallet://open launch, force-stop, second cold launch and warm deep-link delivery on Android 16/API 36 with no fatal crash. Important: the old 1.0.0 preview used a different temporary test certificate, so back up recovery material, uninstall 1.0.0 and then install 1.0.1. From 1.0.1 onward the preview uses a persistent Testnet release key. Canonical Wallet/Auth remains publicly reachable through the proof-bound gateway. This is Testnet software, not production-signed or app-store released.",
     downloads: {
       web: { status: PRODUCT_STATUS.LIVE, href: "https://wallet-auth.ynxweb4.com/health", external: true, downloadHosted: false, note: "Public canonical Wallet/Auth gateway health; product use remains proof-bound." },
-      android: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-1.0.0-testnet-preview-ccaf878c-test-signed.apk", "Test-signed Android Testnet Preview · source ccaf878c · SHA-256 68d7cec9…b746 · 78,313,394 bytes · never import production keys.", "/downloads/ynx-wallet-1.0.0-testnet-preview-ccaf878c-test-signed.apk"),
+      android: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-1.0.1-testnet-preview-bb751ce3-test-signed.apk", "Android 1.0.1 Testnet Preview · source bb751ce3 · SHA-256 fd924ef8…5fef · 78,392,878 bytes · persistent Testnet signing line. Back up recovery material and uninstall the incompatible 1.0.0 preview before installing. Never import production keys.", "/downloads/ynx-wallet-1.0.1-testnet-preview-bb751ce3-test-signed.apk"),
       ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS project exists; simulator/launch evidence not completed on this host." },
       macos: { status: PRODUCT_STATUS.NOT_READY, note: "No macOS package is published for Wallet in this candidate." },
       windows: { status: PRODUCT_STATUS.NOT_READY, note: "No Windows package is published for Wallet in this candidate." }

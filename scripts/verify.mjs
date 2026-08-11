@@ -452,8 +452,11 @@ if (
   exchangeRegistry.acceptedIntegrationCommit !== "fc2276e1ce4c" ||
   exchangeRegistry.productRelease !== "/releases/exchange/fc2276e1ce4c/product-release.json" ||
   exchangeRegistry.publicProductMetadata !== "/releases/exchange/fc2276e1ce4c/public-product-metadata.json" ||
-  walletRegistry?.commit !== "ccaf878cdeeb" ||
-  walletRegistry.releaseTag !== "wallet-auth-v1.0.0-testnet-preview.5" ||
+  walletRegistry?.commit !== "bb751ce3" ||
+  walletRegistry.releaseTag !== "wallet-v1.0.1-testnet-preview.1" ||
+  walletRegistry.downloads?.[0]?.sha256 !== "fd924ef853cf17d42ca2d36504528ef879c73fcb4b01ea72b1bfe7ae85085fef" ||
+  walletRegistry.downloads?.[0]?.bytes !== 78392878 ||
+  walletRegistry.downloads?.[0]?.upgradeFrom1_0_0 !== "uninstall-required-different-test-certificate" ||
   walletRegistry.gatewayUrl !== "https://wallet-auth.ynxweb4.com" ||
   financeRegistry.state !== "hosted-testnet-preview" ||
   financeRegistry.acceptedIntegrationCommit !== "6b6cb8f5b125" ||
@@ -542,7 +545,7 @@ if (
   console.error("release registry must preserve 26 truthful states, eight distributable source-bound hosted previews, the system-verified Browser package, and the exact centrally accepted product set");
   process.exit(1);
 }
-for (const requiredText of ["downloadHosted", "Local build only", "Download Testnet Preview", "candidate incomplete", "Product status", "wallet-auth-v1.0.0-testnet-preview.5", "exchange-v1.0.0-testnet-preview.3", "shop-v0.3.0-testnet-preview.1", "developer-v0.2.0-testnet-preview.4", "trust-center-v0.1.0-testnet-preview.2"]) {
+for (const requiredText of ["downloadHosted", "Local build only", "Download Testnet Preview", "candidate incomplete", "Product status", "wallet-v1.0.1-testnet-preview.1", "uninstall the incompatible 1.0.0 preview", "exchange-v1.0.0-testnet-preview.3", "shop-v0.3.0-testnet-preview.1", "developer-v0.2.0-testnet-preview.4", "trust-center-v0.1.0-testnet-preview.2"]) {
   if (!ecosystemCatalog.includes(requiredText)) {
     console.error(`ecosystem release boundary missing: ${requiredText}`);
     process.exit(1);
@@ -588,7 +591,7 @@ const requiredOfficialDownloads = new Map([
   ["/downloads/ynx-developer-testnet-preview-windows-x64-unsigned.zip", "https://developer.ynxweb4.com/downloads/ynx-developer-0.2.0-testnet-preview-f179654d-windows-x64-unsigned.zip"],
   ["/downloads/ynx-trust-center-4d40557229b4-linux-amd64.tar.gz", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-trust-center-4d40557229b4-linux-amd64.tar.gz"],
   ["/downloads/ynx-shop-0.3.0-testnet-preview-6fa2d6c5-debug-signed.apk", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-shop-0.3.0-testnet-preview-6fa2d6c5-debug-signed.apk"],
-  ["/downloads/ynx-wallet-1.0.0-testnet-preview-ccaf878c-test-signed.apk", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-wallet-1.0.0-testnet-preview-ccaf878c-test-signed-gwrQJydXGTCeQfwpnIUokylkukF8CD.apk"],
+  ["/downloads/ynx-wallet-1.0.1-testnet-preview-bb751ce3-test-signed.apk", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-wallet-1.0.1-testnet-preview-bb751ce3-test-signed-qzqLf6yXzQQWhURWSYy9Xxb42rIi9U.apk"],
   ["/downloads/ynx-exchange-1.0.0-testnet-preview-1e5f48d2-test-signed.apk", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-exchange-1.0.0-testnet-preview-1e5f48d2-test-signed.apk"],
   ["/downloads/ynx-finance-1.2.0-testnet-preview-307273b9-test-signed.apk", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-finance-1.2.0-testnet-preview-307273b9-test-signed-8WRdkqJCJnHBCsuyDsRj4XjEreyeYT.apk"],
   ["/downloads/ynx-social-1.0.0-testnet-preview-aa852496-test-signed.apk", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-social-1.0.0-testnet-preview-aa852496-test-signed-15JR16t0lzmvyKU06tyaYXcUGC0sjQ.apk"]
