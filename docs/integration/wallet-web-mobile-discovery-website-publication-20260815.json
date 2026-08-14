@@ -47,7 +47,19 @@
       "chromeEdge": {"head":"pass-http-200-application-zip-attachment-189922-bytes","getAndSha256":"false","error":"two independent bounded full GET attempts exited 28: Connection timed out after 30002/30004 milliseconds; a 94961-byte first range succeeded but is not full-artifact proof"}
     },
     "allPackageDownloadGatesPassed": false,
-    "pixel9VisibleAcceptance": "pending-owner"
+    "pixel9VisibleAcceptance": {
+      "passed": false,
+      "deviceProfile": "Pixel 9 Pro",
+      "userAgent": "Chrome 151 mobile",
+      "viewport": "390x844",
+      "attempts": 2,
+      "result": "both isolated sessions timed out after 30 seconds during Preview navigation before DOM or screenshot evidence",
+      "timeoutIsPass": false,
+      "ownerEvidenceCommit": "ed307f37e4116d7ef1ca3725103ff9f019d5419e",
+      "ownerEvidenceCommitRemote": false,
+      "ownerRemoteSourceRemains": "020f513e5d5d12920f75201f637bdd854ccc91aa",
+      "ownerPushFailure": "Git HTTPS broken pipe followed by two force-false GitHub blob POST TLS handshake timeouts"
+    }
   },
   "artifacts": [
     {"name":"ynx-wallet-web-pwa-0.1.0.zip","bytes":274329,"sha256":"a5e8d413e037ed1e345a4af7c42fc31bc413d6514afb0c8a0a0b82b6047fe209","signingClass":"unsigned-web-bundle","hosted":false},
