@@ -7,6 +7,10 @@ const required = [
   "package.json",
   "index.html",
   "public/manifest.webmanifest",
+  "public/wallet/companion/manifest.webmanifest",
+  "public/wallet/companion/ynx-icon-192.png",
+  "public/wallet/companion/ynx-icon-512.png",
+  "public/wallet/companion/ynx-icon-maskable-512.png",
   "public/sw.js",
   "public/ynx-logo.png",
   "public/ynx-icon-512.png",
@@ -151,6 +155,7 @@ const main = fs.readFileSync("src/main.jsx", "utf8");
 const indexHtml = fs.readFileSync("index.html", "utf8");
 const serviceWorker = fs.readFileSync("public/sw.js", "utf8");
 const manifest = JSON.parse(fs.readFileSync("public/manifest.webmanifest", "utf8"));
+const walletManifest = JSON.parse(fs.readFileSync("public/wallet/companion/manifest.webmanifest", "utf8"));
 const releaseRegistry = JSON.parse(fs.readFileSync("public/releases/ecosystem-release-registry.json", "utf8"));
 const walletLinuxRpmCandidate = JSON.parse(fs.readFileSync("public/releases/wallet-linux-x64-rpm-candidate.json", "utf8"));
 const ownerRecordIndex = JSON.parse(fs.readFileSync("public/releases/owner-record-index.json", "utf8"));
@@ -191,6 +196,31 @@ const indexNowKey = fs.readFileSync("public/da45868fe3e0818f27f187b21a56ccb5.txt
 const indexNowScript = fs.readFileSync("scripts/indexnow.mjs", "utf8");
 const viteConfig = fs.readFileSync("vite.config.js", "utf8");
 const signerSource = JSON.parse(fs.readFileSync("src/lib/ynx-signer/SOURCE.json", "utf8"));
+const walletIconContract = new Map([
+  ["./ynx-icon-192.png", [9838, "02bd7b202a6683d83bbe4b17c246afc969b43284ee945e97167d9606e6df04af"]],
+  ["./ynx-icon-512.png", [45914, "5a6fb80c48a2047ad5632cf0b69f410ebaefd8aff0bb3da7dce28c1ce8c992c7"]],
+  ["./ynx-icon-maskable-512.png", [45914, "5a6fb80c48a2047ad5632cf0b69f410ebaefd8aff0bb3da7dce28c1ce8c992c7"]],
+]);
+if (
+  walletManifest.name !== "YNX Wallet Testnet Companion" ||
+  walletManifest.short_name !== "YNX Wallet" ||
+  walletManifest.id !== "/wallet/companion" ||
+  walletManifest.start_url !== "./" ||
+  walletManifest.scope !== "./" ||
+  walletManifest.icons?.length !== 3 ||
+  walletManifest.icons.some((icon) => {
+    const [bytes, sha256] = walletIconContract.get(icon.src) || [];
+    const body = fs.readFileSync(`public/wallet/companion/${icon.src.replace(/^\.\//, "")}`);
+    return body.length !== bytes || crypto.createHash("sha256").update(body).digest("hex") !== sha256;
+  })
+) {
+  console.error("Wallet PWA manifest or icon identity drifted from the frozen contract");
+  process.exit(1);
+}
+if (!prerender.includes("writeWalletRoute()") || !prerender.includes("/wallet/companion/manifest.webmanifest")) {
+  console.error("Wallet route-specific manifest prerender gate is missing");
+  process.exit(1);
+}
 if (releaseRegistry.products.some((product) => Object.hasOwn(product, "branch"))) {
   console.error("public release registry exposes internal branch names");
   process.exit(1);
