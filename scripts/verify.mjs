@@ -21,6 +21,11 @@ const required = [
   "public/releases/exchange/fc2276e1ce4c/rpc-capabilities.json",
   "public/releases/exchange/fc2276e1ce4c/signed-transaction-vectors.json",
   "public/releases/exchange/fc2276e1ce4c/ynx-testnet-exchange-profile.json",
+  "public/releases/wallet-session-router/d8863f6b2875/release.json",
+  "public/releases/wallet-session-router/d8863f6b2875/migration-matrix.json",
+  "public/releases/wallet-session-router/d8863f6b2875/product-session-registry.json",
+  "public/releases/wallet-session-router/d8863f6b2875/validation-summary.json",
+  "public/releases/wallet-session-router/d8863f6b2875/ynx-chain-wallet-auth-1.1.0.tgz",
   "public/da45868fe3e0818f27f187b21a56ccb5.txt",
   "src/main.jsx",
   "src/styles.css",
@@ -151,6 +156,11 @@ const exchangeReleaseRoot = "public/releases/exchange/fc2276e1ce4c";
 const exchangeManifest = JSON.parse(fs.readFileSync(`${exchangeReleaseRoot}/manifest.json`, "utf8"));
 const exchangeProductRelease = JSON.parse(fs.readFileSync(`${exchangeReleaseRoot}/product-release.json`, "utf8"));
 const exchangePublicMetadata = JSON.parse(fs.readFileSync(`${exchangeReleaseRoot}/public-product-metadata.json`, "utf8"));
+const walletSessionReleaseRoot = "public/releases/wallet-session-router/d8863f6b2875";
+const walletSessionRelease = JSON.parse(fs.readFileSync(`${walletSessionReleaseRoot}/release.json`, "utf8"));
+const walletSessionMigration = JSON.parse(fs.readFileSync(`${walletSessionReleaseRoot}/migration-matrix.json`, "utf8"));
+const walletSessionRegistry = JSON.parse(fs.readFileSync(`${walletSessionReleaseRoot}/product-session-registry.json`, "utf8"));
+const walletSessionValidation = JSON.parse(fs.readFileSync(`${walletSessionReleaseRoot}/validation-summary.json`, "utf8"));
 const header = fs.readFileSync("src/components/SiteHeader.jsx", "utf8");
 const i18n = fs.readFileSync("src/lib/i18n.jsx", "utf8");
 const commandPalette = fs.readFileSync("src/components/CommandPalette.jsx", "utf8");
@@ -247,6 +257,61 @@ for (const [file, record] of exchangeManifestFiles) {
     console.error(`exchange release artifact digest mismatch: ${file}`);
     process.exit(1);
   }
+}
+const requiredWalletSessionProducts = ["calendar", "card", "creator-studio", "developer", "dex", "exchange", "finance", "pay", "quant", "shop", "social", "video"];
+const walletSessionFiles = new Map(walletSessionRelease.files?.map((entry) => [entry.file, entry]) || []);
+if (
+  walletSessionRelease.schema !== "ynx-wallet-product-session-release/v1" ||
+  walletSessionRelease.release !== "1.1.0" ||
+  walletSessionRelease.sourceCommit !== "d8863f6b28752f427929a1c953dd035e096820ff" ||
+  walletSessionRelease.status?.implementedLocal !== true ||
+  walletSessionRelease.status?.testedLocal !== true ||
+  walletSessionRelease.status?.sourcePackageHosted !== true ||
+  walletSessionRelease.status?.integratedCentral !== false ||
+  walletSessionRelease.status?.appGatewayDeployed !== false ||
+  walletSessionRelease.status?.productRuntimeMigrationCount !== 0 ||
+  walletSessionRelease.status?.productionSigned !== false ||
+  walletSessionRelease.status?.storeReleased !== false ||
+  walletSessionMigration.runtimeMigrationCount !== 0 ||
+  walletSessionMigration.products?.length !== 12 ||
+  walletSessionMigration.products.some((product) => product.registered !== true || product.runtimeMigrated !== false) ||
+  requiredWalletSessionProducts.some((productId) => !walletSessionMigration.products.some((product) => product.productId === productId)) ||
+  walletSessionRegistry.chainId !== "ynx_6423-1" ||
+  walletSessionRegistry.products?.length !== 12 ||
+  requiredWalletSessionProducts.some((productId) => !walletSessionRegistry.products.some((product) => product.productId === productId)) ||
+  walletSessionValidation.localVerification?.fullSuite?.passed !== 178 ||
+  walletSessionValidation.localVerification?.fullSuite?.failed !== 0 ||
+  walletSessionValidation.localVerification?.concurrentRequests !== 120 ||
+  walletSessionValidation.localVerification?.nonceUnique !== true ||
+  walletSessionValidation.localVerification?.tenantIsolation !== true ||
+  walletSessionValidation.localVerification?.accountIsolation !== true ||
+  walletSessionValidation.localVerification?.productIsolation !== true ||
+  walletSessionValidation.androidObservation?.canonicalSchemeResolved !== true ||
+  walletSessionValidation.androidObservation?.intentDelivered !== true ||
+  walletSessionValidation.androidObservation?.approvalVerified !== false ||
+  walletSessionValidation.androidObservation?.callbackVerified !== false
+) {
+  console.error("wallet Product Session release identity, evidence, or truthful public boundary is invalid");
+  process.exit(1);
+}
+for (const file of ["migration-matrix.json", "product-session-registry.json", "validation-summary.json", "ynx-chain-wallet-auth-1.1.0.tgz"]) {
+  const record = walletSessionFiles.get(file);
+  const body = fs.readFileSync(`${walletSessionReleaseRoot}/${file}`);
+  const digest = crypto.createHash("sha256").update(body).digest("hex");
+  if (!record || record.bytes !== body.length || record.sha256 !== digest) {
+    console.error(`wallet Product Session release artifact digest mismatch: ${file}`);
+    process.exit(1);
+  }
+}
+if (
+  !docsPage.includes("/releases/wallet-session-router/d8863f6b2875/release.json") ||
+  !docsPage.includes("/releases/wallet-session-router/d8863f6b2875/ynx-chain-wallet-auth-1.1.0.tgz") ||
+  !docsPage.includes("Product runtime migrations</dt><dd>0 verified") ||
+  !docsPage.includes("Public App Gateway</dt><dd>Not deployed") ||
+  !docsPage.includes("approval not proven")
+) {
+  console.error("wallet Product Session public release or truth boundary is not visible in Docs");
+  process.exit(1);
 }
 if (!styles.includes("--blue: #002fa7") || !styles.includes(".heroStage.isPulling")) {
   console.error("missing Klein blue palette or draggable hero interaction");

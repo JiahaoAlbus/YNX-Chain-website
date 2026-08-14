@@ -1,0 +1,28 @@
+{
+  "schema": "ynx-wallet-product-session-validation/v1",
+  "sourceCommit": "d8863f6b28752f427929a1c953dd035e096820ff",
+  "packageVersion": "1.1.0",
+  "localVerification": {
+    "fullSuite": { "passed": 178, "failed": 0 },
+    "focusedSecuritySuite": { "passed": 76, "failed": 0 },
+    "concurrentRequests": 120,
+    "nonceUnique": true,
+    "tenantIsolation": true,
+    "accountIsolation": true,
+    "productIsolation": true
+  },
+  "androidObservation": {
+    "walletPackage": "com.ynxweb4.wallet",
+    "canonicalSchemeResolved": true,
+    "intentDelivered": true,
+    "approvalVerified": false,
+    "callbackVerified": false
+  },
+  "publicRuntime": {
+    "sourcePackageHosted": true,
+    "appGatewayDeployed": false,
+    "productRuntimeMigrationCount": 0,
+    "productionSigned": false,
+    "storeReleased": false
+  }
+}

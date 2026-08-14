@@ -148,6 +148,25 @@ export function DocsPage() {
         </div>
       </section>
 
+      <section className="docsSessionRelease" id="wallet-session-release" aria-labelledby="wallet-session-release-title">
+        <div>
+          <p className="sectionEyebrow">Wallet connection release · 1.1.0</p>
+          <h2 id="wallet-session-release-title">A shared, fail-closed Product Session source package</h2>
+          <p>The public package defines registered callbacks, bound sessions, controlled recovery, provider discovery and actionable connection states. Its 178-test suite passed, including 120 concurrent requests with tenant, account and product isolation.</p>
+          <div className="docsSessionReleaseActions">
+            <a className="button primary" href="/releases/wallet-session-router/d8863f6b2875/ynx-chain-wallet-auth-1.1.0.tgz" download><Download size={16} /> Download source package</a>
+            <a className="button secondary" href="/releases/wallet-session-router/d8863f6b2875/release.json">Verify release record <ArrowRight size={16} /></a>
+            <a className="textLink" href="/releases/wallet-session-router/d8863f6b2875/product-session-registry.json">View callback registry</a>
+          </div>
+        </div>
+        <dl>
+          <div><dt>Central integration</dt><dd>Pending protected review</dd></div>
+          <div><dt>Product runtime migrations</dt><dd>0 verified</dd></div>
+          <div><dt>Public App Gateway</dt><dd>Not deployed</dd></div>
+          <div><dt>Android evidence</dt><dd>Scheme resolved; intent delivered; approval not proven</dd></div>
+        </dl>
+      </section>
+
       <aside className="docsSafetyNote">
         <ShieldCheck />
         <div><strong>One rule across the ecosystem</strong><p>A health check, candidate build, paper result or local artifact is never presented as a public production capability. Unknown states remain unknown.</p></div>
