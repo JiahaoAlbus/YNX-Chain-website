@@ -463,6 +463,7 @@ const hostedPreviewProducts = releaseRegistry.products?.filter((product) => prod
 const acceptedByKey = new Map(acceptedProducts.map((product) => [product.key, product]));
 const exchangeRegistry = acceptedByKey.get("exchange");
 const walletRegistry = acceptedByKey.get("wallet");
+const walletMacArm64Cli = walletRegistry?.downloads?.find((download) => download.platform === "macos-arm64-cli");
 const financeRegistry = acceptedByKey.get("finance");
 const socialAcceptedRegistry = acceptedByKey.get("social");
 const resourceAcceptedRegistry = acceptedByKey.get("resource");
@@ -496,7 +497,15 @@ if (
   exchangeRegistry.acceptedIntegrationCommit !== "fc2276e1ce4c" ||
   exchangeRegistry.productRelease !== "/releases/exchange/fc2276e1ce4c/product-release.json" ||
   exchangeRegistry.publicProductMetadata !== "/releases/exchange/fc2276e1ce4c/public-product-metadata.json" ||
-  walletRegistry?.commit !== "ccaf878cdeeb" ||
+  walletRegistry?.commit !== "6856bf41f79f" ||
+  walletRegistry.desktopCliEvidenceCommit !== "6856bf41f79ffdb0a637d7e1cad11e6931158d67" ||
+  walletMacArm64Cli?.url !== "https://www.ynxweb4.com/downloads/wallet/sha256-21db36f1c80d4e88520918de141a7f71921817799270ff671db88179023b5591/ynx-wallet-cli-darwin-arm64.gz" ||
+  walletMacArm64Cli.sha256 !== "21db36f1c80d4e88520918de141a7f71921817799270ff671db88179023b5591" ||
+  walletMacArm64Cli.bytes !== 4904463 ||
+  walletMacArm64Cli.minimumOS !== "macOS 12 Monterey" ||
+  walletMacArm64Cli.signingClass !== "ad_hoc_linker_signed_local_testnet_cli_candidate" ||
+  walletMacArm64Cli.productionSigned !== false ||
+  walletMacArm64Cli.sourceEvidenceCommit !== "6856bf41f79ffdb0a637d7e1cad11e6931158d67" ||
   walletRegistry.releaseTag !== "wallet-auth-v1.0.0-testnet-preview.5" ||
   walletRegistry.gatewayUrl !== "https://wallet-auth.ynxweb4.com" ||
   financeRegistry.state !== "hosted-testnet-preview" ||
@@ -623,6 +632,7 @@ const requiredOfficialDownloads = new Map([
   ["/downloads/ynx-trust-center-4d40557229b4-linux-amd64.tar.gz", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-trust-center-4d40557229b4-linux-amd64.tar.gz"],
   ["/downloads/ynx-shop-0.3.0-testnet-preview-6fa2d6c5-debug-signed.apk", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-shop-0.3.0-testnet-preview-6fa2d6c5-debug-signed.apk"],
   ["/downloads/ynx-wallet-1.0.0-testnet-preview-ccaf878c-test-signed.apk", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-wallet-1.0.0-testnet-preview-ccaf878c-test-signed-gwrQJydXGTCeQfwpnIUokylkukF8CD.apk"],
+  ["/downloads/wallet/sha256-21db36f1c80d4e88520918de141a7f71921817799270ff671db88179023b5591/ynx-wallet-cli-darwin-arm64.gz", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/wallet/sha256-21db36f1c80d4e88520918de141a7f71921817799270ff671db88179023b5591/ynx-wallet-cli-darwin-arm64-R8DBYwa0YQxXIlYKC6TfHmgCgFqCVK.gz"],
   ["/downloads/ynx-exchange-1.0.0-testnet-preview-1e5f48d2-test-signed.apk", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-exchange-1.0.0-testnet-preview-1e5f48d2-test-signed.apk"],
   ["/downloads/ynx-finance-1.2.0-testnet-preview-307273b9-test-signed.apk", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-finance-1.2.0-testnet-preview-307273b9-test-signed-8WRdkqJCJnHBCsuyDsRj4XjEreyeYT.apk"],
   ["/downloads/ynx-social-1.0.0-testnet-preview-aa852496-test-signed.apk", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-social-1.0.0-testnet-preview-aa852496-test-signed-15JR16t0lzmvyKU06tyaYXcUGC0sjQ.apk"]
