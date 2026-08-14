@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-08-14T11:22:00Z",
+  "websitePullRequest": 33,
+  "candidateCommit": "f7ff53de05a12e6ae180373a5b876708b6875485",
+  "previewDeployment": {
+    "id": "dpl_33R9KuFtM1DcX4FXyDysW7mXCXnq",
+    "url": "https://ynx-web4-website-ra6rk9oyj-jiahaoalbus-projects.vercel.app",
+    "status": "Ready"
+  },
+  "artifact": {
+    "platform": "linux-x64-rpm",
+    "sourceCommit": "7a05ed7625c3bd3fe8b0ac162c1623cacbe9c8fb",
+    "evidenceCommit": "c2622ca2e18949ee83625cc97854c2f097c79eee",
+    "officialPath": "/downloads/wallet/sha256-8cf24d83dd5da5851484eab14ce9e6cd16946c95699a7af1e11048bbd7692bea/ynx-wallet-desktop-0.1.0-x86_64.rpm",
+    "bytes": 86926281,
+    "sha256": "8cf24d83dd5da5851484eab14ce9e6cd16946c95699a7af1e11048bbd7692bea",
+    "minimumOS": "Fedora 42 x64 userland directly tested on Ubuntu 24.04 x64 native runner kernel",
+    "signingClass": "unsigned_linux_rpm_testnet_candidate"
+  },
+  "previewDownloadVerification": {
+    "transport": "11 bounded HTTP Range requests to the same official preview path with cache-key probes",
+    "status": 206,
+    "contentType": "application/x-rpm",
+    "contentDisposition": "attachment",
+    "acceptRanges": "bytes",
+    "segments": 11,
+    "firstContentRange": "bytes 0-8388607/86926281",
+    "lastContentRange": "bytes 83886080-86926280/86926281",
+    "coverageComplete": true,
+    "reassembledBytes": 86926281,
+    "reassembledSha256": "8cf24d83dd5da5851484eab14ce9e6cd16946c95699a7af1e11048bbd7692bea",
+    "passed": true
+  },
+  "transportObservations": {
+    "unsegmentedGet": "Vercel Preview transport returned the 1018-byte SPA fallback after an upstream delay; it was rejected.",
+    "head": "One unsegmented HEAD request was terminated after the bounded wait without a response.",
+    "rangeCache": "Repeated Range requests without a unique query key reused the first cached range; those bytes were rejected. Unique cache-key probes returned exact requested ranges."
+  },
+  "lifecycleEvidence": {
+    "dnfScriptsInstallUpgrade": true,
+    "coldLaunch": true,
+    "secondLaunch": true,
+    "chainId": "0x1917",
+    "rpcFailureClosed": true,
+    "rollbackReupgrade": true,
+    "uninstall": true
+  },
+  "claims": {
+    "downloadHosted": false,
+    "deployedPublic": false,
+    "productionSigned": false,
+    "storeReleased": false
+  }
+}
