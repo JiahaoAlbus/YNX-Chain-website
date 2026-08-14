@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "owner": "Website publication",
+  "date": "2026-08-15",
+  "websiteBaseCommit": "16a3c222d2bf1af6bc26ee682efab7ba66b588dd",
+  "walletWebSource": {
+    "commit": "020f513e5d5d12920f75201f637bdd854ccc91aa",
+    "parent": "b040fe91e414b163e95b7fd02ba0e402d1aa0be4",
+    "tree": "c67d3732e7b7b1f462963fb592db3824debb25f1"
+  },
+  "immutableCentralDependency": {
+    "commit": "d0f89797d13c7667cc187b0c64d5c9e1cb1d8f59",
+    "endpointMatrixBlob": "d402fcdc844aa39bd5ee351a99d93acb4852dc37",
+    "endpointMatrixSha256": "d344c607c2bbbf7bb0d9d3662b424976d0d6c4ff20428025dd1e2fb92bf31392",
+    "androidLauncherBlob": "83c9f91779701288861cff5e4dc6c487ffcdc26c",
+    "androidLauncherSha256": "d296732141a4029b1811b655f0001cc7d81a1d45019a4bd87d21b2b4b256d1a6"
+  },
+  "publicationCandidate": {
+    "walletRoute": "/dapp/wallet",
+    "companionRoute": "/wallet/companion/",
+    "exactPwaResourceCount": 17,
+    "routeIsolatedManifest": "/wallet/companion/manifest.webmanifest",
+    "metaMaskMobileDapp": "https://metamask.app.link/dapp/www.ynxweb4.com/dapp/wallet",
+    "ynxMobileVisibleState": "CANONICAL_AUTH_UNAVAILABLE",
+    "canonicalWebCallback": null,
+    "repositoryStaticContent": true
+  },
+  "artifacts": [
+    {"name":"ynx-wallet-web-pwa-0.1.0.zip","bytes":274329,"sha256":"a5e8d413e037ed1e345a4af7c42fc31bc413d6514afb0c8a0a0b82b6047fe209","signingClass":"unsigned-web-bundle","hosted":false},
+    {"name":"ynx-wallet-chrome-edge-0.1.0.zip","bytes":189922,"sha256":"354c1d7834c4be1ec19af4f19bb69ad8f097ce7ebb713e8b639e382815495266","signingClass":"unsigned-unpacked-extension","hosted":false},
+    {"name":"ynx-wallet-firefox-0.1.0.zip","bytes":189959,"sha256":"4d71e5de63ed24f35b52b847743f9c60bc3dc22e3c49e3461761ee5180466cea","signingClass":"unsigned-unpacked-extension","hosted":false}
+  ],
+  "blobQuotaBlocker": {
+    "service": "Vercel Blob",
+    "plan": "Hobby",
+    "quota": "1 GB",
+    "rejectedArtifact": "ynx-wallet-web-pwa-0.1.0.zip",
+    "rejectedBytes": 274329,
+    "reason": "storage quota exceeded",
+    "chromeUpload": "interrupted-before-terminal-result",
+    "firefoxUpload": "not-started",
+    "desktopLargeArtifactsAffected": ["RPM", "AppImage"]
+  },
+  "android": {
+    "currentlyListedArtifact": "ynx-wallet-1.0.0-testnet-preview-ccaf878c-test-signed.apk",
+    "replacementCandidate": "ynx-wallet-1.0.1-testnet-preview-dc31c9a8-test-signed.apk",
+    "replacementDownloadedAndVerified": false,
+    "downloadFunctional": false,
+    "reason": "exact replacement binary and physical-device launcher proof are not yet available"
+  },
+  "falseUntilDirectProductionEvidence": {
+    "walletWebDeployedPublic": false,
+    "mobileVisibleContractProvedPublic": false,
+    "ynxCanonicalAuthorizationAvailable": false,
+    "androidDownloadFunctional": false,
+    "addChainProved": false,
+    "providerConnected": false,
+    "accountProved": false,
+    "signProved": false,
+    "transactionProved": false,
+    "testnetConnectionProved": false,
+    "productionSigned": false,
+    "storeReleased": false
+  }
+}

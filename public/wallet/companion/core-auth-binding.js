@@ -1,0 +1,1 @@
+export const CORE_WALLET_AUTH_BINDING=Object.freeze({"registryVersion":2,"chainId":"ynx_6423-1","productClientId":"ynx-wallet-v1","requestingProduct":"wallet","bundleId":"com.ynxweb4.wallet","enabled":false,"reviewState":"pending-review","scopes":["wallet:account","wallet:audit","wallet:sessions"],"webCallbacks":[]});

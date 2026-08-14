@@ -122,19 +122,19 @@ const PRODUCT_ROUTES = Object.fromEntries(
 
 const evidence = {
   wallet: {
-    commit: "a1c680982b63",
+    commit: "020f513e5d5d",
     centralAccepted: true,
     productRelease: {
       href: "/releases/ecosystem-release-registry.json",
       release: "wallet-auth-v1.0.0-testnet-preview.5"
     },
-    statusNote: "Release wallet-auth-v1.0.0-testnet-preview.5 plus Wallet Web source a1c680982b63 and desktop/CLI evidence 6856bf41f79f: Android, macOS arm64 CLI, PWA, Chrome/Edge and Firefox Testnet Preview packages are hosted for direct YNX download. Web bundles are unsigned and the CLI is ad-hoc signed; production signing is not claimed.",
+    statusNote: "Wallet Web source 020f513e5d5d publishes a fail-closed mobile discovery companion. Real injected EIP-1193/EIP-6963 providers are required; canonical YNX mobile authorization is unavailable because the frozen callback is null. Account, signing, transaction, Add Chain, Android deep-link functionality, production signing and store release are not claimed.",
     downloads: {
-      web: { status: PRODUCT_STATUS.LIVE, href: "https://wallet-auth.ynxweb4.com/health", external: true, downloadHosted: false, note: "Public canonical Wallet/Auth gateway health; product use remains proof-bound." },
-      pwa: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-web-pwa-0.1.0.zip", "Unsigned PWA Testnet Preview · source a1c680982b63 · SHA-256 63d83cd2…d287 · 272,706 bytes · requires Service Worker and Web Crypto.", "/downloads/wallet-web/sha256-63d83cd20925f2d52c0f21f548fa7a857a4d056e03e5fa16244f173164a7d287/ynx-wallet-web-pwa-0.1.0.zip"),
-      chromeEdge: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-chrome-edge-0.1.0.zip", "Unsigned unpacked Chrome/Edge Testnet Preview · source a1c680982b63 · SHA-256 c733093d…e2aa · 188,846 bytes · Chrome/Edge 120+.", "/downloads/wallet-web/sha256-c733093dea47c6612c8a9d5ecea40be2227f62402f4b4966955c9e1accf4e2aa/ynx-wallet-chrome-edge-0.1.0.zip"),
-      firefox: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-firefox-0.1.0.zip", "Unsigned unpacked Firefox Testnet Preview · source a1c680982b63 · SHA-256 417d9b9e…36b3 · 188,883 bytes · Firefox 128+.", "/downloads/wallet-web/sha256-417d9b9e5babf05fdfdf8161504389eb99c636be75f94444bf4ff91a9b4536b3/ynx-wallet-firefox-0.1.0.zip"),
-      android: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-1.0.0-testnet-preview-ccaf878c-test-signed.apk", "Test-signed Android Testnet Preview · source ccaf878c · SHA-256 68d7cec9…b746 · 78,313,394 bytes · never import production keys.", "/downloads/ynx-wallet-1.0.0-testnet-preview-ccaf878c-test-signed.apk"),
+      web: { status: PRODUCT_STATUS.LIVE, href: "/wallet/companion/", external: false, downloadHosted: false, note: "Fail-closed Wallet companion: injected providers only; mobile YNX authorization remains CANONICAL_AUTH_UNAVAILABLE and MetaMask uses the frozen mobile dapp link." },
+      pwa: { status: PRODUCT_STATUS.PREVIEW, href: "/downloads/wallet-web/sha256-a5e8d413e037ed1e345a4af7c42fc31bc413d6514afb0c8a0a0b82b6047fe209/ynx-wallet-web-pwa-0.1.0.zip", external: false, downloadHosted: false, artifactPath: "ynx-wallet-web-pwa-0.1.0.zip", note: "Unsigned PWA candidate · source 020f513e5d5d · SHA-256 a5e8d413…fe209 · 274,329 bytes · production HTTP verification pending." },
+      chromeEdge: { status: PRODUCT_STATUS.PREVIEW, href: "/downloads/wallet-web/sha256-354c1d7834c4be1ec19af4f19bb69ad8f097ce7ebb713e8b639e382815495266/ynx-wallet-chrome-edge-0.1.0.zip", external: false, downloadHosted: false, artifactPath: "ynx-wallet-chrome-edge-0.1.0.zip", note: "Unsigned unpacked Chrome/Edge candidate · source 020f513e5d5d · SHA-256 354c1d78…5266 · 189,922 bytes · Chrome/Edge 120+ · production HTTP verification pending." },
+      firefox: { status: PRODUCT_STATUS.PREVIEW, href: "/downloads/wallet-web/sha256-4d71e5de63ed24f35b52b847743f9c60bc3dc22e3c49e3461761ee5180466cea/ynx-wallet-firefox-0.1.0.zip", external: false, downloadHosted: false, artifactPath: "ynx-wallet-firefox-0.1.0.zip", note: "Unsigned unpacked Firefox candidate · source 020f513e5d5d · SHA-256 4d71e5de…6cea · 189,959 bytes · Firefox 128+ · production HTTP verification pending." },
+      android: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-1.0.0-testnet-preview-ccaf878c-test-signed.apk", "Test-signed Android Testnet Preview · source ccaf878c · SHA-256 68d7cec9…b746 · 78,313,394 bytes · downloadFunctional=false after unresolved No Activity found report.", "/downloads/ynx-wallet-1.0.0-testnet-preview-ccaf878c-test-signed.apk"),
       ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS project exists; simulator/launch evidence not completed on this host." },
       macos: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-cli-darwin-arm64.gz", "macOS arm64 CLI Testnet Preview · source 6856bf41f79f · SHA-256 21db36f1…591 · 4,904,463 bytes · macOS 12+ · ad-hoc signed, not production signed.", "/downloads/wallet/sha256-21db36f1c80d4e88520918de141a7f71921817799270ff671db88179023b5591/ynx-wallet-cli-darwin-arm64.gz"),
       linux: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-desktop-0.1.0-x86_64.rpm", "Unsigned Linux x64 RPM candidate · evidence c2622ca2e189 · SHA-256 8cf24d83…2bea · 86,926,281 bytes · Fedora 42 x64 lifecycle verified; official hosting gate pending."),

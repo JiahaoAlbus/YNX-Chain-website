@@ -13,6 +13,10 @@ const required = [
   "public/ynx-icon-maskable-512.png",
   "public/ynx-favicon-48.png",
   "public/releases/ecosystem-release-registry.json",
+  "public/wallet/companion/manifest.webmanifest",
+  "public/wallet/companion/sw.js",
+  "public/wallet/companion/mobile-wallet-routing.js",
+  "public/wallet/companion/service-worker-policy.js",
   "public/releases/wallet-linux-x64-rpm-candidate.json",
   "public/releases/owner-record-index.json",
   "public/releases/exchange/fc2276e1ce4c/exchange-status.json",
@@ -77,6 +81,7 @@ const required = [
   "scripts/lib/docs-authority.mjs",
   "scripts/prerender.mjs",
   "scripts/indexnow.mjs",
+  "scripts/verify-wallet-mobile-discovery-publication.mjs",
   "vendor/ynx-docs/artifact-manifest.json",
   "vercel.json"
 ];
@@ -537,9 +542,10 @@ if (
   exchangeRegistry.acceptedIntegrationCommit !== "fc2276e1ce4c" ||
   exchangeRegistry.productRelease !== "/releases/exchange/fc2276e1ce4c/product-release.json" ||
   exchangeRegistry.publicProductMetadata !== "/releases/exchange/fc2276e1ce4c/public-product-metadata.json" ||
-  walletRegistry?.commit !== "a1c680982b63f67ee04c49a2131ba62796d21a8b" ||
-  walletRegistry.walletWebSourceCommit !== "a1c680982b63f67ee04c49a2131ba62796d21a8b" ||
-  walletRegistry.walletWebCarrierCommit !== "7461608692a4d5a349b4c03728850b6d4fbfe6a1" ||
+  walletRegistry?.commit !== "020f513e5d5d12920f75201f637bdd854ccc91aa" ||
+  walletRegistry.walletWebSourceCommit !== "020f513e5d5d12920f75201f637bdd854ccc91aa" ||
+  walletRegistry.walletWebCarrierCommit !== "020f513e5d5d12920f75201f637bdd854ccc91aa" ||
+  walletRegistry.centralEndpointContractCommit !== "d0f89797d13c7667cc187b0c64d5c9e1cb1d8f59" ||
   walletRegistry.desktopCliEvidenceCommit !== "6856bf41f79ffdb0a637d7e1cad11e6931158d67" ||
   walletMacArm64Cli?.url !== "https://www.ynxweb4.com/downloads/wallet/sha256-21db36f1c80d4e88520918de141a7f71921817799270ff671db88179023b5591/ynx-wallet-cli-darwin-arm64.gz" ||
   walletMacArm64Cli.sha256 !== "21db36f1c80d4e88520918de141a7f71921817799270ff671db88179023b5591" ||
@@ -548,9 +554,18 @@ if (
   walletMacArm64Cli.signingClass !== "ad_hoc_linker_signed_local_testnet_cli_candidate" ||
   walletMacArm64Cli.productionSigned !== false ||
   walletMacArm64Cli.sourceEvidenceCommit !== "6856bf41f79ffdb0a637d7e1cad11e6931158d67" ||
-  walletWebPwa?.sha256 !== "63d83cd20925f2d52c0f21f548fa7a857a4d056e03e5fa16244f173164a7d287" || walletWebPwa.bytes !== 272706 || walletWebPwa.hosted !== true ||
-  walletChromeEdge?.sha256 !== "c733093dea47c6612c8a9d5ecea40be2227f62402f4b4966955c9e1accf4e2aa" || walletChromeEdge.bytes !== 188846 || walletChromeEdge.hosted !== true ||
-  walletFirefox?.sha256 !== "417d9b9e5babf05fdfdf8161504389eb99c636be75f94444bf4ff91a9b4536b3" || walletFirefox.bytes !== 188883 || walletFirefox.hosted !== true ||
+  walletWebPwa?.sha256 !== "a5e8d413e037ed1e345a4af7c42fc31bc413d6514afb0c8a0a0b82b6047fe209" || walletWebPwa.bytes !== 274329 || walletWebPwa.hosted !== false ||
+  walletChromeEdge?.sha256 !== "354c1d7834c4be1ec19af4f19bb69ad8f097ce7ebb713e8b639e382815495266" || walletChromeEdge.bytes !== 189922 || walletChromeEdge.hosted !== false ||
+  walletFirefox?.sha256 !== "4d71e5de63ed24f35b52b847743f9c60bc3dc22e3c49e3461761ee5180466cea" || walletFirefox.bytes !== 189959 || walletFirefox.hosted !== false ||
+  walletRegistry.walletWebDeployedPublic !== false ||
+  walletRegistry.mobileVisibleContractProvedPublic !== false ||
+  walletRegistry.ynxCanonicalAuthorizationAvailable !== false ||
+  walletRegistry.addChainProved !== false ||
+  walletRegistry.providerConnected !== false ||
+  walletRegistry.accountProved !== false ||
+  walletRegistry.signProved !== false ||
+  walletRegistry.transactionProved !== false ||
+  walletRegistry.testnetConnectionProved !== false ||
   walletRegistry.releaseTag !== "wallet-auth-v1.0.0-testnet-preview.5" ||
   walletRegistry.gatewayUrl !== "https://wallet-auth.ynxweb4.com" ||
   financeRegistry.state !== "hosted-testnet-preview" ||
