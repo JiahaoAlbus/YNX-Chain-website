@@ -3,7 +3,7 @@ import { ArrowUpRight, CheckCircle2, CircleDashed, Download, GitBranch, ShieldCh
 import { DOWNLOAD_LABELS, PLATFORM_STATUS, PRODUCT_STATUS, STATUS_CONFIG } from "../lib/ecosystemCatalog.js";
 import { ECOSYSTEM_GUIDES } from "../content/ecosystemGuides.js";
 
-const platformOrder = ["web", "android", "ios", "macos", "windows"];
+const platformOrder = ["web", "pwa", "chromeEdge", "firefox", "android", "ios", "macos", "windows", "linux"];
 
 function EvidenceState({ label, value, detail }) {
   return (

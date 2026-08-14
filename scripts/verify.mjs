@@ -171,6 +171,12 @@ const appsPage = fs.readFileSync("src/pages/AppsPage.jsx", "utf8");
 const downloadsPage = fs.readFileSync("src/pages/DownloadPage.jsx", "utf8");
 const productStatusPage = fs.readFileSync("src/pages/ProductStatusPage.jsx", "utf8");
 const ecosystemCatalog = fs.readFileSync("src/lib/ecosystemCatalog.js", "utf8");
+for (const platform of ["pwa", "chromeEdge", "firefox"]) {
+  if (!downloadsPage.includes(`"${platform}"`) || !productStatusPage.includes(`"${platform}"`)) {
+    console.error(`Wallet Web download platform is hidden from a public page: ${platform}`);
+    process.exit(1);
+  }
+}
 const squarePage = fs.readFileSync("src/pages/SquarePage.jsx", "utf8");
 const squareAccountPanel = fs.readFileSync("src/components/SquareAccountPanel.jsx", "utf8");
 const docsPage = fs.readFileSync("src/pages/DocsPage.jsx", "utf8");
