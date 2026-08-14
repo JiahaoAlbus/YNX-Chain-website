@@ -173,6 +173,12 @@ const appsPage = fs.readFileSync("src/pages/AppsPage.jsx", "utf8");
 const downloadsPage = fs.readFileSync("src/pages/DownloadPage.jsx", "utf8");
 const productStatusPage = fs.readFileSync("src/pages/ProductStatusPage.jsx", "utf8");
 const ecosystemCatalog = fs.readFileSync("src/lib/ecosystemCatalog.js", "utf8");
+for (const platform of ["pwa", "chromeEdge", "firefox"]) {
+  if (!downloadsPage.includes(`"${platform}"`) || !productStatusPage.includes(`"${platform}"`)) {
+    console.error(`Wallet Web download platform is hidden from a public page: ${platform}`);
+    process.exit(1);
+  }
+}
 const squarePage = fs.readFileSync("src/pages/SquarePage.jsx", "utf8");
 const squareAccountPanel = fs.readFileSync("src/components/SquareAccountPanel.jsx", "utf8");
 const docsPage = fs.readFileSync("src/pages/DocsPage.jsx", "utf8");
@@ -466,6 +472,9 @@ const acceptedByKey = new Map(acceptedProducts.map((product) => [product.key, pr
 const exchangeRegistry = acceptedByKey.get("exchange");
 const walletRegistry = acceptedByKey.get("wallet");
 const walletMacArm64Cli = walletRegistry?.downloads?.find((download) => download.platform === "macos-arm64-cli");
+const walletWebPwa = walletRegistry?.downloads?.find((download) => download.platform === "web-pwa");
+const walletChromeEdge = walletRegistry?.downloads?.find((download) => download.platform === "chrome-edge-extension");
+const walletFirefox = walletRegistry?.downloads?.find((download) => download.platform === "firefox-extension");
 const financeRegistry = acceptedByKey.get("finance");
 const socialAcceptedRegistry = acceptedByKey.get("social");
 const resourceAcceptedRegistry = acceptedByKey.get("resource");
@@ -499,7 +508,9 @@ if (
   exchangeRegistry.acceptedIntegrationCommit !== "fc2276e1ce4c" ||
   exchangeRegistry.productRelease !== "/releases/exchange/fc2276e1ce4c/product-release.json" ||
   exchangeRegistry.publicProductMetadata !== "/releases/exchange/fc2276e1ce4c/public-product-metadata.json" ||
-  walletRegistry?.commit !== "6856bf41f79f" ||
+  walletRegistry?.commit !== "a1c680982b63f67ee04c49a2131ba62796d21a8b" ||
+  walletRegistry.walletWebSourceCommit !== "a1c680982b63f67ee04c49a2131ba62796d21a8b" ||
+  walletRegistry.walletWebCarrierCommit !== "7461608692a4d5a349b4c03728850b6d4fbfe6a1" ||
   walletRegistry.desktopCliEvidenceCommit !== "6856bf41f79ffdb0a637d7e1cad11e6931158d67" ||
   walletMacArm64Cli?.url !== "https://www.ynxweb4.com/downloads/wallet/sha256-21db36f1c80d4e88520918de141a7f71921817799270ff671db88179023b5591/ynx-wallet-cli-darwin-arm64.gz" ||
   walletMacArm64Cli.sha256 !== "21db36f1c80d4e88520918de141a7f71921817799270ff671db88179023b5591" ||
@@ -508,6 +519,9 @@ if (
   walletMacArm64Cli.signingClass !== "ad_hoc_linker_signed_local_testnet_cli_candidate" ||
   walletMacArm64Cli.productionSigned !== false ||
   walletMacArm64Cli.sourceEvidenceCommit !== "6856bf41f79ffdb0a637d7e1cad11e6931158d67" ||
+  walletWebPwa?.sha256 !== "63d83cd20925f2d52c0f21f548fa7a857a4d056e03e5fa16244f173164a7d287" || walletWebPwa.bytes !== 272706 || walletWebPwa.hosted !== true ||
+  walletChromeEdge?.sha256 !== "c733093dea47c6612c8a9d5ecea40be2227f62402f4b4966955c9e1accf4e2aa" || walletChromeEdge.bytes !== 188846 || walletChromeEdge.hosted !== true ||
+  walletFirefox?.sha256 !== "417d9b9e5babf05fdfdf8161504389eb99c636be75f94444bf4ff91a9b4536b3" || walletFirefox.bytes !== 188883 || walletFirefox.hosted !== true ||
   walletRegistry.releaseTag !== "wallet-auth-v1.0.0-testnet-preview.5" ||
   walletRegistry.gatewayUrl !== "https://wallet-auth.ynxweb4.com" ||
   financeRegistry.state !== "hosted-testnet-preview" ||
