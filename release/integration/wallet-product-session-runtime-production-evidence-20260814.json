@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-08-14T13:16:00Z",
+  "websiteMergeCommit": "3ac32e039ba6d3a96f56fba3544304afcea2586c",
+  "websitePullRequest": "https://github.com/JiahaoAlbus/YNX-Chain-website/pull/36",
+  "productSessionSourceCommit": "37f2485ed604d88ed1457bc497d50f3f7a037469",
+  "productSessionEvidenceCommit": "404f818719b920008f88f076949a4387c5130855",
+  "productionDeployments": [
+    {
+      "id": "dpl_46zZYhHBLGxAZFZ4yXi3cvZUdmJC",
+      "project": "ynx-web4-website-new",
+      "target": "production",
+      "status": "Ready",
+      "url": "https://ynx-web4-website-4cm3mmdtt-jiahaoalbus-projects.vercel.app",
+      "aliases": ["https://ynxweb4.com", "https://www.ynxweb4.com", "https://wallet.ynxweb4.com"]
+    },
+    {
+      "id": "dpl_2zquazRxMmSfvDhWE3VKwA199Ske",
+      "project": "28-website",
+      "target": "production",
+      "status": "Ready",
+      "url": "https://28-website-3nrzbhfau-jiahaoalbus-projects.vercel.app",
+      "aliases": ["https://28-website.vercel.app", "https://28-website-jiahaoalbus-projects.vercel.app"]
+    }
+  ],
+  "productionBackread": [
+    {
+      "origin": "https://www.ynxweb4.com",
+      "docs": {"httpStatus":200,"bytes":4748,"sha256":"0bf7f88b7e686be6faa58cf4eda022f4aa033b831678d5b794584dbc5bea24ae"},
+      "runtime": {"httpStatus":200,"bytes":2059,"sha256":"35d50f3e48d0f27656e0011e8c415fc8cd639fe7008d7397e5208b8a9e1586ae"}
+    },
+    {
+      "origin": "https://ynxweb4.com",
+      "docs": {"httpStatus":200,"bytes":4748,"sha256":"0bf7f88b7e686be6faa58cf4eda022f4aa033b831678d5b794584dbc5bea24ae"},
+      "runtime": {"httpStatus":200,"bytes":2059,"sha256":"35d50f3e48d0f27656e0011e8c415fc8cd639fe7008d7397e5208b8a9e1586ae"}
+    },
+    {
+      "origin": "https://wallet.ynxweb4.com",
+      "docs": {"httpStatus":200,"bytes":4748,"sha256":"d9835b449ec60ee6ff7206b061d2e744a8ba8c92a68dcdce9826e54751ef6b40"},
+      "runtime": {"httpStatus":200,"bytes":2059,"sha256":"35d50f3e48d0f27656e0011e8c415fc8cd639fe7008d7397e5208b8a9e1586ae"}
+    }
+  ],
+  "runtimeBackread": {
+    "sourceCommit": "37f2485ed604d88ed1457bc497d50f3f7a037469",
+    "evidenceCommit": "404f818719b920008f88f076949a4387c5130855",
+    "runtimeStateIntegrityRegressionPassed": true,
+    "restartIdempotencyPassed": true,
+    "productRuntimeMigrationCount": 0,
+    "visibleInstalledWalletApproval": false,
+    "integratedCentral": false
+  },
+  "transportBoundary": {
+    "immutableDeploymentUrlInspectedReady": true,
+    "immutableDeploymentUrlDirectHttpBackread": false,
+    "reason": "Direct requests from the operator environment timed out; official aliases returned complete HTTP evidence."
+  },
+  "claims": {
+    "websiteDeployedPublic": true,
+    "productSessionV2RouteDeployedPublic": true,
+    "aggregateEcosystemDeployedPublic": false,
+    "runtimeProductsMigrated": 0,
+    "visibleInstalledWalletApproval": false,
+    "integratedCentral": false,
+    "productionSigned": false,
+    "storeReleased": false
+  }
+}
