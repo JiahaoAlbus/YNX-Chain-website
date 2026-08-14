@@ -13,6 +13,7 @@ const required = [
   "public/ynx-icon-maskable-512.png",
   "public/ynx-favicon-48.png",
   "public/releases/ecosystem-release-registry.json",
+  "public/releases/wallet-macos-native-candidate.json",
   "public/releases/wallet-linux-x64-rpm-candidate.json",
   "public/releases/owner-record-index.json",
   "public/releases/exchange/fc2276e1ce4c/exchange-status.json",
@@ -152,6 +153,7 @@ const indexHtml = fs.readFileSync("index.html", "utf8");
 const serviceWorker = fs.readFileSync("public/sw.js", "utf8");
 const manifest = JSON.parse(fs.readFileSync("public/manifest.webmanifest", "utf8"));
 const releaseRegistry = JSON.parse(fs.readFileSync("public/releases/ecosystem-release-registry.json", "utf8"));
+const walletMacosNativeCandidate = JSON.parse(fs.readFileSync("public/releases/wallet-macos-native-candidate.json", "utf8"));
 const walletLinuxRpmCandidate = JSON.parse(fs.readFileSync("public/releases/wallet-linux-x64-rpm-candidate.json", "utf8"));
 const ownerRecordIndex = JSON.parse(fs.readFileSync("public/releases/owner-record-index.json", "utf8"));
 const exchangeReleaseRoot = "public/releases/exchange/fc2276e1ce4c";
@@ -643,6 +645,7 @@ if (!vercel.cleanUrls || spaFallback?.destination !== "/") {
   process.exit(1);
 }
 const requiredOfficialDownloads = new Map([
+  ["/downloads/wallet/sha256-4762c10ac9583f632ba41eb5b19554366114cd6ce2adf4f85f211d0f0b264d7b/YNX-Wallet-macOS-ad-hoc.zip", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/wallet/sha256-4762c10ac9583f632ba41eb5b19554366114cd6ce2adf4f85f211d0f0b264d7b/YNX-Wallet-macOS-ad-hoc.zip"],
   ["/downloads/wallet/sha256-8cf24d83dd5da5851484eab14ce9e6cd16946c95699a7af1e11048bbd7692bea/ynx-wallet-desktop-0.1.0-x86_64.rpm", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/wallet/sha256-8cf24d83dd5da5851484eab14ce9e6cd16946c95699a7af1e11048bbd7692bea/ynx-wallet-desktop-0.1.0-x86_64.rpm"],
   ["/downloads/ynx-developer-testnet-preview-macos-unsigned.zip", "https://developer.ynxweb4.com/downloads/ynx-developer-0.2.0-testnet-preview-macos-arm64-unsigned.zip"],
   ["/downloads/ynx-developer-testnet-preview-windows-x64-unsigned.zip", "https://developer.ynxweb4.com/downloads/ynx-developer-0.2.0-testnet-preview-windows-x64-unsigned.zip"],
@@ -654,6 +657,24 @@ const requiredOfficialDownloads = new Map([
   ["/downloads/ynx-finance-1.2.0-testnet-preview-307273b9-test-signed.apk", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-finance-1.2.0-testnet-preview-307273b9-test-signed-8WRdkqJCJnHBCsuyDsRj4XjEreyeYT.apk"],
   ["/downloads/ynx-social-1.0.0-testnet-preview-aa852496-test-signed.apk", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-social-1.0.0-testnet-preview-aa852496-test-signed-15JR16t0lzmvyKU06tyaYXcUGC0sjQ.apk"]
 ]);
+if (
+  walletMacosNativeCandidate.sourceCommit !== "9db0e2410c306c7bbf182a9161978db135dfb7fc" ||
+  walletMacosNativeCandidate.handoffCommit !== "a1ba611635289e22f883e49c4e7b25417f94778d" ||
+  walletMacosNativeCandidate.bytes !== 114140 ||
+  walletMacosNativeCandidate.sha256 !== "4762c10ac9583f632ba41eb5b19554366114cd6ce2adf4f85f211d0f0b264d7b" ||
+  walletMacosNativeCandidate.minimumOS !== "macOS 13.0" ||
+  walletMacosNativeCandidate.architectures?.join(",") !== "x86_64,arm64" ||
+  walletMacosNativeCandidate.signingClass !== "ad-hoc" ||
+  walletMacosNativeCandidate.developerIDSigned !== false ||
+  walletMacosNativeCandidate.notarized !== false ||
+  walletMacosNativeCandidate.releaseState?.downloadHosted !== false ||
+  walletMacosNativeCandidate.releaseState?.deployedPublic !== false ||
+  walletMacosNativeCandidate.releaseState?.productionSigned !== false ||
+  walletMacosNativeCandidate.releaseState?.storeReleased !== false
+) {
+  console.error("Wallet macOS native candidate metadata is not truthful");
+  process.exit(1);
+}
 if (
   walletLinuxRpmCandidate.bytes !== 86926281 ||
   walletLinuxRpmCandidate.sha256 !== "8cf24d83dd5da5851484eab14ce9e6cd16946c95699a7af1e11048bbd7692bea" ||

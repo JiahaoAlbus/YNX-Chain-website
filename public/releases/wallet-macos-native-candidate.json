@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "productId": "wallet-native",
+  "platform": "macos-universal",
+  "sourceCommit": "9db0e2410c306c7bbf182a9161978db135dfb7fc",
+  "handoffCommit": "a1ba611635289e22f883e49c4e7b25417f94778d",
+  "officialUrl": "https://www.ynxweb4.com/downloads/wallet/sha256-4762c10ac9583f632ba41eb5b19554366114cd6ce2adf4f85f211d0f0b264d7b/YNX-Wallet-macOS-ad-hoc.zip",
+  "bytes": 114140,
+  "sha256": "4762c10ac9583f632ba41eb5b19554366114cd6ce2adf4f85f211d0f0b264d7b",
+  "minimumOS": "macOS 13.0",
+  "architectures": [
+    "x86_64",
+    "arm64"
+  ],
+  "signingClass": "ad-hoc",
+  "developerIDSigned": false,
+  "notarized": false,
+  "releaseState": {
+    "downloadHosted": false,
+    "deployedPublic": false,
+    "productionSigned": false,
+    "storeReleased": false
+  }
+}
