@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-08-14T14:39:43Z",
+  "sourceCommit": "3b27b83f18799ff74252469075ec460b6665dd44",
+  "websiteBaseCommit": "16a3c222d2bf1af6bc26ee682efab7ba66b588dd",
+  "websiteBranch": "codex/wallet-aasa-publication-gate-20260814",
+  "bundleId": "com.ynxweb4.wallet",
+  "exactSourceFiles": 5,
+  "exactSourceFilesVerified": true,
+  "tests": {
+    "aasaPolicy": "3/3 passed",
+    "npmTest": true,
+    "npmBuild": true,
+    "missingInputsGenerationExit": 1,
+    "missingInputsGenerationError": "Core associated-domain contract is not frozen"
+  },
+  "productionInputs": {
+    "associatedDomainFrozenProved": false,
+    "realAppleTeamIdProved": false,
+    "bundleIdFrozen": true,
+    "nonEmptyCoreComponentsProved": false,
+    "vercelEnvironmentListRead": false,
+    "vercelEnvironmentListFailure": "bounded Vercel environment query did not return before termination"
+  },
+  "publicEndpoint": {
+    "url": "https://ynxweb4.com/.well-known/apple-app-site-association",
+    "verified": false,
+    "failure": "bounded IPv4/HTTP1.1 request timed out during TLS connection; no HTTP response was received"
+  },
+  "publication": {
+    "generated": false,
+    "deployedPublic": false,
+    "universalLinkEnabled": false,
+    "associatedDomainEntitlementEnabled": false,
+    "htmlFallbackReplaced": false
+  }
+}
