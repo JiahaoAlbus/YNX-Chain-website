@@ -67,6 +67,9 @@ export const STATUS_CONFIG = {
 
 export const DOWNLOAD_LABELS = {
   web: "Web",
+  pwa: "PWA package",
+  chromeEdge: "Chrome / Edge extension",
+  firefox: "Firefox extension",
   android: "Android",
   ios: "iOS",
   macos: "macOS",
@@ -125,9 +128,12 @@ const evidence = {
       href: "/releases/ecosystem-release-registry.json",
       release: "wallet-auth-v1.0.0-testnet-preview.5"
     },
-    statusNote: "Release wallet-auth-v1.0.0-testnet-preview.5 plus desktop/CLI evidence 6856bf41f79f: Android and the macOS arm64 CLI Testnet Preview are hosted for direct download. The CLI consumes the frozen Wallet/Auth protocol, proved chain ID 0x1917 and fail-closed RPC behavior, and is ad-hoc signed rather than production signed.",
+    statusNote: "Release wallet-auth-v1.0.0-testnet-preview.5 plus desktop/CLI evidence 6856bf41f79f: Android and the macOS arm64 CLI Testnet Preview are hosted for direct download. PWA, Chrome/Edge and Firefox packages from Wallet Web source a1c680982b63 are staged for publication but remain unavailable until the three-origin SHA gate passes. Production signing is not claimed.",
     downloads: {
       web: { status: PRODUCT_STATUS.LIVE, href: "https://wallet-auth.ynxweb4.com/health", external: true, downloadHosted: false, note: "Public canonical Wallet/Auth gateway health; product use remains proof-bound." },
+      pwa: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-web-pwa-0.1.0.zip", "Unsigned PWA bundle candidate · source a1c680982b63 · SHA-256 63d83cd2…d287 · 272,706 bytes · requires Service Worker and Web Crypto."),
+      chromeEdge: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-chrome-edge-0.1.0.zip", "Unsigned unpacked Chrome/Edge extension candidate · source a1c680982b63 · SHA-256 c733093d…e2aa · 188,846 bytes · Chrome/Edge 120+."),
+      firefox: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-firefox-0.1.0.zip", "Unsigned unpacked Firefox extension candidate · source a1c680982b63 · SHA-256 417d9b9e…36b3 · 188,883 bytes · Firefox 128+."),
       android: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-1.0.0-testnet-preview-ccaf878c-test-signed.apk", "Test-signed Android Testnet Preview · source ccaf878c · SHA-256 68d7cec9…b746 · 78,313,394 bytes · never import production keys.", "/downloads/ynx-wallet-1.0.0-testnet-preview-ccaf878c-test-signed.apk"),
       ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS project exists; simulator/launch evidence not completed on this host." },
       macos: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-cli-darwin-arm64.gz", "macOS arm64 CLI Testnet Preview · source 6856bf41f79f · SHA-256 21db36f1…591 · 4,904,463 bytes · macOS 12+ · ad-hoc signed, not production signed.", "/downloads/wallet/sha256-21db36f1c80d4e88520918de141a7f71921817799270ff671db88179023b5591/ynx-wallet-cli-darwin-arm64.gz"),
