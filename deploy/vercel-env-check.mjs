@@ -4,6 +4,7 @@ const required = [
   "VITE_YNX_API_BASE_URL",
   "VITE_YNX_EVM_RPC_URL",
   "VITE_YNX_EXPLORER_URL",
+  "VITE_YNX_MONITOR_URL",
   "VITE_YNX_FAUCET_URL",
   "VITE_YNX_DOCS_URL"
 ];
@@ -12,6 +13,7 @@ const publicUrlKeys = new Set([
   "VITE_YNX_API_BASE_URL",
   "VITE_YNX_EVM_RPC_URL",
   "VITE_YNX_EXPLORER_URL",
+  "VITE_YNX_MONITOR_URL",
   "VITE_YNX_FAUCET_URL"
 ]);
 
