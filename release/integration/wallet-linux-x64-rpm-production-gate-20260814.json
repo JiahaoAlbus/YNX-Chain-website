@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-08-14T11:44:00Z",
+  "websiteMainCommit": "56b5406ac4818b60625a361b51d40d8dab2cfaab",
+  "productionDeployment": {
+    "id": "dpl_6XK3FtgdPQWgH1VFW9B7pTejtUBs",
+    "url": "https://ynx-web4-website-86t3010ey-jiahaoalbus-projects.vercel.app",
+    "status": "Ready",
+    "aliases": [
+      "https://ynxweb4.com",
+      "https://www.ynxweb4.com",
+      "https://wallet.ynxweb4.com"
+    ]
+  },
+  "artifact": {
+    "platform": "linux-x64-rpm",
+    "sourceCommit": "7a05ed7625c3bd3fe8b0ac162c1623cacbe9c8fb",
+    "evidenceCommit": "c2622ca2e18949ee83625cc97854c2f097c79eee",
+    "officialPath": "/downloads/wallet/sha256-8cf24d83dd5da5851484eab14ce9e6cd16946c95699a7af1e11048bbd7692bea/ynx-wallet-desktop-0.1.0-x86_64.rpm",
+    "bytes": 86926281,
+    "sha256": "8cf24d83dd5da5851484eab14ce9e6cd16946c95699a7af1e11048bbd7692bea",
+    "minimumOS": "Fedora 42 x64 userland directly tested on Ubuntu 24.04 x64 native runner kernel",
+    "signingClass": "unsigned_linux_rpm_testnet_candidate"
+  },
+  "directProductionEvidence": [
+    {
+      "origin": "https://www.ynxweb4.com",
+      "status": 206,
+      "contentType": "application/x-rpm",
+      "contentRange": "bytes 0-2097151/86926281",
+      "downloadedBytes": 2097152
+    },
+    {
+      "origin": "https://ynxweb4.com",
+      "status": 206,
+      "contentType": "application/x-rpm",
+      "contentRange": "bytes 0-2097151/86926281",
+      "downloadedBytes": 2097152
+    },
+    {
+      "origin": "https://wallet.ynxweb4.com",
+      "status": 206,
+      "contentType": "application/x-rpm",
+      "contentRange": "bytes 0-2097151/86926281",
+      "downloadedBytes": 2097152
+    }
+  ],
+  "productionGate": {
+    "passed": false,
+    "failureClass": "transport",
+    "unsegmentedWwwDownload": "Timed out at the bounded 120-second limit after 14,983,391 of 86,926,281 bytes.",
+    "threeOriginRangeAttempt": "Parallel 8 MiB and 2 MiB range batches encountered bounded connection and partial-transfer timeouts in the current network path.",
+    "completeRemoteShaVerified": false,
+    "completeRemoteBytesVerified": false,
+    "browserVisibleAcceptance": false
+  },
+  "previewEvidence": {
+    "commit": "57c40bb265a155ab6bb2b61a03a6e821ef924987",
+    "completeReassembledBytes": 86926281,
+    "completeReassembledSha256": "8cf24d83dd5da5851484eab14ce9e6cd16946c95699a7af1e11048bbd7692bea",
+    "passed": true,
+    "doesNotPromoteProductionClaims": true
+  },
+  "claims": {
+    "downloadHosted": false,
+    "deployedPublic": false,
+    "productionSigned": false,
+    "storeReleased": false
+  }
+}
