@@ -99,3 +99,21 @@ test("Website handoff manifest is exactly the built Wallet manifest with frozen 
     assert.deepEqual([body.length, hash(body)], expected.get(icon.src.slice(2)));
   }
 });
+
+test("hardened Wallet source package is the exact Website companion materialization", async () => {
+  const artifactManifest = JSON.parse(await readFile(join(repoRoot, "apps/wallet-web/artifact-manifest.json"), "utf8"));
+  const pwa = artifactManifest.artifacts.find((artifact) => artifact.name === "ynx-wallet-web-pwa-0.1.0.zip");
+  const zip = await readFile(join(repoRoot, "apps/wallet-web/artifacts/ynx-wallet-web-pwa-0.1.0.zip"));
+  assert.deepEqual(
+    {bytes: pwa.bytes, sha256: pwa.sha256, observedBytes: zip.length, observedSha256: hash(zip)},
+    {bytes: 272793, sha256: "d54126990dc421ec730112d244e404d5f81ec69b07e030f724925f4dfaf6bc40", observedBytes: 272793, observedSha256: "d54126990dc421ec730112d244e404d5f81ec69b07e030f724925f4dfaf6bc40"},
+  );
+  assert.equal(
+    await readFile(join(repoRoot, "apps/wallet-web/public/sw.js"), "utf8"),
+    await readFile(join(publicDir, "sw.js"), "utf8"),
+  );
+  assert.equal(
+    await readFile(join(repoRoot, "apps/wallet-web/src/service-worker-policy.js"), "utf8"),
+    await readFile(join(publicDir, "service-worker-policy.js"), "utf8"),
+  );
+});

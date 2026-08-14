@@ -538,8 +538,9 @@ if (
   exchangeRegistry.acceptedIntegrationCommit !== "fc2276e1ce4c" ||
   exchangeRegistry.productRelease !== "/releases/exchange/fc2276e1ce4c/product-release.json" ||
   exchangeRegistry.publicProductMetadata !== "/releases/exchange/fc2276e1ce4c/public-product-metadata.json" ||
-  walletRegistry?.commit !== "a1c680982b63f67ee04c49a2131ba62796d21a8b" ||
-  walletRegistry.walletWebSourceCommit !== "a1c680982b63f67ee04c49a2131ba62796d21a8b" ||
+  walletRegistry?.commit !== "b040fe91e414b163e95b7fd02ba0e402d1aa0be4" ||
+  walletRegistry.walletWebSourceCommit !== "b040fe91e414b163e95b7fd02ba0e402d1aa0be4" ||
+  walletRegistry.walletWebNestedScopeHandoffCommit !== "b040fe91e414b163e95b7fd02ba0e402d1aa0be4" ||
   walletRegistry.walletWebCarrierCommit !== "7461608692a4d5a349b4c03728850b6d4fbfe6a1" ||
   walletRegistry.desktopCliEvidenceCommit !== "6856bf41f79ffdb0a637d7e1cad11e6931158d67" ||
   walletMacArm64Cli?.url !== "https://www.ynxweb4.com/downloads/wallet/sha256-21db36f1c80d4e88520918de141a7f71921817799270ff671db88179023b5591/ynx-wallet-cli-darwin-arm64.gz" ||
@@ -549,7 +550,7 @@ if (
   walletMacArm64Cli.signingClass !== "ad_hoc_linker_signed_local_testnet_cli_candidate" ||
   walletMacArm64Cli.productionSigned !== false ||
   walletMacArm64Cli.sourceEvidenceCommit !== "6856bf41f79ffdb0a637d7e1cad11e6931158d67" ||
-  walletWebPwa?.sha256 !== "63d83cd20925f2d52c0f21f548fa7a857a4d056e03e5fa16244f173164a7d287" || walletWebPwa.bytes !== 272706 || walletWebPwa.hosted !== true ||
+  walletWebPwa?.url !== "https://www.ynxweb4.com/downloads/wallet-web/sha256-d54126990dc421ec730112d244e404d5f81ec69b07e030f724925f4dfaf6bc40/ynx-wallet-web-pwa-0.1.0.zip" || walletWebPwa.sha256 !== "d54126990dc421ec730112d244e404d5f81ec69b07e030f724925f4dfaf6bc40" || walletWebPwa.bytes !== 272793 || walletWebPwa.hosted !== true ||
   walletChromeEdge?.sha256 !== "c733093dea47c6612c8a9d5ecea40be2227f62402f4b4966955c9e1accf4e2aa" || walletChromeEdge.bytes !== 188846 || walletChromeEdge.hosted !== true ||
   walletFirefox?.sha256 !== "417d9b9e5babf05fdfdf8161504389eb99c636be75f94444bf4ff91a9b4536b3" || walletFirefox.bytes !== 188883 || walletFirefox.hosted !== true ||
   walletRegistry.releaseTag !== "wallet-auth-v1.0.0-testnet-preview.5" ||
@@ -673,6 +674,7 @@ if (!vercel.cleanUrls || spaFallback?.destination !== "/") {
   process.exit(1);
 }
 const requiredOfficialDownloads = new Map([
+  ["/downloads/wallet-web/sha256-d54126990dc421ec730112d244e404d5f81ec69b07e030f724925f4dfaf6bc40/ynx-wallet-web-pwa-0.1.0.zip", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/wallet-web/sha256-d54126990dc421ec730112d244e404d5f81ec69b07e030f724925f4dfaf6bc40/ynx-wallet-web-pwa-0.1.0.zip"],
   ["/downloads/wallet/sha256-8cf24d83dd5da5851484eab14ce9e6cd16946c95699a7af1e11048bbd7692bea/ynx-wallet-desktop-0.1.0-x86_64.rpm", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/wallet/sha256-8cf24d83dd5da5851484eab14ce9e6cd16946c95699a7af1e11048bbd7692bea/ynx-wallet-desktop-0.1.0-x86_64.rpm"],
   ["/downloads/ynx-developer-testnet-preview-macos-unsigned.zip", "https://developer.ynxweb4.com/downloads/ynx-developer-0.2.0-testnet-preview-macos-arm64-unsigned.zip"],
   ["/downloads/ynx-developer-testnet-preview-windows-x64-unsigned.zip", "https://developer.ynxweb4.com/downloads/ynx-developer-0.2.0-testnet-preview-windows-x64-unsigned.zip"],

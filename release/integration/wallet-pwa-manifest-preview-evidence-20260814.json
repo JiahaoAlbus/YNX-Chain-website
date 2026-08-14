@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "observedAt": "2026-08-14T12:18:00Z",
-  "ownerHandoffCommit": "aad50a37b710c37d243a3034b0527eca75e68aad",
-  "websiteCandidateCommit": "7e56523309ab8731b50b65cf5a10036bc0af3173",
+  "observedAt": "2026-08-14T12:47:33Z",
+  "ownerHandoffCommit": "b040fe91e414b163e95b7fd02ba0e402d1aa0be4",
+  "websiteCandidateCommit": null,
   "websiteBranch": "codex/wallet-pwa-manifest-publication-20260814",
   "preview": {
     "url": "https://ynx-web4-website-dfeqvfwo3-jiahaoalbus-projects.vercel.app",
@@ -20,14 +20,23 @@
   "localVerification": {
     "npmTest": true,
     "npmBuild": true,
-    "sourcePwaZipBytes": 272706,
-    "sourcePwaZipSha256": "63d83cd20925f2d52c0f21f548fa7a857a4d056e03e5fa16244f173164a7d287",
+    "sourcePwaZipBytes": 272793,
+    "sourcePwaZipSha256": "d54126990dc421ec730112d244e404d5f81ec69b07e030f724925f4dfaf6bc40",
     "materializedPwaExact": true,
     "publishedTreeMatchesSourcePwaZip": true,
-    "awaitingHardenedSourceCommit": true,
+    "hardenedSourceCommit": "b040fe91e414b163e95b7fd02ba0e402d1aa0be4",
+    "awaitingHardenedSourceCommit": false,
     "sixFileHandoffExact": true,
     "walletRouteManifestLinkCount": 1,
     "siteRootManifestUnchanged": true
+  },
+  "officialBlobReverification": {
+    "url": "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/wallet-web/sha256-d54126990dc421ec730112d244e404d5f81ec69b07e030f724925f4dfaf6bc40/ynx-wallet-web-pwa-0.1.0.zip",
+    "completed": false,
+    "boundedAttempts": 2,
+    "curlFailure": "LibreSSL SSL_connect: SSL_ERROR_SYSCALL before an HTTP response",
+    "nodeFetchFailure": "TypeError: fetch failed before an HTTP response",
+    "claimsPromoted": false
   },
   "claims": {
     "walletManifestDeployedPublic": false,
