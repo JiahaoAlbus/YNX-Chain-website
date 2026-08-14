@@ -6,7 +6,8 @@ const endpoints = [
   ["Chain status", "GET", `${apiConfig.apiBase}/status`, "Network identity, current height, native asset, and build identity."],
   ["Validator roles", "GET", `${apiConfig.apiBase}/validators`, "Public role reachability and reported heights. Reachability alone is not BFT proof."],
   ["EVM JSON-RPC", "POST", apiConfig.evmRpc, "EVM-compatible reads, transactions, receipts, logs, balances, and chain identity."],
-  ["Explorer", "GET", apiConfig.explorerUrl, "Human-readable blocks, transactions, accounts, validators, and indexed evidence."],
+  ["Explorer", "GET", apiConfig.explorerUrl, "Human-readable canonical blocks, transactions, accounts, validators, contracts, events, fees, indexed coverage, and read-only deep links."],
+  ["Network Monitor", "GET", apiConfig.monitorUrl, "Signed, redacted service identity, dependency, four-validator, finality, lag, throughput, peer, and recovery status."],
   ["Faucet", "GET", apiConfig.faucetUrl, "Rate-limited Testnet YNXT entry. Test assets have no represented monetary value."],
 ];
 
@@ -73,6 +74,8 @@ export function ApiPage() {
           <li>Do not replace missing values with zero or a sample metric.</li>
           <li>After a write timeout, query by transaction hash before retrying.</li>
           <li>Compare validator heights; do not infer convergence from HTTP success.</li>
+          <li>Use Monitor identity and dependency fields together; a healthy probe is narrower than network health.</li>
+          <li>Do not expose loopback URLs, private topology, internal paths, or raw upstream errors to browser clients.</li>
           <li>Keep secrets and signing keys out of browser logs and support messages.</li>
         </ul>
       </section>

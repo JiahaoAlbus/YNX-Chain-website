@@ -1,6 +1,6 @@
 import React from "react";
 import {
-  ArrowUpRight, Blocks, CheckCircle2, CircleAlert, ExternalLink, KeyRound, LifeBuoy,
+  Activity, ArrowUpRight, Blocks, CheckCircle2, CircleAlert, ExternalLink, KeyRound, LifeBuoy,
   Network, Pickaxe, RefreshCw, Search, Server, ShieldCheck, WalletCards
 } from "lucide-react";
 import { apiConfig } from "../lib/api/ynxApi.js";
@@ -35,8 +35,15 @@ const chapters = [
   },
   {
     id: "explorer", eyebrow: "Explorer manual / 浏览器手册", title: "Find a transaction, address, or block quickly", icon: Search,
-    intro: "Use the global search for an exact transaction hash, ynx1 address, compatible 0x address, or block height. Use Quick find to narrow the live transaction list by hash, address, type, amount, or block.",
-    checklist: ["Transaction view: confirm From → To, amount, fee, status, and containing block.", "Address view: review balance, nonce, and inbound/outbound history; Rich list is a balance ranking, not ownership identity.", "Block view: prioritize transaction-bearing blocks; compact empty blocks carry no transfer content.", "If Explorer is catching up, compare indexed height with chain height and wait for alignment before concluding data is absent.", "Switch English/中文 in the Explorer header; the preference is retained locally."],
+    intro: "Search a block height, transaction hash, ynx1 address, compatible 0x address, YNXT, or registered contract. Exact results open read-only deep links that can be copied and refreshed.",
+    checklist: ["Transaction view: confirm From → To, amount, gas or fee, finalized status, block, time, nonce, and events.", "Address view: review current balance, native holdings, indexed history, contract activity, coverage time, and observed inbound/outbound flow; Rich list is a balance ranking, not ownership identity.", "Block view: prioritize transaction-bearing blocks; compact empty blocks carry no transfer content, and a historical view cannot accept a new transaction.", "Use pagination and Quick find rather than assuming the first page is complete.", "If Explorer is catching up, compare latest indexed height with canonical height and wait for alignment before concluding data is absent.", "If live updates disconnect, wait for automatic reconnect or use Refresh. An unavailable source must remain visibly unavailable.", "Choose any supported locale in the Explorer header; Arabic uses right-to-left layout and the preference is retained locally."],
+    warning: "Explorer never needs a mnemonic, private key, password, or one-time code. A block is not a fixed one-YNXT reward; current fees and rewards follow the chain's actual economic parameters.",
+  },
+  {
+    id: "monitor", eyebrow: "Monitor manual / 网络监控手册", title: "Read network health without exposing infrastructure", icon: Activity,
+    intro: "YNX Monitor accepts a signed, fresh, redacted status projection. It reports failure when a required dependency is missing instead of substituting sample values or raw upstream errors.",
+    checklist: ["Confirm snapshot checked time, publisher signature state, source commit, release, and process start time.", "Review RPC, Indexer, Explorer, Faucet, and Gateway rows together with dependency status.", "Compare the observed four-validator set, canonical and indexed heights, lag, finality, block interval, TPS, peers, and synchronization.", "Treat process-scoped trend history as accepted snapshots, not a historical uptime claim.", "During an incident, distinguish initial failure, continuing failure, and recovery; do not infer convergence from one HTTP 200 response.", "Treat StreamBFT as shadow/candidate until an independently accepted cutover identifies it as active."],
+    warning: "Browser-visible status must not contain server addresses, internal paths, credentials, topology, or raw upstream errors. If identity or a dependency cannot be verified, the correct state is unavailable.",
   },
   {
     id: "node", eyebrow: "Node join manual / 节点加入手册", title: "Prepare a node without exposing validator keys", icon: Server,
@@ -102,8 +109,15 @@ const chaptersZh = {
   },
   explorer: {
     title: "快速找到交易、地址或区块",
-    intro: "全局搜索支持精确交易哈希、ynx1 地址、兼容 0x 地址和区块高度；快速筛选可按哈希、地址、类型、金额或区块缩小实时交易列表。",
-    checklist: ["交易页：核对 From → To、金额、费用、状态与所在区块。", "地址页：查看余额、nonce、转入与转出历史；富豪榜仅按余额排名，并不代表地址所有者身份。", "区块页：优先展示含交易区块；空区块应紧凑显示，因为没有转账内容。", "浏览器追赶高度时，对比已索引高度与链高度；两者对齐前不要断言数据缺失。", "可在浏览器顶部切换 English/中文，选择会保存在本机。"],
+    intro: "可搜索区块高度、交易哈希、ynx1 地址、兼容 0x 地址、YNXT 或已登记合约；精确结果会打开可复制、可刷新的只读深链接。",
+    checklist: ["交易页：核对 From → To、金额、Gas 或费用、最终状态、区块、时间、nonce 与事件。", "地址页：查看当前余额、原生资产、已索引历史、合约活动、覆盖时间及转入/转出资金流；富豪榜仅按余额排名，并不代表地址所有者身份。", "区块页：优先展示含交易区块；空区块紧凑显示，历史区块不能接收新交易。", "使用分页和快速筛选，不要把第一页误当作全部记录。", "浏览器追赶高度时，对比最新索引高度与链上规范高度；两者对齐前不要断言数据缺失。", "实时连接断开后等待自动重连或使用刷新；依赖不可用时必须明确显示不可用。", "可在顶部选择任一受支持语言；阿拉伯语使用真正的从右到左布局，选择保存在本机。"],
+    warning: "Explorer 永远不需要助记词、私钥、密码或一次性验证码。区块不等于固定 1 YNXT 奖励；费用与奖励以链上真实经济参数为准。",
+  },
+  monitor: {
+    title: "在不泄露基础设施的前提下读取网络健康状态",
+    intro: "YNX Monitor 只接受经过签名、仍新鲜且已脱敏的状态投影。必需依赖缺失时显示失败，不会替换成样例数值或原始上游错误。",
+    checklist: ["确认快照检查时间、发布者签名状态、源码提交、发布版本与进程启动时间。", "同时检查 RPC、Indexer、Explorer、Faucet 与 Gateway 及其依赖状态。", "比较观测到的四验证者集合、规范/索引高度、滞后、最终性、出块间隔、TPS、peer 与同步状态。", "进程范围内的趋势仅代表已接受快照，不能当作历史可用率。", "故障时区分首次失败、持续失败与恢复；单个 HTTP 200 不能证明网络收敛。", "在独立验收的切换发生前，StreamBFT 始终是 shadow/candidate。"],
+    warning: "浏览器状态不得包含服务器地址、内部路径、凭证、拓扑或原始上游错误。无法验证身份或依赖时，正确状态是不可用。",
   },
   node: {
     title: "在不暴露验证者密钥的前提下准备节点",
