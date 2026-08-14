@@ -10,6 +10,13 @@ import {
   WALLET_MANIFEST_HREF,
   WALLET_ROUTE,
 } from "../../../release/integration/wallet-web-pwa-site/wallet-manifest-binding.mjs";
+import {
+  connectWallet,
+  sendTransaction,
+  signMessage,
+  verifyTestnetRpc,
+  walletActionGates,
+} from "../../../public/wallet/companion/provider.js";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(here, "../../..");
@@ -116,4 +123,31 @@ test("hardened Wallet source package is the exact Website companion materializat
     await readFile(join(repoRoot, "apps/wallet-web/src/service-worker-policy.js"), "utf8"),
     await readFile(join(publicDir, "service-worker-policy.js"), "utf8"),
   );
+});
+
+test("RPC timeout keeps account, signing, transaction, and chain-changing actions fail closed", async () => {
+  const timeout = Object.assign(new Error("simulated bounded RPC timeout"), {name: "TimeoutError"});
+  const unavailable = async () => { throw timeout; };
+  const providerCalls = [];
+  const provider = {request: async (input) => { providerCalls.push(input); throw new Error("provider must not be reached"); }};
+
+  await assert.rejects(() => verifyTestnetRpc(unavailable), (error) => error.code === "RPC_UNAVAILABLE");
+  await assert.rejects(() => connectWallet(provider, {fetcher: unavailable}), (error) => error.code === "RPC_UNAVAILABLE");
+  await assert.rejects(() => signMessage(provider, null, "must remain blocked"), (error) => error.code === "INVALID_ACCOUNT");
+  await assert.rejects(
+    () => sendTransaction(provider, {
+      from: "0x1111111111111111111111111111111111111111",
+      to: "0x2222222222222222222222222222222222222222",
+      value: "0x0",
+      data: "0x",
+    }, {fetcher: unavailable}),
+    (error) => error.code === "RPC_UNAVAILABLE",
+  );
+  assert.deepEqual(providerCalls, []);
+  assert.deepEqual(walletActionGates(provider, null, null, false), {
+    canAddChain: false,
+    canSwitchChain: false,
+    canSign: false,
+    canSendTransaction: false,
+  });
 });

@@ -1,11 +1,12 @@
 {
   "schemaVersion": 1,
-  "observedAt": "2026-08-14T12:47:33Z",
+  "observedAt": "2026-08-14T13:10:59Z",
   "ownerHandoffCommit": "b040fe91e414b163e95b7fd02ba0e402d1aa0be4",
-  "websiteCandidateCommit": null,
+  "websiteCandidateCommit": "7d01f3a7a4d1299664abb9eea5b66aa4bf111a40",
   "websiteBranch": "codex/wallet-pwa-manifest-publication-20260814",
   "preview": {
-    "url": "https://ynx-web4-website-dfeqvfwo3-jiahaoalbus-projects.vercel.app",
+    "deploymentId": "dpl_9x5NqHQVo1SBjJcpEZwKkjxBE5de",
+    "url": "https://ynx-web4-website-r3mjqeqe0-jiahaoalbus-projects.vercel.app",
     "status": "Ready",
     "walletPageStatus": 200,
     "walletPageContentType": "text/html",
@@ -13,9 +14,52 @@
       "/wallet/companion/manifest.webmanifest"
     ],
     "exactWalletManifestLinkCount": 1,
-    "manifestRequestCompleted": false,
-    "failureClass": "preview-protection-transport",
-    "failure": "The protected Preview manifest request produced no response before the bounded 60-second stop."
+    "manifestRequestCompleted": true,
+    "manifestStatus": 200,
+    "manifestContentType": "application/manifest+json",
+    "manifestExact": true,
+    "iconsExact": true,
+    "serviceWorkerStatus": 200,
+    "serviceWorkerExactSource": true,
+    "serviceWorkerPolicyStatus": 200,
+    "serviceWorkerPolicyExactSource": true,
+    "contentSecurityPolicyAllowsExactRpc": true,
+    "contentSecurityPolicyRpcOrigin": "https://evm.ynxweb4.com",
+    "pwaDownload": {
+      "status": 200,
+      "contentType": "application/zip",
+      "contentDisposition": "attachment",
+      "contentLength": 272793,
+      "bytes": 272793,
+      "sha256": "d54126990dc421ec730112d244e404d5f81ec69b07e030f724925f4dfaf6bc40",
+      "exactLocalArtifact": true
+    },
+    "registryExactSource": true,
+    "offlineInstallabilityStaticContract": true,
+    "serverSideChainIdentity": {
+      "status": 200,
+      "ok": true,
+      "checkedAt": "2026-08-14T13:02:29.913Z",
+      "source": "https://rpc.ynxweb4.com/evm",
+      "chainId": "0x1917"
+    },
+    "runtimeRpcChainIdProved": false,
+    "runtimeRpcFailure": "curl IPv4/HTTP1.1 timed out during the TLS connection to evm.ynxweb4.com after 10 seconds; no RPC response was received",
+    "visibleFailClosedAcceptance": {
+      "url": "http://127.0.0.1:4187/wallet/companion/index.html",
+      "sourceIsExactPreviewMaterialization": true,
+      "statusContains": "RPC_UNAVAILABLE",
+      "statusStatesWalletStateUnchanged": true,
+      "addChainDisabled": true,
+      "switchChainDisabled": true,
+      "signDisabled": true,
+      "sendTransactionDisabled": true,
+      "accountSuccessShown": false,
+      "signatureSuccessShown": false,
+      "transactionSuccessShown": false
+    },
+    "rpcTimeoutExecutableTestPassed": true,
+    "failClosedTestnetPreviewGatePassed": true
   },
   "localVerification": {
     "npmTest": true,
@@ -42,6 +86,10 @@
     "walletManifestDeployedPublic": false,
     "installedLocal": false,
     "coldLaunchProved": false,
-    "secondLaunchProved": false
+    "secondLaunchProved": false,
+    "testnetConnectionProved": false,
+    "accountProved": false,
+    "signingProved": false,
+    "transactionProved": false
   }
 }
