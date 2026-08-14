@@ -1,0 +1,20 @@
+{
+  "schema": "ynx-wallet-product-session-migration/v1",
+  "protocolVersion": "2",
+  "runtimeMigrationCount": 0,
+  "meaning": "Registry coverage is not runtime migration evidence.",
+  "products": [
+    { "productId": "social", "registered": true, "runtimeMigrated": false },
+    { "productId": "pay", "registered": true, "runtimeMigrated": false },
+    { "productId": "shop", "registered": true, "runtimeMigrated": false },
+    { "productId": "exchange", "registered": true, "runtimeMigrated": false },
+    { "productId": "quant", "registered": true, "runtimeMigrated": false },
+    { "productId": "developer", "registered": true, "runtimeMigrated": false },
+    { "productId": "video", "registered": true, "runtimeMigrated": false },
+    { "productId": "creator-studio", "registered": true, "runtimeMigrated": false },
+    { "productId": "calendar", "registered": true, "runtimeMigrated": false },
+    { "productId": "finance", "registered": true, "runtimeMigrated": false },
+    { "productId": "dex", "registered": true, "runtimeMigrated": false },
+    { "productId": "card", "registered": true, "runtimeMigrated": false }
+  ]
+}

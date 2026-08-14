@@ -1,0 +1,38 @@
+{
+  "schema": "ynx-wallet-product-session-release/v1",
+  "release": "1.1.0",
+  "sourceCommit": "d8863f6b28752f427929a1c953dd035e096820ff",
+  "status": {
+    "implementedLocal": true,
+    "testedLocal": true,
+    "sourcePackageHosted": true,
+    "integratedCentral": false,
+    "appGatewayDeployed": false,
+    "productRuntimeMigrationCount": 0,
+    "productionSigned": false,
+    "storeReleased": false
+  },
+  "files": [
+    {
+      "file": "migration-matrix.json",
+      "bytes": 1131,
+      "sha256": "f0ec2affe78e37cd4266e9efd21fa05cdc9b21fac5164b4c4ff0bf3727dadbd8"
+    },
+    {
+      "file": "product-session-registry.json",
+      "bytes": 6130,
+      "sha256": "d2826eb419abca4444ccb50d79537fa7f6a3643948d82ed9b52914b7169c107b"
+    },
+    {
+      "file": "validation-summary.json",
+      "bytes": 822,
+      "sha256": "99d530a03bb351b38489e05add1e9004684d01f93fbab2039c302bc89bf6779a"
+    },
+    {
+      "file": "ynx-chain-wallet-auth-1.1.0.tgz",
+      "bytes": 101437,
+      "sha256": "7c7f36c364c89d5c51808cd4098d4fcbde147eda698960c80da8301f5f58276b",
+      "npmSha1": "fb1f684094fcf9144bbed929561cb71dbf31b3e1"
+    }
+  ]
+}

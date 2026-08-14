@@ -601,6 +601,14 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .docsProductGuides ul svg { margin-top: 3px; color: var(--blue); }
 .docsProductGuides .textLink { grid-column: 1 / -1; justify-self: start; }
 .docsSafetyNote { display: grid; grid-template-columns: 28px minmax(0,1fr); gap: 16px; margin: 40px 0 24px; padding: 22px; color: white; background: var(--blue); }
+.docsSessionRelease { display: grid; grid-template-columns: minmax(0,1.35fr) minmax(260px,.65fr); gap: 34px; margin-top: 38px; padding: 30px; border: 1px solid var(--blue); background: color-mix(in srgb, var(--blue) 4%, white); }
+.docsSessionRelease h2 { margin: 8px 0 12px; }
+.docsSessionRelease p { max-width: 760px; color: var(--muted); line-height: 1.65; }
+.docsSessionReleaseActions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 20px; }
+.docsSessionRelease dl { display: grid; gap: 1px; margin: 0; background: var(--line); border: 1px solid var(--line); }
+.docsSessionRelease dl div { padding: 13px 15px; background: white; }
+.docsSessionRelease dt { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; }
+.docsSessionRelease dd { margin: 5px 0 0; font-weight: 720; line-height: 1.35; }
 .docsSafetyNote p { margin: 6px 0 0; color: rgba(255,255,255,.72); line-height: 1.55; }
 .docsBundleExport { margin-top: 18px; border: 1px solid var(--line); }
 .docsBundleExport summary { min-height: 54px; display: flex; align-items: center; gap: 9px; padding: 13px 16px; color: var(--muted); cursor: pointer; font-size: 13px; }
@@ -791,6 +799,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
 [data-theme="dark"] .scenePlane,
 [data-theme="dark"] .appSearch,
 [data-theme="dark"] .appFilterRow button { color: var(--ink); background: var(--surface-raised); }
+[data-theme="dark"] .docsSessionRelease,
+[data-theme="dark"] .docsSessionRelease dl div { background: var(--surface-raised); }
 [data-theme="dark"] .appTryNow,
 [data-theme="dark"] .faucetInput,
 [data-theme="dark"] .faucetResult button,
@@ -995,6 +1005,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
   .docsManualHeader { align-items: start; gap: 24px; }
   .docsProductGuides summary { grid-template-columns: 1fr; gap: 7px; }
   .docsProductGuides details > div { gap: 24px; padding: 24px 18px; }
+  .docsSessionRelease { grid-template-columns: 1fr; padding: 22px 18px; }
   .docSection { margin-bottom: 50px; padding-bottom: 54px; }
   .docRows div { grid-template-columns: 1fr; gap: 6px; padding: 13px 0; }
   .codeBlock pre { padding-left: 16px; padding-right: 16px; }
