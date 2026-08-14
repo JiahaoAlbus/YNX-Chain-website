@@ -27,6 +27,7 @@ const required = [
   "public/releases/wallet-session-router/d8863f6b2875/product-session-registry.json",
   "public/releases/wallet-session-router/d8863f6b2875/validation-summary.json",
   "public/releases/wallet-session-router/d8863f6b2875/ynx-chain-wallet-auth-1.1.0.tgz",
+  "public/releases/wallet-session-router/cc6c393608a1/runtime.json",
   "public/da45868fe3e0818f27f187b21a56ccb5.txt",
   "src/main.jsx",
   "src/styles.css",
@@ -163,6 +164,7 @@ const walletSessionRelease = JSON.parse(fs.readFileSync(`${walletSessionReleaseR
 const walletSessionMigration = JSON.parse(fs.readFileSync(`${walletSessionReleaseRoot}/migration-matrix.json`, "utf8"));
 const walletSessionRegistry = JSON.parse(fs.readFileSync(`${walletSessionReleaseRoot}/product-session-registry.json`, "utf8"));
 const walletSessionValidation = JSON.parse(fs.readFileSync(`${walletSessionReleaseRoot}/validation-summary.json`, "utf8"));
+const walletSessionRuntime = JSON.parse(fs.readFileSync("public/releases/wallet-session-router/cc6c393608a1/runtime.json", "utf8"));
 const header = fs.readFileSync("src/components/SiteHeader.jsx", "utf8");
 const i18n = fs.readFileSync("src/lib/i18n.jsx", "utf8");
 const commandPalette = fs.readFileSync("src/components/CommandPalette.jsx", "utf8");
@@ -302,6 +304,28 @@ if (
   console.error("wallet Product Session release identity, evidence, or truthful public boundary is invalid");
   process.exit(1);
 }
+if (
+  walletSessionRuntime.schema !== "ynx-product-session-v2-public-runtime/v1" ||
+  walletSessionRuntime.publicOrigin !== "https://rest.ynxweb4.com" ||
+  walletSessionRuntime.routePrefix !== "/v2/product-sessions/" ||
+  walletSessionRuntime.sourceCommit !== "cc6c393608a11022f8617eede753af4c578d0ecd" ||
+  walletSessionRuntime.evidence?.evidenceCommit !== "cd90b96271b3881bfe6db134aa54c7bb90a29a62" ||
+  walletSessionRuntime.status?.rollbackDrillPassed !== true ||
+  walletSessionRuntime.status?.publicMountPassed !== true ||
+  walletSessionRuntime.status?.cryptographicLifecyclePassed !== true ||
+  walletSessionRuntime.status?.restartStateDigestPreserved !== true ||
+  walletSessionRuntime.status?.legacyAppGatewayReplaced !== false ||
+  walletSessionRuntime.status?.legacyWalletGatewayReplaced !== false ||
+  walletSessionRuntime.status?.integratedCentral !== false ||
+  walletSessionRuntime.status?.productRuntimeMigrationCount !== 0 ||
+  walletSessionRuntime.status?.visibleInstalledWalletApproval !== false ||
+  walletSessionRuntime.status?.productionSigned !== false ||
+  walletSessionRuntime.status?.storeReleased !== false ||
+  walletSessionRuntime.lifecycle?.visibleWalletApproval !== false
+) {
+  console.error("wallet Product Session public runtime evidence or truth boundary is invalid");
+  process.exit(1);
+}
 for (const file of ["migration-matrix.json", "product-session-registry.json", "validation-summary.json", "ynx-chain-wallet-auth-1.1.0.tgz"]) {
   const record = walletSessionFiles.get(file);
   const body = fs.readFileSync(`${walletSessionReleaseRoot}/${file}`);
@@ -314,8 +338,10 @@ for (const file of ["migration-matrix.json", "product-session-registry.json", "v
 if (
   !docsPage.includes("/releases/wallet-session-router/d8863f6b2875/release.json") ||
   !docsPage.includes("/releases/wallet-session-router/d8863f6b2875/ynx-chain-wallet-auth-1.1.0.tgz") ||
+  !docsPage.includes("/releases/wallet-session-router/cc6c393608a1/runtime.json") ||
   !docsPage.includes("Product runtime migrations</dt><dd>0 verified") ||
-  !docsPage.includes("Public App Gateway</dt><dd>Not deployed") ||
+  !docsPage.includes("Public Product Session v2 Gateway</dt><dd>Deployed · rollback and restart verified") ||
+  !docsPage.includes("Legacy App / Wallet Gateways</dt><dd>Unchanged; independent v2 route") ||
   !docsPage.includes("approval not proven")
 ) {
   console.error("wallet Product Session public release or truth boundary is not visible in Docs");
