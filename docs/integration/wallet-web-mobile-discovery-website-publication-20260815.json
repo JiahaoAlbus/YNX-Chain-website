@@ -25,6 +25,30 @@
     "canonicalWebCallback": null,
     "repositoryStaticContent": true
   },
+  "previewVerification": {
+    "websiteCandidateCommit": "2aba2ee47edd5af2eeb9d817f00054043e3e586a",
+    "deploymentId": "dpl_MFXS2JuCGNTVzn6pdDDFHJng4Wje",
+    "url": "https://ynx-web4-website-d05hp63wk-jiahaoalbus-projects.vercel.app",
+    "readyState": "READY",
+    "target": "preview",
+    "staticResources": {
+      "page": "pass-http-200-exact-wallet-manifest-link",
+      "manifest": "pass-http-200-application-manifest-json-632-bytes",
+      "icons": "pass-http-200-exact-bytes-sha256",
+      "serviceWorker": "pass-http-200-exact-sha256",
+      "scopePolicy": "pass-http-200-exact-sha256",
+      "coreBinding": "pass-http-200-exact-sha256-disabled-empty-callbacks",
+      "mobileRouting": "pass-http-200-exact-sha256",
+      "provider": "pass-http-200-exact-sha256"
+    },
+    "packages": {
+      "pwa": {"head":"pass-http-200-application-zip-attachment-274329-bytes","getAndSha256":"pass","sha256":"a5e8d413e037ed1e345a4af7c42fc31bc413d6514afb0c8a0a0b82b6047fe209"},
+      "firefox": {"head":"pass-http-200-application-zip-attachment-189959-bytes","getAndSha256":"pass","sha256":"4d71e5de63ed24f35b52b847743f9c60bc3dc22e3c49e3461761ee5180466cea"},
+      "chromeEdge": {"head":"pass-http-200-application-zip-attachment-189922-bytes","getAndSha256":"false","error":"two independent bounded full GET attempts exited 28: Connection timed out after 30002/30004 milliseconds; a 94961-byte first range succeeded but is not full-artifact proof"}
+    },
+    "allPackageDownloadGatesPassed": false,
+    "pixel9VisibleAcceptance": "pending-owner"
+  },
   "artifacts": [
     {"name":"ynx-wallet-web-pwa-0.1.0.zip","bytes":274329,"sha256":"a5e8d413e037ed1e345a4af7c42fc31bc413d6514afb0c8a0a0b82b6047fe209","signingClass":"unsigned-web-bundle","hosted":false},
     {"name":"ynx-wallet-chrome-edge-0.1.0.zip","bytes":189922,"sha256":"354c1d7834c4be1ec19af4f19bb69ad8f097ce7ebb713e8b639e382815495266","signingClass":"unsigned-unpacked-extension","hosted":false},
