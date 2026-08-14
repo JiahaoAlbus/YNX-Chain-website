@@ -7,6 +7,10 @@ const required = [
   "package.json",
   "index.html",
   "public/manifest.webmanifest",
+  "public/wallet/companion/manifest.webmanifest",
+  "public/wallet/companion/ynx-icon-192.png",
+  "public/wallet/companion/ynx-icon-512.png",
+  "public/wallet/companion/ynx-icon-maskable-512.png",
   "public/sw.js",
   "public/ynx-logo.png",
   "public/ynx-icon-512.png",
@@ -152,6 +156,7 @@ const main = fs.readFileSync("src/main.jsx", "utf8");
 const indexHtml = fs.readFileSync("index.html", "utf8");
 const serviceWorker = fs.readFileSync("public/sw.js", "utf8");
 const manifest = JSON.parse(fs.readFileSync("public/manifest.webmanifest", "utf8"));
+const walletManifest = JSON.parse(fs.readFileSync("public/wallet/companion/manifest.webmanifest", "utf8"));
 const releaseRegistry = JSON.parse(fs.readFileSync("public/releases/ecosystem-release-registry.json", "utf8"));
 const walletLinuxRpmCandidate = JSON.parse(fs.readFileSync("public/releases/wallet-linux-x64-rpm-candidate.json", "utf8"));
 const ownerRecordIndex = JSON.parse(fs.readFileSync("public/releases/owner-record-index.json", "utf8"));
@@ -193,6 +198,31 @@ const indexNowKey = fs.readFileSync("public/da45868fe3e0818f27f187b21a56ccb5.txt
 const indexNowScript = fs.readFileSync("scripts/indexnow.mjs", "utf8");
 const viteConfig = fs.readFileSync("vite.config.js", "utf8");
 const signerSource = JSON.parse(fs.readFileSync("src/lib/ynx-signer/SOURCE.json", "utf8"));
+const walletIconContract = new Map([
+  ["./ynx-icon-192.png", [9838, "02bd7b202a6683d83bbe4b17c246afc969b43284ee945e97167d9606e6df04af"]],
+  ["./ynx-icon-512.png", [45914, "5a6fb80c48a2047ad5632cf0b69f410ebaefd8aff0bb3da7dce28c1ce8c992c7"]],
+  ["./ynx-icon-maskable-512.png", [45914, "5a6fb80c48a2047ad5632cf0b69f410ebaefd8aff0bb3da7dce28c1ce8c992c7"]],
+]);
+if (
+  walletManifest.name !== "YNX Wallet Testnet Companion" ||
+  walletManifest.short_name !== "YNX Wallet" ||
+  walletManifest.id !== "/wallet/companion" ||
+  walletManifest.start_url !== "./" ||
+  walletManifest.scope !== "./" ||
+  walletManifest.icons?.length !== 3 ||
+  walletManifest.icons.some((icon) => {
+    const [bytes, sha256] = walletIconContract.get(icon.src) || [];
+    const body = fs.readFileSync(`public/wallet/companion/${icon.src.replace(/^\.\//, "")}`);
+    return body.length !== bytes || crypto.createHash("sha256").update(body).digest("hex") !== sha256;
+  })
+) {
+  console.error("Wallet PWA manifest or icon identity drifted from the frozen contract");
+  process.exit(1);
+}
+if (!prerender.includes("writeWalletRoute()") || !prerender.includes("/wallet/companion/manifest.webmanifest")) {
+  console.error("Wallet route-specific manifest prerender gate is missing");
+  process.exit(1);
+}
 if (releaseRegistry.products.some((product) => Object.hasOwn(product, "branch"))) {
   console.error("public release registry exposes internal branch names");
   process.exit(1);
@@ -537,8 +567,9 @@ if (
   exchangeRegistry.acceptedIntegrationCommit !== "fc2276e1ce4c" ||
   exchangeRegistry.productRelease !== "/releases/exchange/fc2276e1ce4c/product-release.json" ||
   exchangeRegistry.publicProductMetadata !== "/releases/exchange/fc2276e1ce4c/public-product-metadata.json" ||
-  walletRegistry?.commit !== "a1c680982b63f67ee04c49a2131ba62796d21a8b" ||
-  walletRegistry.walletWebSourceCommit !== "a1c680982b63f67ee04c49a2131ba62796d21a8b" ||
+  walletRegistry?.commit !== "b040fe91e414b163e95b7fd02ba0e402d1aa0be4" ||
+  walletRegistry.walletWebSourceCommit !== "b040fe91e414b163e95b7fd02ba0e402d1aa0be4" ||
+  walletRegistry.walletWebNestedScopeHandoffCommit !== "b040fe91e414b163e95b7fd02ba0e402d1aa0be4" ||
   walletRegistry.walletWebCarrierCommit !== "7461608692a4d5a349b4c03728850b6d4fbfe6a1" ||
   walletRegistry.desktopCliEvidenceCommit !== "6856bf41f79ffdb0a637d7e1cad11e6931158d67" ||
   walletMacArm64Cli?.url !== "https://www.ynxweb4.com/downloads/wallet/sha256-21db36f1c80d4e88520918de141a7f71921817799270ff671db88179023b5591/ynx-wallet-cli-darwin-arm64.gz" ||
@@ -548,7 +579,7 @@ if (
   walletMacArm64Cli.signingClass !== "ad_hoc_linker_signed_local_testnet_cli_candidate" ||
   walletMacArm64Cli.productionSigned !== false ||
   walletMacArm64Cli.sourceEvidenceCommit !== "6856bf41f79ffdb0a637d7e1cad11e6931158d67" ||
-  walletWebPwa?.sha256 !== "63d83cd20925f2d52c0f21f548fa7a857a4d056e03e5fa16244f173164a7d287" || walletWebPwa.bytes !== 272706 || walletWebPwa.hosted !== true ||
+  walletWebPwa?.url !== "https://www.ynxweb4.com/downloads/wallet-web/sha256-d54126990dc421ec730112d244e404d5f81ec69b07e030f724925f4dfaf6bc40/ynx-wallet-web-pwa-0.1.0.zip" || walletWebPwa.sha256 !== "d54126990dc421ec730112d244e404d5f81ec69b07e030f724925f4dfaf6bc40" || walletWebPwa.bytes !== 272793 || walletWebPwa.hosted !== true ||
   walletChromeEdge?.sha256 !== "c733093dea47c6612c8a9d5ecea40be2227f62402f4b4966955c9e1accf4e2aa" || walletChromeEdge.bytes !== 188846 || walletChromeEdge.hosted !== true ||
   walletFirefox?.sha256 !== "417d9b9e5babf05fdfdf8161504389eb99c636be75f94444bf4ff91a9b4536b3" || walletFirefox.bytes !== 188883 || walletFirefox.hosted !== true ||
   walletRegistry.releaseTag !== "wallet-auth-v1.0.0-testnet-preview.5" ||
@@ -672,6 +703,7 @@ if (!vercel.cleanUrls || spaFallback?.destination !== "/") {
   process.exit(1);
 }
 const requiredOfficialDownloads = new Map([
+  ["/downloads/wallet-web/sha256-d54126990dc421ec730112d244e404d5f81ec69b07e030f724925f4dfaf6bc40/ynx-wallet-web-pwa-0.1.0.zip", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/wallet-web/sha256-d54126990dc421ec730112d244e404d5f81ec69b07e030f724925f4dfaf6bc40/ynx-wallet-web-pwa-0.1.0.zip"],
   ["/downloads/wallet/sha256-8cf24d83dd5da5851484eab14ce9e6cd16946c95699a7af1e11048bbd7692bea/ynx-wallet-desktop-0.1.0-x86_64.rpm", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/wallet/sha256-8cf24d83dd5da5851484eab14ce9e6cd16946c95699a7af1e11048bbd7692bea/ynx-wallet-desktop-0.1.0-x86_64.rpm"],
   ["/downloads/ynx-developer-testnet-preview-macos-unsigned.zip", "https://developer.ynxweb4.com/downloads/ynx-developer-0.2.0-testnet-preview-macos-arm64-unsigned.zip"],
   ["/downloads/ynx-developer-testnet-preview-windows-x64-unsigned.zip", "https://developer.ynxweb4.com/downloads/ynx-developer-0.2.0-testnet-preview-windows-x64-unsigned.zip"],

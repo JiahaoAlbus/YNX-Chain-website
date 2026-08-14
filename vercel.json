@@ -83,11 +83,12 @@
         { "key": "X-Frame-Options", "value": "DENY" },
         { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
         { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=(), payment=(), usb=()" },
-        { "key": "Content-Security-Policy", "value": "default-src 'self'; base-uri 'none'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; script-src 'self'; worker-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.ynxweb4.com https://faucet.ynxweb4.com; manifest-src 'self'" }
+        { "key": "Content-Security-Policy", "value": "default-src 'self'; base-uri 'none'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; script-src 'self'; worker-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.ynxweb4.com https://faucet.ynxweb4.com https://evm.ynxweb4.com; manifest-src 'self'" }
       ]
     }
   ],
   "rewrites": [
+    { "source": "/downloads/wallet-web/sha256-d54126990dc421ec730112d244e404d5f81ec69b07e030f724925f4dfaf6bc40/ynx-wallet-web-pwa-0.1.0.zip", "destination": "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/wallet-web/sha256-d54126990dc421ec730112d244e404d5f81ec69b07e030f724925f4dfaf6bc40/ynx-wallet-web-pwa-0.1.0.zip" },
     { "source": "/downloads/wallet/sha256-8cf24d83dd5da5851484eab14ce9e6cd16946c95699a7af1e11048bbd7692bea/ynx-wallet-desktop-0.1.0-x86_64.rpm", "destination": "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/wallet/sha256-8cf24d83dd5da5851484eab14ce9e6cd16946c95699a7af1e11048bbd7692bea/ynx-wallet-desktop-0.1.0-x86_64.rpm" },
     { "source": "/downloads/wallet-web/sha256-63d83cd20925f2d52c0f21f548fa7a857a4d056e03e5fa16244f173164a7d287/ynx-wallet-web-pwa-0.1.0.zip", "destination": "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/wallet/sha256-63d83cd20925f2d52c0f21f548fa7a857a4d056e03e5fa16244f173164a7d287/ynx-wallet-web-pwa-0.1.0.zip" },
     { "source": "/downloads/wallet-web/sha256-c733093dea47c6612c8a9d5ecea40be2227f62402f4b4966955c9e1accf4e2aa/ynx-wallet-chrome-edge-0.1.0.zip", "destination": "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/wallet/sha256-c733093dea47c6612c8a9d5ecea40be2227f62402f4b4966955c9e1accf4e2aa/ynx-wallet-chrome-edge-0.1.0.zip" },

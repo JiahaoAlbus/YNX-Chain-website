@@ -1,4 +1,5 @@
 const CACHE_NAME = "ynx-web-shell-v5-native-i18n-notranslate";
+const PRESERVED_CACHE_PREFIXES = ["ynx-wallet-web-v"];
 const CACHEABLE_DESTINATIONS = new Set(["font", "image", "script", "style"]);
 
 self.addEventListener("install", () => self.skipWaiting());
@@ -6,7 +7,9 @@ self.addEventListener("install", () => self.skipWaiting());
 self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches.keys()
-      .then((keys) => Promise.all(keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key))))
+      .then((keys) => Promise.all(keys
+        .filter((key) => key !== CACHE_NAME && !PRESERVED_CACHE_PREFIXES.some((prefix) => key.startsWith(prefix)))
+        .map((key) => caches.delete(key))))
       .then(() => self.clients.claim()),
   );
 });

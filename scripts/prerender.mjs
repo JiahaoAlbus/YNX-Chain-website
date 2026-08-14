@@ -36,6 +36,8 @@ writeRoute("/docs", {
   },
 });
 
+writeWalletRoute();
+
 emitDocsAuthority(path.join(dist, "docs-authority"), root);
 writePublicMetadata();
 writeDiscoveryFiles();
@@ -49,6 +51,17 @@ function writeRoute(route, { title, description, body, jsonLd }) {
     .replace(/<meta name="description" content="[^"]*"\s*\/?>/, `<meta name="description" content="${escapeAttribute(description)}" />`)
     .replace("</head>", `<link rel="canonical" href="${escapeAttribute(canonical)}" />\n    <script type="application/ld+json">${safeJson(jsonLd)}</script>\n  </head>`)
     .replace('<div id="root"></div>', `<div id="root">${body}</div>`);
+  const directory = path.join(dist, route.replace(/^\/+/, ""));
+  fs.mkdirSync(directory, { recursive: true });
+  fs.writeFileSync(path.join(directory, "index.html"), html);
+  fs.writeFileSync(path.join(dist, `${route.replace(/^\/+/, "")}.html`), html);
+}
+
+function writeWalletRoute() {
+  const route = "/dapp/wallet";
+  const html = baseHtml
+    .replace(/<link rel="manifest" href="\/manifest\.webmanifest"\s*\/?>/, '<link rel="manifest" href="/wallet/companion/manifest.webmanifest" />')
+    .replace(/<title>[\s\S]*?<\/title>/, "<title>YNX Wallet Testnet Companion</title>");
   const directory = path.join(dist, route.replace(/^\/+/, ""));
   fs.mkdirSync(directory, { recursive: true });
   fs.writeFileSync(path.join(directory, "index.html"), html);
@@ -110,6 +123,14 @@ function verifyOutput() {
     if (!fs.readFileSync(path.join(dist, "sitemap.xml"), "utf8").includes(required)) {
       throw new Error(`sitemap is missing ${required}`);
     }
+  }
+  const walletHtml = fs.readFileSync(path.join(dist, "dapp/wallet.html"), "utf8");
+  const walletManifestLinks = [...walletHtml.matchAll(/<link\b[^>]*\brel="manifest"[^>]*>/g)];
+  if (walletManifestLinks.length !== 1 || !walletManifestLinks[0][0].includes('href="/wallet/companion/manifest.webmanifest"')) {
+    throw new Error("prerendered Wallet route is not bound to the exact Wallet manifest");
+  }
+  if (!baseHtml.includes('href="/manifest.webmanifest"') || baseHtml.includes('href="/wallet/companion/manifest.webmanifest"')) {
+    throw new Error("site-wide manifest identity was changed by the Wallet route binding");
   }
   const publicMetadata = JSON.parse(fs.readFileSync(path.join(dist, "public-product-metadata.json"), "utf8"));
   const productRelease = JSON.parse(fs.readFileSync(path.join(dist, "product-release.json"), "utf8"));
