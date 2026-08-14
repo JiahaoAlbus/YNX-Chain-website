@@ -1,19 +1,19 @@
 {
   "schema": "ynx-product-session-v2-public-runtime/v1",
-  "capturedAt": "2026-08-14T11:31:02Z",
+  "capturedAt": "2026-08-14T12:50:00Z",
   "publicOrigin": "https://rest.ynxweb4.com",
   "routePrefix": "/v2/product-sessions/",
-  "sourceCommit": "cc6c393608a11022f8617eede753af4c578d0ecd",
-  "release": "ynx-product-session-v2-cc6c393608a1",
+  "sourceCommit": "37f2485ed604d88ed1457bc497d50f3f7a037469",
+  "release": "ynx-product-session-v2-37f2485ed604",
   "service": "ynx-product-session-gatewayd",
   "loopbackPort": 6441,
   "registrySha256": "3b1ee629685651fab161d56b99b005d1acfd101b6d84a4c0894f144b5142eb17",
-  "deployedStateSha256": "9b9f620355c04aa13950b0e9ca43ab6853c5d6e63a43aa7e2e33c384fd26e066",
   "status": {
     "rollbackDrillPassed": true,
     "publicMountPassed": true,
     "cryptographicLifecyclePassed": true,
-    "restartStateDigestPreserved": true,
+    "restartIdempotencyPassed": true,
+    "runtimeStateIntegrityRegressionPassed": true,
     "legacyAppGatewayReplaced": false,
     "legacyWalletGatewayReplaced": false,
     "integratedCentral": false,
@@ -22,9 +22,18 @@
     "productionSigned": false,
     "storeReleased": false
   },
+  "stateIntegrity": {
+    "worldReadableRejected": true,
+    "symlinkRejected": true,
+    "hardlinkRejected": true,
+    "sameBytesInodeReplacementRejected": true,
+    "snapshotDigestMismatchRejected": true,
+    "zeroMutationVerified": true
+  },
   "lifecycle": {
     "challengeIdempotent": true,
     "completeIdempotent": true,
+    "completionByteIdenticalAcrossRestart": true,
     "introspectionPassed": true,
     "proofReplayRejected": true,
     "revoked": true,
@@ -33,10 +42,11 @@
   },
   "evidence": {
     "repository": "https://github.com/JiahaoAlbus/YNX-Chain",
-    "evidenceCommit": "cd90b96271b3881bfe6db134aa54c7bb90a29a62",
-    "record": "packages/wallet-auth/evidence/product-session-v2-public-deployment-20260814.json",
-    "evidenceUrl": "https://github.com/JiahaoAlbus/YNX-Chain/blob/cd90b96271b3881bfe6db134aa54c7bb90a29a62/packages/wallet-auth/evidence/product-session-v2-public-deployment-20260814.json",
+    "evidenceCommit": "404f818719b920008f88f076949a4387c5130855",
+    "record": "packages/wallet-auth/evidence/product-session-v2-state-integrity-public-deployment-20260814.json",
+    "evidenceUrl": "https://github.com/JiahaoAlbus/YNX-Chain/blob/404f818719b920008f88f076949a4387c5130855/packages/wallet-auth/evidence/product-session-v2-state-integrity-public-deployment-20260814.json",
     "rollbackEvidenceRecorded": true,
-    "deploymentEvidenceRecorded": true
+    "deploymentEvidenceRecorded": true,
+    "publicStateIntegrityEvidenceRecorded": true
   }
 }
