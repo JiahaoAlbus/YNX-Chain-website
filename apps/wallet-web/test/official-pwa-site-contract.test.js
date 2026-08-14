@@ -4,6 +4,7 @@ import {readFile} from "node:fs/promises";
 import {dirname, join, resolve} from "node:path";
 import test from "node:test";
 import {fileURLToPath} from "node:url";
+import vm from "node:vm";
 import {
   bindWalletManifest,
   WALLET_MANIFEST_HREF,
@@ -12,7 +13,7 @@ import {
 
 const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(here, "../../..");
-const publicDir = join(repoRoot, "apps/wallet-web/public");
+const publicDir = join(repoRoot, "public/wallet/companion");
 const frozenPath = join(repoRoot, "release/integration/wallet-web-pwa-site/frozen-wallet-manifest.webmanifest");
 const hash = body => createHash("sha256").update(body).digest("hex");
 
@@ -36,6 +37,41 @@ test("Wallet route binds the frozen manifest and cleanup restores the site ident
   binding.cleanup();
   binding.cleanup();
   assert.equal(documentLike.link.getAttribute("href"), "/manifest.webmanifest");
+});
+
+test("production CSP allows only the exact Wallet RPC origin requested by the companion", async () => {
+  const vercel = JSON.parse(await readFile(join(repoRoot, "vercel.json"), "utf8"));
+  const globalHeaders = vercel.headers.find((entry) => entry.source === "/(.*)")?.headers || [];
+  const csp = globalHeaders.find((entry) => entry.key === "Content-Security-Policy")?.value || "";
+  const connectSrc = csp.match(/(?:^|;)\s*connect-src\s+([^;]+)/u)?.[1]?.trim().split(/\s+/u) || [];
+  assert.equal(connectSrc.filter((origin) => origin === "https://evm.ynxweb4.com").length, 1);
+  assert.equal(connectSrc.some((origin) => /^https:\/\/\*\./u.test(origin)), false);
+});
+
+test("root worker cleanup preserves the Wallet cache namespace and deletes unrelated stale caches", async () => {
+  const source = await readFile(join(repoRoot, "public/sw.js"), "utf8");
+  const handlers = new Map();
+  const deleted = [];
+  const cacheKeys = ["ynx-web-shell-v5-native-i18n-notranslate", "ynx-wallet-web-v6", "ynx-wallet-web-v5", "legacy-site-cache", "other-wallet-cache"];
+  const context = {
+    URL,
+    Response,
+    caches: {
+      keys: async () => cacheKeys,
+      delete: async (key) => { deleted.push(key); return true; },
+    },
+    self: {
+      addEventListener: (name, handler) => handlers.set(name, handler),
+      skipWaiting() {},
+      clients: {claim: async () => undefined},
+      location: {origin: "https://www.ynxweb4.com"},
+    },
+  };
+  vm.runInNewContext(source, context, {filename: "public/sw.js"});
+  let activation;
+  handlers.get("activate")({waitUntil: (promise) => { activation = promise; }});
+  await activation;
+  assert.deepEqual(deleted.sort(), ["legacy-site-cache", "other-wallet-cache"]);
 });
 
 test("non-Wallet routes never mutate the site manifest", () => {

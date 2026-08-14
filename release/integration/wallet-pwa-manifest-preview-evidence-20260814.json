@@ -23,6 +23,8 @@
     "sourcePwaZipBytes": 272706,
     "sourcePwaZipSha256": "63d83cd20925f2d52c0f21f548fa7a857a4d056e03e5fa16244f173164a7d287",
     "materializedPwaExact": true,
+    "publishedTreeMatchesSourcePwaZip": true,
+    "awaitingHardenedSourceCommit": true,
     "sixFileHandoffExact": true,
     "walletRouteManifestLinkCount": 1,
     "siteRootManifestUnchanged": true

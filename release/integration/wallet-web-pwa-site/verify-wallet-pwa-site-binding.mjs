@@ -76,7 +76,7 @@ export async function verifyWalletPwaSite(fetcher = fetch) {
 
 async function selfTest() {
   const iconBodies = new Map();
-  for (const icon of frozenManifest.icons) iconBodies.set(new URL(icon.src, manifestUrl).href, await readFile(join(repoRoot, "apps/wallet-web/public", icon.src)));
+  for (const icon of frozenManifest.icons) iconBodies.set(new URL(icon.src, manifestUrl).href, await readFile(join(repoRoot, "public/wallet/companion", icon.src)));
   const exactFetch = async url => {
     if (url === pageUrl) return new Response(`<link rel="manifest" href="${manifestUrl}">`, {status: 200, headers: {"content-type": "text/html"}});
     if (url === manifestUrl) return new Response(JSON.stringify(frozenManifest), {status: 200, headers: {"content-type": "application/manifest+json"}});

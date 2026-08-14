@@ -6,7 +6,7 @@
     "dev": "vite --host 127.0.0.1",
     "build": "vite build && node scripts/prerender.mjs && node scripts/indexnow.mjs --dry-run",
     "preview": "vite preview --host 127.0.0.1",
-    "test": "node scripts/docs-authority.mjs --verify-hosting && node scripts/verify.mjs",
+    "test": "node scripts/docs-authority.mjs --verify-hosting && node scripts/verify.mjs && node --test apps/wallet-web/test/*.test.js",
     "docs:verify": "node scripts/docs-authority.mjs --verify",
     "indexnow:dry-run": "node scripts/indexnow.mjs --dry-run",
     "release:indexnow": "node scripts/indexnow.mjs",
