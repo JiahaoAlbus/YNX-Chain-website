@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "productId": "wallet-desktop",
+  "platform": "linux-x64-rpm",
+  "sourceCommit": "7a05ed7625c3bd3fe8b0ac162c1623cacbe9c8fb",
+  "evidenceCommit": "c2622ca2e18949ee83625cc97854c2f097c79eee",
+  "officialUrl": "https://www.ynxweb4.com/downloads/wallet/sha256-8cf24d83dd5da5851484eab14ce9e6cd16946c95699a7af1e11048bbd7692bea/ynx-wallet-desktop-0.1.0-x86_64.rpm",
+  "bytes": 86926281,
+  "sha256": "8cf24d83dd5da5851484eab14ce9e6cd16946c95699a7af1e11048bbd7692bea",
+  "minimumOS": "Fedora 42 x64 userland directly tested on Ubuntu 24.04 x64 native runner kernel",
+  "signingClass": "unsigned_linux_rpm_testnet_candidate",
+  "lifecycle": {
+    "dnfScriptsInstallUpgrade": true,
+    "coldLaunch": true,
+    "secondLaunch": true,
+    "chainId": "0x1917",
+    "rpcFailureClosed": true,
+    "rollbackReupgrade": true,
+    "uninstall": true
+  },
+  "releaseState": {
+    "downloadHosted": false,
+    "deployedPublic": false,
+    "productionSigned": false,
+    "storeReleased": false
+  }
+}

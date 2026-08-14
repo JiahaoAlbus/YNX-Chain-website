@@ -137,6 +137,7 @@ const evidence = {
       android: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-1.0.0-testnet-preview-ccaf878c-test-signed.apk", "Test-signed Android Testnet Preview · source ccaf878c · SHA-256 68d7cec9…b746 · 78,313,394 bytes · never import production keys.", "/downloads/ynx-wallet-1.0.0-testnet-preview-ccaf878c-test-signed.apk"),
       ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS project exists; simulator/launch evidence not completed on this host." },
       macos: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-cli-darwin-arm64.gz", "macOS arm64 CLI Testnet Preview · source 6856bf41f79f · SHA-256 21db36f1…591 · 4,904,463 bytes · macOS 12+ · ad-hoc signed, not production signed.", "/downloads/wallet/sha256-21db36f1c80d4e88520918de141a7f71921817799270ff671db88179023b5591/ynx-wallet-cli-darwin-arm64.gz"),
+      linux: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-desktop-0.1.0-x86_64.rpm", "Unsigned Linux x64 RPM candidate · evidence c2622ca2e189 · SHA-256 8cf24d83…2bea · 86,926,281 bytes · Fedora 42 x64 lifecycle verified; official hosting gate pending."),
       windows: { status: PRODUCT_STATUS.NOT_READY, note: "No Windows package is published for Wallet in this candidate." }
     }
   },

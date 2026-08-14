@@ -13,6 +13,7 @@ const required = [
   "public/ynx-icon-maskable-512.png",
   "public/ynx-favicon-48.png",
   "public/releases/ecosystem-release-registry.json",
+  "public/releases/wallet-linux-x64-rpm-candidate.json",
   "public/releases/owner-record-index.json",
   "public/releases/exchange/fc2276e1ce4c/exchange-status.json",
   "public/releases/exchange/fc2276e1ce4c/manifest.json",
@@ -151,6 +152,7 @@ const indexHtml = fs.readFileSync("index.html", "utf8");
 const serviceWorker = fs.readFileSync("public/sw.js", "utf8");
 const manifest = JSON.parse(fs.readFileSync("public/manifest.webmanifest", "utf8"));
 const releaseRegistry = JSON.parse(fs.readFileSync("public/releases/ecosystem-release-registry.json", "utf8"));
+const walletLinuxRpmCandidate = JSON.parse(fs.readFileSync("public/releases/wallet-linux-x64-rpm-candidate.json", "utf8"));
 const ownerRecordIndex = JSON.parse(fs.readFileSync("public/releases/owner-record-index.json", "utf8"));
 const exchangeReleaseRoot = "public/releases/exchange/fc2276e1ce4c";
 const exchangeManifest = JSON.parse(fs.readFileSync(`${exchangeReleaseRoot}/manifest.json`, "utf8"));
@@ -627,6 +629,7 @@ if (!vercel.cleanUrls || spaFallback?.destination !== "/") {
   process.exit(1);
 }
 const requiredOfficialDownloads = new Map([
+  ["/downloads/wallet/sha256-8cf24d83dd5da5851484eab14ce9e6cd16946c95699a7af1e11048bbd7692bea/ynx-wallet-desktop-0.1.0-x86_64.rpm", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/wallet/sha256-8cf24d83dd5da5851484eab14ce9e6cd16946c95699a7af1e11048bbd7692bea/ynx-wallet-desktop-0.1.0-x86_64.rpm"],
   ["/downloads/ynx-developer-testnet-preview-macos-unsigned.zip", "https://developer.ynxweb4.com/downloads/ynx-developer-0.2.0-testnet-preview-macos-arm64-unsigned.zip"],
   ["/downloads/ynx-developer-testnet-preview-windows-x64-unsigned.zip", "https://developer.ynxweb4.com/downloads/ynx-developer-0.2.0-testnet-preview-windows-x64-unsigned.zip"],
   ["/downloads/ynx-trust-center-4d40557229b4-linux-amd64.tar.gz", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-trust-center-4d40557229b4-linux-amd64.tar.gz"],
@@ -637,6 +640,17 @@ const requiredOfficialDownloads = new Map([
   ["/downloads/ynx-finance-1.2.0-testnet-preview-307273b9-test-signed.apk", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-finance-1.2.0-testnet-preview-307273b9-test-signed-8WRdkqJCJnHBCsuyDsRj4XjEreyeYT.apk"],
   ["/downloads/ynx-social-1.0.0-testnet-preview-aa852496-test-signed.apk", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-social-1.0.0-testnet-preview-aa852496-test-signed-15JR16t0lzmvyKU06tyaYXcUGC0sjQ.apk"]
 ]);
+if (
+  walletLinuxRpmCandidate.bytes !== 86926281 ||
+  walletLinuxRpmCandidate.sha256 !== "8cf24d83dd5da5851484eab14ce9e6cd16946c95699a7af1e11048bbd7692bea" ||
+  walletLinuxRpmCandidate.signingClass !== "unsigned_linux_rpm_testnet_candidate" ||
+  walletLinuxRpmCandidate.releaseState?.downloadHosted !== false ||
+  walletLinuxRpmCandidate.releaseState?.deployedPublic !== false ||
+  walletLinuxRpmCandidate.releaseState?.productionSigned !== false
+) {
+  console.error("Wallet Linux x64 RPM candidate metadata is not truthful");
+  process.exit(1);
+}
 for (const [source, destination] of requiredOfficialDownloads) {
   if (!vercel.rewrites?.some((rewrite) => rewrite.source === source && rewrite.destination === destination)) {
     console.error(`official download rewrite is missing: ${source}`);
