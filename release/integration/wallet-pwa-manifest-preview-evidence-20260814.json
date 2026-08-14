@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-08-14T12:18:00Z",
+  "ownerHandoffCommit": "aad50a37b710c37d243a3034b0527eca75e68aad",
+  "websiteCandidateCommit": "7e56523309ab8731b50b65cf5a10036bc0af3173",
+  "websiteBranch": "codex/wallet-pwa-manifest-publication-20260814",
+  "preview": {
+    "url": "https://ynx-web4-website-dfeqvfwo3-jiahaoalbus-projects.vercel.app",
+    "status": "Ready",
+    "walletPageStatus": 200,
+    "walletPageContentType": "text/html",
+    "manifestLinks": [
+      "/wallet/companion/manifest.webmanifest"
+    ],
+    "exactWalletManifestLinkCount": 1,
+    "manifestRequestCompleted": false,
+    "failureClass": "preview-protection-transport",
+    "failure": "The protected Preview manifest request produced no response before the bounded 60-second stop."
+  },
+  "localVerification": {
+    "npmTest": true,
+    "npmBuild": true,
+    "sourcePwaZipBytes": 272706,
+    "sourcePwaZipSha256": "63d83cd20925f2d52c0f21f548fa7a857a4d056e03e5fa16244f173164a7d287",
+    "materializedPwaExact": true,
+    "sixFileHandoffExact": true,
+    "walletRouteManifestLinkCount": 1,
+    "siteRootManifestUnchanged": true
+  },
+  "claims": {
+    "walletManifestDeployedPublic": false,
+    "installedLocal": false,
+    "coldLaunchProved": false,
+    "secondLaunchProved": false
+  }
+}
