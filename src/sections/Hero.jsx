@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { ArrowUpRight, CheckCircle2, Move3d, WalletCards } from "lucide-react";
+import { Activity, ArrowUpRight, CheckCircle2, Move3d, WalletCards } from "lucide-react";
 import { apiConfig } from "../lib/api/ynxApi.js";
 import { useLocale } from "../lib/i18n.jsx";
 
@@ -140,6 +140,7 @@ export function Hero({ snapshot, connectionState, onAddNetwork }) {
         </p>
         <div className="heroActions">
           <a className="button primary" href={apiConfig.explorerUrl}>{zh ? "打开区块浏览器" : "Open Explorer"} <ArrowUpRight size={18} /></a>
+		  <a className="button secondary" href={apiConfig.monitorUrl}><Activity size={18} /> {zh ? "网络状态" : "Network Status"} <ArrowUpRight size={18} /></a>
           <a className="button secondary" href="/dapp">{zh ? "探索 YNX 生态" : "Explore Ecosystem"} <ArrowUpRight size={18} /></a>
           <button className="button secondary" onClick={onAddNetwork}><WalletCards size={18} /> {zh ? "添加 YNX 测试网" : "Add YNX Testnet"}</button>
         </div>

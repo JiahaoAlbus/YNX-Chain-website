@@ -1,9 +1,10 @@
 import React from "react";
-import { ArrowUpRight, BookOpen, Code2, Coins, Droplets, Search } from "lucide-react";
+import { Activity, ArrowUpRight, BookOpen, Code2, Coins, Droplets, Search } from "lucide-react";
 import { apiConfig } from "../lib/api/ynxApi.js";
 
 const links = [
   { label: "Explorer", detail: "Blocks, transactions and validators", href: apiConfig.explorerUrl, icon: Search },
+  { label: "Network Monitor", detail: "Signed service and network status", href: apiConfig.monitorUrl, icon: Activity },
   { label: "Faucet", detail: "Request testnet YNXT", href: apiConfig.faucetUrl, icon: Droplets },
   { label: "Developer docs", detail: "RPC, SDK and integration paths", href: apiConfig.docsUrl, icon: BookOpen },
   { label: "Chain source", detail: "Runtime and verification code", href: "https://github.com/JiahaoAlbus/YNX-Chain", icon: Code2 },

@@ -248,15 +248,15 @@ const evidence = {
     }
   },
   explorer: {
-    commit: "d4b4a3e5d7d6",
-    statusNote: "Explorer is a public live web deployment through shared URL.",
+	commit: "660ab05db423319d92e9597ce5a280474ae293d6",
+	statusNote: "The currently observed public Explorer release is source-bound at commit 660ab05d. Newer local or candidate work is not represented as deployed until the public /health identity changes and is verified.",
     downloads: {
       web: { status: PRODUCT_STATUS.LIVE, href: apiConfig.explorerUrl, note: "Live public explorer deployment." }
     }
   },
   monitor: {
     commit: "5d42be02",
-    statusNote: "The public YNX Testnet status window is live with a signed, redacted feed built from seven bounded real-service probes. Public status and private operations are deliberately separated: anyone can inspect current availability, while incidents, audit, backup, recovery and rollback proposals require scoped operator authorization. Password login is disabled on the public deployment until canonical Wallet roles are centrally accepted.",
+	statusNote: "The currently observed public Monitor release is 0.2.0-testnet-preview at source commit 5d42be02. Signed v2 service identity, five-service network probes and canonical network projection remain candidate work until the public /version and /status evidence changes.",
     downloads: {
       web: { status: PRODUCT_STATUS.LIVE, href: "https://monitor.ynxweb4.com/", external: true, downloadHosted: false, note: "Live signed Testnet status; private operator controls remain authorization-gated." }
     }
@@ -584,22 +584,22 @@ export const getCatalog = () => [
     name: "YNX Explorer",
     icon: Search,
     status: PRODUCT_STATUS.LIVE,
-    detail: "Live block/tx/account search with SSE updates and stale/catching-up indicators.",
+	detail: "Canonical Testnet blocks, transactions, accounts, validators, native YNXT, contracts, events, fees and indexed account activity with live updates, opaque pagination, read-only deep links, explicit coverage and fail-closed dependency states.",
     entry: { label: "Open Explorer", href: apiConfig.explorerUrl, external: true },
     docs: { ...docsAnchor("explorer"), label: "Explorer docs" },
     downloads: web(PRODUCT_STATUS.LIVE, apiConfig.explorerUrl, "Live public explorer deployment"),
-    metrics: [["Closure", "Chain data evidence"], ["Risk", "Read-only explorer boundary"], ["Readiness", "Public deployment is externalized" ]]
+	metrics: [["Source", "Chain RPC + canonical Indexer"], ["Search", "Block · tx · ynx1 · 0x · YNXT · contract"], ["Boundary", "Read-only; historical views cannot submit transactions"]]
   },
   {
     key: "monitor",
     name: "YNX Monitor",
     icon: MonitorCog,
     status: PRODUCT_STATUS.LIVE,
-    detail: "A public Testnet status window plus a separate private operations control plane. The public feed exposes only signed, fresh, redacted service availability; scoped operators handle alert acknowledgement, incident progression, evidence export, backup and restore verification, and non-executing rollback proposals.",
+	detail: "A signed public Testnet status window for RPC, Indexer, Explorer, Faucet and Gateway identity/dependencies plus a separate private operations plane for four-validator, finality, throughput, peer, incident, recovery and SLO evidence.",
     entry: { label: "Open YNX Monitor", href: "https://monitor.ynxweb4.com/", external: true },
     docs: { ...docsAnchor("monitor"), label: "Monitor docs" },
     downloads: web(PRODUCT_STATUS.LIVE, "https://monitor.ynxweb4.com/", "Live signed Testnet status"),
-    metrics: [["Closure", "Probe → signed status → incident → independent recovery evidence"], ["Risk", "Canonical Wallet role acceptance and hosted recovery drill remain open"], ["Readiness", "Public HTTPS status + 25-worker concurrency evidence"]]
+	metrics: [["Closure", "Probe → signed status → incident → independent recovery evidence"], ["Consensus", "StreamBFT is shadow/candidate, not active"], ["Boundary", "No topology, path, secret or raw upstream error in browser output"]]
   },
   {
     key: "ai",
