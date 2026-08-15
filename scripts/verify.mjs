@@ -549,6 +549,8 @@ const videoAcceptedRegistry = acceptedByKey.get("video");
 const creatorAcceptedRegistry = acceptedByKey.get("creatorStudio");
 const cloudAcceptedRegistry = acceptedByKey.get("cloud");
 const docsAcceptedRegistry = acceptedByKey.get("docs");
+const explorerAcceptedRegistry = acceptedByKey.get("explorer");
+const monitorAcceptedRegistry = acceptedByKey.get("monitor");
 const registryByKey = new Map(releaseRegistry.products?.map((product) => [product.key, product]) || []);
 const payRegistry = registryByKey.get("pay");
 const merchantRegistry = registryByKey.get("merchantConsole");
@@ -567,8 +569,8 @@ if (
   hostedPreviewProducts.length !== 7 ||
   hostedPreviewProducts.map((product) => product.key).sort().join(",") !== "developer,exchange,finance,shop,social,trust,wallet" ||
   hostedPreviewProducts.some((product) => (product.key === "developer" ? product.state !== "public-testnet-web-and-desktop-preview" : product.state !== "hosted-testnet-preview") || !product.releaseTag || !product.downloads?.length || product.downloads.some((download) => !/^[0-9a-f]{64}$/.test(download.sha256) || !(download.bytes > 0) || !download.signingClass)) ||
-  acceptedProducts.length !== 10 ||
-  [...acceptedByKey.keys()].sort().join(",") !== "cloud,creatorStudio,docs,exchange,finance,music,resource,social,video,wallet" ||
+  acceptedProducts.length !== 12 ||
+  [...acceptedByKey.keys()].sort().join(",") !== "cloud,creatorStudio,docs,exchange,explorer,finance,monitor,music,resource,social,video,wallet" ||
   exchangeRegistry?.key !== "exchange" ||
   exchangeRegistry.commit !== "1e5f48d2" ||
   exchangeRegistry.acceptedIntegrationCommit !== "fc2276e1ce4c" ||
@@ -616,6 +618,16 @@ if (
   cloudAcceptedRegistry.releaseTag !== "cloud-v1.0.0-testnet-preview.1" ||
   docsAcceptedRegistry?.acceptedIntegrationCommit !== "5acec59fa572" ||
   docsAcceptedRegistry.releaseTag !== "docs-v1.0.0-testnet-preview.1" ||
+  explorerAcceptedRegistry?.state !== "public-testnet-web" ||
+  explorerAcceptedRegistry.commit !== "8bf7716ee671a5a9b64517280743c5a281899712" ||
+  explorerAcceptedRegistry.publicWeb !== "https://explorer.ynxweb4.com" ||
+  explorerAcceptedRegistry.downloadHosted !== false ||
+  explorerAcceptedRegistry.productionSigned !== false ||
+  monitorAcceptedRegistry?.state !== "public-testnet-status" ||
+  monitorAcceptedRegistry.commit !== "8bf7716ee671a5a9b64517280743c5a281899712" ||
+  monitorAcceptedRegistry.publicWeb !== "https://monitor.ynxweb4.com/" ||
+  monitorAcceptedRegistry.downloadHosted !== false ||
+  monitorAcceptedRegistry.productionSigned !== false ||
   payRegistry?.state !== "public-testnet-web" ||
   payRegistry.publicWeb !== "https://pay-app.ynxweb4.com/" ||
   payRegistry.apiUrl !== "https://pay.ynxweb4.com" ||
@@ -664,7 +676,7 @@ if (
   releaseRegistry.products.some((product) => !product.route.startsWith("/dapp/")) ||
   releaseRegistry.rules?.localArtifactIsDownload !== false
 ) {
-  console.error("release registry must preserve 26 truthful states, seven source-bound hosted previews, and the exact Wallet, Exchange, Finance, Social, Resource, Music, Video, Creator Studio, Cloud and Docs central acceptance set");
+  console.error("release registry must preserve 26 truthful states, seven source-bound hosted previews, and the exact Wallet, Exchange, Explorer, Monitor, Finance, Social, Resource, Music, Video, Creator Studio, Cloud and Docs central acceptance set");
   process.exit(1);
 }
 for (const requiredText of ["downloadHosted", "Local build only", "Download Testnet Preview", "candidate incomplete", "Product status", "wallet-auth-v1.0.0-testnet-preview.5", "exchange-v1.0.0-testnet-preview.3", "shop-v0.3.0-testnet-preview.1", "developer-v0.2.0-testnet-preview.1", "trust-center-v0.1.0-testnet-preview.2"]) {

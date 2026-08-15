@@ -248,15 +248,15 @@ const evidence = {
     }
   },
   explorer: {
-	commit: "660ab05db423319d92e9597ce5a280474ae293d6",
-	statusNote: "The currently observed public Explorer release is source-bound at commit 660ab05d. Newer local or candidate work is not represented as deployed until the public /health identity changes and is verified.",
+	commit: "8bf7716ee671a5a9b64517280743c5a281899712",
+	statusNote: "The public Explorer and canonical Indexer report release ynx-explorer-monitor-8bf7716ee671 at central source commit 8bf7716ee671a5a9b64517280743c5a281899712. Public health shows real Testnet data, four validators and explicit index lag; browser acceptance remains a separate verification state.",
     downloads: {
       web: { status: PRODUCT_STATUS.LIVE, href: apiConfig.explorerUrl, note: "Live public explorer deployment." }
     }
   },
   monitor: {
-    commit: "5d42be02",
-	statusNote: "The currently observed public Monitor release is 0.2.0-testnet-preview at source commit 5d42be02. Signed v2 service identity, five-service network probes and canonical network projection remain candidate work until the public /version and /status evidence changes.",
+    commit: "8bf7716ee671a5a9b64517280743c5a281899712",
+	statusNote: "The public Monitor reports release ynx-explorer-monitor-8bf7716ee671 at central source commit 8bf7716ee671a5a9b64517280743c5a281899712. Its signed v2 public status is available and operational for the configured Testnet probes; private operations remain authorization-gated.",
     downloads: {
       web: { status: PRODUCT_STATUS.LIVE, href: "https://monitor.ynxweb4.com/", external: true, downloadHosted: false, note: "Live signed Testnet status; private operator controls remain authorization-gated." }
     }
