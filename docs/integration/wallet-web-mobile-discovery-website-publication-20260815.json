@@ -61,6 +61,27 @@
       "ownerPushFailure": "Git HTTPS broken pipe followed by two force-false GitHub blob POST TLS handshake timeouts"
     }
   },
+  "localMobileVisibleAcceptance": {
+    "passed": true,
+    "scope": "local production build only",
+    "viewport": "390x844",
+    "userAgent": "Mozilla/5.0 (Linux; Android 15; Pixel 9 Pro) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Mobile Safari/537.36",
+    "walletEntrySource": "020f513e5d5d12920f75201f637bdd854ccc91aa",
+    "metaMaskHref": "https://metamask.app.link/dapp/www.ynxweb4.com/dapp/wallet",
+    "ynxActionResult": "CANONICAL_AUTH_UNAVAILABLE: The request failed closed. No wallet state was changed.",
+    "urlChangedAfterYnxAction": false,
+    "disabledActions": ["Add YNX Testnet", "Switch network", "Sign message", "Send transaction"],
+    "promotesPreviewOrProduction": false
+  },
+  "productionOfficialUrlChecks": {
+    "checkedAt": "2026-08-15",
+    "method": "independent read-only HEAD with 5-second connect and 15-second total timeout",
+    "pwa": {"passed":false,"exit":28,"httpStatus":0,"error":"timeout"},
+    "chromeEdge": {"passed":false,"exit":28,"httpStatus":0,"error":"timeout"},
+    "firefox": {"passed":false,"exit":28,"httpStatus":0,"error":"timeout"},
+    "android101": {"passed":false,"exit":28,"httpStatus":0,"error":"timeout"},
+    "downloadHostedPromoted": false
+  },
   "artifacts": [
     {"name":"ynx-wallet-web-pwa-0.1.0.zip","bytes":274329,"sha256":"a5e8d413e037ed1e345a4af7c42fc31bc413d6514afb0c8a0a0b82b6047fe209","signingClass":"unsigned-web-bundle","hosted":false},
     {"name":"ynx-wallet-chrome-edge-0.1.0.zip","bytes":189922,"sha256":"354c1d7834c4be1ec19af4f19bb69ad8f097ce7ebb713e8b639e382815495266","signingClass":"unsigned-unpacked-extension","hosted":false},

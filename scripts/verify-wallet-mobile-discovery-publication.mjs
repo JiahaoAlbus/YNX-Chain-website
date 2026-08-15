@@ -103,6 +103,15 @@ for (const artifact of artifacts) {
 const android = wallet.downloads.find((item) => item.platform === "android-api24");
 assert.equal(android.functional, false, "Android functionality lacks exact replacement and device proof");
 assert.equal(evidence.android.downloadFunctional, false);
+assert.equal(evidence.localMobileVisibleAcceptance.passed, true);
+assert.equal(evidence.localMobileVisibleAcceptance.promotesPreviewOrProduction, false);
+assert.equal(evidence.localMobileVisibleAcceptance.metaMaskHref, "https://metamask.app.link/dapp/www.ynxweb4.com/dapp/wallet");
+assert.match(evidence.localMobileVisibleAcceptance.ynxActionResult, /^CANONICAL_AUTH_UNAVAILABLE:/);
+assert.deepEqual(evidence.localMobileVisibleAcceptance.disabledActions, ["Add YNX Testnet", "Switch network", "Sign message", "Send transaction"]);
+for (const platform of ["pwa", "chromeEdge", "firefox", "android101"]) {
+  assert.equal(evidence.productionOfficialUrlChecks[platform].passed, false, `${platform} production URL lacks direct proof`);
+}
+assert.equal(evidence.productionOfficialUrlChecks.downloadHostedPromoted, false);
 for (const [gate, value] of Object.entries(evidence.falseUntilDirectProductionEvidence)) {
   assert.equal(value, false, `${gate} was promoted without direct evidence`);
 }
