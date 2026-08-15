@@ -35,11 +35,13 @@ const required = [
   "src/lib/api/ynxApi.js",
   "src/lib/address.js",
   "src/lib/i18n.jsx",
+  "src/lib/walletAuthCallback.js",
   "src/components/AddressConverter.jsx",
   "src/components/SquareAccountPanel.jsx",
   "src/pages/AppsPage.jsx",
   "src/pages/AuthorityArticlePage.jsx",
   "src/pages/DownloadPage.jsx",
+  "src/pages/WalletAuthCallbackPage.jsx",
   "src/pages/DocsPage.jsx",
   "src/pages/ProductStatusPage.jsx",
   "src/pages/SquarePage.jsx",
@@ -566,8 +568,8 @@ if (
   registryKeys.length !== 26 ||
   new Set(registryKeys).size !== 26 ||
   productKeys.some((key) => !registryKeys.includes(key)) ||
-  hostedPreviewProducts.length !== 7 ||
-  hostedPreviewProducts.map((product) => product.key).sort().join(",") !== "developer,exchange,finance,shop,social,trust,wallet" ||
+  hostedPreviewProducts.length !== 6 ||
+  hostedPreviewProducts.map((product) => product.key).sort().join(",") !== "developer,exchange,finance,shop,social,trust" ||
   hostedPreviewProducts.some((product) => (product.key === "developer" ? product.state !== "public-testnet-web-and-desktop-preview" : product.state !== "hosted-testnet-preview") || !product.releaseTag || !product.downloads?.length || product.downloads.some((download) => !/^[0-9a-f]{64}$/.test(download.sha256) || !(download.bytes > 0) || !download.signingClass)) ||
   acceptedProducts.length !== 12 ||
   [...acceptedByKey.keys()].sort().join(",") !== "cloud,creatorStudio,docs,exchange,explorer,finance,monitor,music,resource,social,video,wallet" ||
@@ -590,6 +592,9 @@ if (
   walletWebPwa?.sha256 !== "63d83cd20925f2d52c0f21f548fa7a857a4d056e03e5fa16244f173164a7d287" || walletWebPwa.bytes !== 272706 || walletWebPwa.hosted !== true ||
   walletChromeEdge?.sha256 !== "c733093dea47c6612c8a9d5ecea40be2227f62402f4b4966955c9e1accf4e2aa" || walletChromeEdge.bytes !== 188846 || walletChromeEdge.hosted !== true ||
   walletFirefox?.sha256 !== "417d9b9e5babf05fdfdf8161504389eb99c636be75f94444bf4ff91a9b4536b3" || walletFirefox.bytes !== 188883 || walletFirefox.hosted !== true ||
+  walletRegistry.downloadHosted !== false ||
+  walletRegistry.androidDownloadWithheld?.reason !== "STALE_ARTIFACT_LINK_REMOVED" ||
+  walletRegistry.downloads.some((download) => download.platform === "android-api24") ||
   walletRegistry.releaseTag !== "wallet-auth-v1.0.0-testnet-preview.5" ||
   walletRegistry.gatewayUrl !== "https://wallet-auth.ynxweb4.com" ||
   financeRegistry.state !== "hosted-testnet-preview" ||
@@ -726,7 +731,6 @@ const requiredOfficialDownloads = new Map([
   ["/downloads/ynx-developer-testnet-preview-windows-x64-unsigned.zip", "https://developer.ynxweb4.com/downloads/ynx-developer-0.2.0-testnet-preview-windows-x64-unsigned.zip"],
   ["/downloads/ynx-trust-center-4d40557229b4-linux-amd64.tar.gz", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-trust-center-4d40557229b4-linux-amd64.tar.gz"],
   ["/downloads/ynx-shop-0.3.0-testnet-preview-6fa2d6c5-debug-signed.apk", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-shop-0.3.0-testnet-preview-6fa2d6c5-debug-signed.apk"],
-  ["/downloads/ynx-wallet-1.0.0-testnet-preview-ccaf878c-test-signed.apk", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-wallet-1.0.0-testnet-preview-ccaf878c-test-signed-gwrQJydXGTCeQfwpnIUokylkukF8CD.apk"],
   ["/downloads/wallet/sha256-21db36f1c80d4e88520918de141a7f71921817799270ff671db88179023b5591/ynx-wallet-cli-darwin-arm64.gz", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/wallet/sha256-21db36f1c80d4e88520918de141a7f71921817799270ff671db88179023b5591/ynx-wallet-cli-darwin-arm64-R8DBYwa0YQxXIlYKC6TfHmgCgFqCVK.gz"],
   ["/downloads/ynx-exchange-1.0.0-testnet-preview-1e5f48d2-test-signed.apk", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-exchange-1.0.0-testnet-preview-1e5f48d2-test-signed.apk"],
   ["/downloads/ynx-finance-1.2.0-testnet-preview-307273b9-test-signed.apk", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-finance-1.2.0-testnet-preview-307273b9-test-signed-8WRdkqJCJnHBCsuyDsRj4XjEreyeYT.apk"],
@@ -776,7 +780,7 @@ if (
 const csp = vercel.headers
   ?.find((entry) => entry.source === "/(.*)")
   ?.headers?.find((header) => header.key === "Content-Security-Policy")?.value || "";
-if (!csp.includes("script-src 'self'") || !csp.includes("worker-src 'self'") || !csp.includes("connect-src 'self' https://api.ynxweb4.com https://faucet.ynxweb4.com") || !csp.includes("object-src 'none'")) {
+if (!csp.includes("script-src 'self'") || !csp.includes("worker-src 'self'") || !csp.includes("connect-src 'self' https://api.ynxweb4.com https://faucet.ynxweb4.com https://rest.ynxweb4.com https://rpc.ynxweb4.com") || !csp.includes("object-src 'none'")) {
   console.error("strict browser signer CSP is missing");
   process.exit(1);
 }

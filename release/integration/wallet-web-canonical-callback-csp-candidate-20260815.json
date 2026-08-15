@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "owner": "Website integration",
+  "coreContract": {
+    "commit": "39c80021b87730a20569b61f6ccd3f80092523c4",
+    "blob": "a1db56d51f3afe795faace17e4e7bb51cae66ff7",
+    "productId": "wallet-web-companion",
+    "productClientId": "ynx-wallet-web-companion-v1",
+    "bundleId": "web.ynx.wallet.companion",
+    "origin": "https://www.ynxweb4.com",
+    "callback": "https://www.ynxweb4.com/dapp/wallet/wallet-auth/callback"
+  },
+  "cspConnectSrc": ["https://rest.ynxweb4.com", "https://rpc.ynxweb4.com"],
+  "callbackRuntime": {"strictCanonicalResponse":true,"pendingCorrelation":true,"replayProtected":true,"createsSession":false,"authorityGranted":false},
+  "androidDownload": {"staleLinkRemoved":true,"fixedArtifactHosted":false,"requiredForPublication":["exact-source-commit","sha256","bytes","signingClass","official-hosting-backread"]},
+  "publicPrerequisites": {"registryLoadedAt6441":false,"walletOriginProductSessionCors":false,"evmRpcCors":false,"productionDeployed":false,"visibleWalletApprovalRoundTrip":false}
+}
