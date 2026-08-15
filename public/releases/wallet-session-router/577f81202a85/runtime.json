@@ -1,0 +1,67 @@
+{
+  "schema": "ynx-product-session-v2-public-runtime/v1",
+  "capturedAt": "2026-08-14T16:50:00Z",
+  "publicOrigin": "https://rest.ynxweb4.com",
+  "routePrefix": "/v2/product-sessions/",
+  "sourceCommit": "577f81202a85ff7314dd862f60aa337b0f2fd1f1",
+  "release": "ynx-product-session-v2-577f81202a85",
+  "service": "ynx-product-session-gatewayd",
+  "loopbackPort": 6441,
+  "registrySha256": "3b1ee629685651fab161d56b99b005d1acfd101b6d84a4c0894f144b5142eb17",
+  "status": {
+    "rollbackDrillPassed": true,
+    "publicMountPassed": true,
+    "cryptographicLifecyclePassed": true,
+    "restartIdempotencyPassed": true,
+    "runtimeStateIntegrityRegressionPassed": true,
+    "registryBoundBrowserCorsPassed": true,
+    "legacyAppGatewayReplaced": false,
+    "legacyWalletGatewayReplaced": false,
+    "integratedCentral": false,
+    "productRuntimeMigrationCount": 0,
+    "visibleInstalledWalletApproval": false,
+    "productionSigned": false,
+    "storeReleased": false
+  },
+  "stateIntegrity": {
+    "worldReadableRejected": true,
+    "symlinkRejected": true,
+    "hardlinkRejected": true,
+    "sameBytesInodeReplacementRejected": true,
+    "snapshotDigestMismatchRejected": true,
+    "zeroMutationVerified": true
+  },
+  "lifecycle": {
+    "challengeIdempotent": true,
+    "completeIdempotent": true,
+    "completionByteIdenticalAcrossRestart": true,
+    "introspectionPassed": true,
+    "proofReplayRejected": true,
+    "revoked": true,
+    "postRevokeRejected": true,
+    "visibleWalletApproval": false
+  },
+  "browserCors": {
+    "authority": "registered product webOrigin",
+    "preflightStatus": 204,
+    "preflightZeroMutation": true,
+    "actualPostStatus": 400,
+    "actualPostErrorCode": "UNKNOWN_OR_MISSING_FIELD",
+    "actualPostRequestIdMatched": true,
+    "requestIdExposed": true,
+    "unregisteredOriginStatus": 403,
+    "unregisteredOriginAllowHeaderPresent": false,
+    "wildcardOriginAllowed": false,
+    "credentialsAllowed": false
+  },
+  "evidence": {
+    "repository": "https://github.com/JiahaoAlbus/YNX-Chain",
+    "evidenceCommit": "7c39f78cb8fa398f526c6cd16df45a3f9dd579b6",
+    "record": "packages/wallet-auth/evidence/product-session-v2-mobile-cors-public-deployment-20260815.json",
+    "evidenceUrl": "https://github.com/JiahaoAlbus/YNX-Chain/blob/7c39f78cb8fa398f526c6cd16df45a3f9dd579b6/packages/wallet-auth/evidence/product-session-v2-mobile-cors-public-deployment-20260815.json",
+    "rollbackEvidenceRecorded": true,
+    "deploymentEvidenceRecorded": true,
+    "publicStateIntegrityEvidenceRecorded": true,
+    "publicMobileCorsEvidenceRecorded": true
+  }
+}
