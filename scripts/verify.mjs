@@ -28,6 +28,7 @@ const required = [
   "public/releases/wallet-session-router/d8863f6b2875/validation-summary.json",
   "public/releases/wallet-session-router/d8863f6b2875/ynx-chain-wallet-auth-1.1.0.tgz",
   "public/releases/wallet-session-router/577f81202a85/runtime.json",
+  "docs/integration/wallet-session-mobile-cors-production-evidence-20260815.json",
   "public/da45868fe3e0818f27f187b21a56ccb5.txt",
   "src/main.jsx",
   "src/styles.css",
@@ -165,6 +166,7 @@ const walletSessionMigration = JSON.parse(fs.readFileSync(`${walletSessionReleas
 const walletSessionRegistry = JSON.parse(fs.readFileSync(`${walletSessionReleaseRoot}/product-session-registry.json`, "utf8"));
 const walletSessionValidation = JSON.parse(fs.readFileSync(`${walletSessionReleaseRoot}/validation-summary.json`, "utf8"));
 const walletSessionRuntime = JSON.parse(fs.readFileSync("public/releases/wallet-session-router/577f81202a85/runtime.json", "utf8"));
+const walletSessionCorsProductionEvidence = JSON.parse(fs.readFileSync("docs/integration/wallet-session-mobile-cors-production-evidence-20260815.json", "utf8"));
 const header = fs.readFileSync("src/components/SiteHeader.jsx", "utf8");
 const i18n = fs.readFileSync("src/lib/i18n.jsx", "utf8");
 const commandPalette = fs.readFileSync("src/components/CommandPalette.jsx", "utf8");
@@ -224,6 +226,25 @@ if (
   })
 ) {
   console.error("35-product owner record index is missing, duplicated, unbound, or overclaims public evidence");
+  process.exit(1);
+}
+if (
+  walletSessionCorsProductionEvidence.pullRequest?.head !== "b16160e2e76a2b73d8a78cb92f85fc5cdc49b103" ||
+  walletSessionCorsProductionEvidence.pullRequest?.mergeCommit !== "7d4a65640a1664b15b02a5998b2a8d34fc24b571" ||
+  walletSessionCorsProductionEvidence.deployment?.id !== "dpl_C4Dh5au2b3mQfwC6gdUKpT6UzWqg" ||
+  walletSessionCorsProductionEvidence.deployment?.sourceCommit !== "7d4a65640a1664b15b02a5998b2a8d34fc24b571" ||
+  walletSessionCorsProductionEvidence.deployment?.readyState !== "READY" ||
+  walletSessionCorsProductionEvidence.resources?.["/docs"]?.sha256 !== "56ad00ba915a4a3b0b6b27a7a73f8a69dd0d9e755181cb7db1f16f4557067c67" ||
+  walletSessionCorsProductionEvidence.resources?.["/docs"]?.bytes !== 4748 ||
+  walletSessionCorsProductionEvidence.resources?.["/releases/wallet-session-router/577f81202a85/runtime.json"]?.sha256 !== "01b2662a2266b55462524e9ded6f3b1e8fb7b1c7240f79ee4e6f40570d5f9c55" ||
+  walletSessionCorsProductionEvidence.resources?.["/releases/wallet-session-router/577f81202a85/runtime.json"]?.bytes !== 2587 ||
+  walletSessionCorsProductionEvidence.truthBoundary?.integratedCentral !== false ||
+  walletSessionCorsProductionEvidence.truthBoundary?.productRuntimeMigrationCount !== 0 ||
+  walletSessionCorsProductionEvidence.truthBoundary?.visibleInstalledWalletApproval !== false ||
+  walletSessionCorsProductionEvidence.truthBoundary?.walletMobileAuthSourceChangedByThisSlice !== false ||
+  walletSessionCorsProductionEvidence.deferredAuthority?.coreWalletWebCompanionRegistryCommit !== null
+) {
+  console.error("wallet Product Session CORS production evidence or deferred authority boundary is invalid");
   process.exit(1);
 }
 if (

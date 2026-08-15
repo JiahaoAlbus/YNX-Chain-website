@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "capturedAt": "2026-08-15",
+  "owner": "Website publication",
+  "pullRequest": {
+    "number": 38,
+    "head": "b16160e2e76a2b73d8a78cb92f85fc5cdc49b103",
+    "base": "16a3c222d2bf1af6bc26ee682efab7ba66b588dd",
+    "merged": true,
+    "mergedAt": "2026-08-15T01:48:10Z",
+    "mergeCommit": "7d4a65640a1664b15b02a5998b2a8d34fc24b571"
+  },
+  "deployment": {
+    "project": "ynx-web4-website-new",
+    "id": "dpl_C4Dh5au2b3mQfwC6gdUKpT6UzWqg",
+    "url": "https://ynx-web4-website-2sacbmf6p-jiahaoalbus-projects.vercel.app",
+    "sourceCommit": "7d4a65640a1664b15b02a5998b2a8d34fc24b571",
+    "target": "production",
+    "readyState": "READY",
+    "githubCommitVerified": true,
+    "aliases": ["https://ynxweb4.com", "https://www.ynxweb4.com", "https://wallet.ynxweb4.com"]
+  },
+  "origins": [
+    "https://ynx-web4-website-2sacbmf6p-jiahaoalbus-projects.vercel.app",
+    "https://ynxweb4.com",
+    "https://www.ynxweb4.com"
+  ],
+  "resources": {
+    "/docs": {
+      "httpStatus": 200,
+      "contentType": "text/html; charset=utf-8",
+      "bytes": 4748,
+      "sha256": "56ad00ba915a4a3b0b6b27a7a73f8a69dd0d9e755181cb7db1f16f4557067c67",
+      "allOriginsByteIdentical": true
+    },
+    "/releases/wallet-session-router/577f81202a85/runtime.json": {
+      "httpStatus": 200,
+      "contentType": "application/json; charset=utf-8",
+      "bytes": 2587,
+      "sha256": "01b2662a2266b55462524e9ded6f3b1e8fb7b1c7240f79ee4e6f40570d5f9c55",
+      "allOriginsByteIdentical": true,
+      "sourceCommit": "577f81202a85ff7314dd862f60aa337b0f2fd1f1"
+    }
+  },
+  "truthBoundary": {
+    "isolatedProductSessionV2Cors": true,
+    "integratedCentral": false,
+    "productRuntimeMigrationCount": 0,
+    "visibleInstalledWalletApproval": false,
+    "legacyAppGatewayReplaced": false,
+    "legacyWalletGatewayReplaced": false,
+    "productionSigned": false,
+    "storeReleased": false,
+    "walletMobileAuthSourceChangedByThisSlice": false
+  },
+  "deferredAuthority": {
+    "centralCallerMigrationCommit": "38c9c0ce1400ad6ba8dc5e0c1aa1d657a6c9748d",
+    "coreWalletWebCompanionRegistryCommit": null,
+    "walletMobileAuthPublicationBlockedPendingCoreAuthority": true
+  }
+}
