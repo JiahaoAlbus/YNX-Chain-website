@@ -236,12 +236,20 @@ if (
   walletSessionCorsProductionEvidence.deployment?.readyState !== "READY" ||
   walletSessionCorsProductionEvidence.resources?.["/docs"]?.sha256 !== "56ad00ba915a4a3b0b6b27a7a73f8a69dd0d9e755181cb7db1f16f4557067c67" ||
   walletSessionCorsProductionEvidence.resources?.["/docs"]?.bytes !== 4748 ||
+  walletSessionCorsProductionEvidence.resources?.["/docs"]?.apexAndWwwByteIdentical !== true ||
   walletSessionCorsProductionEvidence.resources?.["/releases/wallet-session-router/577f81202a85/runtime.json"]?.sha256 !== "01b2662a2266b55462524e9ded6f3b1e8fb7b1c7240f79ee4e6f40570d5f9c55" ||
   walletSessionCorsProductionEvidence.resources?.["/releases/wallet-session-router/577f81202a85/runtime.json"]?.bytes !== 2587 ||
+  walletSessionCorsProductionEvidence.resources?.["/releases/wallet-session-router/577f81202a85/runtime.json"]?.wwwVerified !== true ||
+  walletSessionCorsProductionEvidence.resources?.["/releases/wallet-session-router/577f81202a85/runtime.json"]?.apexVerified !== false ||
+  walletSessionCorsProductionEvidence.resources?.["/releases/wallet-session-router/577f81202a85/runtime.json"]?.evidenceCommit !== "7c39f78cb8fa398f526c6cd16df45a3f9dd579b6" ||
+  walletSessionCorsProductionEvidence.resources?.["/releases/wallet-session-router/577f81202a85/runtime.json"]?.registeredBrowserCorsPassed !== true ||
   walletSessionCorsProductionEvidence.truthBoundary?.integratedCentral !== false ||
   walletSessionCorsProductionEvidence.truthBoundary?.productRuntimeMigrationCount !== 0 ||
   walletSessionCorsProductionEvidence.truthBoundary?.visibleInstalledWalletApproval !== false ||
   walletSessionCorsProductionEvidence.truthBoundary?.walletMobileAuthSourceChangedByThisSlice !== false ||
+  walletSessionCorsProductionEvidence.gateCorrection?.apexRuntimePublicGate !== false ||
+  walletSessionCorsProductionEvidence.gateCorrection?.wwwRuntimePublicGate !== true ||
+  walletSessionCorsProductionEvidence.gateCorrection?.docsApexAndWwwPublicGate !== true ||
   walletSessionCorsProductionEvidence.deferredAuthority?.coreWalletWebCompanionRegistryCommit !== null
 ) {
   console.error("wallet Product Session CORS production evidence or deferred authority boundary is invalid");

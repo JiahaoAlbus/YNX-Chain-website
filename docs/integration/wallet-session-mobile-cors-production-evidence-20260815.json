@@ -31,15 +31,25 @@
       "contentType": "text/html; charset=utf-8",
       "bytes": 4748,
       "sha256": "56ad00ba915a4a3b0b6b27a7a73f8a69dd0d9e755181cb7db1f16f4557067c67",
-      "allOriginsByteIdentical": true
+      "apexVerified": true,
+      "wwwVerified": true,
+      "apexAndWwwByteIdentical": true
     },
     "/releases/wallet-session-router/577f81202a85/runtime.json": {
       "httpStatus": 200,
       "contentType": "application/json; charset=utf-8",
       "bytes": 2587,
       "sha256": "01b2662a2266b55462524e9ded6f3b1e8fb7b1c7240f79ee4e6f40570d5f9c55",
-      "allOriginsByteIdentical": true,
-      "sourceCommit": "577f81202a85ff7314dd862f60aa337b0f2fd1f1"
+      "wwwVerified": true,
+      "apexVerified": false,
+      "apexAttempt": {
+        "result": "transport-failure",
+        "errorClass": "TLS",
+        "httpStatus": null
+      },
+      "sourceCommit": "577f81202a85ff7314dd862f60aa337b0f2fd1f1",
+      "evidenceCommit": "7c39f78cb8fa398f526c6cd16df45a3f9dd579b6",
+      "registeredBrowserCorsPassed": true
     }
   },
   "truthBoundary": {
@@ -52,6 +62,12 @@
     "productionSigned": false,
     "storeReleased": false,
     "walletMobileAuthSourceChangedByThisSlice": false
+  },
+  "gateCorrection": {
+    "reason": "A later root-owner apex runtime backread failed during TLS transport; the latest conservative publication gate supersedes an earlier successful sample without deleting it.",
+    "apexRuntimePublicGate": false,
+    "wwwRuntimePublicGate": true,
+    "docsApexAndWwwPublicGate": true
   },
   "deferredAuthority": {
     "centralCallerMigrationCommit": "38c9c0ce1400ad6ba8dc5e0c1aa1d657a6c9748d",
