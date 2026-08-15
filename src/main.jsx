@@ -22,6 +22,7 @@ import { SquarePage } from "./pages/SquarePage.jsx";
 import { ManualPage } from "./pages/ManualPage.jsx";
 import { ApiPage } from "./pages/ApiPage.jsx";
 import { FaucetPage } from "./pages/FaucetPage.jsx";
+import { WalletAuthCallbackPage } from "./pages/WalletAuthCallbackPage.jsx";
 import { getLegacyDAppRedirect, getProductByRoute } from "./lib/ecosystemCatalog.js";
 import docsAuthority from "virtual:ynx-docs-authority";
 import { LocaleProvider, useLocale } from "./lib/i18n.jsx";
@@ -92,6 +93,7 @@ function App() {
   }, []);
 
   if (route !== "/") {
+    if (route === "/dapp/wallet/wallet-auth/callback") return <WalletAuthCallbackPage />;
     const legacyTarget = getLegacyRouteTarget(route);
     if (legacyTarget) {
       return <LegacyRouteRedirect target={legacyTarget} />;
