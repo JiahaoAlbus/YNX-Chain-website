@@ -82,6 +82,54 @@
     "android101": {"passed":false,"exit":28,"httpStatus":0,"error":"timeout"},
     "downloadHostedPromoted": false
   },
+  "productionWalletRouteBackread": {
+    "checkedAt": "2026-08-15",
+    "productionSourceCommit": "7a8a6c59d23cee1933dd5d5a12ffc9e07d31db3b",
+    "productionDeploymentId": "dpl_HLqzoF3emnmfufP5McB3DxYB8Wbx",
+    "origins": [
+      "https://ynxweb4.com",
+      "https://www.ynxweb4.com",
+      "https://wallet.ynxweb4.com"
+    ],
+    "walletRoute": {
+      "path": "/dapp/wallet",
+      "allOriginsHttpStatus": 200,
+      "allOriginsBytes": 1018,
+      "allOriginsSha256": "ea708a87f0b6aba757036d16751960a7c77a958a4da37845d8deb32340f2c598",
+      "contentType": "text/html; charset=utf-8",
+      "result": "site-shell-fallback-not-wallet-companion"
+    },
+    "wwwCompanionResources": {
+      "manifest": {
+        "path": "/wallet/companion/manifest.webmanifest",
+        "passed": false,
+        "exit": 28,
+        "httpStatus": 0,
+        "error": "connection timed out after 20002 milliseconds"
+      },
+      "appJs": {
+        "path": "/wallet/companion/app.js",
+        "passed": false,
+        "httpStatus": 200,
+        "bytes": 1018,
+        "contentType": "text/html; charset=utf-8",
+        "sha256": "ea708a87f0b6aba757036d16751960a7c77a958a4da37845d8deb32340f2c598",
+        "error": "site-shell HTML fallback instead of JavaScript"
+      },
+      "pwaZip": {
+        "path": "/downloads/wallet-web-pwa.zip",
+        "passed": false,
+        "httpStatus": 200,
+        "bytes": 1018,
+        "contentType": "text/html; charset=utf-8",
+        "sha256": "ea708a87f0b6aba757036d16751960a7c77a958a4da37845d8deb32340f2c598",
+        "error": "site-shell HTML fallback instead of exact ZIP"
+      }
+    },
+    "walletWebDeployedPublicPromoted": false,
+    "mobileVisibleContractProvedPublicPromoted": false,
+    "downloadHostedPromoted": false
+  },
   "artifacts": [
     {"name":"ynx-wallet-web-pwa-0.1.0.zip","bytes":274329,"sha256":"a5e8d413e037ed1e345a4af7c42fc31bc413d6514afb0c8a0a0b82b6047fe209","signingClass":"unsigned-web-bundle","hosted":false},
     {"name":"ynx-wallet-chrome-edge-0.1.0.zip","bytes":189922,"sha256":"354c1d7834c4be1ec19af4f19bb69ad8f097ce7ebb713e8b639e382815495266","signingClass":"unsigned-unpacked-extension","hosted":false},
