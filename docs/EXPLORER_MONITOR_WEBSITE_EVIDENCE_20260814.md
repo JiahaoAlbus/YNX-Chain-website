@@ -25,9 +25,9 @@ The bundled FAQ and public product metadata remain source-bound to the separatel
 
 ## Current release boundary
 
-- Observed public Explorer identity recorded by this website: `660ab05db423319d92e9597ce5a280474ae293d6`.
-- Observed public Monitor identity recorded by this website: `5d42be02`, release `0.2.0-testnet-preview`.
-- The candidate Explorer/Indexer and signed Monitor v2 work is not marked as staged, central, deployed or publicly verified here.
+- Observed public Explorer and Indexer identity: central commit `8bf7716ee671a5a9b64517280743c5a281899712`, release `ynx-explorer-monitor-8bf7716ee671`; `/health` reported real Testnet height, four validators and explicit index lag on 2026-08-15.
+- Observed public Monitor identity: central commit `8bf7716ee671a5a9b64517280743c5a281899712`, release `ynx-explorer-monitor-8bf7716ee671`; signed `/status` v2 returned an available operational projection on 2026-08-15.
+- Central integration and public deployment are evidenced independently from final Computer Control acceptance. `publicVerified` remains false until the required desktop, narrow-screen, RTL and interaction pass is complete.
 - Explorer and Monitor are hosted web services. No downloadable package or production signature is claimed.
 
 Post-local columns must remain false until branch acceptance, deployment evidence and independent browser verification exist.
