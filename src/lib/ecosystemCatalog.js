@@ -106,10 +106,14 @@ const PRODUCT_ROUTES = {
 
 const evidence = {
   wallet: {
-    commit: "efe827f46710",
-    statusNote: "The local candidate has Android APK and web session tests; iOS/desktop not published.",
+    commit: "60e7426c1758",
+    statusNote: "Android package artifacts are now hosted for website download; iOS/Windows are not published yet.",
+    productRelease: {
+      href: "/releases/wallet/60e7426c1758/product-release.json",
+      release: "1.0.1-testnet-candidate"
+    },
     downloads: {
-      android: artifactDownload(PRODUCT_STATUS.LOCAL, "apps/wallet/android/app/build/outputs/apk/release/app-release.apk", "Android app release (debug-signed, testnet preview)"),
+      android: artifactDownload(PRODUCT_STATUS.LOCAL, "public/releases/wallet/60e7426c1758/ynx-mobile-android.apk", "Android APK (disposable QA release, test-only candidate)", "/releases/wallet/60e7426c1758/ynx-mobile-android.apk"),
       ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS project exists; simulator/launch evidence not completed on this host." },
       macos: { status: PRODUCT_STATUS.NOT_READY, note: "No macOS package is published for Wallet in this candidate." },
       windows: { status: PRODUCT_STATUS.NOT_READY, note: "No Windows package is published for Wallet in this candidate." }
@@ -387,11 +391,11 @@ export const getCatalog = () => [
     name: "YNX Wallet",
     icon: WalletCards,
     status: PRODUCT_STATUS.LOCAL,
-    detail: "Wallet-first login exists for testnet workflows. Canonical envelope and wallet-only session binding remain central-environment dependent.",
+    detail: "Wallet-first login exists for testnet workflows. Android candidate installer is now hosted for website download; iOS/Windows remain unpublished in this candidate.",
     entry: { label: "Wallet entry", href: "/docs#wallet" },
     docs: { ...docsAnchor("wallet"), label: "Wallet docs" },
     downloads: web(PRODUCT_STATUS.LOCAL, "/docs#wallet", "In-browser session entry + local testnet workflow"),
-    metrics: [["Closure", "Wallet-bound identity and vault session"], ["Risk", "No production custody sign-off"], ["Readiness", "Native release not yet published"]]
+    metrics: [["Closure", "Wallet-bound identity and vault session"], ["Risk", "No production custody sign-off"], ["Readiness", "Android installer hosted for candidate download, Windows pending"]]
   },
   {
     key: "social",
