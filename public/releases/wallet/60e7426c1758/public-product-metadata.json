@@ -3,7 +3,7 @@
   "name": "YNX Wallet",
   "title": "YNX Wallet — Testnet Candidate",
   "canonicalUrl": "https://www.ynxweb4.com/dapp/wallet",
-  "description": "Latest Android and Windows disposable QA installers are hosted on the website for candidate verification. Runtime/install proof remains pending.",
+  "description": "Latest Android and Windows installers are hosted on the website; Android currently serves a legacy 1.0.0 testnet preview package for compatibility; runtime/install proof remains pending.",
   "network": {
     "chainId": 6423,
     "chainIdHex": "0x1917",
