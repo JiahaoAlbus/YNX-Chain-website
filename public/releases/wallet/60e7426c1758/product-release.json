@@ -1,0 +1,47 @@
+{
+  "schema": "ynx-product-release/v1",
+  "product": "YNX Wallet",
+  "release": "1.0.1-testnet-candidate",
+  "releaseMode": "test-only",
+  "sourceCommit": "018cf5abfc2ef80c88ed8897265718ed85176a0e",
+  "sourceTreeDigest": "771dd482a94b992fe257d227c1762ef8692f316363347bd4656055b17826ad0e",
+  "packageName": "com.ynxweb4.wallet",
+  "versionName": "1.0.1",
+  "versionCode": 2,
+  "sourceCommitBoundByManifest": true,
+  "artifacts": [
+    {
+      "file": "ynx-mobile-android.apk",
+      "platform": "android",
+      "format": "apk",
+      "immutableUrl": "/releases/wallet/60e7426c1758/ynx-mobile-android.apk",
+      "sha256": "20468e4e9999b0b3a7f09f649fc2f84e067ef07c9e79dc4a33c2b07b1502620e",
+      "sizeBytes": 25630311,
+      "signingClass": "disposable-qa-release-key",
+      "installProof": "not published"
+    },
+    {
+      "file": "ynx-wallet-desktop-windows-x64.exe",
+      "platform": "windows",
+      "format": "exe",
+      "immutableUrl": "/releases/wallet/60e7426c1758/ynx-wallet-desktop-windows-x64.exe",
+      "sha256": "8f1839de821e753ec348b07315d77f0ccbc7bc6af5fb4156858c023d73631d32",
+      "sizeBytes": 104731961,
+      "signingClass": "unsigned",
+      "installProof": "website-hosted artifact; runtime/install proof pending"
+    }
+  ],
+  "externalStates": {
+    "mainnet": false,
+    "windowsHosted": true,
+    "androidHosted": true,
+    "storeSubmitted": false,
+    "storeAccepted": false,
+    "productionSigned": false
+  },
+  "evidence": {
+    "hostedInstallerAvailable": true,
+    "androidRealDeviceVerified": false,
+    "windowsRealDeviceVerified": false
+  }
+}
