@@ -19,10 +19,17 @@
       "type": "android-package",
       "sizeBytes": 25630311,
       "sha256": "20468e4e9999b0b3a7f09f649fc2f84e067ef07c9e79dc4a33c2b07b1502620e"
+    },
+    {
+      "name": "ynx-wallet-desktop-windows-x64.exe",
+      "type": "windows-installer",
+      "sizeBytes": 104731961,
+      "sha256": "8f1839de821e753ec348b07315d77f0ccbc7bc6af5fb4156858c023d73631d32"
     }
   ],
   "notes": [
     "Disposable QA signer and Android API-36 arm64 release package.",
-    "Windows package has not been produced in this run."
+    "Windows installer has been published to website artifacts for candidate download; install proof not collected.",
+    "Windows package is not production-signed and not store-submitted."
   ]
 }

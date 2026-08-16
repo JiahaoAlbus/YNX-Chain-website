@@ -3,7 +3,7 @@
   "name": "YNX Wallet",
   "title": "YNX Wallet — Testnet Candidate",
   "canonicalUrl": "https://www.ynxweb4.com/wallet",
-  "description": "Latest Android disposable QA installer is hosted on the website for candidate verification. Windows installer is not yet published.",
+  "description": "Latest Android and Windows disposable QA installers are hosted on the website for candidate verification. Runtime/install proof remains pending.",
   "network": {
     "chainId": 6423,
     "chainIdHex": "0x1917",
@@ -22,13 +22,14 @@
     "candidatePublicRuntimeDeployed": true,
     "walletMainnetReady": false,
     "productionSigningApproved": false,
-    "windowsHosted": false,
+    "windowsHosted": true,
     "androidHosted": true,
     "truthfulStatus": "testnet-release-candidate-only"
   },
   "publicEvidence": {
     "packageCheckCommand": "sha256sum /releases/wallet/60e7426c1758/ynx-mobile-android.apk",
     "candidateRuntimeOperatorControlled": true,
-    "androidInstallProof": "not yet published"
+    "androidInstallProof": "not yet published",
+    "windowsInstallProof": "pending; website-hosted artifact exists, runtime/install proof not yet collected"
   }
 }
