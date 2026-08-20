@@ -1,0 +1,34 @@
+{
+  "schema": "ynx-public-product-metadata/v1",
+  "name": "YNX Wallet",
+  "title": "YNX Wallet — Android Testnet Preview",
+  "canonicalUrl": "https://www.ynxweb4.com/dapp/wallet",
+  "description": "Android Testnet Preview source ec0b8295 contains the complete embedded application bundle and retries one safe YNX Testnet read after a transport failure. It is local-test-signed only, not production signed or store released.",
+  "network": {
+    "chainId": 6423,
+    "chainIdHex": "0x1917",
+    "name": "YNX Testnet",
+    "nativeAsset": "YNXT",
+    "testnet": true
+  },
+  "routes": {
+    "product": "/dapp/wallet",
+    "download": "/downloads/wallet/sha256-99360e01307a64c7faa3060d72474f2fc3d43031fcb59a69751b836faa465e0b/ynx-wallet-1.0.0-testnet-preview-ec0b8295-local-test-signed.apk",
+    "docs": "/docs#wallet",
+    "support": "/support"
+  },
+  "status": {
+    "walletMainnetReady": false,
+    "androidWebsiteEntry": true,
+    "artifactHostedOnOfficialBlob": false,
+    "productionSigningApproved": false,
+    "storeSubmitted": false,
+    "storeAccepted": false
+  },
+  "publicEvidence": {
+    "packageCheckCommand": "sha256sum ynx-wallet-1.0.0-testnet-preview-ec0b8295-local-test-signed.apk",
+    "sha256": "99360e01307a64c7faa3060d72474f2fc3d43031fcb59a69751b836faa465e0b",
+    "sizeBytes": 78226626,
+    "installProof": "Android API 36 emulator cold and second launch for source ec0b8295464f2164af1a6245646be24046f5e97a"
+  }
+}

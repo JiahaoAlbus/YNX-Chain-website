@@ -1,0 +1,32 @@
+{
+  "schema": "ynx-wallet-release-manifest/v1",
+  "product": "YNX Wallet",
+  "releaseMode": "testnet-preview",
+  "sourceCommit": "ec0b8295464f2164af1a6245646be24046f5e97a",
+  "packageName": "com.ynxweb4.wallet",
+  "versionName": "1.0.0",
+  "versionCode": 1,
+  "signerCertificateSHA256": "d4e562610ecb4e304fa00ee07e7adae7da862ce108bda7bdfe933c28831f154e",
+  "productionSigningApproved": false,
+  "realDeviceVerified": false,
+  "storeSubmitted": false,
+  "storeAccepted": false,
+  "artifacts": [
+    {
+      "name": "ynx-wallet-1.0.0-testnet-preview-ec0b8295-local-test-signed.apk",
+      "type": "android-package",
+      "sizeBytes": 78226626,
+      "sha256": "99360e01307a64c7faa3060d72474f2fc3d43031fcb59a69751b836faa465e0b",
+      "minimumOS": "Android API 24",
+      "targetOS": "Android API 36",
+      "signingClass": "local-test-signed",
+      "embeddedAndroidBundle": true
+    }
+  ],
+  "notes": [
+    "This replaces the Android website entry for source 8e8d5644.",
+    "The client retries exactly once for a transport failure on idempotent Testnet REST reads; signed transfer broadcasts are not retried.",
+    "The official immutable website path redirects to the matching GitHub prerelease asset while Vercel Blob capacity is unavailable.",
+    "This artifact is local-test-signed only, not production signed or store released."
+  ]
+}
