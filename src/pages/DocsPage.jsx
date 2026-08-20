@@ -150,22 +150,20 @@ export function DocsPage() {
 
       <section className="docsSessionRelease" id="wallet-session-release" aria-labelledby="wallet-session-release-title">
         <div>
-          <p className="sectionEyebrow">Wallet connection release · 1.1.0</p>
-          <h2 id="wallet-session-release-title">A shared, fail-closed Product Session source package</h2>
-          <p>The public package defines registered callbacks, bound sessions, controlled recovery, provider discovery and actionable connection states. The independent Product Session v2 Gateway is live at the public REST origin from exact source commit 577f81202a85; rollback, cryptographic lifecycle, restart idempotency, five production state-integrity regressions and registry-bound mobile browser CORS passed.</p>
+          <p className="sectionEyebrow">Wallet/Auth runtime evidence · P0</p>
+          <h2 id="wallet-session-release-title">A public Wallet/Auth service record, with its limits shown</h2>
+          <p>The Wallet/Auth service at <code>wallet-auth.ynxweb4.com</code> was read back from exact runtime source <code>49e30d999e9a9cbdd2c565021009f2cab0dc125c</code>. Health, readiness and version routes returned HTTP 200. Exact-origin Social CORS, lifecycle restart, replay rejection, revoke and rollback were verified against the linked evidence.</p>
           <div className="docsSessionReleaseActions">
-            <a className="button primary" href="/releases/wallet-session-router/d8863f6b2875/ynx-chain-wallet-auth-1.1.0.tgz" download><Download size={16} /> Download source package</a>
-            <a className="button secondary" href="/releases/wallet-session-router/d8863f6b2875/release.json">Verify release record <ArrowRight size={16} /></a>
-            <a className="textLink" href="/releases/wallet-session-router/577f81202a85/runtime.json">Verify public runtime evidence</a>
-            <a className="textLink" href="/releases/wallet-session-router/d8863f6b2875/product-session-registry.json">View callback registry</a>
+            <a className="button primary" href="/releases/wallet-auth-runtime/49e30d999e9a9cbdd2c565021009f2cab0dc125c/runtime-publication.json"><Download size={16} /> Open runtime record</a>
+            <a className="button secondary" href="https://github.com/JiahaoAlbus/YNX-Chain/blob/b30775951dcea09bf6b72aeb4806f47ff81b3bef/packages/wallet-auth/integration/p0-wallet-protocol-public-runtime-evidence-20260820.json" target="_blank" rel="noreferrer">Open exact evidence <ArrowRight size={16} /></a>
           </div>
         </div>
         <dl>
-          <div><dt>Central integration</dt><dd>Pending protected review</dd></div>
-          <div><dt>Product runtime migrations</dt><dd>0 verified</dd></div>
-          <div><dt>Public Product Session v2 Gateway</dt><dd>Deployed · rollback, restart, integrity and mobile CORS verified</dd></div>
-          <div><dt>Legacy App / Wallet Gateways</dt><dd>Unchanged; independent v2 route</dd></div>
-          <div><dt>Android evidence</dt><dd>Scheme resolved; intent delivered; approval not proven</dd></div>
+          <div><dt>Runtime source</dt><dd>49e30d999e9a9cbdd2c565021009f2cab0dc125c</dd></div>
+          <div><dt>Installed Wallet/client verified</dt><dd>False</dd></div>
+          <div><dt>Standard connection; account, sign, send or transaction verified</dt><dd>False</dd></div>
+          <div><dt>Central integration / aggregate public readiness</dt><dd>False / False</dd></div>
+          <div><dt>Production signing / store release</dt><dd>False / False</dd></div>
         </dl>
       </section>
 

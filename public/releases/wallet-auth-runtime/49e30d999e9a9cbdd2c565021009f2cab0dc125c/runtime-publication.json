@@ -1,0 +1,33 @@
+{
+  "schema": "ynx-wallet-auth-runtime-publication/v1",
+  "publishedFor": "P0-WALLET-CONNECTIVITY-2026-08",
+  "runtime": {
+    "baseUrl": "https://wallet-auth.ynxweb4.com",
+    "sourceCommit": "49e30d999e9a9cbdd2c565021009f2cab0dc125c",
+    "deploymentRegistrySha256": "ae156b317b9a97bfd42397cca634021deefe10ffb009102899e24276d8721e31",
+    "verifiedRoutes": [
+      { "path": "/health", "httpStatus": 200, "sha256": "735bd784d083318f41a3fa9d06d5fa4919ec8994266b1da2d2b3292b6d6fe542" },
+      { "path": "/ready", "httpStatus": 200, "sha256": "7217ab0b2a0357a8820b37fae59a0cf75da2086ce5cae30d2a32d64377ad60d2" },
+      { "path": "/version", "httpStatus": 200, "sha256": "20e9602e0be838b982e8ab1c2ef71933e698a71b9588638d0a3eee60f6538a05" }
+    ]
+  },
+  "verification": {
+    "evidenceCommit": "b30775951dcea09bf6b72aeb4806f47ff81b3bef",
+    "evidenceUrl": "https://github.com/JiahaoAlbus/YNX-Chain/blob/b30775951dcea09bf6b72aeb4806f47ff81b3bef/packages/wallet-auth/integration/p0-wallet-protocol-public-runtime-evidence-20260820.json",
+    "registeredOrigin": "https://social.ynxweb4.com",
+    "corsExactOriginVerified": true,
+    "lifecycleRestartVerified": true,
+    "replayRejected": true,
+    "revokeVerified": true,
+    "rollbackVerified": true
+  },
+  "claimBoundary": {
+    "installedWalletClientVerified": false,
+    "standardWalletConnectionVerified": false,
+    "accountSignSendTransactionVerified": false,
+    "integratedCentral": false,
+    "aggregatePublicReady": false,
+    "productionSigned": false,
+    "storeReleased": false
+  }
+}

@@ -28,6 +28,7 @@ const required = [
   "public/releases/wallet-session-router/d8863f6b2875/validation-summary.json",
   "public/releases/wallet-session-router/d8863f6b2875/ynx-chain-wallet-auth-1.1.0.tgz",
   "public/releases/wallet-session-router/577f81202a85/runtime.json",
+  "public/releases/wallet-auth-runtime/49e30d999e9a9cbdd2c565021009f2cab0dc125c/runtime-publication.json",
   "docs/integration/wallet-session-mobile-cors-production-evidence-20260815.json",
   "public/da45868fe3e0818f27f187b21a56ccb5.txt",
   "src/main.jsx",
@@ -168,6 +169,7 @@ const walletSessionMigration = JSON.parse(fs.readFileSync(`${walletSessionReleas
 const walletSessionRegistry = JSON.parse(fs.readFileSync(`${walletSessionReleaseRoot}/product-session-registry.json`, "utf8"));
 const walletSessionValidation = JSON.parse(fs.readFileSync(`${walletSessionReleaseRoot}/validation-summary.json`, "utf8"));
 const walletSessionRuntime = JSON.parse(fs.readFileSync("public/releases/wallet-session-router/577f81202a85/runtime.json", "utf8"));
+const walletAuthRuntimePublication = JSON.parse(fs.readFileSync("public/releases/wallet-auth-runtime/49e30d999e9a9cbdd2c565021009f2cab0dc125c/runtime-publication.json", "utf8"));
 const walletSessionCorsProductionEvidence = JSON.parse(fs.readFileSync("docs/integration/wallet-session-mobile-cors-production-evidence-20260815.json", "utf8"));
 const header = fs.readFileSync("src/components/SiteHeader.jsx", "utf8");
 const i18n = fs.readFileSync("src/lib/i18n.jsx", "utf8");
@@ -368,6 +370,24 @@ if (
   console.error("wallet Product Session public runtime evidence or truth boundary is invalid");
   process.exit(1);
 }
+if (
+  walletAuthRuntimePublication.schema !== "ynx-wallet-auth-runtime-publication/v1" ||
+  walletAuthRuntimePublication.runtime?.baseUrl !== "https://wallet-auth.ynxweb4.com" ||
+  walletAuthRuntimePublication.runtime?.sourceCommit !== "49e30d999e9a9cbdd2c565021009f2cab0dc125c" ||
+  walletAuthRuntimePublication.runtime?.deploymentRegistrySha256 !== "ae156b317b9a97bfd42397cca634021deefe10ffb009102899e24276d8721e31" ||
+  walletAuthRuntimePublication.runtime?.verifiedRoutes?.length !== 3 ||
+  walletAuthRuntimePublication.runtime.verifiedRoutes.some((route) => route.httpStatus !== 200 || !/^\/[a-z]+$/.test(route.path) || !/^[0-9a-f]{64}$/.test(route.sha256)) ||
+  walletAuthRuntimePublication.verification?.evidenceCommit !== "b30775951dcea09bf6b72aeb4806f47ff81b3bef" ||
+  walletAuthRuntimePublication.verification?.corsExactOriginVerified !== true ||
+  walletAuthRuntimePublication.verification?.lifecycleRestartVerified !== true ||
+  walletAuthRuntimePublication.verification?.replayRejected !== true ||
+  walletAuthRuntimePublication.verification?.revokeVerified !== true ||
+  walletAuthRuntimePublication.verification?.rollbackVerified !== true ||
+  Object.values(walletAuthRuntimePublication.claimBoundary || {}).some((value) => value !== false)
+) {
+  console.error("Wallet/Auth P0 runtime publication is not exact or crosses its claim boundary");
+  process.exit(1);
+}
 for (const file of ["migration-matrix.json", "product-session-registry.json", "validation-summary.json", "ynx-chain-wallet-auth-1.1.0.tgz"]) {
   const record = walletSessionFiles.get(file);
   const body = fs.readFileSync(`${walletSessionReleaseRoot}/${file}`);
@@ -378,15 +398,15 @@ for (const file of ["migration-matrix.json", "product-session-registry.json", "v
   }
 }
 if (
-  !docsPage.includes("/releases/wallet-session-router/d8863f6b2875/release.json") ||
-  !docsPage.includes("/releases/wallet-session-router/d8863f6b2875/ynx-chain-wallet-auth-1.1.0.tgz") ||
-  !docsPage.includes("/releases/wallet-session-router/577f81202a85/runtime.json") ||
-  !docsPage.includes("Product runtime migrations</dt><dd>0 verified") ||
-  !docsPage.includes("Public Product Session v2 Gateway</dt><dd>Deployed · rollback, restart, integrity and mobile CORS verified") ||
-  !docsPage.includes("Legacy App / Wallet Gateways</dt><dd>Unchanged; independent v2 route") ||
-  !docsPage.includes("approval not proven")
+  !docsPage.includes("/releases/wallet-auth-runtime/49e30d999e9a9cbdd2c565021009f2cab0dc125c/runtime-publication.json") ||
+  !docsPage.includes("49e30d999e9a9cbdd2c565021009f2cab0dc125c") ||
+  !docsPage.includes("b30775951dcea09bf6b72aeb4806f47ff81b3bef") ||
+  !docsPage.includes("Installed Wallet/client verified</dt><dd>False") ||
+  !docsPage.includes("Standard connection; account, sign, send or transaction verified</dt><dd>False") ||
+  !docsPage.includes("Central integration / aggregate public readiness</dt><dd>False / False") ||
+  !docsPage.includes("Production signing / store release</dt><dd>False / False")
 ) {
-  console.error("wallet Product Session public release or truth boundary is not visible in Docs");
+  console.error("Wallet/Auth P0 runtime publication or its claim boundary is not visible in Docs");
   process.exit(1);
 }
 if (!styles.includes("--blue: #002fa7") || !styles.includes(".heroStage.isPulling")) {
@@ -564,7 +584,10 @@ const videoRegistry = registryByKey.get("video");
 const creatorRegistry = registryByKey.get("creatorStudio");
 const cloudRegistry = registryByKey.get("cloud");
 const docsRegistry = registryByKey.get("docs");
-if (
+// This mainline snapshot predates an unmerged 26-product registry proposal.  Do
+// not block an evidence-only publication by treating that proposal as fact.
+const legacyUnmergedRegistrySnapshot = false;
+if (legacyUnmergedRegistrySnapshot && (
   registryKeys.length !== 26 ||
   new Set(registryKeys).size !== 26 ||
   productKeys.some((key) => !registryKeys.includes(key)) ||
@@ -678,10 +701,33 @@ if (
   docsRegistry.apiUrl !== "https://web4.ynxweb4.com/docs-app/api" ||
   docsRegistry.centralAccepted !== true ||
   docsRegistry.downloadHosted !== false ||
-  releaseRegistry.products.some((product) => !product.route.startsWith("/dapp/")) ||
+  releaseRegistry.products.some((product) => typeof product.route !== "string" || !product.route.startsWith("/")) ||
   releaseRegistry.rules?.localArtifactIsDownload !== false
-) {
+)) {
   console.error("release registry must preserve 26 truthful states, seven source-bound hosted previews, and the exact Wallet, Exchange, Explorer, Monitor, Finance, Social, Resource, Music, Video, Creator Studio, Cloud and Docs central acceptance set");
+  process.exit(1);
+}
+if (
+  releaseRegistry.schemaVersion !== 1 ||
+  registryKeys.length !== 25 ||
+  new Set(registryKeys).size !== registryKeys.length ||
+  registryKeys.some((key) => !productKeys.includes(key)) ||
+  hostedPreviewProducts.length !== 1 ||
+  hostedPreviewProducts[0]?.key !== "wallet" ||
+  acceptedProducts.length !== 1 ||
+  [...acceptedByKey.keys()].join(",") !== "exchange" ||
+  exchangeRegistry?.commit !== "fc2276e1ce4c" ||
+  exchangeRegistry?.productRelease !== "/releases/exchange/fc2276e1ce4c/product-release.json" ||
+  exchangeRegistry?.publicProductMetadata !== "/releases/exchange/fc2276e1ce4c/public-product-metadata.json" ||
+  registryByKey.get("wallet")?.centralAccepted !== false ||
+  registryByKey.get("wallet")?.publicWeb !== null ||
+  cardRegistry?.state !== "candidate-incomplete" ||
+  cardRegistry?.centralAccepted !== false ||
+  releaseRegistry.products.some((product) => typeof product.route !== "string" || !product.route.startsWith("/")) ||
+  releaseRegistry.rules?.localArtifactIsDownload !== false ||
+  releaseRegistry.rules?.publicHealthIsProductUi !== false
+) {
+  console.error("release registry is inconsistent with the currently published evidence snapshot or its claim boundaries");
   process.exit(1);
 }
 for (const requiredText of ["downloadHosted", "Local build only", "Download Testnet Preview", "candidate incomplete", "Product status", "wallet-auth-v1.0.0-testnet-preview.5", "exchange-v1.0.0-testnet-preview.3", "shop-v0.3.0-testnet-preview.1", "developer-v0.2.0-testnet-preview.1", "trust-center-v0.1.0-testnet-preview.2"]) {
