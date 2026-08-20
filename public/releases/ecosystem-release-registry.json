@@ -9,7 +9,7 @@
     "externalClaimsRequireIndependentEvidence": true
   },
   "products": [
-    { "key": "wallet", "name": "YNX Wallet", "route": "/dapp/wallet", "state": "testnet-preview", "commit": "ec0b8295464f", "centralAccepted": false, "publicWeb": null, "downloadHosted": true, "productRelease": "/releases/wallet/ec0b8295/product-release.json", "publicProductMetadata": "/releases/wallet/ec0b8295/public-product-metadata.json" },
+    { "key": "wallet", "name": "YNX Wallet", "route": "/dapp/wallet", "state": "testnet-preview", "commit": "c9d53912b5a0", "centralAccepted": false, "publicWeb": null, "downloadHosted": true, "productRelease": "/releases/wallet/c9d53912/product-release.json", "publicProductMetadata": "/releases/wallet/c9d53912/public-product-metadata.json" },
     { "key": "social", "name": "YNX Social", "route": "/social", "state": "candidate", "commit": "8c08bc3fff53", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
     { "key": "pay", "name": "YNX Pay", "route": "/pay", "state": "candidate", "commit": "ffb528b4971b", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
     { "key": "merchantConsole", "name": "Merchant Console", "route": "/merchant", "state": "candidate", "commit": "ffb528b4971b", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
