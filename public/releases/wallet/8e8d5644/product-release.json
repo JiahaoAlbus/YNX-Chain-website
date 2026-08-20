@@ -1,0 +1,30 @@
+{
+  "schema": "ynx-product-release/v1",
+  "product": "YNX Wallet",
+  "release": "1.0.0-testnet-preview-8e8d5644",
+  "releaseMode": "testnet-preview",
+  "sourceCommit": "8e8d56445cf54b3ac84cb8c26c55b13dbd49857d",
+  "sourceCommitBoundByManifest": true,
+  "artifacts": [
+    {
+      "file": "ynx-wallet-1.0.0-testnet-preview-8e8d5644-local-test-signed.apk",
+      "platform": "android",
+      "format": "apk",
+      "immutableUrl": "/downloads/wallet/sha256-43dfe20665c62f0c963f0d06dc6fca9800d49543b613678a76988879537924c5/ynx-wallet-1.0.0-testnet-preview-8e8d5644-local-test-signed.apk",
+      "sha256": "43dfe20665c62f0c963f0d06dc6fca9800d49543b613678a76988879537924c5",
+      "sizeBytes": 78225838,
+      "minimumOS": "Android API 24",
+      "targetOS": "Android API 36",
+      "signingClass": "local-test-signed",
+      "installProof": "Android API 36 emulator install and Social -> Wallet -> system fingerprint -> callback recorded at source evidence 2ee0cb38f42a2a1232a5a2c5686ad46397c95519"
+    }
+  ],
+  "externalStates": {
+    "mainnet": false,
+    "androidWebsiteEntry": true,
+    "artifactHostedOnOfficialBlob": false,
+    "productionSigned": false,
+    "storeSubmitted": false,
+    "storeAccepted": false
+  }
+}
