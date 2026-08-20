@@ -1,0 +1,31 @@
+{
+  "schema": "ynx-wallet-release-manifest/v1",
+  "product": "YNX Wallet",
+  "releaseMode": "testnet-preview",
+  "sourceCommit": "1f8820c5a6dfc5460322b1274f740d7a873b6ea6",
+  "packageName": "com.ynxweb4.wallet",
+  "versionName": "1.0.2-testnet-preview",
+  "versionCode": 3,
+  "signerCertificateSHA256": "d4e562610ecb4e304fa00ee07e7adae7da862ce108bda7bdfe933c28831f154e",
+  "productionSigningApproved": false,
+  "realDeviceVerified": false,
+  "storeSubmitted": false,
+  "storeAccepted": false,
+  "artifacts": [
+    {
+      "name": "ynx-wallet-1.0.2-testnet-preview-1f8820c5-local-test-signed.apk",
+      "type": "android-package",
+      "sizeBytes": 78233842,
+      "sha256": "66a0954f7955d800af4b205680ce879c786568cbf6af8a71307cddad31c216a0",
+      "minimumOS": "Android API 24",
+      "targetOS": "Android API 36",
+      "signingClass": "local-test-signed",
+      "embeddedAndroidBundle": true
+    }
+  ],
+  "notes": [
+    "This replaces the website's 1.0.1 Android Preview as the recommended Wallet Android Testnet Preview.",
+    "The immutable official website path redirects to the matching GitHub prerelease asset while Vercel Blob capacity is unavailable.",
+    "The source APK was upgraded over the signer-matching 1.0.1 package, cold-started, biometrically unlocked, and displayed a real YNX Testnet balance, nonce and activity in an API 36 arm64 emulator. It uses the accepted verified EVM JSON-RPC endpoint and is not production signed or store released."
+  ]
+}
