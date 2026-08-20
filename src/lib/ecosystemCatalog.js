@@ -205,10 +205,10 @@ const evidence = {
       href: "/releases/ecosystem-release-registry.json",
       release: "shop-v0.3.0-testnet-preview.1"
     },
-    statusNote: "The public Testnet storefront, persistent catalog, Wallet-bound cart/order flows, Pay/Trust/AI integrations, and a debug-signed Android Testnet Preview are available. Tax, carrier verification, production signing, and store release remain unavailable.",
+    statusNote: "The public Testnet storefront, persistent catalog, Wallet-bound cart/order flows, and Pay/Trust/AI integrations remain available through Web/PWA. Shop Android distribution is retired under the Wallet Connectivity P0 campaign: the prior debug-signed Preview is historical evidence only and is no longer offered for download. Tax, carrier verification, production signing, and store release remain unavailable.",
     downloads: {
       web: { status: PRODUCT_STATUS.LIVE, href: "https://shop.ynxweb4.com/shop/", external: true, downloadHosted: false, note: "Public YNX Testnet storefront with three clearly labelled demo listings." },
-      android: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-shop-0.3.0-testnet-preview-6fa2d6c5-debug-signed.apk", "Debug-signed Android Testnet Preview · source 6fa2d6c5 · SHA-256 a7466e02…2c72d · 253,733 bytes · min Android API 26.", "/downloads/ynx-shop-0.3.0-testnet-preview-6fa2d6c5-debug-signed.apk"),
+      android: { status: PRODUCT_STATUS.NOT_READY, note: "Android distribution retired. Existing device installations cannot be remotely uninstalled; Web/PWA is the supported Shop surface." },
       ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS source and simulator CI pass; no production-signed or hosted iOS package is claimed." },
       macos: { status: PRODUCT_STATUS.NOT_READY, note: "No published Shop macOS package in this candidate." },
       windows: { status: PRODUCT_STATUS.NOT_READY, note: "No published Shop Windows package in this candidate." }
@@ -548,7 +548,7 @@ export const getCatalog = () => [
     entry: { label: "Open YNX Shop", href: "https://shop.ynxweb4.com/shop/", external: true },
     docs: { ...docsAnchor("shop"), label: "Shop docs" },
     downloads: web(PRODUCT_STATUS.LIVE, "https://shop.ynxweb4.com/shop/", "Public Testnet storefront"),
-    metrics: [["Closure", "Catalog, cart, order, Pay, Trust, AI and privacy flows"], ["Risk", "Tax and carrier providers remain unavailable"], ["Readiness", "Public web + debug-signed Android Testnet Preview"]]
+    metrics: [["Closure", "Catalog, cart, order, Pay, Trust, AI and privacy flows"], ["Risk", "Tax and carrier providers remain unavailable"], ["Readiness", "Public Web/PWA; Android distribution retired"]]
   },
   {
     key: "sellerConsole",
