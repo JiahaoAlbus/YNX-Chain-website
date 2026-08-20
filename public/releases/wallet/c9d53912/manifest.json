@@ -1,0 +1,31 @@
+{
+  "schema": "ynx-wallet-release-manifest/v1",
+  "product": "YNX Wallet",
+  "releaseMode": "testnet-preview",
+  "sourceCommit": "c9d53912b5a041af9b64ba005d9a73ddb5dcf277",
+  "packageName": "com.ynxweb4.wallet",
+  "versionName": "1.0.1-testnet-preview",
+  "versionCode": 2,
+  "signerCertificateSHA256": "d4e562610ecb4e304fa00ee07e7adae7da862ce108bda7bdfe933c28831f154e",
+  "productionSigningApproved": false,
+  "realDeviceVerified": false,
+  "storeSubmitted": false,
+  "storeAccepted": false,
+  "artifacts": [
+    {
+      "name": "ynx-wallet-1.0.1-testnet-preview-c9d53912-local-test-signed.apk",
+      "type": "android-package",
+      "sizeBytes": 78233898,
+      "sha256": "ffaf743529ba065c6996da17395c400fd1f0d7869e144a9a2f8d852e07ee8245",
+      "minimumOS": "Android API 24",
+      "targetOS": "Android API 36",
+      "signingClass": "local-test-signed",
+      "embeddedAndroidBundle": true
+    }
+  ],
+  "notes": [
+    "This replaces the website's 8e8d5644 Android Preview as the recommended Wallet Android Testnet Preview.",
+    "The immutable official website path redirects to the matching GitHub prerelease asset while Vercel Blob capacity is unavailable.",
+    "The source APK was upgraded over the prior signer-matching package, cold-started, biometrically unlocked, and displayed a real YNX Testnet balance, nonce and activity in an API 36 arm64 emulator. It is not production signed or store released."
+  ]
+}
