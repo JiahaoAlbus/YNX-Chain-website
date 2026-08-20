@@ -30,6 +30,7 @@ export const PRODUCT_STATUS = {
   PREVIEW: "preview",
   LOCAL: "local",
   PLANNED: "planned",
+  RETIRED: "retired",
   NOT_READY: "not-ready"
 };
 
@@ -62,6 +63,7 @@ export const STATUS_CONFIG = {
   [PRODUCT_STATUS.LIVE]: { label: "public web", tone: "live" },
   [PRODUCT_STATUS.LOCAL]: { label: "candidate", tone: "local" },
   [PRODUCT_STATUS.PLANNED]: { label: "candidate incomplete", tone: "planned" },
+  [PRODUCT_STATUS.RETIRED]: { label: "retired", tone: "retired" },
   [PRODUCT_STATUS.NOT_READY]: { label: "not ready", tone: "not-ready" }
 };
 
@@ -82,6 +84,7 @@ export const PLATFORM_STATUS = {
   [PRODUCT_STATUS.PREVIEW]: { text: "Download Testnet Preview", verb: "preview" },
   [PRODUCT_STATUS.LOCAL]: { text: "Local build only", verb: "local" },
   [PRODUCT_STATUS.PLANNED]: { text: "Incomplete", verb: "future" },
+  [PRODUCT_STATUS.RETIRED]: { text: "Retired", verb: "retired" },
   [PRODUCT_STATUS.NOT_READY]: { text: "Not ready", verb: "blocked" }
 };
 
@@ -212,10 +215,10 @@ const evidence = {
       href: "/releases/ecosystem-release-registry.json",
       release: "shop-v0.3.0-testnet-preview.1"
     },
-    statusNote: "The public Testnet storefront, persistent catalog, Wallet-bound cart/order flows, Pay/Trust/AI integrations, and a debug-signed Android Testnet Preview are available. Tax, carrier verification, production signing, and store release remain unavailable.",
+    statusNote: "The public Testnet storefront, persistent catalog, Wallet-bound cart/order flows, and Pay/Trust/AI integrations remain available through Shop Web/PWA. Shop Android is retired and is no longer distributed. Tax, carrier verification, production signing, and store release remain unavailable.",
     downloads: {
       web: { status: PRODUCT_STATUS.LIVE, href: "https://shop.ynxweb4.com/shop/", external: true, downloadHosted: false, note: "Public YNX Testnet storefront with three clearly labelled demo listings." },
-      android: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-shop-0.3.0-testnet-preview-6fa2d6c5-debug-signed.apk", "Debug-signed Android Testnet Preview · source 6fa2d6c5 · SHA-256 a7466e02…2c72d · 253,733 bytes · min Android API 26.", "/downloads/ynx-shop-0.3.0-testnet-preview-6fa2d6c5-debug-signed.apk"),
+      android: { status: PRODUCT_STATUS.RETIRED, note: "Retired. Use Shop Web/PWA at https://shop.ynxweb4.com/shop/. Existing historical APK evidence is not an active download." },
       ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS source and simulator CI pass; no production-signed or hosted iOS package is claimed." },
       macos: { status: PRODUCT_STATUS.NOT_READY, note: "No published Shop macOS package in this candidate." },
       windows: { status: PRODUCT_STATUS.NOT_READY, note: "No published Shop Windows package in this candidate." }
