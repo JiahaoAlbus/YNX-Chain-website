@@ -834,8 +834,11 @@ for (const [source, destination] of requiredOfficialDownloads) {
   }
 }
 const retiredShopAndroidPath = "/downloads/ynx-shop-0.3.0-testnet-preview-6fa2d6c5-debug-signed.apk";
-if (!vercel.rewrites?.some((rewrite) => rewrite.source === retiredShopAndroidPath && rewrite.destination === "/api/retired-download")) {
-  console.error("retired Shop Android route must fail closed through the 410 handler");
+if (
+  !vercel.rewrites?.some((rewrite) => rewrite.source === retiredShopAndroidPath && rewrite.destination === "/api/retired-download") ||
+  ecosystemCatalog.includes(retiredShopAndroidPath)
+) {
+  console.error("retired Shop Android artifact must remain withdrawn and return CLIENT_RETIRED");
   process.exit(1);
 }
 const requiredDAppRedirects = new Map([

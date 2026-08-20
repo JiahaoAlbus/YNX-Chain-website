@@ -218,7 +218,6 @@ const evidence = {
     statusNote: "The public Testnet storefront, persistent catalog, Wallet-bound cart/order flows, and Pay/Trust/AI integrations remain available through Shop Web/PWA. Shop Android is retired and is no longer distributed. Tax, carrier verification, production signing, and store release remain unavailable.",
     downloads: {
       web: { status: PRODUCT_STATUS.LIVE, href: "https://shop.ynxweb4.com/shop/", external: true, downloadHosted: false, note: "Public YNX Testnet storefront with three clearly labelled demo listings." },
-      android: { status: PRODUCT_STATUS.RETIRED, note: "Retired. Use Shop Web/PWA at https://shop.ynxweb4.com/shop/. Existing historical APK evidence is not an active download." },
       ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS source and simulator CI pass; no production-signed or hosted iOS package is claimed." },
       macos: { status: PRODUCT_STATUS.NOT_READY, note: "No published Shop macOS package in this candidate." },
       windows: { status: PRODUCT_STATUS.NOT_READY, note: "No published Shop Windows package in this candidate." }
