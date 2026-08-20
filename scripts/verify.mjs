@@ -29,6 +29,7 @@ const required = [
   "public/releases/wallet-session-router/d8863f6b2875/ynx-chain-wallet-auth-1.1.0.tgz",
   "public/releases/wallet-session-router/577f81202a85/runtime.json",
   "public/releases/wallet-auth-runtime/49e30d999e9a9cbdd2c565021009f2cab0dc125c/runtime-publication.json",
+  "public/releases/wallet-auth-runtime/6cf3ef845202bd879ed94515a71b323dd2fc9e14/runtime-publication.json",
   "docs/integration/wallet-session-mobile-cors-production-evidence-20260815.json",
   "public/da45868fe3e0818f27f187b21a56ccb5.txt",
   "src/main.jsx",
@@ -170,6 +171,7 @@ const walletSessionRegistry = JSON.parse(fs.readFileSync(`${walletSessionRelease
 const walletSessionValidation = JSON.parse(fs.readFileSync(`${walletSessionReleaseRoot}/validation-summary.json`, "utf8"));
 const walletSessionRuntime = JSON.parse(fs.readFileSync("public/releases/wallet-session-router/577f81202a85/runtime.json", "utf8"));
 const walletAuthRuntimePublication = JSON.parse(fs.readFileSync("public/releases/wallet-auth-runtime/49e30d999e9a9cbdd2c565021009f2cab0dc125c/runtime-publication.json", "utf8"));
+const walletAuthRuntimeV2Publication = JSON.parse(fs.readFileSync("public/releases/wallet-auth-runtime/6cf3ef845202bd879ed94515a71b323dd2fc9e14/runtime-publication.json", "utf8"));
 const walletSessionCorsProductionEvidence = JSON.parse(fs.readFileSync("docs/integration/wallet-session-mobile-cors-production-evidence-20260815.json", "utf8"));
 const header = fs.readFileSync("src/components/SiteHeader.jsx", "utf8");
 const i18n = fs.readFileSync("src/lib/i18n.jsx", "utf8");
@@ -388,6 +390,38 @@ if (
   console.error("Wallet/Auth P0 runtime publication is not exact or crosses its claim boundary");
   process.exit(1);
 }
+if (
+  walletAuthRuntimeV2Publication.schema !== "ynx-wallet-auth-runtime-publication/v2" ||
+  walletAuthRuntimeV2Publication.centralAcceptance?.commit !== "3c6288e1aa3d1ea6735b13db24bdfc6419f25c76" ||
+  walletAuthRuntimeV2Publication.centralAcceptance?.ownerEvidenceCommit !== "83a0a4f09a61d84a667d88a49708ffbe7643adc8" ||
+  walletAuthRuntimeV2Publication.runtime?.baseUrl !== "https://wallet-auth.ynxweb4.com" ||
+  walletAuthRuntimeV2Publication.runtime?.sourceCommit !== "6cf3ef845202bd879ed94515a71b323dd2fc9e14" ||
+  walletAuthRuntimeV2Publication.runtime?.verifiedRoutes?.length !== 3 ||
+  walletAuthRuntimeV2Publication.runtime.verifiedRoutes.some((route) => route.httpStatus !== 200 || !/^\/[a-z]+$/.test(route.path) || !Number.isInteger(route.bytes) || route.bytes < 1 || !/^[0-9a-f]{64}$/.test(route.sha256)) ||
+  walletAuthRuntimeV2Publication.verification?.productSessionV2PublicLifecycleVerified !== true ||
+  walletAuthRuntimeV2Publication.verification?.registeredSocialV1CorsStatus !== 204 ||
+  walletAuthRuntimeV2Publication.verification?.registeredFinanceV2CorsStatus !== 204 ||
+  walletAuthRuntimeV2Publication.verification?.unregisteredOriginStatus !== 403 ||
+  walletAuthRuntimeV2Publication.verification?.restartPersistenceVerified !== true ||
+  walletAuthRuntimeV2Publication.verification?.replayRejected !== true ||
+  walletAuthRuntimeV2Publication.verification?.sessionRevokeVerified !== true ||
+  walletAuthRuntimeV2Publication.verification?.deviceRevokeVerified !== true ||
+  walletAuthRuntimeV2Publication.claimBoundary?.computerControlVisibleFlowVerified !== false ||
+  walletAuthRuntimeV2Publication.claimBoundary?.installedWalletClientVerified !== false ||
+  walletAuthRuntimeV2Publication.claimBoundary?.standardWalletConnectionVerified !== false ||
+  walletAuthRuntimeV2Publication.claimBoundary?.accountSigningTransactionVerified !== false ||
+  walletAuthRuntimeV2Publication.claimBoundary?.chainDisconnectRetryVerifiedPublic !== false ||
+  walletAuthRuntimeV2Publication.claimBoundary?.expiryVerifiedPublic !== false ||
+  walletAuthRuntimeV2Publication.claimBoundary?.productMigrations?.completed !== 0 ||
+  walletAuthRuntimeV2Publication.claimBoundary?.productMigrations?.total !== 12 ||
+  walletAuthRuntimeV2Publication.claimBoundary?.integratedCentral !== false ||
+  walletAuthRuntimeV2Publication.claimBoundary?.aggregatePublicReady !== false ||
+  walletAuthRuntimeV2Publication.claimBoundary?.productionSigned !== false ||
+  walletAuthRuntimeV2Publication.claimBoundary?.storeReleased !== false
+) {
+  console.error("Wallet/Auth Product Session v2 runtime publication is not exact or crosses its claim boundary");
+  process.exit(1);
+}
 for (const file of ["migration-matrix.json", "product-session-registry.json", "validation-summary.json", "ynx-chain-wallet-auth-1.1.0.tgz"]) {
   const record = walletSessionFiles.get(file);
   const body = fs.readFileSync(`${walletSessionReleaseRoot}/${file}`);
@@ -398,11 +432,12 @@ for (const file of ["migration-matrix.json", "product-session-registry.json", "v
   }
 }
 if (
-  !docsPage.includes("/releases/wallet-auth-runtime/49e30d999e9a9cbdd2c565021009f2cab0dc125c/runtime-publication.json") ||
-  !docsPage.includes("49e30d999e9a9cbdd2c565021009f2cab0dc125c") ||
-  !docsPage.includes("b30775951dcea09bf6b72aeb4806f47ff81b3bef") ||
+  !docsPage.includes("/releases/wallet-auth-runtime/6cf3ef845202bd879ed94515a71b323dd2fc9e14/runtime-publication.json") ||
+  !docsPage.includes("6cf3ef845202bd879ed94515a71b323dd2fc9e14") ||
+  !docsPage.includes("83a0a4f09a61d84a667d88a49708ffbe7643adc8") ||
   !docsPage.includes("Installed Wallet/client verified</dt><dd>False") ||
-  !docsPage.includes("Standard connection; account, sign, send or transaction verified</dt><dd>False") ||
+  !docsPage.includes("Account, sign, send, transaction, chain disconnect or public expiry verified</dt><dd>False") ||
+  !docsPage.includes("Product migrations</dt><dd>0 / 12") ||
   !docsPage.includes("Central integration / aggregate public readiness</dt><dd>False / False") ||
   !docsPage.includes("Production signing / store release</dt><dd>False / False")
 ) {

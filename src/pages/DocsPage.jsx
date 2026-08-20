@@ -152,16 +152,17 @@ export function DocsPage() {
         <div>
           <p className="sectionEyebrow">Wallet/Auth runtime evidence · P0</p>
           <h2 id="wallet-session-release-title">A public Wallet/Auth service record, with its limits shown</h2>
-          <p>The Wallet/Auth service at <code>wallet-auth.ynxweb4.com</code> was read back from exact runtime source <code>49e30d999e9a9cbdd2c565021009f2cab0dc125c</code>. Health, readiness and version routes returned HTTP 200. Exact-origin Social CORS, lifecycle restart, replay rejection, revoke and rollback were verified against the linked evidence.</p>
+          <p>The Wallet/Auth service at <code>wallet-auth.ynxweb4.com</code> was read back from exact runtime source <code>6cf3ef845202bd879ed94515a71b323dd2fc9e14</code>. Health, readiness and version routes returned HTTP 200. The public Product Session v2 lifecycle exercised registered-origin CORS, restart persistence, replay rejection, session revoke and device revoke; an unregistered origin remained rejected. These are Gateway facts, not an installed Wallet or transaction claim.</p>
           <div className="docsSessionReleaseActions">
-            <a className="button primary" href="/releases/wallet-auth-runtime/49e30d999e9a9cbdd2c565021009f2cab0dc125c/runtime-publication.json"><Download size={16} /> Open runtime record</a>
-            <a className="button secondary" href="https://github.com/JiahaoAlbus/YNX-Chain/blob/b30775951dcea09bf6b72aeb4806f47ff81b3bef/packages/wallet-auth/integration/p0-wallet-protocol-public-runtime-evidence-20260820.json" target="_blank" rel="noreferrer">Open exact evidence <ArrowRight size={16} /></a>
+            <a className="button primary" href="/releases/wallet-auth-runtime/6cf3ef845202bd879ed94515a71b323dd2fc9e14/runtime-publication.json"><Download size={16} /> Open runtime record</a>
+            <a className="button secondary" href="https://github.com/JiahaoAlbus/YNX-Chain/blob/83a0a4f09a61d84a667d88a49708ffbe7643adc8/release/integration/wallet-product-session-v2-public-deployment-evidence.json" target="_blank" rel="noreferrer">Open exact evidence <ArrowRight size={16} /></a>
           </div>
         </div>
         <dl>
-          <div><dt>Runtime source</dt><dd>49e30d999e9a9cbdd2c565021009f2cab0dc125c</dd></div>
+          <div><dt>Runtime source</dt><dd>6cf3ef845202bd879ed94515a71b323dd2fc9e14</dd></div>
           <div><dt>Installed Wallet/client verified</dt><dd>False</dd></div>
-          <div><dt>Standard connection; account, sign, send or transaction verified</dt><dd>False</dd></div>
+          <div><dt>Account, sign, send, transaction, chain disconnect or public expiry verified</dt><dd>False</dd></div>
+          <div><dt>Product migrations</dt><dd>0 / 12</dd></div>
           <div><dt>Central integration / aggregate public readiness</dt><dd>False / False</dd></div>
           <div><dt>Production signing / store release</dt><dd>False / False</dd></div>
         </dl>
