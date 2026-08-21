@@ -88,6 +88,8 @@ export const DOWNLOAD_LABELS = {
   ios: "iOS",
   macos: "macOS",
   windows: "Windows",
+  windowsX64: "Windows x64",
+  windowsArm64: "Windows arm64",
   linux: "Linux"
 };
 
@@ -143,7 +145,7 @@ const evidence = {
       href: "/releases/ecosystem-release-registry.json",
       release: "wallet-auth-v1.0.0-testnet-preview.5"
     },
-    statusNote: "Wallet Web, Android, macOS and Windows Testnet Preview artifacts are available from immutable official URLs. macOS is a universal DMG with the native com.ynxweb4.wallet.macos identity and ynxwallet callback review UI; Windows x64 is a directly installable NSIS EXE. APK/DMG/EXE are fixed-source release candidates with exact hashes, byte counts and signing classes. Desktop previews remain unsigned and are not store releases.",
+    statusNote: "Wallet Web, Android, macOS and Windows Testnet Preview artifacts are available from immutable official URLs. macOS is a universal DMG with the native com.ynxweb4.wallet.macos identity and ynxwallet callback review UI; Windows x64 and arm64 are direct NSIS EXE installers. APK/DMG/EXE are fixed-source release candidates with exact hashes, byte counts and signing classes. Desktop previews remain unsigned and are not store releases.",
     downloads: {
       web: { status: PRODUCT_STATUS.LIVE, href: "https://wallet.ynxweb4.com/", external: true, downloadHosted: false, note: "Public Wallet Companion for provider discovery, YNX Testnet setup, signing and transaction requests. The Wallet/Auth health endpoint is not a product entry." },
       pwa: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-web-pwa-0.1.0.zip", "Unsigned PWA Testnet Preview · source a1c680982b63 · SHA-256 63d83cd2…d287 · 272,706 bytes · requires Service Worker and Web Crypto.", "/downloads/wallet-web/sha256-63d83cd20925f2d52c0f21f548fa7a857a4d056e03e5fa16244f173164a7d287/ynx-wallet-web-pwa-0.1.0.zip"),
@@ -153,7 +155,8 @@ const evidence = {
       ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS project exists; simulator/launch evidence not completed on this host." },
       macos: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-macos-0.1.2-universal.dmg", "Universal macOS Testnet Preview DMG · source 5a6b033897a1 · evidence 59e9b994ff0f · SHA-256 69b4fa5db7b8a9ab105af6633de44f5a5a4a9fceeaa0925a306f77b22381b044 · 237,777,236 bytes · x86_64 + arm64 · macOS 13+ · bundle com.ynxweb4.wallet.macos · ynxwallet callback review, reject and malformed-input fail-closed behavior verified · approval remains blocked by CANONICAL_AUTH_BRIDGE_UNAVAILABLE · unsigned and not notarized; Gatekeeper rejected; no production signing or store release claimed.", "https://downloads.ynxweb4.com/wallet/sha256-69b4fa5db7b8a9ab105af6633de44f5a5a4a9fceeaa0925a306f77b22381b044/ynx-wallet-macos-0.1.2-universal.dmg"),
       linux: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-desktop-0.1.0-x86_64.rpm", "Unsigned Linux x64 RPM candidate · evidence c2622ca2e189 · SHA-256 8cf24d83…2bea · 86,926,281 bytes · Fedora 42 x64 lifecycle verified; official hosting gate pending."),
-      windows: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-desktop-0.1.1-x64.exe", "Windows x64 NSIS Testnet Preview EXE · source a8f36e4c5723 · evidence 6ec336ef7fb5 · SHA-256 856b2a260efc43c25f62508dabc6bb6b74b84da71c9b477e8a02a12d17598cd7 · 104,334,744 bytes · install, upgrade, cold launch, second launch, rollback, re-upgrade and uninstall verified on Windows Server 2025 x64 · unsigned; Authenticode NotSigned; no production signing or store release claimed.", "/downloads/wallet/sha256-856b2a260efc43c25f62508dabc6bb6b74b84da71c9b477e8a02a12d17598cd7/ynx-wallet-desktop-0.1.1-x64.exe")
+      windowsX64: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-desktop-0.1.1-x64.exe", "Windows x64 NSIS Testnet Preview EXE · source a8f36e4c5723 · evidence 6ec336ef7fb5 · SHA-256 856b2a260efc43c25f62508dabc6bb6b74b84da71c9b477e8a02a12d17598cd7 · 104,334,744 bytes · install, upgrade, cold launch, second launch, rollback, re-upgrade and uninstall verified on Windows Server 2025 x64 · unsigned; Authenticode NotSigned; no production signing or store release claimed.", "/downloads/wallet/sha256-856b2a260efc43c25f62508dabc6bb6b74b84da71c9b477e8a02a12d17598cd7/ynx-wallet-desktop-0.1.1-x64.exe"),
+      windowsArm64: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-desktop-0.1.1-arm64.exe", "Windows arm64 NSIS Testnet Preview EXE · source a8f36e4c5723 · evidence 6ec336ef7fb5 · SHA-256 929315133c68eda1cabac51cec889c4aeca5e3ee1701578916bc67e096c5dc35 · 103,487,635 bytes · native Windows 11 arm64 install, cold launch, second launch, YNX Testnet fail-closed lifecycle, upgrade and uninstall verified · unsigned; Authenticode NotSigned; no production signing or store release claimed.", "/downloads/wallet/sha256-929315133c68eda1cabac51cec889c4aeca5e3ee1701578916bc67e096c5dc35/ynx-wallet-desktop-0.1.1-arm64.exe")
     }
   },
   social: {
