@@ -1,0 +1,42 @@
+{
+  "schema": "ynx-faucet-runtime-publication/v1",
+  "publishedAt": "2026-08-21T00:46:46Z",
+  "environment": "testnet",
+  "service": "ynx-faucetd",
+  "publicBaseUrl": "https://faucet.ynxweb4.com",
+  "sourceCommit": "ea0e068becd9103f5f0a2a6c3a0d20ab7932d006",
+  "buildCommit": "ea0e068becd9",
+  "release": "ynx-chain-ea0e068becd9",
+  "chainId": 6423,
+  "nativeAsset": "YNXT",
+  "artifact": {
+    "bytes": 19083448,
+    "sha256": "a78eb845c88911b069bb0e53642dd91084f983be895b53910949232909186a4a"
+  },
+  "runtime": {
+    "health": "https://faucet.ynxweb4.com/health",
+    "version": "https://faucet.ynxweb4.com/version",
+    "healthHttpVerified": true,
+    "versionHttpVerified": true,
+    "topologySafe": true,
+    "cacheControl": "no-store"
+  },
+  "central": {
+    "campaignId": "P0-WALLET-CONNECTIVITY-2026-08",
+    "acceptanceCommit": "edb7ca7f7a8bf689f17b97f285a256441fd9a3ae",
+    "endpointManifestVersion": "1.0.0-p0.3",
+    "endpointManifestPayloadSha256": "886ae7a2f4ef691301483da037cd4f5e1274b697865834769f20f0e799952157"
+  },
+  "truth": {
+    "daemonDeployedPublic": true,
+    "publicHttpVerified": true,
+    "realFundingRequestVerifiedInThisPublication": false,
+    "walletPlatformFaucetVerified": false,
+    "computerControlVerified": false,
+    "aggregatePublicVerified": false
+  },
+  "rollback": {
+    "available": true,
+    "previousBinarySha256": "6bc1b9c41095d235469be97901033d59db686601810fc8ac0fd0392e27135a26"
+  }
+}

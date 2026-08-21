@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { ArrowRight, CheckCircle2, CircleAlert, Droplets, ExternalLink, RefreshCw, ShieldCheck } from "lucide-react";
 import { apiConfig } from "../lib/api/ynxApi.js";
 import { normalizeAddress } from "../lib/address.js";
+import { validateFaucetRuntime } from "../lib/faucetRuntime.js";
 import { useLocale } from "../lib/i18n.jsx";
 
 const DEFAULT_AMOUNT = 100;
@@ -22,10 +23,14 @@ export function FaucetPage() {
   const refreshHealth = async () => {
     setHealth({ state: "loading" });
     try {
-      const response = await fetch(`${apiConfig.faucetUrl}/health`, { cache: "no-store" });
-      const payload = await response.json();
-      if (!response.ok || payload.ok !== true) throw new Error(payload.error || `Faucet returned HTTP ${response.status}`);
-      setHealth({ state: "ready", payload });
+      const [healthResponse, versionResponse] = await Promise.all([
+        fetch(`${apiConfig.faucetUrl}/health`, { cache: "no-store" }),
+        fetch(`${apiConfig.faucetUrl}/version`, { cache: "no-store" }),
+      ]);
+      const [payload, version] = await Promise.all([healthResponse.json(), versionResponse.json()]);
+      if (!healthResponse.ok || !versionResponse.ok) throw new Error(`Faucet identity check returned HTTP ${healthResponse.status}/${versionResponse.status}`);
+      validateFaucetRuntime(payload, version);
+      setHealth({ state: "ready", payload, version });
     } catch (error) {
       setHealth({ state: "error", error: error.name === "TypeError" ? "Faucet connection unavailable. Retry after the public service is reachable." : error.message });
     }
@@ -102,6 +107,7 @@ export function FaucetPage() {
             <li><span>4</span><div><strong>{zh ? "核对交易" : "Verify the transfer"}</strong><p>{zh ? "在 Explorer 对比 From、To、金额、手续费和区块。" : "Compare From, To, amount, fee and block in Explorer."}</p></div></li>
           </ol>
           <div className="faucetSecurity"><ShieldCheck /><p><strong>{zh ? "安全边界" : "Security boundary"}</strong><span>{zh ? "水龙头只需要公开地址，绝不会要求助记词、私钥、付款或授权。" : "The Faucet needs only a public address. It never asks for a seed phrase, private key, payment or Wallet approval."}</span></p></div>
+          <a className="faucetEvidenceLink" href="/releases/faucet-runtime/ea0e068becd9103f5f0a2a6c3a0d20ab7932d006/runtime-publication.json">{zh ? "查看运行版本与验证记录" : "View runtime identity and evidence"}<ExternalLink /></a>
         </aside>
       </section>
     </main>
@@ -109,7 +115,7 @@ export function FaucetPage() {
 }
 
 function ServiceState({ health, onRetry, zh }) {
-  if (health.state === "ready") return <div className="faucetService ready"><span /><div><small>{zh ? "水龙头状态" : "Faucet status"}</small><strong>{zh ? "可用 · RPC 支持" : "Available · RPC backed"}</strong><em>{health.payload.rateLimit || "1 per hour per IP/address"}</em></div></div>;
+  if (health.state === "ready") return <div className="faucetService ready"><span /><div><small>{zh ? "水龙头状态" : "Faucet status"}</small><strong>{zh ? "已验证 · RPC 支持" : "Verified · RPC backed"}</strong><em>{health.version.build.commit} · {zh ? "每个 IP/地址每小时一次" : "one claim per IP/address per hour"}</em></div></div>;
   if (health.state === "error") return <div className="faucetService error"><CircleAlert /><div><small>{zh ? "水龙头状态" : "Faucet status"}</small><strong>{zh ? "暂时不可用" : "Temporarily unavailable"}</strong><button type="button" onClick={onRetry}>{zh ? "重试连接" : "Retry connection"}</button></div></div>;
   return <div className="faucetService loading"><RefreshCw className="spin" /><div><small>{zh ? "水龙头状态" : "Faucet status"}</small><strong>{zh ? "正在连接…" : "Connecting…"}</strong></div></div>;
 }

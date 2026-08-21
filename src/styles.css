@@ -454,6 +454,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .faucetSecurity { display: grid; grid-template-columns: 24px minmax(0,1fr); gap: 12px; margin-top: 20px; padding: 18px; color: white; background: var(--blue); }
 .faucetSecurity p { display: grid; gap: 6px; margin: 0; }
 .faucetSecurity span { color: rgba(255,255,255,.72); font-size: 12px; line-height: 1.55; }
+.faucetEvidenceLink { display: inline-flex; align-items: center; gap: 7px; margin-top: 18px; color: var(--blue); font-size: 12px; font-weight: 750; text-decoration: none; }
+.faucetEvidenceLink svg { width: 14px; }
 .squareHeader { display: flex; justify-content: space-between; align-items: end; gap: 30px; }
 .squareBack { display: inline-flex; align-items: center; gap: 7px; margin-bottom: 28px; color: var(--blue); text-decoration: none; font-size: 13px; font-weight: 750; }
 .squareBack svg { width: 17px; }
