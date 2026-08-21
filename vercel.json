@@ -57,6 +57,20 @@
       ]
     },
     {
+      "source": "/downloads/wallet/sha256-856b2a260efc43c25f62508dabc6bb6b74b84da71c9b477e8a02a12d17598cd7/ynx-wallet-desktop-0.1.1-x64.exe",
+      "headers": [
+        { "key": "Content-Type", "value": "application/vnd.microsoft.portable-executable" },
+        { "key": "Content-Disposition", "value": "attachment; filename=\"ynx-wallet-desktop-0.1.1-x64.exe\"" }
+      ]
+    },
+    {
+      "source": "/downloads/wallet/sha256-929315133c68eda1cabac51cec889c4aeca5e3ee1701578916bc67e096c5dc35/ynx-wallet-desktop-0.1.1-arm64.exe",
+      "headers": [
+        { "key": "Content-Type", "value": "application/vnd.microsoft.portable-executable" },
+        { "key": "Content-Disposition", "value": "attachment; filename=\"ynx-wallet-desktop-0.1.1-arm64.exe\"" }
+      ]
+    },
+    {
       "source": "/releases/wallet-session-router/37f2485ed604/(.*)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" },
