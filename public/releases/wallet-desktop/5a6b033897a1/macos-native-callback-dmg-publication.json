@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1.0.0",
+  "productId": "wallet-desktop",
+  "platform": "macos-universal-dmg",
+  "releaseVersion": "0.1.2",
+  "sourceCommit": "5a6b033897a1295d35fc325a92c6bb81c8b04a19",
+  "ownerEvidenceCommit": "59e9b994ff0fc13cf285b4cac31b97cb94dfd36a",
+  "ownerFinalCommit": "7a376ada62d5ae1ea1955c72dcb71c5723a2c385",
+  "artifact": {
+    "name": "ynx-wallet-macos-0.1.2-universal.dmg",
+    "url": "https://downloads.ynxweb4.com/wallet/sha256-69b4fa5db7b8a9ab105af6633de44f5a5a4a9fceeaa0925a306f77b22381b044/ynx-wallet-macos-0.1.2-universal.dmg",
+    "bytes": 237777236,
+    "sha256": "69b4fa5db7b8a9ab105af6633de44f5a5a4a9fceeaa0925a306f77b22381b044",
+    "architectures": ["x86_64", "arm64"],
+    "minimumOSMetadata": "macOS 13.0",
+    "bundleIdentifier": "com.ynxweb4.wallet.macos",
+    "urlScheme": "ynxwallet",
+    "contentType": "application/x-apple-diskimage",
+    "contentDisposition": "attachment; filename=\"ynx-wallet-macos-0.1.2-universal.dmg\"",
+    "immutableCache": true,
+    "fullPublicDownloadRehashed": true,
+    "publicReadbackAt": "2026-08-21T13:56:30Z"
+  },
+  "lifecycle": {
+    "hdiutilVerify": true,
+    "isolatedMountInstall": true,
+    "coldLaunch": true,
+    "secondLaunch": true,
+    "chainId": "0x1917",
+    "callbackReviewVisible": true,
+    "callbackRejectFailClosed": true,
+    "callbackApproveCompleted": false,
+    "callbackApproveBlocker": "CANONICAL_AUTH_BRIDGE_UNAVAILABLE",
+    "missingOrMalformedCallbackFailClosed": true,
+    "systemApplicationsInstallVerified": false,
+    "rollbackTo011ObjectRetained": true
+  },
+  "releaseTruth": {
+    "downloadHosted": true,
+    "deployedPublic": true,
+    "productionSigned": false,
+    "notarized": false,
+    "storeReleased": false,
+    "gatekeeperAccepted": false,
+    "accountReadVerified": false,
+    "balanceReadVerified": false,
+    "walletAuthorizationApproved": false,
+    "signingVerified": false,
+    "transactionVerified": false
+  }
+}
