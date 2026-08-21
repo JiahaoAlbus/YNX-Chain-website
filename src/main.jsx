@@ -269,6 +269,13 @@ createRoot(document.getElementById("root")).render(<LocaleProvider><App /></Loca
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
-    navigator.serviceWorker.register("/sw.js").catch(() => {});
+    let refreshedForControllerUpdate = false;
+    navigator.serviceWorker.addEventListener("controllerchange", () => {
+      if (!refreshedForControllerUpdate) {
+        refreshedForControllerUpdate = true;
+        window.location.reload();
+      }
+    });
+    navigator.serviceWorker.register("/sw.js").then((registration) => registration.update()).catch(() => {});
   });
 }
