@@ -13,6 +13,7 @@ const required = [
   "public/ynx-icon-maskable-512.png",
   "public/ynx-favicon-48.png",
   "public/releases/ecosystem-release-registry.json",
+  "public/releases/installer-replacement-matrix.json",
   "public/releases/wallet-linux-x64-rpm-candidate.json",
   "public/releases/owner-record-index.json",
   "public/releases/exchange/fc2276e1ce4c/exchange-status.json",
@@ -183,6 +184,7 @@ const appsPage = fs.readFileSync("src/pages/AppsPage.jsx", "utf8");
 const downloadsPage = fs.readFileSync("src/pages/DownloadPage.jsx", "utf8");
 const productStatusPage = fs.readFileSync("src/pages/ProductStatusPage.jsx", "utf8");
 const ecosystemCatalog = fs.readFileSync("src/lib/ecosystemCatalog.js", "utf8");
+const installerReplacementMatrix = JSON.parse(fs.readFileSync("public/releases/installer-replacement-matrix.json", "utf8"));
 for (const platform of ["pwa", "chromeEdge", "firefox"]) {
   if (!downloadsPage.includes(`"${platform}"`) || !productStatusPage.includes(`"${platform}"`)) {
     console.error(`Wallet Web download platform is hidden from a public page: ${platform}`);
@@ -808,14 +810,41 @@ if (!vercel.cleanUrls || spaFallback?.destination !== "/") {
 }
 const requiredOfficialDownloads = new Map([
   ["/downloads/wallet/sha256-8cf24d83dd5da5851484eab14ce9e6cd16946c95699a7af1e11048bbd7692bea/ynx-wallet-desktop-0.1.0-x86_64.rpm", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/wallet/sha256-8cf24d83dd5da5851484eab14ce9e6cd16946c95699a7af1e11048bbd7692bea/ynx-wallet-desktop-0.1.0-x86_64.rpm"],
-  ["/downloads/ynx-developer-testnet-preview-macos-unsigned.zip", "https://developer.ynxweb4.com/downloads/ynx-developer-0.2.0-testnet-preview-macos-arm64-unsigned.zip"],
-  ["/downloads/ynx-developer-testnet-preview-windows-x64-unsigned.zip", "https://developer.ynxweb4.com/downloads/ynx-developer-0.2.0-testnet-preview-windows-x64-unsigned.zip"],
   ["/downloads/ynx-trust-center-4d40557229b4-linux-amd64.tar.gz", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-trust-center-4d40557229b4-linux-amd64.tar.gz"],
-  ["/downloads/wallet/sha256-21db36f1c80d4e88520918de141a7f71921817799270ff671db88179023b5591/ynx-wallet-cli-darwin-arm64.gz", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/wallet/sha256-21db36f1c80d4e88520918de141a7f71921817799270ff671db88179023b5591/ynx-wallet-cli-darwin-arm64-R8DBYwa0YQxXIlYKC6TfHmgCgFqCVK.gz"],
   ["/downloads/ynx-exchange-1.0.0-testnet-preview-1e5f48d2-test-signed.apk", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-exchange-1.0.0-testnet-preview-1e5f48d2-test-signed.apk"],
   ["/downloads/ynx-finance-1.2.0-testnet-preview-307273b9-test-signed.apk", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-finance-1.2.0-testnet-preview-307273b9-test-signed-8WRdkqJCJnHBCsuyDsRj4XjEreyeYT.apk"],
   ["/downloads/ynx-social-1.0.0-testnet-preview-aa852496-test-signed.apk", "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-social-1.0.0-testnet-preview-aa852496-test-signed-15JR16t0lzmvyKU06tyaYXcUGC0sjQ.apk"]
 ]);
+
+const invalidDesktopInstallerClaims = [
+  /macos:\s*artifactDownload\([^\n]*(?:\.zip|\.gz|\.tar\.gz)/i,
+  /windows:\s*artifactDownload\([^\n]*\.zip/i
+];
+if (
+  installerReplacementMatrix.policy?.macos?.join(",") !== ".dmg" ||
+  installerReplacementMatrix.policy?.windows?.join(",") !== ".exe,.msix" ||
+  installerReplacementMatrix.replacements?.length !== 3 ||
+  installerReplacementMatrix.replacements.some((item) => item.publicVerified !== false || item.replacementArtifact !== null || item.publicDownloadUrl !== null)
+) {
+  console.error("installer replacement matrix does not preserve the exact replacement and public-verification boundary");
+  process.exit(1);
+}
+if (invalidDesktopInstallerClaims.some((pattern) => pattern.test(ecosystemCatalog))) {
+  console.error("macOS and Windows public downloads must be real installers: DMG for macOS and EXE/MSIX for Windows");
+  process.exit(1);
+}
+for (const requiredText of [
+  'web: { status: PRODUCT_STATUS.LIVE, href: "https://wallet.ynxweb4.com/"',
+  'entry: { label: "Open Wallet Companion", href: "https://wallet.ynxweb4.com/", external: true }',
+  'installerReplacement("macOS", ".dmg", "ynx-wallet-cli-darwin-arm64.gz", "wallet-platform")',
+  'installerReplacement("macOS", ".dmg", "ynx-developer-testnet-preview-macos-unsigned.zip", "developer")',
+  'installerReplacement("Windows", ".exe or .msix", "ynx-developer-testnet-preview-windows-x64-unsigned.zip", "developer")'
+]) {
+  if (!ecosystemCatalog.includes(requiredText)) {
+    console.error(`installer replacement or Wallet Web entry gate is missing: ${requiredText}`);
+    process.exit(1);
+  }
+}
 if (
   walletLinuxRpmCandidate.bytes !== 86926281 ||
   walletLinuxRpmCandidate.sha256 !== "8cf24d83dd5da5851484eab14ce9e6cd16946c95699a7af1e11048bbd7692bea" ||

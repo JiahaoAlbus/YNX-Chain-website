@@ -59,6 +59,18 @@ const artifactDownload = (status, artifactPath, note, href = null) => {
   };
 };
 
+const installerReplacement = (platform, requiredFormat, previousArtifact, owner) => ({
+  status: PRODUCT_STATUS.NOT_READY,
+  downloadHosted: false,
+  href: null,
+  artifactPath: null,
+  replacementRequired: true,
+  requiredFormat,
+  previousArtifact,
+  owner,
+  note: `${platform} installer replacement is in progress. The previous archive is not an installable ${platform} application and is no longer advertised. The direct download returns after install, cold-start, second-start and live-network verification.`
+});
+
 export const STATUS_CONFIG = {
   [PRODUCT_STATUS.LIVE]: { label: "public web", tone: "live" },
   [PRODUCT_STATUS.LOCAL]: { label: "candidate", tone: "local" },
@@ -131,15 +143,15 @@ const evidence = {
       href: "/releases/ecosystem-release-registry.json",
       release: "wallet-auth-v1.0.0-testnet-preview.5"
     },
-    statusNote: "Wallet Web, Android and Windows Testnet Preview artifacts are available from website-hosted immutable URLs. APK/EXE are fixed-source release candidates with exact source SHA-256, byte count and signing class published. Production signing and store release are not claimed.",
+    statusNote: "Wallet Web, Android and Windows Testnet Preview artifacts are available from website-hosted immutable URLs. The old macOS CLI gzip is not a desktop installer and is being replaced by a verified DMG. APK/EXE are fixed-source release candidates with exact source SHA-256, byte count and signing class published. Production signing and store release are not claimed.",
     downloads: {
-      web: { status: PRODUCT_STATUS.LIVE, href: "https://wallet-auth.ynxweb4.com/health", external: true, downloadHosted: false, note: "Public canonical Wallet/Auth gateway health; product use remains proof-bound." },
+      web: { status: PRODUCT_STATUS.LIVE, href: "https://wallet.ynxweb4.com/", external: true, downloadHosted: false, note: "Public Wallet Companion for provider discovery, YNX Testnet setup, signing and transaction requests. The Wallet/Auth health endpoint is not a product entry." },
       pwa: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-web-pwa-0.1.0.zip", "Unsigned PWA Testnet Preview · source a1c680982b63 · SHA-256 63d83cd2…d287 · 272,706 bytes · requires Service Worker and Web Crypto.", "/downloads/wallet-web/sha256-63d83cd20925f2d52c0f21f548fa7a857a4d056e03e5fa16244f173164a7d287/ynx-wallet-web-pwa-0.1.0.zip"),
       chromeEdge: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-chrome-edge-0.1.0.zip", "Unsigned unpacked Chrome/Edge Testnet Preview · source a1c680982b63 · SHA-256 c733093d…e2aa · 188,846 bytes · Chrome/Edge 120+.", "/downloads/wallet-web/sha256-c733093dea47c6612c8a9d5ecea40be2227f62402f4b4966955c9e1accf4e2aa/ynx-wallet-chrome-edge-0.1.0.zip"),
       firefox: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-firefox-0.1.0.zip", "Unsigned unpacked Firefox Testnet Preview · source a1c680982b63 · SHA-256 417d9b9e…36b3 · 188,883 bytes · Firefox 128+.", "/downloads/wallet-web/sha256-417d9b9e5babf05fdfdf8161504389eb99c636be75f94444bf4ff91a9b4536b3/ynx-wallet-firefox-0.1.0.zip"),
       android: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-1.0.3-testnet-preview-3ab8c24c-local-test-signed.apk", "Android Testnet Preview 1.0.3 · source 3ab8c24c · SHA-256 afd68685…e0 · 78,233,954 bytes · Android API 24+ / target API 36 · direct retry after an authoritative Testnet read failure; API 36 install, two cold starts, biometric unlock and real Testnet account read verified · local test signer only, not production signed or Play Store released.", "/downloads/wallet/sha256-afd686851ef07fbb07823295d07179b79e1a4a078d1b528bc149bd619c8689e0/ynx-wallet-1.0.3-testnet-preview-3ab8c24c-local-test-signed.apk"),
       ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS project exists; simulator/launch evidence not completed on this host." },
-      macos: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-cli-darwin-arm64.gz", "macOS arm64 CLI Testnet Preview · source 6856bf41f79f · SHA-256 21db36f1…591 · 4,904,463 bytes · macOS 12+ · ad-hoc signed, not production signed.", "/downloads/wallet/sha256-21db36f1c80d4e88520918de141a7f71921817799270ff671db88179023b5591/ynx-wallet-cli-darwin-arm64.gz"),
+      macos: installerReplacement("macOS", ".dmg", "ynx-wallet-cli-darwin-arm64.gz", "wallet-platform"),
       linux: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-desktop-0.1.0-x86_64.rpm", "Unsigned Linux x64 RPM candidate · evidence c2622ca2e189 · SHA-256 8cf24d83…2bea · 86,926,281 bytes · Fedora 42 x64 lifecycle verified; official hosting gate pending."),
       windows: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-desktop-windows-x64.exe", "Fixed-source Windows Testnet Candidate · source 018cf5ab · SHA-256 8f1839de821e753ec348b07315d77f0ccbc7bc6af5fb4156858c023d73631d32 · 104,731,961 bytes · signing class unsigned.", "/releases/wallet/60e7426c1758/ynx-wallet-desktop-windows-x64.exe")
     }
@@ -240,13 +252,13 @@ const evidence = {
       href: "/releases/ecosystem-release-registry.json",
       release: "developer-v0.2.0-testnet-preview.1"
     },
-    statusNote: "The public YNX Developer Web IDE is live against chain ID 6423, with bounded compiler, test, API Studio, checkpoint and Wallet-only deployment-review workflows. Official macOS arm64 and Windows x64 unsigned Testnet Preview packages are hosted for direct download. Provider-backed AI, central Wallet acceptance, production signing and store release are not claimed.",
+    statusNote: "The public YNX Developer Web IDE is live against chain ID 6423, with bounded compiler, test, API Studio, checkpoint and Wallet-only deployment-review workflows. The previous desktop ZIP archives are not installable application packages; verified macOS DMG and Windows EXE/MSIX replacements are being built before direct links return. Provider-backed AI, central Wallet acceptance, production signing and store release are not claimed.",
     downloads: {
       web: { status: PRODUCT_STATUS.LIVE, href: "https://developer.ynxweb4.com/", external: true, downloadHosted: false, note: "Public Testnet Web IDE with live chain status and fail-closed signing/provider boundaries." },
       android: { status: PRODUCT_STATUS.NOT_READY, note: "No native Android package published for Developer in this candidate." },
       ios: { status: PRODUCT_STATUS.NOT_READY, note: "No iOS package published for Developer in this candidate." },
-      macos: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-developer-testnet-preview-macos-unsigned.zip", "Unsigned macOS arm64 Testnet Preview · SHA-256 ff9ae3d4…903f7 · 38,450,128 bytes.", "/downloads/ynx-developer-testnet-preview-macos-unsigned.zip"),
-      windows: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-developer-testnet-preview-windows-x64-unsigned.zip", "Unsigned Windows x64 Testnet Preview · SHA-256 1efaf486…07fb29 · 106,341,644 bytes.", "/downloads/ynx-developer-testnet-preview-windows-x64-unsigned.zip")
+      macos: installerReplacement("macOS", ".dmg", "ynx-developer-testnet-preview-macos-unsigned.zip", "developer"),
+      windows: installerReplacement("Windows", ".exe or .msix", "ynx-developer-testnet-preview-windows-x64-unsigned.zip", "developer")
     }
   },
   explorer: {
@@ -475,12 +487,12 @@ export const getCatalog = () => [
     key: "wallet",
     name: "YNX Wallet",
     icon: WalletCards,
-    status: PRODUCT_STATUS.LOCAL,
-    detail: "Wallet-first login exists for testnet workflows. Canonical envelope and wallet-only session binding remain central-environment dependent.",
-    entry: { label: "Wallet entry", href: "/docs#wallet" },
+    status: PRODUCT_STATUS.LIVE,
+    detail: "The public Wallet Companion provides standard browser-wallet discovery and YNX Testnet actions. Provider discovery and RPC error classification are currently under P0 repair; the page must not confuse an unavailable browser provider with an unavailable chain RPC.",
+    entry: { label: "Open Wallet Companion", href: "https://wallet.ynxweb4.com/", external: true },
     docs: { ...docsAnchor("wallet"), label: "Wallet docs" },
-    downloads: web(PRODUCT_STATUS.LOCAL, "/docs#wallet", "In-browser session entry + local testnet workflow"),
-    metrics: [["Closure", "Wallet-bound identity and vault session"], ["Risk", "No production custody sign-off"], ["Readiness", "Native release not yet published"]]
+    downloads: web(PRODUCT_STATUS.LIVE, "https://wallet.ynxweb4.com/", "Public Wallet Companion; provider discovery and RPC error classification are under active P0 repair."),
+    metrics: [["Closure", "Public companion + Wallet-bound identity and vault session"], ["Risk", "Provider detection is not yet public-verified"], ["Readiness", "Web live; native installer replacements in progress"]]
   },
   {
     key: "social",

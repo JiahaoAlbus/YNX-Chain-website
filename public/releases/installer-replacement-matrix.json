@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "1.0.0",
+  "campaign": "P0-WALLET-CONNECTIVITY-2026-08",
+  "issuedAt": "2026-08-21T00:00:00+08:00",
+  "policy": {
+    "macos": [".dmg"],
+    "windows": [".exe", ".msix"],
+    "android": [".apk", ".aab"],
+    "archiveRule": "ZIP, GZ and TAR archives may be source, PWA, browser-extension or Linux packages, but must not be advertised as macOS or Windows application installers.",
+    "publicationGate": [
+      "artifact hash and byte count",
+      "signature class",
+      "install proof",
+      "cold start",
+      "second start",
+      "live endpoint and chain connectivity",
+      "official website direct-download readback"
+    ]
+  },
+  "replacements": [
+    {
+      "product": "wallet",
+      "platform": "macos",
+      "owner": "wallet-platform",
+      "previousArtifact": "ynx-wallet-cli-darwin-arm64.gz",
+      "reason": "CLI gzip is not a macOS application installer.",
+      "requiredFormat": ".dmg",
+      "status": "BUILD_AND_INSTALL_PROOF_IN_PROGRESS",
+      "replacementArtifact": null,
+      "publicDownloadUrl": null,
+      "publicVerified": false
+    },
+    {
+      "product": "developer",
+      "platform": "macos",
+      "owner": "developer",
+      "previousArtifact": "ynx-developer-testnet-preview-macos-unsigned.zip",
+      "reason": "ZIP archive is not the required macOS installer experience.",
+      "requiredFormat": ".dmg",
+      "status": "BUILD_AND_INSTALL_PROOF_IN_PROGRESS",
+      "replacementArtifact": null,
+      "publicDownloadUrl": null,
+      "publicVerified": false
+    },
+    {
+      "product": "developer",
+      "platform": "windows",
+      "owner": "developer",
+      "previousArtifact": "ynx-developer-testnet-preview-windows-x64-unsigned.zip",
+      "reason": "ZIP archive is not the required Windows installer experience.",
+      "requiredFormat": ".exe or .msix",
+      "status": "BUILD_AND_INSTALL_PROOF_IN_PROGRESS",
+      "replacementArtifact": null,
+      "publicDownloadUrl": null,
+      "publicVerified": false
+    }
+  ]
+}
