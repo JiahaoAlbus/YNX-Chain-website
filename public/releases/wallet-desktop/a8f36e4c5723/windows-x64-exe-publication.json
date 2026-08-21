@@ -15,10 +15,11 @@
     "architecture": "x64",
     "directlyTestedOS": "Windows Server 2025 x64",
     "contentType": "application/vnd.microsoft.portable-executable",
-    "contentDisposition": "attachment; filename=\"ynx-wallet-desktop-0.1.1-x64.exe\"",
+    "contentDisposition": "attachment",
     "immutableCache": true,
     "fullOriginDownloadRehashed": true,
-    "publicReadbackAt": "2026-08-21T13:56:45Z"
+    "fullOfficialWebsiteDownloadRehashed": true,
+    "publicReadbackAt": "2026-08-21T14:15:00Z"
   },
   "lifecycle": {
     "install": true,
@@ -34,8 +35,11 @@
   "releaseTruth": {
     "downloadHosted": true,
     "originDeployedPublic": true,
-    "officialWebsiteListed": false,
-    "officialWebsiteRouteVerified": false,
+    "officialWebsiteListed": true,
+    "officialWebsiteRouteVerified": true,
+    "websiteSourceCommit": "22446e1",
+    "websiteDeploymentId": "dpl_CXynLgpeqc9rGKWvgWH8u4kUfpFx",
+    "websiteDeploymentUrl": "https://ynx-web4-website-g8zb7nca2-jiahaoalbus-projects.vercel.app",
     "authenticodeStatus": "NotSigned",
     "productionSigned": false,
     "storeReleased": false,

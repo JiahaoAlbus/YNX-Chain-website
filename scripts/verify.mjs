@@ -836,7 +836,7 @@ if (
   walletMacReplacement?.publicDownloadUrl !== walletMacDmgPublication.artifact.url ||
   walletMacReplacement?.sha256 !== walletMacDmgPublication.artifact.sha256 ||
   walletMacReplacement?.bytes !== walletMacDmgPublication.artifact.bytes ||
-  walletWindowsReplacement?.publicVerified !== false ||
+  walletWindowsReplacement?.publicVerified !== true ||
   walletWindowsReplacement?.originPublicVerified !== true ||
   walletWindowsReplacement?.replacementArtifact !== "ynx-wallet-desktop-0.1.1-x64.exe" ||
   walletWindowsReplacement?.publicDownloadUrl !== walletWindowsExePublication.artifact.url ||
@@ -857,7 +857,9 @@ if (
   walletWindowsExePublication.artifact.bytes !== 104334744 ||
   walletWindowsExePublication.artifact.sha256 !== "856b2a260efc43c25f62508dabc6bb6b74b84da71c9b477e8a02a12d17598cd7" ||
   walletWindowsExePublication.artifact.fullOriginDownloadRehashed !== true ||
-  walletWindowsExePublication.releaseTruth.officialWebsiteRouteVerified !== false ||
+  walletWindowsExePublication.artifact.fullOfficialWebsiteDownloadRehashed !== true ||
+  walletWindowsExePublication.releaseTruth.officialWebsiteListed !== true ||
+  walletWindowsExePublication.releaseTruth.officialWebsiteRouteVerified !== true ||
   walletWindowsExePublication.releaseTruth.productionSigned !== false
 ) {
   console.error("installer replacement matrix does not preserve the exact replacement and public-verification boundary");
