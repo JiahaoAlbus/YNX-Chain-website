@@ -46,11 +46,11 @@ export function FaucetPage() {
       const response = await fetch(`${apiConfig.faucetUrl}/request`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ address: normalized.ynxAddress, amount: DEFAULT_AMOUNT }),
+      body: JSON.stringify({ address: normalized.evmAddress, amount: DEFAULT_AMOUNT }),
       });
       const payload = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(payload.error || `Request failed with HTTP ${response.status}`);
-      const { hash } = validateFaucetClaim(payload, normalized.ynxAddress, DEFAULT_AMOUNT);
+      const { hash } = validateFaucetClaim(payload, normalized.evmAddress, DEFAULT_AMOUNT);
       setRequest({ state: "success", payload, hash });
       refreshHealth();
     } catch (error) {
