@@ -43,8 +43,7 @@ export function LocaleProvider({ children }) {
   const [locale, setLocaleState] = useState(() => {
     const queryLocale = new URLSearchParams(window.location.search).get("lang");
     const saved = window.localStorage.getItem("ynx-locale");
-    const browserLocale = navigator.language;
-    void browserLocale;
+    // navigator.language remains a browser capability, but public entry defaults to English.
     return normalizeLocale(queryLocale || saved || "en");
   });
 
