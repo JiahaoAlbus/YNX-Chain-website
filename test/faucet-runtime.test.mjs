@@ -2,15 +2,15 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { validateFaucetClaim, validateFaucetRuntime } from "../src/lib/faucetRuntime.js";
 
-const build = { commit: "02cf44d17b50", release: "ynx-chain-02cf44d17b50", buildTime: "2026-08-21T01:05:34Z" };
+const build = { commit: "d644c0821b61", release: "ynx-chain-d644c0821b61", buildTime: "2026-08-21T11:34:38Z" };
 const health = {
   ok: true,
   service: "ynx-faucetd",
   chainId: 6423,
   height: 1136415,
   nativeSymbol: "YNXT",
+  upstreamMode: "authoritative",
   upstreamOk: true,
-  dependencies: [{ name: "chain-rpc", required: true, ok: true }],
   build,
   startedAt: "2026-08-21T00:46:14Z",
   truthfulStatus: "rpc-backed-faucet",
@@ -19,7 +19,7 @@ const version = { service: "ynx-faucetd", build, startedAt: health.startedAt, de
 
 test("accepts only the exact topology-safe Faucet runtime identity", () => {
   const result = validateFaucetRuntime(health, version);
-  assert.equal(result.version.build.commit, "02cf44d17b50");
+  assert.equal(result.version.build.commit, "d644c0821b61");
   assert.ok(Object.isFrozen(result));
 });
 
@@ -45,7 +45,7 @@ test("rejects topology leaks, wrong chain, mismatched or unknown builds", () => 
     [{ ...health, rpcUrl: "http://127.0.0.1:6420" }, version],
     [{ ...health, requestLog: "/var/log/ynx-chain/faucet-requests.jsonl" }, version],
     [{ ...health, chainId: 1 }, version],
-    [{ ...health, dependencies: [{ name: "chain-rpc", required: true, ok: false }] }, version],
+    [{ ...health, upstreamOk: false }, version],
     [health, { ...version, build: { ...build, commit: "unknown" } }],
   ]) {
     assert.throws(() => validateFaucetRuntime(candidateHealth, candidateVersion), /No availability is claimed/);
