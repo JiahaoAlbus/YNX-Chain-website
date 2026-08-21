@@ -61,7 +61,7 @@ export function SiteHeader({ scrollProgress = 0 }) {
             <Search /><span>{t("search")}</span><kbd>⌘K</kbd>
           </button>
           <button type="button" className="toolButton localeButton" onClick={() => setLocale(locale === "en" ? "zh-CN" : "en")} aria-label={t("switchLanguage")} title={t("switchLanguage")}>
-            <span>{locale === "en" ? "中文" : "EN"}</span>
+            <span>{locale === "en" ? "EN" : "中文"}</span>
           </button>
           <button type="button" className="toolButton" onClick={() => setTheme(theme === "dark" ? "light" : "dark")} aria-label={t(theme === "dark" ? "light" : "dark")}>
             {theme === "dark" ? <Sun /> : <Moon />}
