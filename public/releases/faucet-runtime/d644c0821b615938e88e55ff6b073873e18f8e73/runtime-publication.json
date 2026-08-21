@@ -1,0 +1,60 @@
+{
+  "schema": "ynx-faucet-runtime-publication/v1",
+  "publishedAt": "2026-08-21T11:39:47Z",
+  "environment": "testnet",
+  "service": "ynx-faucetd",
+  "publicBaseUrl": "https://faucet.ynxweb4.com",
+  "sourceCommit": "d644c0821b615938e88e55ff6b073873e18f8e73",
+  "buildCommit": "d644c0821b61",
+  "release": "ynx-chain-d644c0821b61",
+  "chainId": 6423,
+  "nativeAsset": "YNXT",
+  "artifact": {
+    "sha256": "3a624f6cb0a0df3956e8ab382c03cdd8b2ae156f984974df5088d518f75acaa8"
+  },
+  "runtime": {
+    "health": "https://faucet.ynxweb4.com/health",
+    "version": "https://faucet.ynxweb4.com/version",
+    "healthHttpVerified": true,
+    "versionHttpVerified": true,
+    "healthStatus": 200,
+    "healthOk": true,
+    "topologySafe": true,
+    "buildTime": "2026-08-21T11:34:38Z"
+  },
+  "verifiedFundingTransactions": [
+    {
+      "requestedAddress": "0x1212121212121212121212121212121212121212",
+      "amount": 100,
+      "nativeAsset": "YNXT",
+      "transactionHash": "0x3353c6917d39fd0ed8c00457a14b2ac59af72fb78f068e96e068d562e31c9405",
+      "blockNumber": 1144336,
+      "rpcVerified": true
+    },
+    {
+      "requestedAddress": "0x1313131313131313131313131313131313131313",
+      "amount": 100,
+      "nativeAsset": "YNXT",
+      "transactionHash": "0xee1ef3e52561c0689574fe4501bac712c843a94a0521162f71bf74c10272cc63",
+      "blockNumber": 1144337,
+      "rpcVerified": true
+    }
+  ],
+  "rateLimitVerified": true,
+  "truth": {
+    "daemonDeployedPublic": true,
+    "publicHttpVerified": true,
+    "realFundingRequestVerifiedInThisPublication": true,
+    "rpcTransactionVerified": true,
+    "explorerTransactionRouteVerified": false,
+    "nativeYnx1AddressSupported": false,
+    "walletPlatformFaucetVerified": false,
+    "computerControlVerified": false,
+    "aggregatePublicVerified": false
+  },
+  "rollback": {
+    "available": true,
+    "previousBuildCommit": "62f7cf4bfc38",
+    "previousBinarySha256": "7249f0393b33558c9bbe20e2b5812e21372eb7c52f4ec2d73a77208068361063"
+  }
+}

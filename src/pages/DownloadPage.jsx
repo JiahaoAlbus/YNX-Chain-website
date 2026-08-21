@@ -52,7 +52,7 @@ export function DownloadPage() {
       <p>{product.detail}</p>
       <ul className="downloadList">
         {Object.entries(product.downloads)
-          .filter(([platform]) => ["web", "pwa", "chromeEdge", "firefox", "android", "ios", "macos", "windows", "linux"].includes(platform))
+          .filter(([platform]) => ["web", "pwa", "chromeEdge", "firefox", "android", "ios", "macos", "windows", "windowsX64", "windowsArm64", "linux"].includes(platform))
           .map(([platform, item]) => renderTarget(platform, item, product.key, zh))}
       </ul>
 

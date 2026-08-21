@@ -1,6 +1,6 @@
 export const ACCEPTED_FAUCET_BUILD = Object.freeze({
-  commit: "02cf44d17b50",
-  release: "ynx-chain-02cf44d17b50",
+  commit: "d644c0821b61",
+  release: "ynx-chain-d644c0821b61",
 });
 
 export function validateFaucetRuntime(health, version) {
@@ -11,8 +11,11 @@ export function validateFaucetRuntime(health, version) {
   const dependency = Array.isArray(health.dependencies)
     ? health.dependencies.find((item) => isRecord(item) && item.name === "chain-rpc" && item.required === true)
     : null;
+  const upstreamIsHealthy = health.upstreamMode === "authoritative"
+    ? health.upstreamOk === true
+    : dependency?.ok === true;
   const buildMatches = health.build.commit === version.build.commit && health.build.release === version.build.release;
-  if (health.ok !== true || health.service !== "ynx-faucetd" || health.chainId !== 6423 || health.nativeSymbol !== "YNXT" || health.upstreamOk !== true || dependency?.ok !== true || leaksTopology || !buildMatches || version.build.commit !== ACCEPTED_FAUCET_BUILD.commit || version.build.release !== ACCEPTED_FAUCET_BUILD.release) {
+  if (health.ok !== true || health.service !== "ynx-faucetd" || health.chainId !== 6423 || health.nativeSymbol !== "YNXT" || !upstreamIsHealthy || leaksTopology || !buildMatches || version.build.commit !== ACCEPTED_FAUCET_BUILD.commit || version.build.release !== ACCEPTED_FAUCET_BUILD.release) {
     throw new Error("Faucet public health or release identity is incompatible. No availability is claimed.");
   }
   return Object.freeze({ health, version });

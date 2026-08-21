@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "1.0.0",
+  "productId": "wallet-desktop",
+  "platform": "windows-arm64-nsis-exe",
+  "releaseVersion": "0.1.1",
+  "sourceCommit": "a8f36e4c57234efe5f19367c87035b4435d61b76",
+  "ownerEvidenceCommit": "6ec336ef7fb51ff537329e4d6b4e7517c5f9ec05",
+  "ownerFinalCommit": "4141b98cac813d1b57e7fea943dd7cf4dc449177",
+  "artifact": {
+    "name": "ynx-wallet-desktop-0.1.1-arm64.exe",
+    "url": "https://www.ynxweb4.com/downloads/wallet/sha256-929315133c68eda1cabac51cec889c4aeca5e3ee1701578916bc67e096c5dc35/ynx-wallet-desktop-0.1.1-arm64.exe",
+    "originUrl": "https://downloads.ynxweb4.com/wallet/sha256-929315133c68eda1cabac51cec889c4aeca5e3ee1701578916bc67e096c5dc35/ynx-wallet-desktop-0.1.1-arm64.exe",
+    "bytes": 103487635,
+    "sha256": "929315133c68eda1cabac51cec889c4aeca5e3ee1701578916bc67e096c5dc35",
+    "architecture": "arm64",
+    "minimumOS": "Windows 11 arm64",
+    "directlyTestedOS": "Windows 11 arm64 native GitHub Actions runner",
+    "contentType": "application/vnd.microsoft.portable-executable",
+    "contentDisposition": "attachment; filename=\"ynx-wallet-desktop-0.1.1-arm64.exe\"",
+    "immutableCache": true,
+    "fullOriginDownloadRehashed": true,
+    "fullOfficialWebsiteDownloadRehashed": false,
+    "publicReadbackAt": "2026-08-21T16:13:46Z"
+  },
+  "lifecycle": {
+    "install": true,
+    "upgrade": true,
+    "coldLaunch": true,
+    "secondLaunch": true,
+    "rollback": true,
+    "reupgrade": true,
+    "uninstall": true,
+    "chainId": "0x1917",
+    "loopbackEndpointRejected": true
+  },
+  "releaseTruth": {
+    "downloadHosted": true,
+    "originDeployedPublic": true,
+    "officialWebsiteListed": false,
+    "officialWebsiteRouteVerified": false,
+    "websiteSourceCommit": null,
+    "websiteDeploymentId": null,
+    "websiteDeploymentUrl": null,
+    "authenticodeStatus": "NotSigned",
+    "productionSigned": false,
+    "storeReleased": false,
+    "accountReadVerified": false,
+    "walletAuthorizationApproved": false,
+    "signingVerified": false,
+    "transactionVerified": false
+  }
+}
