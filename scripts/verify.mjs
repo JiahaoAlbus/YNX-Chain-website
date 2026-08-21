@@ -915,6 +915,16 @@ for (const [source, destination] of requiredOfficialDownloads) {
     console.error(`official download rewrite is missing: ${source}`);
     process.exit(1);
   }
+  const filename = source.split("/").at(-1);
+  const rule = vercel.headers?.find((entry) => entry.source === source);
+  const headerMap = new Map(rule?.headers?.map((header) => [header.key.toLowerCase(), header.value]));
+  if (source.endsWith(".exe") && (
+    headerMap.get("content-type") !== "application/vnd.microsoft.portable-executable" ||
+    headerMap.get("content-disposition") !== `attachment; filename="${filename}"`
+  )) {
+    console.error(`official Windows download headers are not exact: ${source}`);
+    process.exit(1);
+  }
 }
 const retiredShopAndroidPath = "/downloads/ynx-shop-0.3.0-testnet-preview-6fa2d6c5-debug-signed.apk";
 if (
