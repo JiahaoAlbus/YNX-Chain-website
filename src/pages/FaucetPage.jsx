@@ -93,7 +93,7 @@ export function FaucetPage() {
           </form>
 
           {request.state === "error" ? <div className="faucetResult error" role="alert"><CircleAlert /><div><strong>{zh ? "未发送" : "Nothing was sent"}</strong><p>{request.error}</p><button type="button" onClick={() => setRequest({ state: "idle" })}>{zh ? "返回重试" : "Try again"}</button></div></div> : null}
-          {request.state === "success" ? <div className="faucetResult success" role="status"><CheckCircle2 /><div><strong>{zh ? "测试币交易已提交" : "Testnet transfer submitted"}</strong><p>{request.payload.amount} {request.payload.nativeSymbol || "YNXT"} → <code>{request.payload.address}</code></p><code className="faucetHash">{request.hash}</code><div className="faucetResultActions"><a href={`${apiConfig.explorerUrl}/tx/${request.hash}`}>{zh ? "在 Explorer 查看" : "View in Explorer"}<ExternalLink /></a><button type="button" onClick={reset}>{zh ? "完成" : "Done"}</button></div></div></div> : null}
+          {request.state === "success" ? <div className="faucetResult success" role="status"><CheckCircle2 /><div><strong>{zh ? "测试币交易已提交" : "Testnet transfer submitted"}</strong><p>{request.payload.amount} {request.payload.nativeSymbol || "YNXT"} → <code>{request.payload.address}</code></p><code className="faucetHash">{request.hash}</code><div className="faucetResultActions"><a href={`${apiConfig.apiBase}/txs/${request.hash}`}>{zh ? "查看 RPC 记录" : "View RPC record"}<ExternalLink /></a><button type="button" onClick={reset}>{zh ? "完成" : "Done"}</button></div></div></div> : null}
         </div>
 
         <aside className="faucetRules">
@@ -106,7 +106,7 @@ export function FaucetPage() {
             <li><span>4</span><div><strong>{zh ? "核对交易" : "Verify the transfer"}</strong><p>{zh ? "在 Explorer 对比 From、To、金额、手续费和区块。" : "Compare From, To, amount, fee and block in Explorer."}</p></div></li>
           </ol>
           <div className="faucetSecurity"><ShieldCheck /><p><strong>{zh ? "安全边界" : "Security boundary"}</strong><span>{zh ? "水龙头只需要公开地址，绝不会要求助记词、私钥、付款或授权。" : "The Faucet needs only a public address. It never asks for a seed phrase, private key, payment or Wallet approval."}</span></p></div>
-          <a className="faucetEvidenceLink" href="/releases/faucet-runtime/02cf44d17b50dfd0f24a9f022e472b7d5eb0c1d4/runtime-publication.json">{zh ? "查看运行版本与真实交易验证记录" : "View runtime and verified transaction evidence"}<ExternalLink /></a>
+          <a className="faucetEvidenceLink" href="/releases/faucet-runtime/64efa498fa9982e12ffda888391d67082dc898bb/runtime-publication.json">{zh ? "查看运行版本与真实交易验证记录" : "View runtime and verified transaction evidence"}<ExternalLink /></a>
         </aside>
       </section>
     </main>
