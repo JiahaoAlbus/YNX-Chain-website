@@ -25,10 +25,16 @@
       "previousArtifact": "ynx-wallet-cli-darwin-arm64.gz",
       "reason": "CLI gzip is not a macOS application installer.",
       "requiredFormat": ".dmg",
-      "status": "BUILD_AND_INSTALL_PROOF_IN_PROGRESS",
-      "replacementArtifact": null,
-      "publicDownloadUrl": null,
-      "publicVerified": false
+      "status": "PUBLIC_TESTNET_PREVIEW_VERIFIED",
+      "replacementArtifact": "ynx-wallet-desktop-0.1.1-universal.dmg",
+      "publicDownloadUrl": "https://downloads.ynxweb4.com/wallet/sha256-ad6e4077bc001743cf1a4163ceaca5a009a3c8a4d8a809cc4896798976cf56c0/ynx-wallet-desktop-0.1.1-universal.dmg",
+      "publicVerified": true,
+      "bytes": 236661996,
+      "sha256": "ad6e4077bc001743cf1a4163ceaca5a009a3c8a4d8a809cc4896798976cf56c0",
+      "signingClass": "unsigned-testnet-preview-dmg",
+      "productionSigned": false,
+      "notarized": false,
+      "storeReleased": false
     },
     {
       "product": "developer",

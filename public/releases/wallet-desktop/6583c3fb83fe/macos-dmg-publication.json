@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "1.0.0",
+  "productId": "wallet-desktop",
+  "platform": "macos-universal-dmg",
+  "releaseVersion": "0.1.1",
+  "sourceCommit": "6583c3fb83feb1ccd0106014b637c5ce6a2b1d8e",
+  "ownerEvidenceCommit": "8183774c0f8bbb4a9d7e7997d2090b84d3c3bf29",
+  "ownerIndexCommit": "c17f5a534e7715766d01d6abe6f22fbdb1f6043d",
+  "artifact": {
+    "name": "ynx-wallet-desktop-0.1.1-universal.dmg",
+    "url": "https://downloads.ynxweb4.com/wallet/sha256-ad6e4077bc001743cf1a4163ceaca5a009a3c8a4d8a809cc4896798976cf56c0/ynx-wallet-desktop-0.1.1-universal.dmg",
+    "bytes": 236661996,
+    "sha256": "ad6e4077bc001743cf1a4163ceaca5a009a3c8a4d8a809cc4896798976cf56c0",
+    "architectures": ["x86_64", "arm64"],
+    "minimumOSMetadata": "macOS 12.0",
+    "contentType": "application/x-apple-diskimage",
+    "contentDisposition": "attachment",
+    "immutableCache": true,
+    "fullPublicDownloadRehashed": true
+  },
+  "lifecycle": {
+    "hdiutilVerify": true,
+    "isolatedMountInstall": true,
+    "upgradeFrom010": true,
+    "coldLaunch": true,
+    "secondLaunch": true,
+    "cleanExit": true,
+    "rollbackTo010": true,
+    "reupgradeTo011": true,
+    "uninstall": true,
+    "chainId": "0x1917",
+    "legacyOrLoopbackEndpointMatches": 0,
+    "testedHost": "macOS 27",
+    "cleanMacOS12HostTested": false
+  },
+  "releaseTruth": {
+    "downloadHosted": true,
+    "deployedPublic": true,
+    "productionSigned": false,
+    "notarized": false,
+    "storeReleased": false,
+    "gatekeeperAccepted": false,
+    "accountReadVerified": false,
+    "balanceReadVerified": false,
+    "signingVerified": false,
+    "transactionVerified": false
+  }
+}

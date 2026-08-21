@@ -14,6 +14,7 @@ const required = [
   "public/ynx-favicon-48.png",
   "public/releases/ecosystem-release-registry.json",
   "public/releases/installer-replacement-matrix.json",
+  "public/releases/wallet-desktop/6583c3fb83fe/macos-dmg-publication.json",
   "public/releases/wallet-linux-x64-rpm-candidate.json",
   "public/releases/owner-record-index.json",
   "public/releases/exchange/fc2276e1ce4c/exchange-status.json",
@@ -820,11 +821,25 @@ const invalidDesktopInstallerClaims = [
   /macos:\s*artifactDownload\([^\n]*(?:\.zip|\.gz|\.tar\.gz)/i,
   /windows:\s*artifactDownload\([^\n]*\.zip/i
 ];
+const walletMacDmgPublication = JSON.parse(fs.readFileSync("public/releases/wallet-desktop/6583c3fb83fe/macos-dmg-publication.json", "utf8"));
+const walletMacReplacement = installerReplacementMatrix.replacements?.find((item) => item.product === "wallet" && item.platform === "macos");
 if (
   installerReplacementMatrix.policy?.macos?.join(",") !== ".dmg" ||
   installerReplacementMatrix.policy?.windows?.join(",") !== ".exe,.msix" ||
   installerReplacementMatrix.replacements?.length !== 3 ||
-  installerReplacementMatrix.replacements.some((item) => item.publicVerified !== false || item.replacementArtifact !== null || item.publicDownloadUrl !== null)
+  walletMacReplacement?.publicVerified !== true ||
+  walletMacReplacement?.replacementArtifact !== "ynx-wallet-desktop-0.1.1-universal.dmg" ||
+  walletMacReplacement?.publicDownloadUrl !== walletMacDmgPublication.artifact.url ||
+  walletMacReplacement?.sha256 !== walletMacDmgPublication.artifact.sha256 ||
+  walletMacReplacement?.bytes !== walletMacDmgPublication.artifact.bytes ||
+  installerReplacementMatrix.replacements.filter((item) => item !== walletMacReplacement).some((item) => item.publicVerified !== false || item.replacementArtifact !== null || item.publicDownloadUrl !== null) ||
+  walletMacDmgPublication.artifact.bytes !== 236661996 ||
+  walletMacDmgPublication.artifact.sha256 !== "ad6e4077bc001743cf1a4163ceaca5a009a3c8a4d8a809cc4896798976cf56c0" ||
+  walletMacDmgPublication.artifact.fullPublicDownloadRehashed !== true ||
+  walletMacDmgPublication.releaseTruth.productionSigned !== false ||
+  walletMacDmgPublication.releaseTruth.notarized !== false ||
+  walletMacDmgPublication.releaseTruth.storeReleased !== false ||
+  walletMacDmgPublication.releaseTruth.gatekeeperAccepted !== false
 ) {
   console.error("installer replacement matrix does not preserve the exact replacement and public-verification boundary");
   process.exit(1);
@@ -836,7 +851,7 @@ if (invalidDesktopInstallerClaims.some((pattern) => pattern.test(ecosystemCatalo
 for (const requiredText of [
   'web: { status: PRODUCT_STATUS.LIVE, href: "https://wallet.ynxweb4.com/"',
   'entry: { label: "Open Wallet Companion", href: "https://wallet.ynxweb4.com/", external: true }',
-  'installerReplacement("macOS", ".dmg", "ynx-wallet-cli-darwin-arm64.gz", "wallet-platform")',
+  'https://downloads.ynxweb4.com/wallet/sha256-ad6e4077bc001743cf1a4163ceaca5a009a3c8a4d8a809cc4896798976cf56c0/ynx-wallet-desktop-0.1.1-universal.dmg',
   'installerReplacement("macOS", ".dmg", "ynx-developer-testnet-preview-macos-unsigned.zip", "developer")',
   'installerReplacement("Windows", ".exe or .msix", "ynx-developer-testnet-preview-windows-x64-unsigned.zip", "developer")'
 ]) {
