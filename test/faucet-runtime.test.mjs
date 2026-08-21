@@ -1,8 +1,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { validateFaucetRuntime } from "../src/lib/faucetRuntime.js";
+import { validateFaucetClaim, validateFaucetRuntime } from "../src/lib/faucetRuntime.js";
 
-const build = { commit: "ea0e068becd9", release: "ynx-chain-ea0e068becd9", buildTime: "2026-08-20T11:56:29Z" };
+const build = { commit: "02cf44d17b50", release: "ynx-chain-02cf44d17b50", buildTime: "2026-08-21T01:05:34Z" };
 const health = {
   ok: true,
   service: "ynx-faucetd",
@@ -19,8 +19,25 @@ const version = { service: "ynx-faucetd", build, startedAt: health.startedAt, de
 
 test("accepts only the exact topology-safe Faucet runtime identity", () => {
   const result = validateFaucetRuntime(health, version);
-  assert.equal(result.version.build.commit, "ea0e068becd9");
+  assert.equal(result.version.build.commit, "02cf44d17b50");
   assert.ok(Object.isFrozen(result));
+});
+
+test("accepts only a claim response bound to the requested address and amount", () => {
+  const address = "ynx10e0525sfrf53yh2aljmm3sn9jq5njk7llqhn80";
+  const evmAddress = "0x7e5f4552091a69125d5dfcb7b8c2659029395bdf";
+  const payload = {
+    transaction: { hash: `0x${"8".repeat(64)}`, to: evmAddress, amount: 100 },
+    address,
+    canonicalAddress: address,
+    evmAddress,
+    amount: 100,
+    nativeSymbol: "YNXT",
+    truthfulStatus: "rpc-backed-faucet",
+  };
+  assert.equal(validateFaucetClaim(payload, address, 100).hash, payload.transaction.hash);
+  assert.throws(() => validateFaucetClaim({ ...payload, amount: 99 }, address, 100), /No success is claimed/);
+  assert.throws(() => validateFaucetClaim({ ...payload, address: "ynx1other" }, address, 100), /No success is claimed/);
 });
 
 test("rejects topology leaks, wrong chain, mismatched or unknown builds", () => {

@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { ArrowRight, CheckCircle2, CircleAlert, Droplets, ExternalLink, RefreshCw, ShieldCheck } from "lucide-react";
 import { apiConfig } from "../lib/api/ynxApi.js";
 import { normalizeAddress } from "../lib/address.js";
-import { validateFaucetRuntime } from "../lib/faucetRuntime.js";
+import { validateFaucetClaim, validateFaucetRuntime } from "../lib/faucetRuntime.js";
 import { useLocale } from "../lib/i18n.jsx";
 
 const DEFAULT_AMOUNT = 100;
@@ -50,8 +50,7 @@ export function FaucetPage() {
       });
       const payload = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(payload.error || `Request failed with HTTP ${response.status}`);
-      const hash = payload.transaction?.hash || payload.txHash;
-      if (!hash) throw new Error("The Faucet returned no transaction hash. No success is claimed.");
+      const { hash } = validateFaucetClaim(payload, normalized.ynxAddress, DEFAULT_AMOUNT);
       setRequest({ state: "success", payload, hash });
       refreshHealth();
     } catch (error) {
@@ -107,7 +106,7 @@ export function FaucetPage() {
             <li><span>4</span><div><strong>{zh ? "核对交易" : "Verify the transfer"}</strong><p>{zh ? "在 Explorer 对比 From、To、金额、手续费和区块。" : "Compare From, To, amount, fee and block in Explorer."}</p></div></li>
           </ol>
           <div className="faucetSecurity"><ShieldCheck /><p><strong>{zh ? "安全边界" : "Security boundary"}</strong><span>{zh ? "水龙头只需要公开地址，绝不会要求助记词、私钥、付款或授权。" : "The Faucet needs only a public address. It never asks for a seed phrase, private key, payment or Wallet approval."}</span></p></div>
-          <a className="faucetEvidenceLink" href="/releases/faucet-runtime/ea0e068becd9103f5f0a2a6c3a0d20ab7932d006/runtime-publication.json">{zh ? "查看运行版本与验证记录" : "View runtime identity and evidence"}<ExternalLink /></a>
+          <a className="faucetEvidenceLink" href="/releases/faucet-runtime/02cf44d17b50dfd0f24a9f022e472b7d5eb0c1d4/runtime-publication.json">{zh ? "查看运行版本与真实交易验证记录" : "View runtime and verified transaction evidence"}<ExternalLink /></a>
         </aside>
       </section>
     </main>

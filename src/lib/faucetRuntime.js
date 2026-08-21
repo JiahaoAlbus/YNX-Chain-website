@@ -1,6 +1,6 @@
 export const ACCEPTED_FAUCET_BUILD = Object.freeze({
-  commit: "ea0e068becd9",
-  release: "ynx-chain-ea0e068becd9",
+  commit: "02cf44d17b50",
+  release: "ynx-chain-02cf44d17b50",
 });
 
 export function validateFaucetRuntime(health, version) {
@@ -16,6 +16,18 @@ export function validateFaucetRuntime(health, version) {
     throw new Error("Faucet public health or release identity is incompatible. No availability is claimed.");
   }
   return Object.freeze({ health, version });
+}
+
+export function validateFaucetClaim(payload, expectedAddress, expectedAmount) {
+  if (!isRecord(payload) || !isRecord(payload.transaction)) throw new Error("The Faucet returned an incompatible response. No success is claimed.");
+  const transaction = payload.transaction;
+  const validHash = /^0x[0-9a-f]{64}$/.test(transaction.hash || "");
+  const validRecipient = payload.address === expectedAddress && payload.canonicalAddress === expectedAddress && transaction.to === payload.evmAddress;
+  const validAmount = payload.amount === expectedAmount && transaction.amount === expectedAmount && payload.nativeSymbol === "YNXT";
+  if (!validHash || !validRecipient || !validAmount || payload.truthfulStatus !== "rpc-backed-faucet") {
+    throw new Error("The Faucet response did not match the requested recipient and amount. No success is claimed.");
+  }
+  return Object.freeze({ payload, hash: transaction.hash });
 }
 
 function isRecord(value) {
