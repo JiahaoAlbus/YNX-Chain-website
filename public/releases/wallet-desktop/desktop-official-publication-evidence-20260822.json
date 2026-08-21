@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "capturedAt": "2026-08-21T16:32:07Z",
+  "websiteSourceCommit": "7a144c6d501b2010489a74414d94f80973def04b",
+  "productionDeploymentId": "dpl_DByhF6iKQGdywj18gHod5x8kMMSn",
+  "productionDeploymentUrl": "https://ynx-web4-website-798qaanri-jiahaoalbus-projects.vercel.app",
+  "downloadPage": {
+    "url": "https://www.ynxweb4.com/dapp/download",
+    "httpStatus": 200,
+    "browserVisible": true,
+    "macosButtonHrefExact": true,
+    "windowsX64ButtonHrefExact": true,
+    "windowsArm64ButtonHrefExact": true
+  },
+  "artifacts": [
+    {
+      "platform": "macos-universal",
+      "url": "https://downloads.ynxweb4.com/wallet/sha256-69b4fa5db7b8a9ab105af6633de44f5a5a4a9fceeaa0925a306f77b22381b044/ynx-wallet-macos-0.1.2-universal.dmg",
+      "bytes": 237777236,
+      "sha256": "69b4fa5db7b8a9ab105af6633de44f5a5a4a9fceeaa0925a306f77b22381b044",
+      "contentType": "application/x-apple-diskimage",
+      "contentDisposition": "attachment; filename=\"ynx-wallet-macos-0.1.2-universal.dmg\"",
+      "fullGetRehashed": true,
+      "signingClass": "unsigned-testnet-preview-dmg; contained executable linker-ad-hoc only",
+      "productionSigned": false,
+      "notarized": false
+    },
+    {
+      "platform": "windows-x64",
+      "url": "https://www.ynxweb4.com/downloads/wallet/sha256-856b2a260efc43c25f62508dabc6bb6b74b84da71c9b477e8a02a12d17598cd7/ynx-wallet-desktop-0.1.1-x64.exe",
+      "bytes": 104334744,
+      "sha256": "856b2a260efc43c25f62508dabc6bb6b74b84da71c9b477e8a02a12d17598cd7",
+      "contentType": "application/vnd.microsoft.portable-executable",
+      "contentDisposition": "attachment; filename=\"ynx-wallet-desktop-0.1.1-x64.exe\"",
+      "fullGetRehashed": true,
+      "signingClass": "unsigned_windows_nsis_testnet_candidate",
+      "authenticodeStatus": "NotSigned"
+    },
+    {
+      "platform": "windows-arm64",
+      "url": "https://www.ynxweb4.com/downloads/wallet/sha256-929315133c68eda1cabac51cec889c4aeca5e3ee1701578916bc67e096c5dc35/ynx-wallet-desktop-0.1.1-arm64.exe",
+      "bytes": 103487635,
+      "sha256": "929315133c68eda1cabac51cec889c4aeca5e3ee1701578916bc67e096c5dc35",
+      "contentType": "application/vnd.microsoft.portable-executable",
+      "contentDisposition": "attachment; filename=\"ynx-wallet-desktop-0.1.1-arm64.exe\"",
+      "fullGetRehashed": true,
+      "signingClass": "unsigned_windows_nsis_testnet_candidate",
+      "authenticodeStatus": "NotSigned"
+    }
+  ],
+  "releaseTruth": {
+    "downloadHosted": true,
+    "deployedPublic": true,
+    "productionSigned": false,
+    "notarized": false,
+    "storeReleased": false
+  }
+}
