@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "1.0.0",
+  "scope": "wallet-platform-faucet-consumer",
+  "observedAt": "2026-08-22T00:00:00Z",
+  "acceptedConsumerContract": {
+    "manifestVersion": "1.0.0-p0.4",
+    "manifestPayloadSha256": "6d8ca3adfef00d1dc55367fee13ff2ada96953a1dcaab43547428edfee40a998",
+    "faucetBuildCommit": "02cf44d17b50",
+    "faucetRelease": "ynx-chain-02cf44d17b50"
+  },
+  "directPublicRead": {
+    "healthUrl": "https://faucet.ynxweb4.com/health",
+    "versionUrl": "https://faucet.ynxweb4.com/version",
+    "healthHttp": 200,
+    "versionHttp": 200,
+    "observedBuildCommit": "64efa498fa99",
+    "observedRelease": "ynx-chain-64efa498fa99",
+    "observedUnsafeHealthFields": [
+      "upstreamMode",
+      "defaultAmount",
+      "maxAmount",
+      "rateLimit",
+      "requestPath"
+    ]
+  },
+  "browserVisibleRead": {
+    "url": "https://www.ynxweb4.com/dapp/faucet?verify=wallet-faucet-entry&lang=en",
+    "locale": "en",
+    "status": "Temporarily unavailable",
+    "retryDidNotChangeStatus": true,
+    "claimControlDisabled": true,
+    "claimSubmitted": false
+  },
+  "consumerDecision": "The Wallet Website now accepts only the exact p0.4 topology-safe contract. The observed public Faucet deployment is a stale, incompatible deployment and remains unavailable until the Faucet owner restores the accepted build.",
+  "walletPlatformFaucetVerified": false,
+  "computerControlVerified": false,
+  "claimTransactionSubmitted": false
+}
