@@ -1,4 +1,4 @@
-const CACHE_NAME = "ynx-web-shell-v5-native-i18n-notranslate";
+const CACHE_NAME = "ynx-web-shell-v6-faucet-runtime-recovery";
 const CACHEABLE_DESTINATIONS = new Set(["font", "image", "script", "style"]);
 
 self.addEventListener("install", () => self.skipWaiting());
@@ -21,7 +21,7 @@ self.addEventListener("fetch", (event) => {
     return;
   }
   if (CACHEABLE_DESTINATIONS.has(request.destination)) {
-    event.respondWith(cacheFirst(request));
+    event.respondWith(networkFirst(request));
   }
 });
 
