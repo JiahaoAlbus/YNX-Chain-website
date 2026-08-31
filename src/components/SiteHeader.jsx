@@ -4,18 +4,13 @@ import { useEffect, useState } from "react";
 import { apiConfig, networkParams, YNX_6423 } from "../lib/api/ynxApi.js";
 import { CommandPalette } from "./CommandPalette.jsx";
 import { useLocale } from "../lib/i18n.jsx";
+import { walletKind } from "../lib/walletProvider.js";
 
 const navigation = [
   ["blockchain", "/blockchain"], ["tokens", "/tokens"], ["data", "/data"],
   ["governance", "/governance"], ["ecosystem", "/ecosystem"], ["developers", "/developers"],
   ["downloads", "/downloads"], ["docs", "/docs"], ["more", "/more"]
 ];
-
-function walletKind(provider, info = {}) {
-  if (provider?.isYNXWallet === true && provider?.isMetaMask !== true) return "YNX Wallet";
-  if (provider?.isMetaMask === true && provider?.isYNXWallet !== true) return "MetaMask";
-  return info.name || "Compatible EIP-1193 wallet";
-}
 
 function collectInjectedProviders() {
   const injected = window.ethereum;
