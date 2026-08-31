@@ -119,6 +119,22 @@ for (const file of walk(".")) {
     }
   }
 }
+for (const root of ["src"]) {
+  for (const file of walk(root)) {
+    if (!/\.jsx$/i.test(file)) continue;
+    const source = fs.readFileSync(file, "utf8");
+    for (const unsafeNavigation of ["about:blank", "javascript:", "127.0.0.1", "localhost:"]) {
+      if (source.includes(unsafeNavigation)) {
+        console.error(`unsafe or local navigation leaked into production source: ${file}: ${unsafeNavigation}`);
+        process.exit(1);
+      }
+    }
+    if (source.includes('target="_blank"') && !source.includes('rel="noopener') && !source.includes('rel="noreferrer')) {
+      console.error(`new-tab link is missing a safe rel attribute: ${file}`);
+      process.exit(1);
+    }
+  }
+}
 for (const root of ["src", "server", "api", "vercel.json"]) {
   const candidates = root.endsWith(".json") ? [root] : walk(root);
   for (const file of candidates) {
