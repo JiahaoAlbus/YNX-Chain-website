@@ -172,7 +172,12 @@ export function SiteHeader({ scrollProgress = 0 }) {
           <label className="localeSelect" aria-label={t("language")}>
             <span className="visuallyHidden">{t("language")}</span>
             <select value={locale} onChange={(event) => setLocale(event.target.value)}>
-              <option value="en">EN</option><option value="zh-CN">简体</option><option value="zh-TW">繁體</option><option value="ja">日本語</option><option value="ko">한국어</option>
+              <option value="en">English</option><option value="zh-CN">简体中文</option>
+              <option value="zh-TW">繁體中文</option><option value="ja">日本語</option>
+              <option value="ko">한국어</option><option value="es">Español</option>
+              <option value="fr">Français</option><option value="de">Deutsch</option>
+              <option value="pt">Português</option><option value="ru">Русский</option>
+              <option value="ar">العربية</option><option value="id">Bahasa Indonesia</option>
             </select>
           </label>
           <button type="button" className="toolButton" onClick={() => setTheme(theme === "dark" ? "light" : "dark")} aria-label={t(theme === "dark" ? "light" : "dark")}>
