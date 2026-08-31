@@ -5,6 +5,7 @@ import {
 } from "lucide-react";
 import docsAuthority from "virtual:ynx-docs-authority";
 import { getCatalog } from "../lib/ecosystemCatalog.js";
+import { PRODUCT_PUBLIC_SECTIONS, productSectionRoute } from "../lib/productPublicContract.js";
 import { apiConfig } from "../lib/api/ynxApi.js";
 import { useLocale } from "../lib/i18n.jsx";
 import { ECONOMIC_COMMANDS } from "../lib/economicsEvidence.js";
@@ -35,13 +36,13 @@ export function CommandPalette({ open, onClose }) {
       icon: FileText,
       keywords: `authority ${article.route}`,
     }));
-    const productCommands = getCatalog().map((product) => ({
-      title: product.name,
-      description: product.detail,
-      href: product.route,
+    const productCommands = getCatalog().flatMap((product) => PRODUCT_PUBLIC_SECTIONS.map((section) => ({
+      title: section.id === "overview" ? product.name : `${product.name} · ${section.label}`,
+      description: section.id === "overview" ? product.detail : section.description,
+      href: productSectionRoute(product.route, section.id),
       icon: product.icon,
-      keywords: `product ${product.key} ${product.status}`,
-    }));
+      keywords: `product ${product.key} ${product.status} ${section.id} ${section.label}`,
+    })));
     const seen = new Set();
     const economicCommands = ECONOMIC_COMMANDS.map((command) => ({ ...command, icon: CircleHelp }));
     return [...coreCommands(t), ...economicCommands, ...articleCommands, ...productCommands].filter((command) => {

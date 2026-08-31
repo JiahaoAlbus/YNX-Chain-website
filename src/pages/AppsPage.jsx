@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { ArrowUpRight, Droplets, Search, ShieldCheck } from "lucide-react";
 import { getCatalog, STATUS_CONFIG, DOWNLOAD_LABELS, PRODUCT_STATUS } from "../lib/ecosystemCatalog.js";
+import { getProductPublicContract, getProductPublicDisplayStatus, productSectionRoute } from "../lib/productPublicContract.js";
 import { useLocale } from "../lib/i18n.jsx";
 
 const categories = [
@@ -62,12 +63,15 @@ function renderProductLink({ label, href, external }, notReady = "Not ready") {
 export function AppsPage() {
   const { locale } = useLocale();
   const zh = locale === "zh-CN";
-  const catalog = useMemo(() => getCatalog(), []);
+  const catalog = useMemo(() => getCatalog().map((product) => {
+    const publicContract = getProductPublicContract(product);
+    return { ...product, publicContract, publicStatus: getProductPublicDisplayStatus(publicContract) };
+  }), []);
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("all");
   const [status, setStatus] = useState("all");
   const localizedCategories = useMemo(() => categories.map((group) => zh ? { ...group, label: zhCategoryCopy[group.id][0], description: zhCategoryCopy[group.id][1] } : group), [zh]);
-  const statusFilters = zh ? [["all", "全部证据状态"], [PRODUCT_STATUS.LIVE, "公开网页"], [PRODUCT_STATUS.LOCAL, "候选版本"], [PRODUCT_STATUS.PLANNED, "候选版本未完整"]] : [["all", "All evidence states"], [PRODUCT_STATUS.LIVE, "Public web"], [PRODUCT_STATUS.LOCAL, "Candidate"], [PRODUCT_STATUS.PLANNED, "Candidate incomplete"]];
+  const statusFilters = zh ? [["all", "全部证据状态"], [PRODUCT_STATUS.LIVE, "Registry 公开网页"], [PRODUCT_STATUS.LOCAL, "Registry 候选版本"], [PRODUCT_STATUS.PLANNED, "候选版本未完整"], [PRODUCT_STATUS.NOT_READY, "未登记"]] : [["all", "All registry states"], [PRODUCT_STATUS.LIVE, "Registry public web"], [PRODUCT_STATUS.LOCAL, "Registry candidate"], [PRODUCT_STATUS.PLANNED, "Candidate incomplete"], [PRODUCT_STATUS.NOT_READY, "Not registered"]];
   const categoryByProduct = useMemo(() => new Map(categories.flatMap((group) => group.keys.map((key) => [key, group.id]))), []);
   const visibleGroups = useMemo(() => {
     const needle = query.trim().toLowerCase();
@@ -75,7 +79,7 @@ export function AppsPage() {
       ...group,
       products: catalog.filter((product) => {
         if (category !== "all" && group.id !== category) return false;
-        if (status !== "all" && product.status !== status) return false;
+        if (status !== "all" && product.publicStatus !== status) return false;
         if (!needle) return categoryByProduct.get(product.key) === group.id;
         const haystack = `${product.name} ${product.detail} ${product.metrics.flat().join(" ")}`.toLowerCase();
         return categoryByProduct.get(product.key) === group.id && haystack.includes(needle);
@@ -130,11 +134,12 @@ export function AppsPage() {
           </header>
           <div className="appDirectory">
           {group.products.map((product) => {
-          const statusLabel = zh ? ({ [PRODUCT_STATUS.LIVE]: "公开网页", [PRODUCT_STATUS.LOCAL]: "候选版本", [PRODUCT_STATUS.PLANNED]: "候选版本未完整" }[product.status] || product.status) : (STATUS_CONFIG[product.status]?.label || product.status);
-          const statusTone = STATUS_CONFIG[product.status]?.tone || product.status;
-          const surfaces = Object.entries(product.downloads || {})
-            .filter(([, item]) => item?.href)
-            .map(([platform]) => DOWNLOAD_LABELS[platform] || platform);
+          const statusLabel = zh ? ({ [PRODUCT_STATUS.LIVE]: "Registry 公开网页", [PRODUCT_STATUS.LOCAL]: "Registry 候选版本", [PRODUCT_STATUS.PLANNED]: "候选版本未完整", [PRODUCT_STATUS.NOT_READY]: "未登记" }[product.publicStatus] || product.publicStatus) : (STATUS_CONFIG[product.publicStatus]?.label || product.publicStatus);
+          const statusTone = STATUS_CONFIG[product.publicStatus]?.tone || product.publicStatus;
+          const surfaces = [
+            ...(product.publicContract.publicWebVerified ? ["Web"] : []),
+            ...product.publicContract.downloads.items.map((item) => DOWNLOAD_LABELS[item.platform] || item.platform),
+          ];
 
           return (
             <article className="appItem" key={product.key}>
@@ -146,10 +151,11 @@ export function AppsPage() {
               <dl className="appCardFacts">{product.metrics.map(([label, value]) => <div key={`${product.key}-${label}`}><dt>{label}</dt><dd>{value}</dd></div>)}</dl>
               <div className="appSurfaces"><span>{zh ? "可用平台" : "Available surfaces"}</span><strong>{surfaces.length ? surfaces.join(" · ") : (zh ? "暂无公开软件包" : "No public package")}</strong></div>
               <footer className="appCardActions">
-                <a className="appPrimaryLink" href={product.route}>{zh ? "查看产品" : "View product"} <ArrowUpRight /></a>
+                <a className="appPrimaryLink" href={productSectionRoute(product.route, "overview")}>{zh ? "查看产品" : "View product"} <ArrowUpRight /></a>
+                <a href={productSectionRoute(product.route, "open-download")}>{zh ? "打开 / 下载" : "Open / download"} <ArrowUpRight size={15} /></a>
+                <a href={productSectionRoute(product.route, "risks")}>{zh ? "风险" : "Risks"} <ArrowUpRight size={15} /></a>
                 {renderProductLink(product.docs, zh ? "尚未就绪" : "Not ready")}
-                {product.release?.productRelease?.href ? renderProductLink({ label: zh ? "发布证据" : "Release evidence", href: product.release.productRelease.href, external: /^https?:\/\//.test(product.release.productRelease.href) }, zh ? "尚未就绪" : "Not ready") : null}
-                {product.status === PRODUCT_STATUS.LIVE && product.entry?.href ? renderProductLink(product.entry, zh ? "尚未就绪" : "Not ready") : null}
+                {product.publicContract.releaseEvidence.status === "available" ? renderProductLink({ label: zh ? "发布证据" : "Release evidence", href: product.publicContract.releaseEvidence.href, external: /^https?:\/\//.test(product.publicContract.releaseEvidence.href) }, zh ? "尚未就绪" : "Not ready") : null}
               </footer>
             </article>
           );

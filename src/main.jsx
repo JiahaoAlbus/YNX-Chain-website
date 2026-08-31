@@ -14,7 +14,7 @@ import { SiteFooter } from "./components/SiteFooter.jsx";
 import { AddressConverter } from "./components/AddressConverter.jsx";
 import { LatestRecords } from "./components/LatestRecords.jsx";
 import { ECONOMIC_ROUTES } from "./lib/economicsEvidence.js";
-import { getLegacyDAppRedirect, getProductByRoute } from "./lib/ecosystemCatalog.js";
+import { getLegacyDAppRedirect, getProductRouteMatch } from "./lib/ecosystemCatalog.js";
 import docsAuthority from "virtual:ynx-docs-authority";
 import { LocaleProvider, useLocale } from "./lib/i18n.jsx";
 import "./styles.css";
@@ -105,9 +105,9 @@ function App() {
       return <LegacyRouteRedirect target={legacyTarget} />;
     }
     let page = ECONOMIC_ROUTES.has(route) ? <EconomicPage path={route} /> : portalRoutes.has(route) ? <PortalPage path={route} /> : <RoutePage path={route} />;
-    const product = getProductByRoute(route);
+    const productMatch = getProductRouteMatch(route);
     const authorityArticle = docsAuthority.articles.find((article) => article.route === route);
-    if (product) page = <ProductStatusPage product={product} article={authorityArticle} artifact={docsAuthority.artifact} />;
+    if (productMatch) page = <ProductStatusPage product={productMatch.product} sectionId={productMatch.sectionId} article={authorityArticle} artifact={docsAuthority.artifact} />;
     else if (authorityArticle) page = <AuthorityArticlePage article={authorityArticle} artifact={docsAuthority.artifact} />;
     if (route === "/dapp/download") page = <DownloadPage />;
     if (route === "/dapp") page = <AppsPage />;

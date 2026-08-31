@@ -413,6 +413,37 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .productStatusHero h1 { margin: 0; color: var(--blue); font-size: 58px; line-height: 1.04; letter-spacing: 0; }
 .productStatusHero p:not(.sectionEyebrow) { max-width: 760px; margin: 16px 0 0; color: var(--muted); font-size: 18px; line-height: 1.6; }
 .productStatusIcon { width: 64px; height: 64px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid rgba(0,47,167,.22); border-radius: 8px; color: var(--blue); background: #f5f7fb; }
+.productMicrositeNav { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); border-left: 1px solid var(--line); border-top: 1px solid var(--line); }
+.productMicrositeNav a { min-height: 96px; display: grid; align-content: start; gap: 6px; padding: 16px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); color: var(--ink); text-decoration: none; }
+.productMicrositeNav a:hover, .productMicrositeNav a[aria-current="page"] { color: var(--blue); background: rgba(0,47,167,.055); }
+.productMicrositeNav span { font-size: 13px; font-weight: 800; }
+.productMicrositeNav small { color: var(--muted); font-size: 11px; line-height: 1.45; }
+.productMicrositeSection { min-height: 560px; padding: 58px 0 10px; }
+.productMicrositeSection > header { max-width: 760px; margin-bottom: 34px; }
+.productMicrositeSection > header h2 { margin: 0; font-size: clamp(34px,5vw,58px); letter-spacing: -.035em; }
+.productMicrositeSection > header > p:last-child { margin: 12px 0 0; color: var(--muted); font-size: 17px; line-height: 1.6; }
+.productFeatureGrid, .productPublicFacts { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); border-left: 1px solid var(--line); border-top: 1px solid var(--line); }
+.productFeatureGrid article, .productPublicFacts article { min-height: 150px; padding: 22px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.productFeatureGrid strong, .productPublicFacts strong { display: block; color: var(--blue); font-size: 13px; }
+.productFeatureGrid p, .productPublicFacts p { margin: 14px 0 0; color: var(--muted); line-height: 1.6; }
+.productPublicFacts.risk article:first-child { background: rgba(172,31,31,.035); }
+.productPublicFacts.risk svg { width: 22px; margin-bottom: 12px; color: var(--danger); }
+.productActionList { display: grid; gap: 12px; }
+.productAction { min-height: 100px; display: grid; grid-template-columns: 30px minmax(0,1fr) auto; align-items: center; gap: 16px; padding: 18px 20px; border: 1px solid var(--line); border-left: 3px solid var(--blue); color: var(--ink); text-decoration: none; }
+.productAction.available:hover { background: rgba(0,47,167,.045); }
+.productAction > svg { color: var(--blue); }
+.productAction > div { min-width: 0; }
+.productAction strong { font-size: 16px; }
+.productAction p { margin: 5px 0 0; color: var(--muted); font-size: 13px; line-height: 1.5; }
+.productAction > span { color: var(--muted); font-size: 12px; font-weight: 750; }
+.productAction.unavailable { border-left-color: var(--line); background: var(--soft); }
+.productAction.unavailable > svg { color: var(--muted); }
+.productReleaseRecord { min-height: 220px; display: grid; grid-template-columns: 30px minmax(0,1fr); gap: 16px; padding: 22px; border: 1px solid var(--line); }
+.productReleaseRecord > svg { color: var(--blue); }
+.productReleaseRecord dl { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 0; margin: 18px 0 0; border-left: 1px solid var(--line); border-top: 1px solid var(--line); }
+.productReleaseRecord dl > div { min-height: 72px; display: grid; gap: 4px; padding: 12px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.productReleaseRecord dt { color: var(--muted); font-size: 11px; }
+.productReleaseRecord dd { margin: 0; overflow-wrap: anywhere; font-size: 13px; font-weight: 700; }
 .productStatusLayout { display: grid; grid-template-columns: minmax(0,1fr) 340px; gap: 70px; padding-top: 58px; }
 .productStatusMain { display: grid; gap: 64px; }
 .productStatusSection h2 { margin: 0; font-size: 30px; letter-spacing: 0; }
@@ -945,6 +976,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
   .appDirectory { grid-template-columns: repeat(2,minmax(0,1fr)); }
   .productStatusLayout { grid-template-columns: 1fr; gap: 46px; }
   .productStatusAside { position: static; }
+  .productMicrositeNav { grid-template-columns: repeat(2,minmax(0,1fr)); }
   .productLogicGrid { grid-template-columns: 1fr; gap: 38px; }
   .faucetHero, .faucetLayout { grid-template-columns: 1fr; }
   .faucetHero { align-items: start; gap: 28px; }
@@ -1076,6 +1108,12 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
   .productStatusHero h1 { font-size: 42px; }
   .productStatusHero p:not(.sectionEyebrow) { font-size: 16px; }
   .productStatusIcon { width: 52px; height: 52px; }
+  .productMicrositeNav { grid-template-columns: 1fr; }
+  .productMicrositeNav a { min-height: 72px; }
+  .productFeatureGrid, .productPublicFacts { grid-template-columns: 1fr; }
+  .productAction { grid-template-columns: 26px minmax(0,1fr); }
+  .productAction > span, .productAction > svg:last-child { grid-column: 2; }
+  .productReleaseRecord dl { grid-template-columns: 1fr; }
   .productStatusLayout { padding-top: 42px; }
   .productStatusMain { gap: 48px; }
   .productSurface { align-items: flex-start; flex-direction: column; }

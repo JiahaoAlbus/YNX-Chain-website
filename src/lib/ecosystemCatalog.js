@@ -24,6 +24,7 @@ import {
   BarChart3
 } from "lucide-react";
 import { apiConfig } from "./api/ynxApi.js";
+import { isProductPublicSection } from "./productPublicContract.js";
 
 export const PRODUCT_STATUS = {
   LIVE: "live",
@@ -778,7 +779,17 @@ export const getCatalog = () => [
   }
 ].map(attachEvidence);
 
-export const getProductByRoute = (route) => getCatalog().find((product) => product.route === route) || null;
+export const getProductRouteMatch = (route) => {
+  for (const product of getCatalog()) {
+    if (route === product.route) return { product, sectionId: "overview" };
+    if (!route.startsWith(`${product.route}/`)) continue;
+    const sectionId = route.slice(product.route.length + 1);
+    if (isProductPublicSection(sectionId)) return { product, sectionId };
+  }
+  return null;
+};
+
+export const getProductByRoute = (route) => getProductRouteMatch(route)?.product || null;
 
 export const getLegacyDAppRedirect = (route) => {
   const product = getCatalog().find((entry) => entry.legacyRoute === route);

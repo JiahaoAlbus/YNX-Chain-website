@@ -537,7 +537,7 @@ if (!main.includes("Exchange Integration Candidate") || !main.includes("No excha
   console.error("website does not expose the verified exchange candidate boundary");
   process.exit(1);
 }
-if (!main.includes('route === "/dapp"') || !main.includes('route === "/dapp/download"') || !main.includes('route === "/dapp/faucet"') || !main.includes('route === "/docs"') || !main.includes('route === "/dapp/square"') || !main.includes("getProductByRoute(route)") || !main.includes("getLegacyDAppRedirect") || !main.includes("LegacyRouteRedirect")) {
+if (!main.includes('route === "/dapp"') || !main.includes('route === "/dapp/download"') || !main.includes('route === "/dapp/faucet"') || !main.includes('route === "/docs"') || !main.includes('route === "/dapp/square"') || !main.includes("getProductRouteMatch(route)") || !main.includes("getLegacyDAppRedirect") || !main.includes("LegacyRouteRedirect")) {
   console.error("canonical DApp, download, product-status, Square, docs, or legacy compatibility routes are not configured");
   process.exit(1);
 }
