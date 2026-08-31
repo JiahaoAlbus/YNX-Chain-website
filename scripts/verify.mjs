@@ -231,6 +231,10 @@ if (!commandPalette.includes('/api/explorer/resolve') || !commandPalette.include
   console.error("global search does not resolve records through the separate Explorer");
   process.exit(1);
 }
+if (!portalPage.includes('`${apiConfig.explorerUrl}/token/YNXT`') || portalPage.includes('/tokens/YNXT')) {
+  console.error("YNXT portal action does not use the verified Explorer token path");
+  process.exit(1);
+}
 for (const requiredLiveEndpoint of ["https://explorer.ynxweb4.com/api/blocks/latest", "https://explorer.ynxweb4.com/api/txs?limit=5", "https://explorer.ynxweb4.com/health"]) {
   if (!networkStatusSource.includes(requiredLiveEndpoint)) {
     console.error(`home live-record source is missing: ${requiredLiveEndpoint}`);

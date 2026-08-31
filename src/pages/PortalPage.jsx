@@ -16,7 +16,7 @@ const pages = {
     eyebrow: "Native asset", title: "YNXT is visible, testnet-only, and verifiable.",
     lead: "YNXT is the native asset of YNX Testnet. It is used for gas, fees and network resources. No market price, market cap or supply is shown without an authoritative public source.",
     facts: ["Native asset: YNXT", "Network: YNX Testnet", "Supply and market data: currently unavailable through a public authority"],
-    actions: [external("View YNXT in Explorer", `${apiConfig.explorerUrl}/tokens/YNXT`), external("Get Testnet YNXT", apiConfig.faucetUrl)]
+    actions: [external("View YNXT in Explorer", `${apiConfig.explorerUrl}/token/YNXT`), external("Get Testnet YNXT", apiConfig.faucetUrl)]
   },
   "/data": {
     eyebrow: "Data center", title: "Verified data comes with a boundary.",
