@@ -1,15 +1,17 @@
+import { YNX_SERVICE_DIRECTORY } from "../src/lib/api/ynxApi.js";
+
 const endpoints = Object.freeze({
-  status: "https://rpc.ynxweb4.com/status",
-  latestBlocks: "https://explorer.ynxweb4.com/api/blocks/latest",
-  latestTransactions: "https://explorer.ynxweb4.com/api/txs?limit=5",
-  explorer: "https://explorer.ynxweb4.com/health",
-  validators: "https://rpc.ynxweb4.com/validators",
-  evm: "https://evm.ynxweb4.com",
-  faucet: "https://faucet.ynxweb4.com/health",
-  ai: "https://ai.ynxweb4.com/health",
-  pay: "https://pay.ynxweb4.com/health",
-  trust: "https://trust.ynxweb4.com/health",
-  resource: "https://resource.ynxweb4.com/health"
+  status: YNX_SERVICE_DIRECTORY.rpc.healthEndpoint,
+  latestBlocks: YNX_SERVICE_DIRECTORY.explorer.latestBlocksEndpoint,
+  latestTransactions: YNX_SERVICE_DIRECTORY.explorer.latestTransactionsEndpoint,
+  explorer: YNX_SERVICE_DIRECTORY.explorer.healthEndpoint,
+  validators: YNX_SERVICE_DIRECTORY.rpc.validatorsEndpoint,
+  evm: YNX_SERVICE_DIRECTORY.evm.healthEndpoint,
+  faucet: YNX_SERVICE_DIRECTORY.faucet.healthEndpoint,
+  ai: YNX_SERVICE_DIRECTORY.ai.healthEndpoint,
+  pay: YNX_SERVICE_DIRECTORY.pay.healthEndpoint,
+  trust: YNX_SERVICE_DIRECTORY.trust.healthEndpoint,
+  resource: YNX_SERVICE_DIRECTORY.resource.healthEndpoint
 });
 
 export async function collectNetworkStatus() {
@@ -51,6 +53,17 @@ export async function collectNetworkStatus() {
     validators,
     evm,
     sources: endpoints,
+    serviceDirectory: Object.fromEntries(Object.entries(YNX_SERVICE_DIRECTORY).map(([name, service]) => [name, {
+      name: service.name,
+      officialUrl: service.officialUrl,
+      healthEndpoint: service.healthEndpoint,
+      expectedChainId: service.expectedChainId,
+      schema: service.schema,
+      timeoutMs: service.timeoutMs,
+      cache: service.cache,
+      degraded: service.degraded,
+      lastVerifiedAt: checkedAt
+    }])),
     degraded: !identityValid,
     degradedReason: !rpcMatchesExplorer
       ? (!rpcAndExplorerFresh ? "Public RPC and Explorer are more than one block apart." : "RPC and Explorer Indexer are not both verified for YNX 6423.")

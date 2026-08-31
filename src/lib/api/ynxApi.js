@@ -15,14 +15,30 @@ export const YNX_6423 = Object.freeze({
   })
 });
 
+// The canonical public-service directory is intentionally descriptive as well
+// as executable. UI and server adapters consume this same source so a service
+// cannot silently drift to an old chain, host, cache policy, or health route.
+export const YNX_SERVICE_DIRECTORY = Object.freeze({
+  rpc: Object.freeze({ name: "Chain RPC", officialUrl: YNX_6423.services.rpc, healthEndpoint: `${YNX_6423.services.rpc}/status`, expectedChainId: 6423, schema: "ynx-rpc-status/v1", timeoutMs: 7000, cache: "no-store", degraded: "Show unavailable; do not reuse cached height.", validatorsEndpoint: `${YNX_6423.services.rpc}/validators` }),
+  evm: Object.freeze({ name: "EVM JSON-RPC", officialUrl: YNX_6423.services.evm, healthEndpoint: YNX_6423.services.evm, expectedChainId: "0x1917", schema: "JSON-RPC 2.0 eth_chainId", timeoutMs: 7000, cache: "no-store", degraded: "Show unavailable; do not claim EVM compatibility." }),
+  explorer: Object.freeze({ name: "YNX Explorer", officialUrl: YNX_6423.services.explorer, healthEndpoint: `${YNX_6423.services.explorer}/health`, expectedChainId: 6423, schema: "ynx-explorer-health/v1", timeoutMs: 7000, cache: "no-store", degraded: "Show degraded; keep full record lookup in the independent Explorer.", latestBlocksEndpoint: `${YNX_6423.services.explorer}/api/blocks/latest`, latestTransactionsEndpoint: `${YNX_6423.services.explorer}/api/txs?limit=5` }),
+  faucet: Object.freeze({ name: "YNXT Faucet", officialUrl: YNX_6423.services.faucet, healthEndpoint: `${YNX_6423.services.faucet}/health`, expectedChainId: 6423, schema: "ynx-faucet-health/v1", timeoutMs: 3000, cache: "no-store", degraded: "Disable requests and explain that test assets are unavailable." }),
+  monitor: Object.freeze({ name: "YNX Monitor", officialUrl: YNX_6423.services.monitor, healthEndpoint: null, expectedChainId: 6423, schema: "signed public status projection", timeoutMs: 7000, cache: "no-store", degraded: "Offer the Monitor entry without inferring private operations health." }),
+  gateway: Object.freeze({ name: "YNX Gateway", officialUrl: YNX_6423.services.gateway, healthEndpoint: null, expectedChainId: 6423, schema: "product gateway health", timeoutMs: 3000, cache: "no-store", degraded: "Mark product capability unavailable independently of chain health." }),
+  ai: Object.freeze({ name: "YNX AI", officialUrl: "https://ai.ynxweb4.com", healthEndpoint: "https://ai.ynxweb4.com/health", expectedChainId: 6423, schema: "product health", timeoutMs: 3000, cache: "no-store", degraded: "Show service unavailable; never synthesize an AI response." }),
+  pay: Object.freeze({ name: "YNX Pay", officialUrl: "https://pay.ynxweb4.com", healthEndpoint: "https://pay.ynxweb4.com/health", expectedChainId: 6423, schema: "product health", timeoutMs: 3000, cache: "no-store", degraded: "Show service unavailable; do not present settlement as successful." }),
+  trust: Object.freeze({ name: "YNX Trust Center", officialUrl: "https://trust.ynxweb4.com", healthEndpoint: "https://trust.ynxweb4.com/health", expectedChainId: 6423, schema: "product health", timeoutMs: 3000, cache: "no-store", degraded: "Show service unavailable; do not make a trust decision." }),
+  resource: Object.freeze({ name: "YNX Resource Market", officialUrl: "https://resource.ynxweb4.com", healthEndpoint: "https://resource.ynxweb4.com/health", expectedChainId: 6423, schema: "product health", timeoutMs: 3000, cache: "no-store", degraded: "Show service unavailable; do not confirm a quote or settlement." })
+});
+
 const env = import.meta.env || {};
 
 const DEFAULTS = {
-  apiBase: "https://rpc.ynxweb4.com",
-  evmRpc: "https://evm.ynxweb4.com",
-  explorerUrl: "https://explorer.ynxweb4.com",
-	monitorUrl: "https://monitor.ynxweb4.com",
-  faucetUrl: "https://faucet.ynxweb4.com",
+  apiBase: YNX_SERVICE_DIRECTORY.rpc.officialUrl,
+  evmRpc: YNX_SERVICE_DIRECTORY.evm.officialUrl,
+  explorerUrl: YNX_SERVICE_DIRECTORY.explorer.officialUrl,
+	monitorUrl: YNX_SERVICE_DIRECTORY.monitor.officialUrl,
+  faucetUrl: YNX_SERVICE_DIRECTORY.faucet.officialUrl,
   docsUrl: "/docs",
   docsRepoUrl: "https://github.com/JiahaoAlbus/YNX-Chain/tree/main/docs",
   grantUrl: "https://github.com/JiahaoAlbus/YNX-Chain/tree/main/docs/grants",

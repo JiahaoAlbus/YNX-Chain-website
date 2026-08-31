@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import crypto from "node:crypto";
 import { normalizeAddress, toEVMAddress, toYNXAddress } from "../src/lib/address.js";
+import { YNX_SERVICE_DIRECTORY } from "../src/lib/api/ynxApi.js";
 
 const required = [
   "package.json",
@@ -251,8 +252,12 @@ if (!portalPage.includes('`${apiConfig.explorerUrl}/token/YNXT`') || portalPage.
   console.error("YNXT portal action does not use the verified Explorer token path");
   process.exit(1);
 }
+if (!networkStatusSource.includes("YNX_SERVICE_DIRECTORY")) {
+  console.error("network-status must consume the canonical service directory");
+  process.exit(1);
+}
 for (const requiredLiveEndpoint of ["https://explorer.ynxweb4.com/api/blocks/latest", "https://explorer.ynxweb4.com/api/txs?limit=5", "https://explorer.ynxweb4.com/health"]) {
-  if (!networkStatusSource.includes(requiredLiveEndpoint)) {
+  if (!Object.values(YNX_SERVICE_DIRECTORY).some((service) => Object.values(service).includes(requiredLiveEndpoint))) {
     console.error(`home live-record source is missing: ${requiredLiveEndpoint}`);
     process.exit(1);
   }
