@@ -227,7 +227,7 @@ const viteConfig = fs.readFileSync("vite.config.js", "utf8");
 const signerSource = JSON.parse(fs.readFileSync("src/lib/ynx-signer/SOURCE.json", "utf8"));
 const explorerResolver = fs.readFileSync("api/explorer/resolve.js", "utf8");
 const networkStatusSource = fs.readFileSync("server/network-status.mjs", "utf8");
-if (!commandPalette.includes('/api/explorer/resolve') || !commandPalette.includes('Search this record in YNX Explorer') || !explorerResolver.includes('https://explorer.ynxweb4.com') || !explorerResolver.includes('/api/search?q=')) {
+if (!commandPalette.includes('/api/explorer/resolve') || !commandPalette.includes('commandSearchExplorer') || !explorerResolver.includes('https://explorer.ynxweb4.com') || !explorerResolver.includes('/api/search?q=')) {
   console.error("global search does not resolve records through the separate Explorer");
   process.exit(1);
 }
@@ -601,7 +601,7 @@ if (!header.includes("localeSelect") || !header.includes('value="zh-TW"') || !he
   console.error("five-language locale control is missing");
   process.exit(1);
 }
-for (const requiredText of ["role=\"dialog\"", "aria-modal=\"true\"", "ArrowDown", "ArrowUp", "No matching YNX resource", "API reference"]) {
+for (const requiredText of ["role=\"dialog\"", "aria-modal=\"true\"", "ArrowDown", "ArrowUp", "commandNoMatch", "API reference"]) {
   if (!commandPalette.includes(requiredText)) {
     console.error(`command palette capability missing: ${requiredText}`);
     process.exit(1);

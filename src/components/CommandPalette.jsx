@@ -6,8 +6,9 @@ import {
 import docsAuthority from "virtual:ynx-docs-authority";
 import { getCatalog } from "../lib/ecosystemCatalog.js";
 import { apiConfig } from "../lib/api/ynxApi.js";
+import { useLocale } from "../lib/i18n.jsx";
 
-const coreCommands = [
+const coreCommands = (t) => [
   { title: "DApps", description: "Browse every evidence-backed YNX software product", href: "/dapp", icon: AppWindow, keywords: "dapp apps software ecosystem product" },
   { title: "User manual", description: "Connect, inspect, build, and recover safely", href: "/manual", icon: BookOpen, keywords: "guide help onboarding wallet testnet" },
   { title: "Developer documentation", description: "SDK, integration, and technical references", href: "/docs", icon: Braces, keywords: "developer sdk code docs" },
@@ -19,6 +20,7 @@ const coreCommands = [
 ];
 
 export function CommandPalette({ open, onClose }) {
+  const { t } = useLocale();
   const [query, setQuery] = useState("");
   const [activeIndex, setActiveIndex] = useState(0);
   const [searchError, setSearchError] = useState("");
@@ -40,12 +42,12 @@ export function CommandPalette({ open, onClose }) {
       keywords: `product ${product.key} ${product.status}`,
     }));
     const seen = new Set();
-    return [...coreCommands, ...articleCommands, ...productCommands].filter((command) => {
+    return [...coreCommands(t), ...articleCommands, ...productCommands].filter((command) => {
       if (seen.has(command.href)) return false;
       seen.add(command.href);
       return true;
     });
-  }, []);
+  }, [t]);
 
   const results = useMemo(() => {
     const needle = query.trim().toLocaleLowerCase();
@@ -85,10 +87,10 @@ export function CommandPalette({ open, onClose }) {
     try {
       const response = await fetch(`/api/explorer/resolve?q=${encodeURIComponent(q)}`, { cache: "no-store" });
       const resolved = await response.json();
-      if (!response.ok || !resolved.deepLink) throw new Error(resolved.error || "Explorer search is unavailable.");
+      if (!response.ok || !resolved.deepLink) throw new Error(resolved.error || t("explorerSearchUnavailable"));
       window.location.assign(`${apiConfig.explorerUrl}${resolved.deepLink}`);
     } catch (error) {
-      setSearchError(error.message || "Explorer search is unavailable.");
+      setSearchError(error.message || t("explorerSearchUnavailable"));
     }
   };
 
@@ -116,7 +118,7 @@ export function CommandPalette({ open, onClose }) {
       <section className="commandPalette" role="dialog" aria-modal="true" aria-labelledby="command-title" onKeyDown={onKeyDown}>
         <header className="commandSearch">
           <Search aria-hidden="true" />
-          <label className="visuallyHidden" htmlFor="command-query" id="command-title">Search YNX Chain</label>
+          <label className="visuallyHidden" htmlFor="command-query" id="command-title">{t("commandTitle")}</label>
           <input
             ref={inputRef}
             id="command-query"
@@ -125,16 +127,16 @@ export function CommandPalette({ open, onClose }) {
               setQuery(event.target.value);
               setActiveIndex(0);
             }}
-            placeholder="Search products, docs, API, security…"
+            placeholder={t("commandPlaceholder")}
             autoComplete="off"
           />
-          <button type="button" onClick={onClose} aria-label="Close command palette"><X /></button>
+          <button type="button" onClick={onClose} aria-label={t("commandClose")}><X /></button>
         </header>
         <p className="commandSummary" role="status">
-          {query.trim() ? `${results.length} results` : "Quick navigation"}
+          {query.trim() ? t("commandResults").replace("{count}", results.length) : t("commandQuickNavigation")}
         </p>
-        <div className="commandResults" role="listbox" aria-label="Search results">
-          {query.trim() && <button type="button" className="explorerSearchResult" onClick={searchExplorer}><Search aria-hidden="true" /><span><strong>Search this record in YNX Explorer</strong><small>Block · transaction · address · contract · Token · validator</small></span><kbd>↵</kbd></button>}
+        <div className="commandResults" role="listbox" aria-label={t("commandSearchResults")}>
+          {query.trim() && <button type="button" className="explorerSearchResult" onClick={searchExplorer}><Search aria-hidden="true" /><span><strong>{t("commandSearchExplorer")}</strong><small>{t("commandExplorerTypes")}</small></span><kbd>↵</kbd></button>}
           {results.map((command, index) => {
             const Icon = command.icon;
             return (
@@ -156,13 +158,13 @@ export function CommandPalette({ open, onClose }) {
           {!results.length && (
             <div className="commandEmpty">
               <Search aria-hidden="true" />
-              <strong>No matching YNX resource</strong>
-              <span>Try “wallet”, “API”, “security”, or “testnet”.</span>
+              <strong>{t("commandNoMatch")}</strong>
+              <span>{t("commandTry")}</span>
             </div>
           )}
           {searchError && <p className="commandSearchError" role="alert">{searchError}</p>}
         </div>
-        <footer><span><kbd>↑</kbd><kbd>↓</kbd> Navigate</span><span><kbd>Esc</kbd> Close</span></footer>
+        <footer><span><kbd>↑</kbd><kbd>↓</kbd> {t("commandNavigate")}</span><span><kbd>Esc</kbd> {t("commandClose")}</span></footer>
       </section>
     </div>
   );
