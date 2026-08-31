@@ -4,6 +4,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { createHostedArtifactManifest, emitDocsAuthority, loadDocsAuthority, verifyHostedDocsAuthority } from "./lib/docs-authority.mjs";
+import { createCoreRouteEntries, coreRouteJsonLd, renderCoreRouteBody, verifyCoreRouteEntries } from "./lib/core-route-content.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const dist = path.join(root, "dist");
@@ -13,6 +14,8 @@ const authority = loadDocsAuthority(root);
 const siteUrl = authority.productMetadata.siteUrl.replace(/\/$/, "");
 const hostedArtifact = createHostedArtifactManifest(authority);
 const releaseRegistry = JSON.parse(fs.readFileSync(path.join(root, "public/releases/ecosystem-release-registry.json"), "utf8"));
+const coreRouteEntries = createCoreRouteEntries(releaseRegistry);
+verifyCoreRouteEntries(coreRouteEntries, releaseRegistry);
 
 for (const article of authority.articles) {
   const jsonLd = article.route === "/faq" ? faqJsonLd(article) : articleJsonLd(article);
@@ -21,6 +24,19 @@ for (const article of authority.articles) {
     description: article.description,
     body: `<main class="authorityPage"><header class="authorityHeader"><p class="sectionEyebrow">YNX public authority</p><h1>${escapeHtml(article.h1)}</h1><p>${escapeHtml(article.description)}</p><p class="authorityStaticSource">Verified bundle source <code>${authority.artifact.sourceCommit.slice(0, 12)}</code></p></header><article class="authorityArticle">${article.html}</article></main>`,
     jsonLd,
+  });
+}
+
+for (const entry of coreRouteEntries) {
+  const supportingArticle = authority.articles.find((article) => article.route === entry.route);
+  const supportingBody = supportingArticle
+    ? `<section class="authorityArticle coreStaticSupportingAuthority" aria-labelledby="supporting-authority-${escapeAttribute(entry.route.replace(/\W+/g, "-"))}"><p class="sectionEyebrow">Supporting public documentation</p><h2 id="supporting-authority-${escapeAttribute(entry.route.replace(/\W+/g, "-"))}">${escapeHtml(supportingArticle.h1)}</h2><p>${escapeHtml(supportingArticle.description)}</p>${supportingArticle.html}<p class="authorityStaticSource">Verified bundle source <code>${authority.artifact.sourceCommit.slice(0, 12)}</code></p></section>`
+    : "";
+  writeRoute(entry.route, {
+    title: entry.title,
+    description: entry.description,
+    body: `${renderCoreRouteBody(entry)}${supportingBody}`,
+    jsonLd: coreRouteJsonLd(entry, siteUrl),
   });
 }
 
@@ -40,19 +56,20 @@ emitDocsAuthority(path.join(dist, "docs-authority"), root);
 writePublicMetadata();
 writeDiscoveryFiles();
 verifyOutput();
-process.stdout.write(`prerendered ${authority.articles.length + 1} authority routes\n`);
+process.stdout.write(`prerendered ${authority.articles.length + 1} authority routes and ${coreRouteEntries.length} core routes\n`);
 
 function writeRoute(route, { title, description, body, jsonLd }) {
-  const canonical = `${siteUrl}${route}`;
+  const canonical = `${siteUrl}${route === "/" ? "" : route}`;
   let html = baseHtml
     .replace(/<title>[\s\S]*?<\/title>/, `<title>${escapeHtml(title)}</title>`)
     .replace(/<meta name="description" content="[^"]*"\s*\/?>/, `<meta name="description" content="${escapeAttribute(description)}" />`)
     .replace("</head>", `<link rel="canonical" href="${escapeAttribute(canonical)}" />\n    <script type="application/ld+json">${safeJson(jsonLd)}</script>\n  </head>`)
     .replace('<div id="root"></div>', `<div id="root">${body}</div>`);
-  const directory = path.join(dist, route.replace(/^\/+/, ""));
+  const relativeRoute = route.replace(/^\/+/, "");
+  const directory = path.join(dist, relativeRoute);
   fs.mkdirSync(directory, { recursive: true });
   fs.writeFileSync(path.join(directory, "index.html"), html);
-  fs.writeFileSync(path.join(dist, `${route.replace(/^\/+/, "")}.html`), html);
+  if (relativeRoute) fs.writeFileSync(path.join(dist, `${relativeRoute}.html`), html);
 }
 
 function writeDiscoveryFiles() {
@@ -114,6 +131,22 @@ function verifyOutput() {
       if (!html.includes(required)) throw new Error(`prerendered route ${article.route} is missing ${required}`);
     }
   }
+  const baseShellBytes = Buffer.byteLength(baseHtml);
+  const seenBodies = new Set();
+  for (const entry of coreRouteEntries) {
+    const output = routeOutputPath(entry.route);
+    const html = fs.readFileSync(output, "utf8");
+    const canonical = `${siteUrl}${entry.route === "/" ? "" : entry.route}`;
+    const body = html.match(/<div id="root">([\s\S]*?)<\/div>/)?.[1] || "";
+    for (const required of [entry.h1, entry.description, `href="${canonical}"`, "application/ld+json", "ynx_6423-1", "0x1917", "YNXT", "Live chain and product data load after hydration"]) {
+      if (!html.includes(required)) throw new Error(`prerendered core route ${entry.route} is missing ${required}`);
+    }
+    if (Buffer.byteLength(html) <= baseShellBytes || body.length < 500) {
+      throw new Error(`prerendered core route ${entry.route} is still an empty application shell`);
+    }
+    if (seenBodies.has(body)) throw new Error(`prerendered core route ${entry.route} reuses another route body`);
+    seenBodies.add(body);
+  }
   for (const required of ["/what-is-ynx-chain", "/what-is-ynxt", "/faq"]) {
     if (!fs.readFileSync(path.join(dist, "sitemap.xml"), "utf8").includes(required)) {
       throw new Error(`sitemap is missing ${required}`);
@@ -128,6 +161,10 @@ function verifyOutput() {
   ) {
     throw new Error("public product metadata or release truth is missing");
   }
+}
+
+function routeOutputPath(route) {
+  return route === "/" ? path.join(dist, "index.html") : path.join(dist, route.replace(/^\/+/, ""), "index.html");
 }
 
 function articleJsonLd(article) {
