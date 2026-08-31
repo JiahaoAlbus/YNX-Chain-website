@@ -5,7 +5,7 @@ import {
   Database, Gauge, Landmark, Layers3, Network, Scale, Search, ShieldCheck, WalletCards
 } from "lucide-react";
 import { apiConfig, loadNetworkSnapshot, loadServiceHealth, networkParams } from "./lib/api/ynxApi.js";
-import { Hero } from "./sections/Hero.jsx";
+import { HeroPortal } from "./sections/HeroPortal.jsx";
 import { StatusCard } from "./components/StatusCard.jsx";
 import { ProductPanel } from "./components/ProductPanel.jsx";
 import { LinkGrid } from "./components/LinkGrid.jsx";
@@ -122,7 +122,7 @@ function App() {
   return (
     <main id="main-content">
       <SiteHeader scrollProgress={scrollProgress} />
-      <Hero snapshot={snapshot} connectionState={connectionState} onAddNetwork={addNetwork} />
+      <HeroPortal snapshot={snapshot} connectionState={connectionState} onAddNetwork={addNetwork} />
 
       <section className="networkBand" id="network" aria-labelledby="network-title" data-reveal>
         <div className="sectionHeader compact">
