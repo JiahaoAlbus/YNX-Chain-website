@@ -91,7 +91,6 @@ async function getJson(url, init = {}, timeoutMs = 7000) {
   } catch (error) {
     return {
       error: error?.name === "AbortError" ? `Timed out after ${timeoutMs / 1000}s` : error.message,
-      endpoint: url,
       checkedAt: new Date().toISOString()
     };
   } finally {

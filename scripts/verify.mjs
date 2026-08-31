@@ -244,6 +244,11 @@ const viteConfig = fs.readFileSync("vite.config.js", "utf8");
 const signerSource = JSON.parse(fs.readFileSync("src/lib/ynx-signer/SOURCE.json", "utf8"));
 const explorerResolver = fs.readFileSync("api/explorer/resolve.js", "utf8");
 const networkStatusSource = fs.readFileSync("server/network-status.mjs", "utf8");
+const ynxApiSource = fs.readFileSync("src/lib/api/ynxApi.js", "utf8");
+if (networkStatusSource.includes("endpoint: url") || ynxApiSource.includes("endpoint: url")) {
+  console.error("service error payload exposes a raw endpoint");
+  process.exit(1);
+}
 if (!commandPalette.includes('/api/explorer/resolve') || !commandPalette.includes('commandSearchExplorer') || !explorerResolver.includes('https://explorer.ynxweb4.com') || !explorerResolver.includes('/api/search?q=')) {
   console.error("global search does not resolve records through the separate Explorer");
   process.exit(1);

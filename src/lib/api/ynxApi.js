@@ -104,7 +104,7 @@ async function requestJson(url, { timeoutMs = 8000, ...init } = {}) {
     return await response.json();
   } catch (error) {
     const message = error?.name === "AbortError" ? `Timed out after ${timeoutMs / 1000}s` : error.message;
-    return { error: message, endpoint: url, checkedAt: new Date().toISOString() };
+    return { error: message, checkedAt: new Date().toISOString() };
   } finally {
     window.clearTimeout(timer);
   }
