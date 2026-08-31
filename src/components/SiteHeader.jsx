@@ -3,7 +3,7 @@ import { ExternalLink, Menu, Moon, Search, Sun, WalletCards, X } from "lucide-re
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { apiConfig, networkParams, YNX_6423 } from "../lib/api/ynxApi.js";
 import { SUPPORTED_LOCALES, useLocale } from "../lib/i18n.jsx";
-import { walletKind } from "../lib/walletProvider.js";
+import { connectCanonicalProvider, discoverCanonicalProviders, switchCanonicalProviderToYNX } from "../lib/walletProvider.js";
 
 const CommandPalette = lazy(() => import("./CommandPalette.jsx").then((module) => ({ default: module.CommandPalette })));
 
@@ -18,16 +18,6 @@ const localeLabels = {
   es: "Español", fr: "Français", de: "Deutsch", pt: "Português", ru: "Русский",
   ar: "العربية", id: "Bahasa Indonesia"
 };
-
-function collectInjectedProviders() {
-  const injected = window.ethereum;
-  if (!injected) return [];
-  const candidates = Array.isArray(injected.providers) && injected.providers.length ? injected.providers : [injected];
-  return candidates.filter((provider) => provider?.request).map((provider) => ({
-    provider,
-    info: { name: walletKind(provider) }
-  }));
-}
 
 export function SiteHeader({ scrollProgress = 0 }) {
   const { locale, setLocale, t } = useLocale();
@@ -89,43 +79,23 @@ export function SiteHeader({ scrollProgress = 0 }) {
     };
   }, [walletMenuOpen]);
 
-  useEffect(() => {
-    const addProvider = ({ detail }) => {
-      const candidate = detail?.provider;
-      if (!candidate?.request) return;
-      setProviders((current) => current.some((entry) => entry.provider === candidate)
-        ? current
-        : [...current, { provider: candidate, info: detail.info || { name: walletKind(candidate) } }]);
-    };
-    window.addEventListener("eip6963:announceProvider", addProvider);
-    window.dispatchEvent(new Event("eip6963:requestProvider"));
-    const fallback = window.setTimeout(() => {
-      setProviders((current) => current.length ? current : collectInjectedProviders());
-    }, 160);
-    return () => {
-      window.removeEventListener("eip6963:announceProvider", addProvider);
-      window.clearTimeout(fallback);
-    };
-  }, []);
+  useEffect(() => discoverCanonicalProviders({ onChange: setProviders }), []);
 
-  const connectWallet = async (provider) => {
-    if (!provider?.request) {
+  const connectWallet = async (entry) => {
+    if (!entry?.provider?.request || !entry?.identity?.accepted) {
       setWallet({ state: "unavailable" });
       return;
     }
     setWallet({ state: "connecting" });
     try {
       // Account access is requested only after the visitor explicitly presses this button.
-      const accounts = await provider.request({ method: "eth_requestAccounts" });
-      const account = Array.isArray(accounts) ? accounts[0] : undefined;
-      const chainId = await provider.request({ method: "eth_chainId" });
-      if (!account) throw new Error("No account was returned by the wallet.");
+      const { account, chainId } = await connectCanonicalProvider(entry);
       setWallet({
         state: "connected",
         account,
         chainId,
-        provider: walletKind(provider),
-        walletProvider: provider
+        provider: entry.identity.label,
+        walletProvider: entry
       });
       setWalletMenuOpen(true);
     } catch (error) {
@@ -139,7 +109,7 @@ export function SiteHeader({ scrollProgress = 0 }) {
       return;
     }
     if (providers.length === 1) {
-      connectWallet(providers[0].provider);
+      connectWallet(providers[0]);
       return;
     }
     if (providers.length > 1) {
@@ -161,22 +131,13 @@ export function SiteHeader({ scrollProgress = 0 }) {
   };
 
   const switchToYNX = async () => {
-    const provider = wallet.walletProvider;
-    if (!provider?.request) return;
+    const entry = wallet.walletProvider;
+    if (!entry?.provider?.request) return;
     try {
-      await provider.request({ method: "wallet_switchEthereumChain", params: [{ chainId: YNX_6423.evmChainId }] });
-    } catch (error) {
-      if (error?.code !== 4902) {
-        setWallet((current) => ({ ...current, state: "error", message: t("walletNetworkFailed") }));
-        return;
-      }
-      try {
-        await provider.request({ method: "wallet_addEthereumChain", params: [networkParams()] });
-        await provider.request({ method: "wallet_switchEthereumChain", params: [{ chainId: YNX_6423.evmChainId }] });
-      } catch {
-        setWallet((current) => ({ ...current, state: "error", message: t("walletNetworkFailed") }));
-        return;
-      }
+      await switchCanonicalProviderToYNX(entry, networkParams());
+    } catch {
+      setWallet((current) => ({ ...current, state: "error", message: t("walletNetworkFailed") }));
+      return;
     }
     setWallet((current) => ({ ...current, chainId: YNX_6423.evmChainId, state: "connected" }));
   };
@@ -226,7 +187,7 @@ export function SiteHeader({ scrollProgress = 0 }) {
               <p className={wallet.chainId === YNX_6423.evmChainId ? "walletNetwork ready" : "walletNetwork"}>{t("walletNetwork")}: {wallet.chainId || t("unavailable")}</p>
               {wallet.chainId !== YNX_6423.evmChainId ? <button type="button" onClick={switchToYNX}>{t("switchTo6423")}</button> : null}
               <button type="button" className="quiet" onClick={() => { setWallet({ state: "idle" }); closeWalletMenu(true); }}>{t("disconnectWallet")}</button>
-            </> : providers.map((entry, index) => <button type="button" key={`${entry.info.uuid || entry.info.name}-${index}`} onClick={() => connectWallet(entry.provider)}>{walletKind(entry.provider, entry.info)}</button>)}
+            </> : providers.map((entry, index) => <button type="button" key={`${entry.info.uuid || entry.identity.rdns}-${index}`} onClick={() => connectWallet(entry)}>{entry.identity.label}</button>)}
           </div> : null}
           <label className="localeSelect" aria-label={t("language")}>
             <span className="visuallyHidden">{t("language")}</span>

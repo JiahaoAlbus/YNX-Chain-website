@@ -40,6 +40,7 @@ const required = [
   "src/lib/address.js",
   "src/lib/i18n.jsx",
   "src/lib/walletAuthCallback.js",
+  "src/lib/walletProvider.js",
   "src/components/AddressConverter.jsx",
   "src/components/SquareAccountPanel.jsx",
   "src/pages/AppsPage.jsx",
@@ -211,6 +212,7 @@ const walletAuthRuntimePublication = JSON.parse(fs.readFileSync("public/releases
 const walletAuthRuntimeV2Publication = JSON.parse(fs.readFileSync("public/releases/wallet-auth-runtime/6cf3ef845202bd879ed94515a71b323dd2fc9e14/runtime-publication.json", "utf8"));
 const walletSessionCorsProductionEvidence = JSON.parse(fs.readFileSync("docs/integration/wallet-session-mobile-cors-production-evidence-20260815.json", "utf8"));
 const header = fs.readFileSync("src/components/SiteHeader.jsx", "utf8");
+const walletProviderSource = fs.readFileSync("src/lib/walletProvider.js", "utf8");
 const i18n = fs.readFileSync("src/lib/i18n.jsx", "utf8");
 const portalPage = fs.readFileSync("src/pages/PortalPage.jsx", "utf8");
 const footer = fs.readFileSync("src/components/SiteFooter.jsx", "utf8");
@@ -223,7 +225,7 @@ const downloadsPage = fs.readFileSync("src/pages/DownloadPage.jsx", "utf8");
 const productStatusPage = fs.readFileSync("src/pages/ProductStatusPage.jsx", "utf8");
 const ecosystemCatalog = fs.readFileSync("src/lib/ecosystemCatalog.js", "utf8");
 const installerReplacementMatrix = JSON.parse(fs.readFileSync("public/releases/installer-replacement-matrix.json", "utf8"));
-if (!header.includes('method: "eth_requestAccounts"') || !header.includes('t("connectWallet")')) {
+if (!header.includes("connectCanonicalProvider") || !header.includes('t("connectWallet")') || !walletProviderSource.includes('method: "eth_requestAccounts"')) {
   console.error("header wallet connection must remain explicit and visible");
   process.exit(1);
 }
@@ -884,18 +886,24 @@ for (const requiredText of ["No committed product-release.json", "Hosted install
     process.exit(1);
   }
 }
-if (!squarePage.includes("No sample posts are inserted") || !squarePage.includes("signed writes beta") || !squarePage.includes("SquareAccountPanel") || !docsPage.includes("Search YNX documentation")) {
+if (!squarePage.includes("No sample posts are inserted") || !squarePage.includes("canonical wallet writes fail closed") || !squarePage.includes("SquareAccountPanel") || !docsPage.includes("Search YNX documentation")) {
   console.error("Square truth boundary or in-site documentation is incomplete");
   process.exit(1);
 }
-for (const requiredText of ["sealSignerVault", "openSignerVault", "Connect signed session", "createPost", "disconnect({ revokeDevice: true })", "finally {", "local signing keys cleared", "Delete local copy", "Remote device state was not changed"]) {
+for (const requiredText of ["connectCanonicalProvider", "switchCanonicalProviderToYNX", "Legacy local signer data detected", "Its contents were not read", "Clear legacy browser copy", "Publishing remains unavailable", "writes fail closed"]) {
   if (!squareAccountPanel.includes(requiredText)) {
-    console.error(`Square signed account workflow is incomplete: ${requiredText}`);
+    console.error(`Square canonical provider boundary is incomplete: ${requiredText}`);
     process.exit(1);
   }
 }
-if (squareAccountPanel.includes("X-YNX-Square-Key") || squareAccountPanel.includes("X-YNX-Chat-Key")) {
-  console.error("Square browser workflow contains a server-side service credential header");
+for (const forbiddenText of ["ynx-signer", "sealSignerVault", "openSignerVault", "generateAccountSecret", "importAccountSecret", "Account private key", "X-YNX-Device-Signature"]) {
+  if (squareAccountPanel.includes(forbiddenText)) {
+    console.error(`Square production UI reaches a retired website-local signer: ${forbiddenText}`);
+    process.exit(1);
+  }
+}
+if (!walletProviderSource.includes("secretValuesRead: false") || walletProviderSource.includes("storage.getItem")) {
+  console.error("legacy signer migration must detect and clear by key name without reading secret values");
   process.exit(1);
 }
 if (appGateway.includes("/chat/") || /method:\s*["']POST["']/.test(appGateway) || !appGateway.includes("/square/feed")) {
@@ -997,11 +1005,11 @@ const csp = vercel.headers
   ?.find((entry) => entry.source === "/(.*)")
   ?.headers?.find((header) => header.key === "Content-Security-Policy")?.value || "";
 if (!csp.includes("script-src 'self'") || !csp.includes("worker-src 'self'") || !csp.includes("connect-src 'self' https://api.ynxweb4.com https://faucet.ynxweb4.com https://rest.ynxweb4.com https://rpc.ynxweb4.com") || !csp.includes("object-src 'none'")) {
-  console.error("strict browser signer CSP is missing");
+  console.error("strict canonical wallet CSP is missing");
   process.exit(1);
 }
-if (packageJson.dependencies?.["@noble/curves"] !== "2.2.0" || packageJson.dependencies?.["@noble/hashes"] !== "2.2.0") {
-  console.error("browser signer cryptography dependencies are not exactly pinned");
+if (packageJson.dependencies?.["@noble/curves"] || packageJson.dependencies?.["@noble/hashes"]) {
+  console.error("production website still depends on duplicate local-signing cryptography");
   process.exit(1);
 }
 if (signerSource.repository !== "https://github.com/JiahaoAlbus/YNX-Chain" || signerSource.commit !== "5bab0e0") {
@@ -1036,20 +1044,12 @@ for (const invalid of ["0x1234", `Y${validYNX.slice(1)}`, `${validYNX.slice(0, -
     // Expected strict rejection.
   }
 }
-const signer = await import("../src/lib/ynx-signer/index.js");
-const signerAccountSecret = Uint8Array.from({ length: 32 }, (_, index) => index === 31 ? 1 : 0);
-const signerDeviceSecret = new Uint8Array(32).fill(0x41);
-if (signer.accountIdentity(signerAccountSecret).account !== validYNX || signer.deviceIdentifier(signerDeviceSecret) !== "web-9a92d2b54a9a5402de3e65a0") {
-  console.error("vendored browser signer vectors do not match the chain package");
-  process.exit(1);
+for (const productionSource of [header, squareAccountPanel, fs.readFileSync("src/main.jsx", "utf8")]) {
+  if (/from\s+["'][^"']*ynx-signer/u.test(productionSource)) {
+    console.error("production website imports the retired local signer");
+    process.exit(1);
+  }
 }
-const signerVault = await signer.sealSignerVault({ accountSecret: signerAccountSecret, deviceSecret: signerDeviceSecret }, "website verification password");
-const openedSignerVault = await signer.openSignerVault(signerVault, "website verification password");
-if (Buffer.from(openedSignerVault.accountSecret).toString("hex") !== Buffer.from(signerAccountSecret).toString("hex")) {
-  console.error("vendored browser signer vault did not round-trip");
-  process.exit(1);
-}
-signer.zeroize(openedSignerVault.accountSecret, openedSignerVault.deviceSecret);
 const originalFetch = globalThis.fetch;
 let requestedSquareUrl = "";
 globalThis.fetch = async (url) => {

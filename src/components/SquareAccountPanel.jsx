@@ -1,179 +1,87 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Check, Download, KeyRound, LockKeyhole, LogOut, ShieldCheck, Trash2, Upload, WalletCards } from "lucide-react";
+import { AlertTriangle, LogOut, RefreshCw, ShieldCheck, Trash2, WalletCards } from "lucide-react";
+import { networkParams } from "../lib/api/ynxApi.js";
 import {
-  YNXSquareAppClient,
-  accountIdentity,
-  generateAccountSecret,
-  generateDeviceSecret,
-  importAccountSecret,
-  openSignerVault,
-  sealSignerVault,
-  zeroize,
-} from "../lib/ynx-signer/index.js";
+  YNX_EVM_CHAIN_ID,
+  clearLegacyLocalSignerData,
+  connectCanonicalProvider,
+  discoverCanonicalProviders,
+  hasLegacyLocalSignerData,
+  subscribeCanonicalProvider,
+  switchCanonicalProviderToYNX,
+} from "../lib/walletProvider.js";
 
-const VAULT_KEY = "ynx.browser-signer.v1";
-const BACKUP_KEY = "ynx.browser-signer.backup-confirmed.v1";
-const APP_GATEWAY = "https://api.ynxweb4.com";
-
-export function SquareAccountPanel({ onPublished }) {
-  const clientRef = useRef(null);
-  const fileRef = useRef(null);
-  const [hasVault, setHasVault] = useState(() => Boolean(readVault()));
-  const [backupConfirmed, setBackupConfirmed] = useState(() => localStorage.getItem(BACKUP_KEY) === "true");
-  const [mode, setMode] = useState(() => hasVault ? "locked" : "create");
-  const [password, setPassword] = useState("");
-  const [confirmation, setConfirmation] = useState("");
-  const [privateKey, setPrivateKey] = useState("");
-  const [identity, setIdentity] = useState(null);
-  const [session, setSession] = useState({ connected: false, expiresAt: null });
-  const [content, setContent] = useState("");
-  const [tags, setTags] = useState("");
+export function SquareAccountPanel() {
+  const unsubscribeProviderRef = useRef(() => {});
+  const [providers, setProviders] = useState([]);
+  const [connection, setConnection] = useState({ state: "idle", account: "", chainId: "", entry: null });
+  const [legacyDetected, setLegacyDetected] = useState(() => hasLegacyLocalSignerData());
   const [busy, setBusy] = useState("");
   const [notice, setNotice] = useState("");
   const [error, setError] = useState("");
 
-  useEffect(() => () => clientRef.current?.lock(), []);
+  useEffect(() => discoverCanonicalProviders({ onChange: setProviders }), []);
+  useEffect(() => () => unsubscribeProviderRef.current(), []);
 
-  const createVault = async (event) => {
-    event.preventDefault();
-    if (password !== confirmation) return setError("Passwords do not match.");
-    await withBusy("creating", async () => {
-      const accountSecret = mode === "import-key" ? importAccountSecret(privateKey) : generateAccountSecret();
-      const deviceSecret = generateDeviceSecret();
-      try {
-        const vault = await sealSignerVault({ accountSecret, deviceSecret }, password);
-        localStorage.setItem(VAULT_KEY, JSON.stringify(vault));
-        localStorage.removeItem(BACKUP_KEY);
-        setBackupConfirmed(false);
-        setHasVault(true);
-        activateClient(accountSecret, deviceSecret);
-        setNotice("YNX account created locally. Save the encrypted backup before connecting.");
-        setPassword(""); setConfirmation(""); setPrivateKey("");
-      } finally {
-        zeroize(accountSecret, deviceSecret);
-      }
-    });
-  };
-
-  const unlock = async (event) => {
-    event.preventDefault();
-    await withBusy("unlocking", async () => {
-      const vault = readVault();
-      if (!vault) throw new Error("Encrypted YNX vault is not available.");
-      const secrets = await openSignerVault(vault, password);
-      try {
-        activateClient(secrets.accountSecret, secrets.deviceSecret);
-        setNotice("Vault unlocked locally.");
-        setPassword("");
-      } finally {
-        zeroize(secrets.accountSecret, secrets.deviceSecret);
-      }
-    });
-  };
-
-  const importVault = async (event) => {
-    const file = event.target.files?.[0];
-    event.target.value = "";
-    if (!file) return;
-    await withBusy("importing", async () => {
-      const parsed = JSON.parse(await file.text());
-      await openSignerVault(parsed, password).then((secrets) => zeroize(secrets.accountSecret, secrets.deviceSecret));
-      localStorage.setItem(VAULT_KEY, JSON.stringify(parsed));
-      localStorage.removeItem(BACKUP_KEY);
-      setBackupConfirmed(false);
-      setHasVault(true);
-      setMode("locked");
-      setNotice("Encrypted YNX vault imported. Unlock it to continue.");
-      setPassword("");
-    });
-  };
-
-  const connect = async () => {
+  const connect = async (entry) => {
     await withBusy("connecting", async () => {
-      const status = await clientRef.current.connect();
-      setSession(status);
-      setNotice("Account ownership and device session verified.");
+      const next = await connectCanonicalProvider(entry);
+      unsubscribeProviderRef.current();
+      unsubscribeProviderRef.current = subscribeCanonicalProvider(entry, handleProviderState);
+      setConnection({ state: "connected", account: next.account, chainId: next.chainId, entry });
+      setNotice(next.chainId === YNX_EVM_CHAIN_ID
+        ? `${entry.identity.label} connected to YNX 6423 / 0x1917.`
+        : `${entry.identity.label} connected. Switch to YNX 6423 before any account-bound action.`);
     });
   };
 
-  const publish = async (event) => {
-    event.preventDefault();
-    await withBusy("publishing", async () => {
-      const normalizedTags = tags.split(",").map((tag) => tag.trim().replace(/^#/, "")).filter(Boolean);
-      await clientRef.current.createPost({ content, tags: normalizedTags });
-      setContent(""); setTags("");
-      setNotice("Signed post persisted on YNX Square.");
-      await onPublished?.();
+  const switchNetwork = async () => {
+    if (!connection.entry) return;
+    await withBusy("switching", async () => {
+      const chainId = await switchCanonicalProviderToYNX(connection.entry, networkParams());
+      setConnection((current) => ({ ...current, chainId }));
+      setNotice("Wallet readback confirmed YNX 6423 / 0x1917.");
     });
   };
 
-  const lock = async () => {
-    await withBusy("locking", async () => {
-      const client = clientRef.current;
-      try {
-        await client?.disconnect();
-      } finally {
-        client?.lock();
-        clientRef.current = null;
-        setIdentity(null);
-        setSession({ connected: false, expiresAt: null });
-        setMode("locked");
-        setNotice("Vault locked and local signing keys cleared.");
-      }
-    });
+  const disconnect = () => {
+    unsubscribeProviderRef.current();
+    unsubscribeProviderRef.current = () => {};
+    setConnection({ state: "idle", account: "", chainId: "", entry: null });
+    setNotice("Website connection cleared. Wallet permissions remain under the wallet's control.");
+    setError("");
   };
 
-  const removeDevice = async () => {
-    if (!session.connected || !window.confirm("Remove this signed device and delete its local encrypted vault?")) return;
-    await withBusy("removing", async () => {
-      await clientRef.current.disconnect({ revokeDevice: true });
-      clientRef.current.lock();
-      clientRef.current = null;
-      localStorage.removeItem(VAULT_KEY);
-      localStorage.removeItem(BACKUP_KEY);
-      setHasVault(false); setBackupConfirmed(false); setIdentity(null);
-      setSession({ connected: false, expiresAt: null });
-      setMode("create");
-      setNotice("Device revoked and local encrypted vault removed.");
-    });
+  const clearLegacy = () => {
+    const confirmed = window.confirm([
+      "Clear legacy local signer data from this website?",
+      "",
+      "The current website cannot open, export, or recover it. Back it up first using the original version or an isolated recovery tool. This action cannot be undone.",
+    ].join("\n"));
+    if (!confirmed) return;
+    const result = clearLegacyLocalSignerData();
+    setLegacyDetected(hasLegacyLocalSignerData());
+    setNotice(result.removed
+      ? "Legacy local signer data cleared without reading its contents. A non-sensitive browser audit event was emitted."
+      : "No legacy local signer data remained.");
+    setError("");
   };
 
-  const removeLocalVault = () => {
-    if (!backupConfirmed || !window.confirm("Delete this local encrypted vault copy? This does not change remote device state.")) return;
-    clientRef.current?.lock();
-    clientRef.current = null;
-    localStorage.removeItem(VAULT_KEY);
-    localStorage.removeItem(BACKUP_KEY);
-    setHasVault(false); setBackupConfirmed(false); setIdentity(null);
-    setSession({ connected: false, expiresAt: null });
-    setPassword(""); setMode("create");
-    setNotice("Local encrypted vault copy removed. Remote device state was not changed.");
-  };
-
-  const saveBackup = () => {
-    const vault = readVault();
-    if (!vault) return;
-    const blob = new Blob([JSON.stringify(vault, null, 2)], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const anchor = document.createElement("a");
-    anchor.href = url;
-    anchor.download = `ynx-vault-${identity?.account?.slice(0, 14) || "encrypted"}.json`;
-    anchor.click();
-    window.setTimeout(() => URL.revokeObjectURL(url), 0);
-  };
-
-  const confirmBackup = (checked) => {
-    setBackupConfirmed(checked);
-    if (checked) localStorage.setItem(BACKUP_KEY, "true"); else localStorage.removeItem(BACKUP_KEY);
-  };
-
-  const activateClient = (accountSecret, deviceSecret) => {
-    clientRef.current?.lock();
-    const client = new YNXSquareAppClient({ baseURL: APP_GATEWAY, accountSecret, deviceSecret });
-    clientRef.current = client;
-    setIdentity(accountIdentity(accountSecret));
-    setSession(client.sessionStatus);
-    setMode("unlocked");
+  const handleProviderState = (event) => {
+    if (event.type === "disconnect" || (event.type === "accountsChanged" && event.accounts.length === 0)) {
+      disconnect();
+      return;
+    }
+    if (event.type === "accountsChanged") {
+      setConnection((current) => ({ ...current, account: event.accounts[0] || "" }));
+      setNotice("Wallet account change read back from the selected provider.");
+    }
+    if (event.type === "chainChanged") {
+      setConnection((current) => ({ ...current, chainId: event.chainId }));
+      setNotice(event.chainId === YNX_EVM_CHAIN_ID
+        ? "Wallet chain change readback confirmed YNX 6423 / 0x1917."
+        : "Wallet left YNX 6423. Account-bound actions remain unavailable.");
+    }
   };
 
   const withBusy = async (name, operation) => {
@@ -182,83 +90,49 @@ export function SquareAccountPanel({ onPublished }) {
     finally { setBusy(""); }
   };
 
+  const ready = connection.state === "connected" && connection.chainId === YNX_EVM_CHAIN_ID;
+
   return (
-    <section className="squareWorkspace" aria-label="YNX Square account workspace">
+    <section className="squareWorkspace canonicalWalletWorkspace" aria-label="YNX Square canonical wallet workspace">
       <div className="squareAccountPane">
-        <div className="workspaceTitle"><WalletCards /><span><small>YNX-native account</small><strong>{identity ? shortAccount(identity.account) : hasVault ? "Encrypted vault locked" : "Create or import"}</strong></span></div>
+        <div className="workspaceTitle"><WalletCards /><span><small>Canonical wallet provider</small><strong>{connection.entry ? connection.entry.identity.label : "Choose YNX Wallet or MetaMask"}</strong></span></div>
 
-        {!hasVault && (
-          <form className="vaultForm" onSubmit={createVault}>
-            <div className="modeSwitch" aria-label="Account setup mode">
-              <button type="button" className={mode === "create" ? "active" : ""} onClick={() => setMode("create")}>Create</button>
-              <button type="button" className={mode === "import-key" ? "active" : ""} onClick={() => setMode("import-key")}>Import key</button>
-            </div>
-            {mode === "import-key" && <Field label="Account private key" type="password" value={privateKey} onChange={setPrivateKey} autoComplete="off" />}
-            <Field label="Vault password" type="password" value={password} onChange={setPassword} autoComplete="new-password" />
-            <Field label="Confirm password" type="password" value={confirmation} onChange={setConfirmation} autoComplete="new-password" />
-            <button className="button primary" disabled={Boolean(busy)}><KeyRound size={17} />{busy === "creating" ? "Creating" : "Create encrypted vault"}</button>
-            <div className="vaultActions">
-              <button type="button" onClick={() => fileRef.current?.click()}><Upload />Import encrypted vault</button>
-            </div>
-          </form>
-        )}
+        {connection.state !== "connected" ? <div className="providerChooser">
+          <p>The website never creates, imports, stores, decrypts, or signs with a private key. Account access stays inside the selected wallet.</p>
+          {providers.length ? providers.map((entry, index) => (
+            <button type="button" className="button primary" key={`${entry.info.uuid || entry.identity.rdns}-${index}`} onClick={() => connect(entry)} disabled={Boolean(busy)}>
+              <WalletCards />{busy === "connecting" ? "Waiting for wallet" : `Connect ${entry.identity.label}`}
+            </button>
+          )) : <div className="providerUnavailable"><AlertTriangle /><span><strong>No canonical provider detected</strong><small>Install or enable YNX Wallet or MetaMask, then retry discovery.</small></span></div>}
+          <button type="button" className="button quiet providerRetry" onClick={() => window.dispatchEvent(new Event("eip6963:requestProvider"))}><RefreshCw />Retry discovery</button>
+        </div> : <div className="canonicalAccountStatus">
+          <code>{connection.account}</code>
+          <p className={ready ? "walletNetwork ready" : "walletNetwork"}>Chain readback: {connection.chainId || "unavailable"}{ready ? " · YNX 6423" : " · not YNX 6423"}</p>
+          {!ready && <button type="button" className="button primary" onClick={switchNetwork} disabled={Boolean(busy)}>{busy === "switching" ? "Waiting for wallet" : "Switch to YNX 6423"}</button>}
+          <button type="button" className="button quiet" onClick={disconnect}><LogOut />Disconnect website</button>
+        </div>}
 
-        {hasVault && mode === "locked" && (
-          <form className="vaultForm" onSubmit={unlock}>
-            <Field label="Vault password" type="password" value={password} onChange={setPassword} autoComplete="current-password" />
-            <button className="button primary" disabled={Boolean(busy)}><LockKeyhole size={17} />{busy === "unlocking" ? "Unlocking" : "Unlock"}</button>
-            <div className="vaultActions">
-              <button type="button" onClick={() => fileRef.current?.click()}><Upload />Import encrypted vault</button>
-              <button type="button" className="danger" onClick={removeLocalVault} disabled={!backupConfirmed}><Trash2 />Delete local copy</button>
-            </div>
-          </form>
-        )}
-
-        {identity && (
-          <div className="accountStatus">
-            <code>{identity.account}</code>
-            <div className="vaultActions">
-              <button type="button" onClick={saveBackup}><Download />Encrypted backup</button>
-              <button type="button" onClick={lock}><LogOut />Lock</button>
-              <button type="button" className="danger" onClick={removeDevice} disabled={!session.connected}><Trash2 />Remove device</button>
-            </div>
-            <label className="backupCheck"><input type="checkbox" checked={backupConfirmed} onChange={(event) => confirmBackup(event.target.checked)} /><span><Check />Encrypted backup stored</span></label>
-          </div>
-        )}
-
-        {identity && !session.connected && <button className="button primary connectButton" onClick={connect} disabled={!backupConfirmed || Boolean(busy)}><ShieldCheck size={17} />{busy === "connecting" ? "Verifying" : "Connect signed session"}</button>}
-        {session.connected && <div className="sessionReady"><i /><span><strong>Signed session active</strong><small>Expires {formatTime(session.expiresAt)}</small></span></div>}
-        <input ref={fileRef} className="visuallyHidden" type="file" accept="application/json" onChange={importVault} />
+        {legacyDetected && <aside className="legacySignerNotice" aria-live="polite">
+          <AlertTriangle />
+          <div><strong>Legacy local signer data detected</strong><p>Its contents were not read. The current website cannot unlock or export it. Use the original version or an isolated recovery tool to make a backup before manually clearing this browser copy.</p></div>
+          <button type="button" className="button danger" onClick={clearLegacy}><Trash2 />Clear legacy browser copy</button>
+        </aside>}
       </div>
 
-      <form className="squareComposer" onSubmit={publish}>
-        <div className="workspaceTitle"><ShieldCheck /><span><small>Ownership-bound publishing</small><strong>{session.connected ? "Compose post" : "Connect to publish"}</strong></span></div>
-        <textarea value={content} onChange={(event) => setContent(event.target.value)} maxLength={2000} placeholder="Share with YNX Square" disabled={!session.connected} />
-        <div className="composerFooter">
-          <input value={tags} onChange={(event) => setTags(event.target.value)} placeholder="Tags, comma separated" disabled={!session.connected} />
-          <span>{content.length}/2000</span>
-          <button className="button primary" disabled={!session.connected || !content.trim() || Boolean(busy)}>{busy === "publishing" ? "Publishing" : "Publish"}</button>
-        </div>
-      </form>
+      <div className="squareComposer canonicalWriteBoundary">
+        <div className="workspaceTitle"><ShieldCheck /><span><small>Provider-authenticated publishing</small><strong>{ready ? "Wallet connected · writes fail closed" : "Connect on YNX 6423"}</strong></span></div>
+        <p>Square's deployed write API still expects the retired website-local signer protocol. This website will not recreate that authority or ask for a pointless signature. Publishing remains unavailable until Square accepts the canonical wallet provider session.</p>
+        <textarea value="" readOnly disabled placeholder="Publishing is unavailable until the canonical provider session is accepted." aria-label="Square publishing unavailable" />
+        <div className="composerFooter"><span>0/2000</span><button type="button" className="button primary" disabled>Publish unavailable</button></div>
+      </div>
 
       {(error || notice) && <div className={`workspaceNotice ${error ? "error" : "success"}`} role="status">{error || notice}</div>}
     </section>
   );
 }
 
-function Field({ label, type, value, onChange, autoComplete }) {
-  return <label className="vaultField"><span>{label}</span><input required type={type} value={value} onChange={(event) => onChange(event.target.value)} autoComplete={autoComplete} /></label>;
-}
-
-function readVault() {
-  try { return JSON.parse(localStorage.getItem(VAULT_KEY) || "null"); } catch { return null; }
-}
-
 function safeMessage(error) {
-  const message = String(error?.message || "YNX account operation failed.");
-  if (/private|secret|token/i.test(message)) return "YNX account operation failed safely.";
+  const message = String(error?.message || "Canonical wallet operation failed.");
+  if (/private|secret|token|vault|mnemonic/i.test(message)) return "Canonical wallet operation failed safely.";
   return message.slice(0, 180);
 }
-
-function shortAccount(value) { return `${value.slice(0, 12)}…${value.slice(-7)}`; }
-function formatTime(value) { return value ? new Intl.DateTimeFormat("en", { hour: "2-digit", minute: "2-digit" }).format(new Date(value)) : "soon"; }

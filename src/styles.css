@@ -605,6 +605,26 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .workspaceNotice { grid-column: 1 / -1; min-height: 44px; padding: 12px 24px; display: flex; align-items: center; border-top: 1px solid var(--line); font-size: 12px; }
 .workspaceNotice.success { color: var(--green); background: #effaf5; }
 .workspaceNotice.error { color: var(--danger); background: #fff4f2; }
+.providerChooser, .canonicalAccountStatus { display: grid; gap: 12px; margin-top: 22px; }
+.providerChooser > p, .canonicalWriteBoundary > p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.65; }
+.providerChooser .button, .canonicalAccountStatus .button { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+.providerChooser .button svg, .canonicalAccountStatus .button svg { width: 16px; }
+.providerUnavailable { display: grid; grid-template-columns: 22px minmax(0,1fr); gap: 10px; align-items: start; padding: 14px; border: 1px solid var(--line); border-radius: 8px; background: white; }
+.providerUnavailable > svg { width: 18px; color: var(--danger); }
+.providerUnavailable span { display: grid; gap: 4px; }
+.providerUnavailable small { color: var(--muted); line-height: 1.45; }
+.providerRetry { color: var(--blue); background: white; border: 1px solid var(--line); }
+.canonicalAccountStatus code { padding: 11px 12px; border: 1px solid var(--line); border-radius: 8px; overflow-wrap: anywhere; background: white; font-size: 11px; }
+.canonicalAccountStatus .walletNetwork { margin: 0; padding: 10px 12px; border-radius: 6px; color: var(--danger); background: #fff4f2; font-size: 11px; font-weight: 750; }
+.canonicalAccountStatus .walletNetwork.ready { color: var(--green); background: #effaf5; }
+.legacySignerNotice { display: grid; grid-template-columns: 22px minmax(0,1fr); gap: 10px; margin-top: 22px; padding: 16px; border: 1px solid #e8bc77; border-radius: 8px; color: #6f4400; background: #fff8e9; }
+.legacySignerNotice > svg { width: 18px; }
+.legacySignerNotice > div { display: grid; gap: 5px; }
+.legacySignerNotice p { margin: 0; font-size: 11px; line-height: 1.55; }
+.legacySignerNotice .button { grid-column: 2; min-height: 38px; justify-self: start; display: inline-flex; align-items: center; gap: 7px; border: 1px solid #d7962c; color: #7a3d00; background: white; }
+.legacySignerNotice .button svg { width: 14px; }
+.canonicalWriteBoundary .composerFooter { grid-template-columns: 1fr auto; }
+.canonicalWriteBoundary textarea { cursor: not-allowed; }
 .visuallyHidden { position: absolute !important; width: 1px !important; height: 1px !important; padding: 0 !important; margin: -1px !important; overflow: hidden !important; clip: rect(0,0,0,0) !important; white-space: nowrap !important; border: 0 !important; }
 .squareLoading { display: grid; gap: 12px; }
 .squareLoading span { height: 158px; border: 1px solid var(--line); border-radius: 8px; background: linear-gradient(100deg, var(--soft) 20%, #fff 38%, var(--soft) 56%); background-size: 220% 100%; animation: shimmer 1.35s ease infinite; }
