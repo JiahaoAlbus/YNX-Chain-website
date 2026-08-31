@@ -192,6 +192,7 @@ const walletSessionCorsProductionEvidence = JSON.parse(fs.readFileSync("docs/int
 const header = fs.readFileSync("src/components/SiteHeader.jsx", "utf8");
 const i18n = fs.readFileSync("src/lib/i18n.jsx", "utf8");
 const portalPage = fs.readFileSync("src/pages/PortalPage.jsx", "utf8");
+const footer = fs.readFileSync("src/components/SiteFooter.jsx", "utf8");
 const commandPalette = fs.readFileSync("src/components/CommandPalette.jsx", "utf8");
 const routePage = fs.readFileSync("src/components/RoutePage.jsx", "utf8");
 const manualPage = fs.readFileSync("src/pages/ManualPage.jsx", "utf8");
@@ -223,6 +224,12 @@ const explorerResolver = fs.readFileSync("api/explorer/resolve.js", "utf8");
 if (!commandPalette.includes('/api/explorer/resolve') || !commandPalette.includes('Search this record in YNX Explorer') || !explorerResolver.includes('https://explorer.ynxweb4.com') || !explorerResolver.includes('/api/search?q=')) {
   console.error("global search does not resolve records through the separate Explorer");
   process.exit(1);
+}
+for (const officialDestination of ["https://github.com/JiahaoAlbus/YNX-Chain", "https://github.com/JiahaoAlbus/YNX-Chain-website", "https://x.com/YNXChain", "https://discord.gg/t8KpAF2KE", "https://www.youtube.com/@YNX-Chain"]) {
+  if (!footer.includes(officialDestination)) {
+    console.error(`official community destination is missing: ${officialDestination}`);
+    process.exit(1);
+  }
 }
 if (releaseRegistry.products.some((product) => Object.hasOwn(product, "branch"))) {
   console.error("public release registry exposes internal branch names");
