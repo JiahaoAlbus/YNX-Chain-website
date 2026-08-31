@@ -15,6 +15,8 @@ export const YNX_6423 = Object.freeze({
   })
 });
 
+const env = import.meta.env || {};
+
 const DEFAULTS = {
   apiBase: "https://rpc.ynxweb4.com",
   evmRpc: "https://evm.ynxweb4.com",
@@ -31,17 +33,17 @@ const DEFAULTS = {
 };
 
 export const apiConfig = Object.freeze({
-  apiBase: trim(import.meta.env.VITE_YNX_API_BASE_URL || DEFAULTS.apiBase),
-  evmRpc: trim(import.meta.env.VITE_YNX_EVM_RPC_URL || DEFAULTS.evmRpc),
-  explorerUrl: trim(import.meta.env.VITE_YNX_EXPLORER_URL || DEFAULTS.explorerUrl),
-	monitorUrl: trim(import.meta.env.VITE_YNX_MONITOR_URL || DEFAULTS.monitorUrl),
-  faucetUrl: trim(import.meta.env.VITE_YNX_FAUCET_URL || DEFAULTS.faucetUrl),
-  docsUrl: normalizePath(trim(import.meta.env.VITE_YNX_DOCS_URL || DEFAULTS.docsUrl), DEFAULTS.docsRepoUrl),
-  grantUrl: trim(import.meta.env.VITE_YNX_GRANT_URL || DEFAULTS.grantUrl),
+  apiBase: trim(env.VITE_YNX_API_BASE_URL || DEFAULTS.apiBase),
+  evmRpc: trim(env.VITE_YNX_EVM_RPC_URL || DEFAULTS.evmRpc),
+  explorerUrl: trim(env.VITE_YNX_EXPLORER_URL || DEFAULTS.explorerUrl),
+	monitorUrl: trim(env.VITE_YNX_MONITOR_URL || DEFAULTS.monitorUrl),
+  faucetUrl: trim(env.VITE_YNX_FAUCET_URL || DEFAULTS.faucetUrl),
+  docsUrl: normalizePath(trim(env.VITE_YNX_DOCS_URL || DEFAULTS.docsUrl), DEFAULTS.docsRepoUrl),
+  grantUrl: trim(env.VITE_YNX_GRANT_URL || DEFAULTS.grantUrl),
   docsRepoUrl: DEFAULTS.docsRepoUrl,
-  ecosystemUrl: normalizePath(trim(import.meta.env.VITE_YNX_ECOSYSTEM_URL || DEFAULTS.ecosystemUrl), DEFAULTS.ecosystemRepoUrl),
+  ecosystemUrl: normalizePath(trim(env.VITE_YNX_ECOSYSTEM_URL || DEFAULTS.ecosystemUrl), DEFAULTS.ecosystemRepoUrl),
   ecosystemRepoUrl: DEFAULTS.ecosystemRepoUrl,
-  exchangeUrl: normalizePath(trim(import.meta.env.VITE_YNX_EXCHANGE_URL || DEFAULTS.exchangeUrl), DEFAULTS.exchangeRepoUrl),
+  exchangeUrl: normalizePath(trim(env.VITE_YNX_EXCHANGE_URL || DEFAULTS.exchangeUrl), DEFAULTS.exchangeRepoUrl),
   exchangeRepoUrl: DEFAULTS.exchangeRepoUrl
 });
 

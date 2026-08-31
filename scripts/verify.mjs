@@ -190,6 +190,7 @@ const walletAuthRuntimeV2Publication = JSON.parse(fs.readFileSync("public/releas
 const walletSessionCorsProductionEvidence = JSON.parse(fs.readFileSync("docs/integration/wallet-session-mobile-cors-production-evidence-20260815.json", "utf8"));
 const header = fs.readFileSync("src/components/SiteHeader.jsx", "utf8");
 const i18n = fs.readFileSync("src/lib/i18n.jsx", "utf8");
+const portalPage = fs.readFileSync("src/pages/PortalPage.jsx", "utf8");
 const commandPalette = fs.readFileSync("src/components/CommandPalette.jsx", "utf8");
 const routePage = fs.readFileSync("src/components/RoutePage.jsx", "utf8");
 const manualPage = fs.readFileSync("src/pages/ManualPage.jsx", "utf8");
@@ -545,6 +546,18 @@ for (const requiredRoute of ['["blockchain", "/blockchain"]', '["tokens", "/toke
 if (!header.includes('apiConfig.explorerUrl') || !header.includes('navExplorer')) {
   console.error("separate Explorer entry is missing from official navigation");
   process.exit(1);
+}
+for (const portalRoute of ["/blockchain", "/tokens", "/data", "/governance", "/ecosystem", "/developers", "/downloads", "/more"]) {
+  if (!portalPage.includes(`"${portalRoute}"`)) {
+    console.error(`official portal page is missing: ${portalRoute}`);
+    process.exit(1);
+  }
+}
+for (const expectedIdentity of ['cosmosChainId: "ynx_6423-1"', "chainId: 6423", 'evmChainId: "0x1917"', 'symbol: "YNXT"']) {
+  if (!fs.readFileSync("src/lib/api/ynxApi.js", "utf8").includes(expectedIdentity)) {
+    console.error(`canonical 6423 configuration is incomplete: ${expectedIdentity}`);
+    process.exit(1);
+  }
 }
 for (const requiredText of ["metaKey", "ctrlKey", "ynx-theme", "localStorage.removeItem(\"ynx-direction\")", "CommandPalette", 't("skip")']) {
   if (!header.includes(requiredText)) {
