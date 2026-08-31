@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { collectNetworkStatus, collectServiceHealth } from "./server/network-status.mjs";
 import { createHostedArtifactManifest, loadDocsAuthority } from "./scripts/lib/docs-authority.mjs";
+import { loadDocsLocales } from "./scripts/lib/docs-locales.mjs";
 
 export default defineConfig({
   plugins: [
@@ -31,20 +32,33 @@ export default defineConfig({
 
 function docsAuthorityPlugin() {
   const authority = loadDocsAuthority();
+  const locales = loadDocsLocales(process.cwd(), authority.articles);
   const moduleId = "virtual:ynx-docs-authority";
   const resolvedId = `\0${moduleId}`;
+  const localesModuleId = "virtual:ynx-docs-locales";
+  const localesResolvedId = `\0${localesModuleId}`;
   const publicAuthority = {
     artifact: createHostedArtifactManifest(authority),
     articles: authority.articles,
     productMetadata: authority.productMetadata,
+    sourceLocale: locales.sourceLocale,
+    requestedLocales: locales.requestedLocales,
+    publishedLocales: locales.publishedLocales,
+    direction: locales.direction,
+    missingMatrix: locales.missingMatrix,
   };
+  const publicLocales = { byLocale: locales.byLocale };
   return {
     name: "ynx-docs-authority",
     resolveId(id) {
-      return id === moduleId ? resolvedId : null;
+      if (id === moduleId) return resolvedId;
+      if (id === localesModuleId) return localesResolvedId;
+      return null;
     },
     load(id) {
-      return id === resolvedId ? `export default ${JSON.stringify(publicAuthority)};` : null;
+      if (id === resolvedId) return `export default ${JSON.stringify(publicAuthority)};`;
+      if (id === localesResolvedId) return `export default ${JSON.stringify(publicLocales)};`;
+      return null;
     },
   };
 }

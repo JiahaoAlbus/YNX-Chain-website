@@ -122,7 +122,7 @@ function App() {
     const productMatch = getProductRouteMatch(route);
     const authorityArticle = docsAuthority.articles.find((article) => article.route === route);
     if (productMatch) page = <ProductStatusPage product={productMatch.product} sectionId={productMatch.sectionId} article={authorityArticle} artifact={docsAuthority.artifact} />;
-    else if (authorityArticle) page = <AuthorityArticlePage article={authorityArticle} artifact={docsAuthority.artifact} />;
+    else if (authorityArticle) page = <AuthorityArticlePage sourceArticle={authorityArticle} artifact={docsAuthority.artifact} />;
     if (route === "/dapp/download") page = <DownloadPage />;
     if (route === "/dapp") page = <AppsPage />;
     if (route === "/docs") page = <DocsPage />;

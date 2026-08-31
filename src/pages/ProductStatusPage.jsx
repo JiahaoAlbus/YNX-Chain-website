@@ -8,6 +8,10 @@ import {
   PRODUCT_PUBLIC_SECTIONS, assertProductPublicContract, getProductPublicContract, getProductPublicDisplayStatus
 } from "../lib/productPublicContract.js";
 import { ECOSYSTEM_GUIDES } from "../content/ecosystemGuides.js";
+import docsAuthority from "virtual:ynx-docs-authority";
+import docsLocales from "virtual:ynx-docs-locales";
+import { useLocale } from "../lib/i18n.jsx";
+import { selectLocalizedDocs } from "../lib/docsLocale.js";
 
 const platformOrder = ["web", "pwa", "chromeEdge", "firefox", "android", "ios", "macos", "windows", "linux"];
 
@@ -80,6 +84,9 @@ function SectionPage({ product, contract, sectionId, guide }) {
 }
 
 export function ProductStatusPage({ product, sectionId = "overview", article, artifact }) {
+  const { locale } = useLocale();
+  const localeState = selectLocalizedDocs({ ...docsAuthority, ...docsLocales }, locale);
+  const localizedArticle = article ? localeState.articles.find((candidate) => candidate.route === article.route) : null;
   const contract = getProductPublicContract(product);
   assertProductPublicContract(contract);
   const publicWeb = contract.publicWebVerified;
@@ -110,7 +117,8 @@ export function ProductStatusPage({ product, sectionId = "overview", article, ar
       </section>
       <aside className="evidenceBoundary"><ShieldCheck /><div><strong>Status is narrower than ambition.</strong><p>Candidate code, local packages, public APIs, hosted installers, production signing, and store acceptance are separate states.</p></div></aside>
       {guide && <section className="productLogic" aria-labelledby="product-logic-title"><header><p className="sectionEyebrow">How this product works</p><h2 id="product-logic-title">Purpose, workflow and hard rules</h2><p>{guide.purpose}</p></header><div className="productLogicGrid"><section><h3>User workflow</h3><ol>{guide.workflow.map((step) => <li key={step}>{step}</li>)}</ol></section><section><h3>Rules and boundaries</h3><ul>{guide.rules.map((rule) => <li key={rule}><CheckCircle2 size={16} /> <span>{rule}</span></li>)}</ul></section></div></section>}
-      {article && <section className="productAuthority" aria-labelledby="product-authority-title"><header><p className="sectionEyebrow">Evidence-linked public documentation</p><h2 id="product-authority-title">{article.h1}</h2><p>{article.description}</p><small>Version {article.version} · reviewed {article.lastReviewed || article.effectiveDate || "in source"} · bundle <code>{artifact.sourceCommit.slice(0, 12)}</code></small></header><article className="authorityArticle" dangerouslySetInnerHTML={{ __html: article.html }} /></section>}
+      {localizedArticle && <section className="productAuthority" aria-labelledby="product-authority-title"><header><p className="sectionEyebrow">Evidence-linked public documentation</p><h2 id="product-authority-title">{localizedArticle.h1}</h2><p>{localizedArticle.description}</p><small>Version {localizedArticle.version} · reviewed {localizedArticle.lastReviewed || localizedArticle.effectiveDate || "in source"} · bundle <code>{artifact.sourceCommit.slice(0, 12)}</code></small></header><article className="authorityArticle" lang={localizedArticle.locale} dir={localizedArticle.direction} dangerouslySetInnerHTML={{ __html: localizedArticle.html }} /></section>}
+      {article && !localizedArticle ? <aside className="evidenceBoundary"><ShieldCheck /><div><strong>Translation unavailable.</strong><p>The {localeState.locale} authority text is incomplete.</p></div></aside> : null}
     </>}
   </main>;
 }

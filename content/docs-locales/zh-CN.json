@@ -1,0 +1,105 @@
+{
+  "schema": "ynx-docs-locale-artifact/v1",
+  "locale": "zh-CN",
+  "direction": "ltr",
+  "articles": [
+    {
+      "route": "/developer",
+      "h1": "在 YNX 测试网上构建",
+      "title": "YNX Developer — 在 YNX 测试网上构建",
+      "description": "使用 Chain ID 6423、YNXT、面向 EVM 的 RPC、Hardhat、Foundry、SDK 和证据约束的部署流程在 YNX 测试网上开发。",
+      "markdown": "# 在 YNX 测试网上构建\n\n## 直接回答\n\nYNX Developer 覆盖测试网 RPC、SDK、合约、验证和 IDE 工程能力。YNX 测试网使用 EVM Chain ID 6423，原生测试资产为 YNXT。兼容性只限于经过直接测试的方法与工件，并不表示兼容所有 Ethereum 工具或 opcode。\n\n## 安全开始\n\n先核验网络名称、Chain ID、端点 TLS、发布身份和区块是否持续增长。只使用测试网账户，并通过环境提供部署凭据；不得提交密钥，也不得依赖自动生成或默认的生产凭据。\n\n源码提供 Hardhat 与 Foundry 配置、JavaScript 与 Python SDK 指南、网络辅助工具和合约验证流程。在干净 checkout 中运行有边界的 IDE 或共识测试前，必须先生成 Solidity 工件。\n\n## 合约发布门禁\n\n公布合约地址前，必须核验 Chain ID、链上 bytecode、源码与编译器设置、构造参数、decimals、symbol、权限主体和部署交易。只有真实部署的 Token 合约通过这些门禁后，才可进入权威 Token 列表。\n\n## Wallet 与 AI\n\n部署必须经过规范 Wallet 审阅和签名。开发工具或 AI 可以起草代码、测试或补丁，但不能持有用户密钥，也不能在没有明确批准时部署。Provider 与模型状态、上下文同意、成本、预览、应用或拒绝以及审计记录都必须可见。\n\n## 当前状态与风险\n\n本地工具和产品候选已经存在；公网 IDE、完整 Wallet 集成、签名后的 macOS/Windows 分发、独立审计和公网容量仍需要各自证据。源码、测试或候选包都不能代替这些状态。\n\n## 相关页面\n\n- [YNX 测试网指南](/testnet)\n- [YNX Wallet](/wallet)\n- [YNX Security](/security)\n- [什么是 YNX Chain？](/what-is-ynx-chain)\n- [常见问题](/faq)\n\n## 变更记录\n\n- 1.0.0-candidate (2026-07-22)：首次发布网络、工具、合约、Wallet/AI、状态与安全说明。"
+    },
+    {
+      "route": "/dex",
+      "h1": "YNX DEX",
+      "title": "YNX DEX — 测试网集成、流动性与 Wallet 安全",
+      "description": "了解 YNX DEX 候选的合约、Token 列表、流动性、路由审阅、Wallet 批准和公网证据边界。",
+      "markdown": "# YNX DEX\n\n## 直接回答\n\nYNX DEX 是测试网集成候选，不代表已经具有资金支持的公网流动性或生产交易能力。使用 DEX 必须核验合约和精确链上状态，由 Wallet 审阅交易，并设置价格影响与滑点保护，最后取得已提交回执。\n\n## 合约与 Token 门禁\n\n目前已有网络元数据和开发配置。提交公网 DEX 前，必须提供真实的 wrapped-YNXT、factory、router 和 multicall 地址，验证源码与 bytecode，固定索引起始区块，并提供公网 RPC/验证器证据。权威 Token 列表不得列出尚未部署的 Token。\n\n## 流动性事实\n\n仅有池地址不代表存在可用流动性。任何流动性声明都必须说明来源、观察时间、储备、Token 身份、价格范围、深度、费用、成交量计算方法、滑点、锁定或提取条件、无常损失风险和证据 ID。测试 fixture 和模拟报价不是公网流动性。\n\n## Wallet 与 Bridge\n\n用户 Wallet 必须签署精确路由、输入、最小输出、截止时间、费用以及获准合约。DEX 前端或 AI 不能持有用户密钥，也不能扩大授权。Bridge 是外部依赖；只有精确路由、合约、finality、Provider 和恢复路径获得批准后才可使用。\n\n## 当前状态与风险\n\nDEX 源码候选与本地证据独立于已接受的中央基线。资金池、中央集成、公网部署、独立审计和生产签名都尚未由本页证明。\n\n## 相关页面\n\n- [YNX Wallet](/wallet)\n- [什么是 YNXT？](/what-is-ynxt)\n- [YNX Quant](/quant)\n- [YNX Security](/security)\n- [常见问题](/faq)\n\n## 变更记录\n\n- 1.0.0-candidate (2026-07-22)：首次发布合约、Token、流动性、Wallet、Bridge、状态和风险说明。"
+    },
+    {
+      "route": "/economics",
+      "h1": "YNX 经济模型",
+      "title": "YNX Economics — YNXT 手续费、供应、质押与风险",
+      "description": "查看当前 YNXT 测试网手续费与供应事实、候选发行和销毁模拟、质押缺口、Treasury 与风险披露。",
+      "markdown": "# YNX 经济模型\n\n## 直接回答\n\n当前 YNX 经济状态保留迁移锚定的流通与质押 YNXT，并使用固定的原生测试网手续费。最终分配、流通供应、Mainnet 政策、质押 APY、通用销毁、回购和经审计的 Treasury 报表均未建立。\n\n## 当前规则与候选规则\n\n已接受的当前规则把固定手续费计入验证者，通用销毁为零。本地测试候选增加了透明的固定手续费事件，以及带边界的发行、质押安全和销毁/分配参数模拟器；它不是中央共识，也不是预测。\n\n候选默认值包括 1%–8% 发行区间、67% 目标质押率、至少 32 个验证者、20% 集中度上限和模拟手续费分配。这些只是评审输入，不是实际网络统计或承诺政策。\n\n## 手续费与收入\n\n销毁是减少供应，绝不是收入；用户本金也不是收入。Provider、venue、计算/数据、订阅、管理和 high-water-mark 费用必须事先披露并经批准。禁止隐藏价差、对未实现利润收费、重复收费、虚假成交量或流动性以及保证收益。\n\n## 资本类声明与风险\n\n任何 APY、PnL、收益、储备、流动性、销毁、回购、质押、vault 或收入声明都必须包含来源、期间、毛额/净额、成本、风险、回撤、锁定、退出、网络类别、证据 ID 和不保证措辞。当前没有公网业绩结果满足该结构。\n\n## 相关页面\n\n- [什么是 YNXT？](/what-is-ynxt)\n- [YNX Quant](/quant)\n- [YNX Exchange](/exchange)\n- [YNX Security](/security)\n- [常见问题](/faq)\n\n## 变更记录\n\n- 1.0.0-candidate (2026-07-22)：首次发布当前/候选经济规则、费用、收入和资本声明边界。"
+    },
+    {
+      "route": "/exchange",
+      "h1": "YNX Exchange",
+      "title": "YNX Exchange — 测试网交易与托管边界",
+      "description": "了解 YNX Exchange 候选、测试网市场流程、托管限制、费用透明度、偿付能力和当前发布证据。",
+      "markdown": "# YNX Exchange\n\n## 直接回答\n\nYNX Exchange 是面向市场、账户、订单与风险流程的独立测试网产品候选。本页不宣称交易所牌照、生产托管、公网流动性、官方上币、真钱交易或完整偿付能力证明。\n\n## 权限与托管\n\n余额和订单必须绑定已接受的 venue/custody adapter 与账户范围。行情 API 不能替代托管、订单或结算权限。用户资产只能位于用户 Wallet、明确披露的交易所子账户、获准 vault、托管 Provider 或协议合约中。\n\n生产托管需要冷热温分离、阈值批准、提取限额、nonce 管理、密钥轮换、恢复、事故演练、审计和负责人移交。测试向量不得包含生产私密材料。\n\n## 费用与市场诚信\n\nvenue、Provider、协议和提取费用必须在批准前展示，并与回执核对。禁止隐藏价差、洗售、虚假成交量、虚假流动性、保证收益和未经验证的排名。\n\n## 当前状态与风险\n\n候选 Web/mobile 和本地服务工程存在于独立源码线上。中央 Wallet 集成、生产托管、充值/提取、公网部署、生产签名、法律批准、市场监控和偿付证据仍取决于具体发布，当前并不完整。\n\n## 相关页面\n\n- [YNX Wallet](/wallet)\n- [YNX Quant](/quant)\n- [YNX 经济模型](/economics)\n- [YNX Trust](/trust)\n- [YNX Security](/security)\n- [常见问题](/faq)\n\n## 变更记录\n\n- 1.0.0-candidate (2026-07-22)：首次发布产品、托管、费用、诚信、状态与风险说明。"
+    },
+    {
+      "route": "/products",
+      "h1": "YNX 产品",
+      "title": "YNX Products — YNX Web4 生态中的独立应用",
+      "description": "浏览独立的 YNX Web4 产品候选，并了解它们的 Wallet、数据、资产、平台和发布边界。",
+      "markdown": "# YNX 产品\n\n## 直接回答\n\nYNX Web4 是由 YNX Chain 提供能力的一组独立产品。共享账户身份、YNXT、Trust 证据和设计语言并不会自动授予共享托管或无限制 session；每个产品都有自己的工作流、scope、平台和证据。\n\n## 产品组合\n\n| 产品组 | 主要用途 | 当前公网边界 |\n| --- | --- | --- |\n| Wallet | 账户托管、签名与权限 | 候选工程；生产和商店状态需独立证据 |\n| Pay 与 Merchant | 意图、发票、结算、回执、退款/争议 | 测试网或本地候选；不能泛化为公网价值流 |\n| Explorer 与 Monitor | 公共链派生视图与运维可观测性 | 来源、时效和部署状态各自核验 |\n| Developer | 代码、合约、验证与部署工作流 | 工具存在；签名桌面版和公网 IDE 证据不完整 |\n| Exchange、DEX 与 Quant | 市场、swap 和策略工作流 | 不宣称生产托管、流动性或业绩 |\n| Trust 与 Resource | 证据/申诉和有边界的资源流程 | 权限必须明确 |\n| AI | 受权限约束的起草和建议 | 不能独立执行敏感操作 |\n| Cloud、Docs 与媒体 | 存储、协作和内容流程 | 需要耐久性、权利与 Provider 证据 |\n| Social、Search、Browser、Finance、Mail 与 Calendar | 独立应用体验 | 可用性与集成按组件分别判断 |\n\n## 发布状态规则\n\n每个产品都要分别检查源码实现、本地测试、安装、中央集成、staging、公网部署、托管下载、生产签名和商店发布。更新的候选修订、截图或 preview 包不能证明其他状态。\n\n## 共享安全规则\n\n- 使用规范 Wallet 批准并坚持最小权限。\n- 产品不得获得 seed 或任意提取权限。\n- AI 只能建议，不能自主执行。\n- 数据必须标记来源、时效、版本和失败。\n- 空、离线、权限不足、过期和恢复状态都是真实状态。\n- 测试网、模拟、未签名和生产类别必须分开。\n\n## 风险\n\n任何产品入口都不能仅凭同属生态而推断可用、托管或资金安全；必须查看该产品的精确发布记录和证据日期。\n\n## 相关页面\n\n- [什么是 YNX Web4？](/what-is-ynx-web4)\n- [YNX Wallet](/wallet)\n- [YNX Developer](/developer)\n- [YNX Exchange](/exchange)\n- [YNX DEX](/dex)\n- [YNX Quant](/quant)\n- [常见问题](/faq)\n\n## 变更记录\n\n- 1.0.0-candidate (2026-07-22)：首次发布产品组合、状态与共享安全规则。"
+    },
+    {
+      "route": "/quant",
+      "h1": "YNX Quant",
+      "title": "YNX Quant — 模拟策略、授权、费用与风险",
+      "description": "了解 YNX Quant 候选架构、模拟交易边界、用户资产授权、费用、市场数据和风险证据。",
+      "markdown": "# YNX Quant\n\n## 直接回答\n\nYNX Quant 是策略研究和生命周期候选。模拟交易、仿真与回测不等于生产执行，也不保证业绩。实时策略必须使用用户签名、最小权限的授权，并接入获准的 venue、vault 或 custody adapter。\n\n## 资产边界\n\nQuant 服务、AI 和前端绝不能取得用户 seed、任意提取或更改 owner 的权限。授权必须绑定资产、venue、策略、金额与频率限制、风险限额、过期时间、nonce domain、费用、即时撤销、kill switch、紧急退出和审计。\n\n## 市场数据与业绩\n\n每个价格和信号都要标记来源、`asOf`、版本、覆盖范围/置信度和失败状态。回测必须披露数据集、生存偏差与前视偏差处理、费用、滑点、延迟、容量、样本外方法和回撤。模拟成交不是真实成交。\n\n任何 PnL、收益或业绩声明都要包含精确期间、毛额/净额、成本、风险、回撤、锁定/退出、网络类别、证据 ID 和不保证措辞。当前没有公网结果满足该结构。\n\n## 费用\n\n允许的候选费用包括已披露的计算/数据/Provider、订阅、管理或 high-water-mark 业绩费用。不得对未实现利润收费，也不得重置基准后对恢复部分重复收费；禁止隐藏价差和保证收益。\n\n## 当前状态与风险\n\n已评审候选包含本地生命周期和模拟服务工程。中央 Wallet/Gateway 集成、实时数据或 venue 执行、managed vault、生产托管、公网部署、审计和法律批准均未被宣称。\n\n## 相关页面\n\n- [YNX Exchange](/exchange)\n- [YNX DEX](/dex)\n- [YNX 经济模型](/economics)\n- [YNX Security](/security)\n- [YNX Trust](/trust)\n- [常见问题](/faq)\n\n## 变更记录\n\n- 1.0.0-candidate (2026-07-22)：首次发布策略、资产授权、市场数据、业绩、费用、状态与风险说明。"
+    },
+    {
+      "route": "/security",
+      "h1": "YNX 安全边界",
+      "title": "YNX Security — 信任边界、供应链与事故准备",
+      "description": "查看 YNX 针对密钥、Wallet 批准、共识、Provider、工件、事故和当前审计限制的安全边界。",
+      "markdown": "# YNX 安全边界\n\n## 直接回答\n\nYNX 安全依赖明确的权限边界、domain-separated 签名、fail-closed 验证、secret 隔离、确定性状态、审计记录、备份/回滚流程和真实发布状态。这些控制本身不等于已经完成独立安全审计，也不代表零风险。\n\n## 密钥边界\n\n用户 seed 与私钥留在获准 Wallet 的托管范围。验证者、节点、overlay、Provider 和部署凭据相互分离并限制模式。只有签名后的公开交易字节可以跨越预定提交边界；AI、浏览器、前端和文档系统不得接收私钥。\n\n## Wallet 与 Gateway\n\n必须绑定 product、device、account、scope 和 expiry，并支持 introspection 与 revoke。重放、篡改、错误 product/bundle/device、扩大 scope、过期和撤销都必须 fail closed。\n\n## 供应链\n\n最终发布需要 threat model、安全边界、SBOM、第三方 notices、依赖与 lockfile 审查、secret scan、SAST/DAST、容器与工件扫描、构建 allowlist、provenance 和可复现性。当前 Hardhat 开发依赖中仍有一个高严重度的间接 advisory；在供应链声称通过前必须缓解或明确接受。\n\n## 工件与事故\n\n公网工件必须提供不可变 URL、SHA-256、bytes、签名类别、最低 OS、源码与安装/冷启动证据。事故处理必须覆盖识别、遏制、用户影响、证据保存、恢复、沟通、纠正和事后复盘。面向用户的错误不得泄露 stack、secret 或 Provider 凭据。\n\n## 当前状态与风险\n\n本地安全门禁和运维控制已经存在，但完整独立审计、所有扫描类别、已验证的公网状态/支持 URL 和最终工件 provenance 仍不完整。\n\n## 相关页面\n\n- [YNX Wallet](/wallet)\n- [YNX 测试网指南](/testnet)\n- [YNX Trust](/trust)\n- [YNX Developer](/developer)\n- [常见问题](/faq)\n\n## 变更记录\n\n- 1.0.0-candidate (2026-07-22)：首次发布密钥、Wallet/Gateway、供应链、工件、事故与状态说明。"
+    },
+    {
+      "route": "/trust",
+      "h1": "YNX Trust",
+      "title": "YNX Trust — 证据、申诉与市场诚信",
+      "description": "了解 YNX Trust 如何分离证据、权限、请求、纠正、申诉、透明度和市场诚信控制。",
+      "markdown": "# YNX Trust\n\n## 直接回答\n\nYNX Trust 是 YNX 产品的证据、请求有效性、申诉、纠正和透明度架构。报告、指控、第三方标签、缓存值或 AI 分数都不能在没有核验的情况下变成权威强制措施。\n\n## 证据与权限\n\n每个有后果的记录必须标记来源、权限类别、观察或生效时间、版本、证据引用、范围、过期或复核时间和审计 ID。外部引用在通过规定程序独立核验前始终只是有边界的输入。\n\n## 请求与执行\n\n影响访问、内容或资产的请求需要权限、法律或政策依据、范围、必要性、证据、生效时间和复核。无效、过宽、过期、产品不匹配或无支持的请求必须 fail closed。稳定币发行方控制不能通过当前 control plane 冻结或扣押原生 YNXT。\n\n## 申诉与纠正\n\n在法律允许范围内，用户需要收到通知、理由、可访问的证据、申诉入口、状态、纠正和结果。纠正应保留此前审计记录，不能静默改写历史；紧急措施也必须有边界并接受复核。\n\n## 市场诚信\n\nExchange、DEX 与 Quant 的声明必须排除虚假成交量或流动性、洗售、隐藏价差、保证收益、未经验证的排名和无依据的 social proof。市场数据与模型输出必须披露来源和时效，且不能自行宣称托管或执行权限。\n\n## 当前状态与风险\n\nTrust/治理 API 和产品候选处于不同证据等级。完整的中央 Wallet/Gateway 集成、公网 case center、法律审查、远程部署和独立公网证据仍按组件分别判断。\n\n## 相关页面\n\n- [YNX Security](/security)\n- [YNX Exchange](/exchange)\n- [YNX Quant](/quant)\n- [YNX 产品](/products)\n\n## 变更记录\n\n- 1.0.0-candidate (2026-07-22)：首次发布证据、权限、请求、申诉/纠正、市场诚信与状态说明。"
+    },
+    {
+      "route": "/wallet",
+      "h1": "YNX Wallet",
+      "title": "YNX Wallet — 账户权限、签名与产品批准",
+      "description": "了解 YNX Wallet 的账户权限、原生交易签名、产品批准、安全边界和当前发布状态。",
+      "markdown": "# YNX Wallet\n\n## 直接回答\n\nYNX Wallet 是 YNX 账户、交易审阅、签名和产品级批准的预定用户权限主体。它不得导出用户 seed，也不得授予产品任意提取、更改 owner 或 wildcard 权限。\n\n## 账户与签名边界\n\n原生交易绑定 Chain ID、sender、recipient、正数 amount、精确当前 fee、next nonce、压缩 secp256k1 公钥与规范签名。Wallet 应在批准前展示这些字段，重新读取权威状态，要求适当本地授权，并分别跟踪 pending、committed、failed 和 unknown。\n\n收款功能只能公开账户与网络信息。支持、AI、浏览器和应用服务永远不需要 seed phrase 或原始私钥。\n\n## 产品批准\n\n目标通用协议绑定 product、bundle、device、account、scope、expiry、challenge、approval、session、introspection、revocation 和 audit。重放、篡改、错误 product/bundle/device、扩大 scope、过期和撤销必须 fail closed。产品候选仅仅 vendoring 或测试协议副本，并不代表已完成中央集成。\n\n## 当前状态\n\nWallet/Auth 候选工程和测试证据已经存在，包括 mobile 与协议工作。生产签名、完整中央集成、原生 iOS 与物理设备证明、浏览器扩展、独立审计和商店发布仍需要组件级证据；本页不宣称这些状态。\n\n## 用户安全与风险\n\n- 使用隔离的测试网账户。\n- 核验 Chain ID 6423 和 YNXT 测试网状态。\n- 永远不要分享 seed 或私钥。\n- 拒绝意外的 product、scope、device 或 expiry。\n- 提交结果未知时，重试前先核验 hash 与 nonce。\n- 不要把测试网 YNXT 当成货币或保证价值。\n\n## 证据与相关页面\n\n证据来源包括技术白皮书、Wallet 集成指南、产品验收和发布状态记录。\n\n- [YNX 测试网指南](/testnet)\n- [什么是 YNXT？](/what-is-ynxt)\n- [YNX Security](/security)\n- [YNX 产品](/products)\n\n## 变更记录\n\n- 1.0.0-candidate (2026-07-22)：首次发布权限、签名、批准、状态与安全说明。"
+    },
+    {
+      "route": "/what-is-ynx-chain",
+      "h1": "什么是 YNX Chain？",
+      "title": "什么是 YNX Chain？Web4 Layer-1 生态说明",
+      "description": "YNX Chain 是 Web4 Layer-1 生态。了解其测试网身份、架构、产品、证据模型与当前限制。",
+      "markdown": "# 什么是 YNX Chain？\n\n## 直接回答\n\nYNX Chain 是处于测试网工程阶段的 Web4 Layer-1 生态。它结合已接受的共识/应用基线、面向 EVM 的网络接口、原生签名交易和独立应用候选。YNX Web4 是由 YNX Chain 提供能力的应用生态，YNXT 是原生测试网资产。\n\n## 定义\n\n“Web4”是 YNX 对用户控制账户、权限化应用、可验证执行、证据关联自动化和明确人工批准的产品术语，并不表示它是已获采用的 Internet 标准。\n\n## 网络身份\n\n| 项目 | 值 |\n| --- | --- |\n| 测试网 | YNX Testnet |\n| 原生测试网资产 | YNXT |\n| EVM Chain ID | 6423 (`0x1917`) |\n| Comet/Cosmos Chain ID | `ynx_6423-1` |\n| 官方域名 | `https://ynxweb4.com` |\n\n## 架构如何组织\n\n已接受的共识基线使用 CometBFT 与确定性 YNX ABCI 应用。较新的 StreamBFT 只作为默认关闭的本地 shadow 候选存在；不宣称公网运行它。\n\n权威账户、交易与应用结果来自 committed state。Wallet 身份和批准来自规范 Wallet/Auth 路径。Indexer、Explorer、Provider、cache、estimate 和 AI 输出都是有边界的来源，不能静默替代权威状态。\n\n## YNX Web4 包含什么\n\nYNX Web4 设计为独立产品组合，包括 Wallet、Pay、Explorer、Developer、Exchange、DEX、Quant、Trust、Resource、Cloud 和其他应用候选。共享账户或设计语言不会把它们变成 super-app；每个产品都需要自己的 scope、workflow、evidence 和 release record。\n\n## 当前状态\n\n仓库包含本地测试组件、部署工具、operator-controlled observation 和产品候选。这些不等于公网部署、生产签名或商店发布；所有服务子域的独立端点证明仍不完整。\n\n## 风险与限制\n\n- YNXT 是不代表货币价值或保证流动性的测试网资产。\n- 不暗示 Mainnet、最终分配、质押回报、稳定币储备、live Bridge、生产托管或交易所流动性。\n- 指明的安全、经济和法律审查仍未完成。\n- 组件状态会变化，应查看精确发布记录与证据日期。\n\n## 证据\n\n技术白皮书、StreamBFT 规范、经济披露、证据索引和机器可读发布记录共同定义当前声明边界。截图或源码目录本身不是发布证明。\n\n## 相关页面\n\n- [什么是 YNX Web4？](/what-is-ynx-web4)\n- [什么是 YNXT？](/what-is-ynxt)\n- [YNX 测试网指南](/testnet)\n- [YNX Security](/security)\n- [YNX 经济模型](/economics)\n- [YNX 产品](/products)\n- [常见问题](/faq)\n\n## 变更记录\n\n- 1.0.0-candidate (2026-07-22)：首次发布证据关联的定义、架构、产品、状态、风险和导航说明。"
+    },
+    {
+      "route": "/what-is-ynx-web4",
+      "h1": "什么是 YNX Web4？",
+      "title": "什么是 YNX Web4？YNX 应用生态",
+      "description": "YNX Web4 是由 YNX Chain 提供能力的应用生态，围绕明确 Wallet 权限、证据与独立产品构建。",
+      "markdown": "# 什么是 YNX Web4？\n\n## 直接回答\n\nYNX Web4 是由 YNX Chain 提供能力的应用生态。它通过明确 Wallet 批准、产品级 session、权威链状态和证据关联 API 连接独立产品。它不是一个 super-app，也不会给每个应用共享托管或无限权限。\n\n## “Web4”在 YNX 中的含义\n\n该术语描述五个目标属性：\n\n- 用户控制账户权限；\n- 应用请求有边界的权限；\n- 重要结果可以针对规定权限主体进行核验；\n- 自动化和 AI 产出证据及可审阅提案；\n- 敏感操作需要明确的人类与密码学批准。\n\n这是 YNX 产品术语，不是已获采用的 Internet 标准。\n\n## 独立产品模型\n\nWallet 负责托管和签名；Social 负责社交身份与互动；Pay 负责支付意图和回执；Explorer 展示派生链视图；Developer 提供开发工作流；Exchange、DEX 与 Quant 有各自资产、venue 和 mandate 边界；Trust 管理证据与申诉；Cloud 等产品保留自己的存储与权限模型。\n\n任何产品都不能仅因属于 YNX Web4 而取得用户 seed phrase、任意提取或更改 owner 的权限。\n\n## 共享信任路径\n\n目标共享路径绑定 product identity、bundle identity、device、account、scope、expiry、challenge、approval、introspection、revocation 和 audit。重放、篡改、错误 product/bundle/device、扩大 scope、过期和撤销必须 fail closed。产品只有通过已接受中央协议及其 negative vectors 后，才可称为已集成。\n\n## AI 边界\n\nAI 可以起草、解释、翻译、总结、研究、预览、模拟和建议，但不能独立签名、支付、交易、提取、发布、删除、改权限、操作 Treasury 或升级共识。上下文同意、Provider/模型状态、预览、批准或拒绝、审计和真实失败状态都必须可见。\n\n## 设计与可访问性\n\n生态使用 Klein Blue `#002FA7`、白色和中性黑灰。产品视觉相关但按任务区分。目标语言为 English、简体中文、繁體中文、日本語、한국어、Español、Français、Deutsch、Português、Русский、العربية 与 Bahasa Indonesia；Arabic 必须使用真正 RTL。\n\n## 当前状态与风险\n\nYNX Web4 的组件成熟度不同。本地测试、preview 包、operator evidence、公网部署、生产签名和商店发布必须逐产品独立报告。\n\n## 相关页面\n\n- [什么是 YNX Chain？](/what-is-ynx-chain)\n- [YNX Wallet](/wallet)\n- [YNX Developer](/developer)\n- [YNX 产品](/products)\n- [YNX Trust](/trust)\n- [常见问题](/faq)\n\n## 变更记录\n\n- 1.0.0-candidate (2026-07-22)：首次定义应用生态、独立产品、信任路径、AI、设计、可访问性和状态。"
+    },
+    {
+      "route": "/what-is-ynxt",
+      "h1": "什么是 YNXT？",
+      "title": "什么是 YNXT？YNX 测试网原生资产说明",
+      "description": "YNXT 是 YNX 测试网的原生测试资产。了解其当前用途、供应与手续费边界、候选经济模型和风险。",
+      "markdown": "# 什么是 YNXT？\n\n## 直接回答\n\nYNXT 是 YNX 测试网的原生测试资产。当前工程用它表示原生余额、固定手续费、质押状态和规定的资源记账。不保证货币价值、流动性、价格、回报或 Mainnet 状态。\n\n## 网络身份\n\nYNXT 属于 YNX Testnet；网络使用 EVM Chain ID 6423 (`0x1917`) 和 Comet/Cosmos Chain ID `ynx_6423-1`。YNXT 不是链名称、稳定币或法币。\n\n## 当前供应规则\n\n已接受状态锚定流通与质押 YNXT 总量，并要求已提交状态转换保持两者总和。恢复的公网证据没有建立最终分配、流通供应、Mainnet 供应、hard cap 或通用发行计划。\n\n## 当前手续费\n\n已接受原生路径按当前整数记账模型收取固定 1 单位测试网手续费，并按当前验证者规则入账。当前没有通用 base-fee burn、priority fee、Treasury split 或公网本地费用市场。\n\n## 候选经济模型\n\n本地测试模拟候选探索 1%–8% 年发行区间、67% 目标质押率、至少 32 个验证者、20% 集中度上限、候选 base-fee burn 和非销毁费用分配。这些是评审参数，不是现行政策或预测；示例输入不是实际供应、费用、销毁、收入、验证者数量或市场统计。\n\n## 质押\n\n现有状态记录质押相关余额和验证者投票权，但完整的 delegation、reward、commission、unbonding、slashing 和 withdrawal 生命周期尚未建立。未发布 APY，也未实现 liquid staking 或 Safety Module。\n\n## 销毁、收入与回购\n\n销毁减少供应，绝不是收入。当前不宣称通用销毁或回购；有边界工作流中的费用记录不能泛化为协议级收入或 Treasury 报表。\n\n## 风险\n\n测试网资产可能重置、变更或没有外部市场。用户不应根据测试网文档购买 YNXT、以其抵押借款或把它当作投资。任何未来经济政策都需要治理、迁移、安全/经济/法律审查和公网证据。\n\n## 证据\n\nYNXT Tokenomics 文档说明当前与候选规则的精确区别；Marketing Claims Evidence Matrix 规定可用措辞。\n\n## 相关页面\n\n- [什么是 YNX Chain？](/what-is-ynx-chain)\n- [YNX 经济模型](/economics)\n- [YNX 测试网指南](/testnet)\n- [常见问题](/faq)\n\n## 变更记录\n\n- 1.0.0-candidate (2026-07-22)：首次发布身份、用途、供应、手续费、候选经济、质押、销毁/收入/回购与风险说明。"
+    },
+    {
+      "route": "/testnet",
+      "h1": "YNX 测试网指南",
+      "title": "YNX 测试网指南 — 网络身份、Wallet 配置与安全",
+      "description": "使用 EVM Chain ID 6423、YNXT 测试资产、证据检查和明确公网服务限制，安全使用 YNX 测试网。",
+      "markdown": "# YNX 测试网指南\n\n## 直接回答\n\nYNX Testnet 是 YNX Chain 的测试网络，使用 EVM Chain ID 6423 (`0x1917`)、Comet/Cosmos Chain ID `ynx_6423-1`，原生测试资产为 YNXT。测试网资产不代表货币价值，也不保证流动性。\n\n## 连接前核验\n\n| 字段 | 预期值 |\n| --- | --- |\n| 网络名称 | YNX Testnet |\n| EVM Chain ID | 6423 |\n| Hex Chain ID | `0x1917` |\n| 原生资产 | YNXT |\n| 网络元数据 decimals | 18 |\n| 官方域名 | `https://ynxweb4.com` |\n\n核验端点身份、TLS、Chain ID、区块增长、发布版本和时效。已发布元数据列出 EVM RPC、Explorer 和 Faucet 子域，但本文档审计没有独立刷新每个端点；失败或未验证端点必须视为不可用。\n\n## Wallet 安全\n\n使用隔离的测试网账户。绝不要把 seed phrase 或私钥输入网站、支持消息、AI prompt 或文档表单。自定义网络请求只能添加或切换到预期链，并重新读取已选 Chain；添加网络不能自动请求账户或交易。\n\n签名前检查 recipient、amount、精确 fee、nonce、Chain ID 和 transaction hash。结果未知不代表成功；再次提交前应按 hash、sender 与 nonce 查询权威状态。\n\n## 获取测试网 YNXT\n\nFaucet 必须验证目标、报告 rate limit 并返回真实交易或证据结果。仅有 Faucet UI 回复不够；公网 Faucet 不可用或未验证时，不要使用非官方 Provider，也不要宣称已到账。\n\n## 开发者使用\n\n源码提供 Hardhat、Foundry、SDK 和合约验证流程。兼容性限于已测试的方法与工件，不等于普遍兼容 Ethereum。核验 Chain、bytecode、source、decimals、symbol 与 authority 前不得公布 Token 或合约地址。\n\n## Finality 与派生服务\n\nCommitted chain state 是权威。Explorer 与 Indexer 是派生记录，可能延迟、重建或不可用。Wallet 或服务必须分别展示 pending、committed、failed 和 unknown，并标明来源与观察时间。\n\n## Bridge 与稳定币警告\n\n不宣称有 live Bridge 或官方稳定币路由。本地 Bridge coordinator 已关闭外部执行，稳定币服务只记录不执行的评审意图。不要向未获批准的 Bridge 或稳定币合约发送价值。\n\n## 测试网与 Mainnet\n\n测试网代码、余额、验证者、包和端点都不能证明 Mainnet。生产签名、托管、经济政策、法律审查、公网容量和独立安全证据需要各自发布记录。\n\n## 故障排查\n\n- Chain ID 错误：停止，不签名、不提交。\n- 端点不可用：显示失败并稍后重试，不伪造健康状态。\n- Explorer 陈旧：比较权威 RPC 与来源时效。\n- Faucet 拒绝：保留原因与限流状态，不宣称存在交易。\n- 交易结果未知：重试前按 hash 与 sender nonce 查询。\n- 遇到索取 secret 的请求：停止，使用已发布并验证的官方 support/security 路径。\n\n## 相关页面\n\n- [什么是 YNX Chain？](/what-is-ynx-chain)\n- [什么是 YNXT？](/what-is-ynxt)\n- [YNX Wallet](/wallet)\n- [YNX Developer](/developer)\n- [YNX Security](/security)\n- [常见问题](/faq)\n\n## 变更记录\n\n- 1.0.0-candidate (2026-07-22)：首次发布网络身份、核验、Wallet、Faucet、开发、finality、Bridge/稳定币、Mainnet 与故障排查指南。"
+    },
+    {
+      "route": "/faq",
+      "h1": "YNX Chain 常见问题",
+      "title": "YNX Chain 常见问题",
+      "description": "关于 YNX Chain、YNX Web4、YNXT、测试网、共识、经济模型、产品状态与验证证据的权威简明回答。",
+      "markdown": "# YNX Chain 常见问题\n\n## 什么是 YNX Chain？\n\nYNX Chain 是处于测试网工程阶段的 Web4 Layer-1 生态，技术范围包括共识/应用状态、面向 EVM 的接口、原生交易和证据关联的产品候选。\n\n## 什么是 YNX Web4？\n\nYNX Web4 是由 YNX Chain 提供能力的应用生态。各产品保持独立，并使用明确的 Wallet、权限和 Gateway 边界。\n\n## 什么是 YNXT？\n\nYNXT 是 YNX 测试网的原生测试资产，用于原生余额、手续费、质押状态和规定的资源记账。不保证货币价值、流动性或回报。\n\n## YNX 测试网使用哪些网络标识？\n\nEVM Chain ID 为 `6423` (`0x1917`)，Comet/Cosmos Chain ID 为 `ynx_6423-1`。\n\n## YNX Mainnet 已上线吗？\n\n没有。本文档未证明 Mainnet 上线；Testnet、candidate、staging 与 production 状态分别报告。\n\n## StreamBFT 已上线吗？\n\n没有。CometBFT 与 YNX ABCI 应用是已接受安全基线；StreamBFT 是默认关闭的本地 shadow 候选，尚未满足 canary 或公网提升证据。\n\n## YNXT 是否有固定供应或最终分配？\n\n没有公开建立最终分配、流通供应或 Mainnet 供应政策。模拟候选探索有边界的年发行和费用/销毁参数，但不是活跃共识政策。\n\n## YNX 会销毁手续费或回购吗？\n\n当前固定手续费路径没有通用销毁；候选模拟包含销毁但未激活。没有批准或运行中的回购。销毁绝不作为收入报告。\n\n## 有质押 APY 吗？\n\n没有发布质押 APY。现有状态记录质押余额和验证者投票权，但完整 reward、commission、delegation、unbonding、slashing 与 withdrawal 生命周期尚未建立。\n\n## YNX 有稳定币吗？\n\n不宣称有官方稳定币或发行方合作。本地 control plane 只记录不执行的评审与意图，没有 mint/burn signer、储备、赎回渠道或公网部署。\n\n## YNX Bridge 上线了吗？\n\n没有。本地 coordinator 候选记录生命周期、relayer attestation、安全和 reconciliation 引用；外部提交与目标链 mint/release 均已禁用。\n\n## 有储备或偿付能力证明吗？\n\n不宣称已完成证明。现有框架规定资产、负债、控制、估值、流动性、隐私和独立评审要求。\n\n## YNX 产品已生产发布吗？\n\n成熟度各不相同。每个产品都要分别核验源码、测试、安装、中央集成、staging、公网部署、托管下载、生产签名和商店发布。\n\n## AI 能签名或执行交易吗？\n\n不能。AI 是受约束的建议层；签名、支付、交易、发布、权限变化、Treasury 和共识操作需要相应人类与密码学权限。\n\n## YNX 与 Lynx 品牌产品有关联吗？\n\n没有。YNX Chain 与 YNX Web4 不隶属于无关的 Lynx 品牌产品。\n\n## 在哪里核验声明？\n\n使用技术白皮书、专题规范、证据索引和机器可读发布记录。仓库文件或截图本身不是部署或公网发布证明。\n\n## 风险\n\n测试网、候选、预览和本地证据不能被当成 Mainnet、资金安全或生产可用性；应始终查看精确状态和证据日期。\n\n## 变更记录\n\n- 1.0.0-candidate (2026-07-22)：加入规范身份、网络、共识、经济、质押、稳定币、Bridge、偿付、产品、AI 和消歧回答。"
+    }
+  ]
+}

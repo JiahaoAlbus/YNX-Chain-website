@@ -1,0 +1,11 @@
+{
+  "schema": "ynx-docs-locales/v1",
+  "sourceLocale": "en",
+  "requestedLocales": ["en", "zh-CN", "zh-TW", "ja", "ko", "es", "fr", "de", "pt", "ru", "ar", "id"],
+  "publishedLocales": ["en", "zh-CN"],
+  "direction": {
+    "en": "ltr", "zh-CN": "ltr", "zh-TW": "ltr", "ja": "ltr", "ko": "ltr", "es": "ltr",
+    "fr": "ltr", "de": "ltr", "pt": "ltr", "ru": "ltr", "ar": "rtl", "id": "ltr"
+  },
+  "artifacts": { "zh-CN": "zh-CN.json" }
+}

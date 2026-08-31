@@ -9,6 +9,8 @@
     "test": "node --test test/*.test.mjs && node scripts/docs-authority.mjs --verify-hosting && node scripts/verify.mjs",
     "test:ops-evidence": "node scripts/generate-website-sbom.mjs && node scripts/verify-website-ops-evidence.mjs",
     "docs:verify": "node scripts/docs-authority.mjs --verify",
+    "docs:i18n:report": "node scripts/docs-locales.mjs",
+    "docs:i18n:verify-complete": "node scripts/docs-locales.mjs --verify-complete",
     "indexnow:dry-run": "node scripts/indexnow.mjs --dry-run",
     "release:indexnow": "node scripts/indexnow.mjs",
     "deploy:dry-run": "DEPLOY_DRY_RUN=1 bash deploy/vercel-deploy.sh",
