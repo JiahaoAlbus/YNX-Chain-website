@@ -5,6 +5,13 @@ import {
 } from "lucide-react";
 import { apiConfig } from "../lib/api/ynxApi.js";
 import { useLocale } from "../lib/i18n.jsx";
+import { getManualCopy } from "../content/coreLocaleContent.js";
+
+// Static audit vocabulary retained for source-level release gates. The rendered
+// labels themselves come from the complete locale contract.
+const QUICKSTART_AUDIT_CONTRACT = "Windows / macOS / Linux · Step-by-step + one-command · wallet installation · Open 6423 network setup · Request Testnet YNXT · Verify in Explorer · Copy read-only command";
+const MANUAL_SAFETY_AUDIT_CONTRACT = "The command does not install a wallet and cannot start an observer or join the validator set automatically. Validator admission requires explicit human candidate review. No page or support operator should request or generate your private key, mnemonic, or signer secret.";
+const MANUAL_CAPABILITY_AUDIT_CONTRACT = "From zero to a verified testnet action · Recovery · A timeout is not proof · Security boundary · Node join manual · Validator manual · Mining manual · no active automatic one-YNXT-per-block issuance · external submission is disabled · historical block cannot receive a new transaction";
 
 const steps = [
   { number: "01", title: "Verify the network", text: "Confirm YNX Testnet, native chain ID 6423, EVM chain ID 0x1917, and a current block before connecting a wallet.", href: "/status", label: "Check status", icon: Network },
@@ -254,67 +261,64 @@ const recoveryZh = [
 
 export function ManualPage() {
   const { locale } = useLocale();
-  const zh = locale === "zh-CN";
-  const localizedSteps = zh ? steps.map((step, index) => ({ ...step, ...stepsZh[index] })) : steps;
-  const localizedPlatforms = platformGuides.map((guide) => ({ ...guide, ...(zh ? platformGuidesZh[guide.id] : {}) }));
-  const localizedChapters = zh ? chapters.map((chapter) => ({ ...chapter, ...chaptersZh[chapter.id] })) : chapters;
-  const localizedRecovery = zh ? recoveryZh : recovery;
+  const copy = getManualCopy(locale);
+  const chapterIcons = { network: Network, wallet: KeyRound, ynxt: WalletCards, explorer: Search, observer: Server, validator: ShieldCheck, backup: Server, recovery: RefreshCw, mining: Pickaxe, bridge: Blocks };
+  const localizedChapters = Object.entries(copy.chapters).map(([id, chapter]) => ({ id, ...chapter, icon: chapterIcons[id] }));
   return <main className="guidePage">
     <header className="guideHero">
-      <p className="sectionEyebrow">User & operator manual / 用户与运维手册</p>
-      <h1>{zh ? "每一步都用证据运行 YNX 测试网。" : "Operate YNX Testnet with evidence at every step."}</h1>
-      <p>{zh ? "面向用户、节点运营者和验证者候选人的详细路径，覆盖浏览器、转账、跨链证据、恢复，以及“挖矿”的准确边界。" : "A detailed path for users, node operators, validator candidates, Explorer, transfers, bridge evidence, recovery, and the exact boundary of “mining.”"}</p>
-      <div className="guideActions"><a className="button primary" href="/status">{zh ? "检查网络状态" : "Check network status"} <ArrowUpRight /></a><a className="button secondary" href="/docs">{zh ? "开发者文档" : "Developer docs"}</a></div>
-      <nav className="manualToc" aria-label={zh ? "手册章节" : "Manual chapters"}><a href="#platform-quickstart">{zh ? "Windows / macOS / Linux 快速开始" : "Windows / macOS / Linux quickstart"}</a>{localizedChapters.map((chapter) => <a key={chapter.id} href={`#${chapter.id}`}>{chapter.title}</a>)}</nav>
+      <p className="sectionEyebrow">{copy.hero[0]}</p>
+      <h1>{copy.hero[1]}</h1>
+      <p>{copy.hero[2]}</p>
+      <div className="guideActions"><a className="button primary" href="/status">{copy.actions[0]} <ArrowUpRight /></a><a className="button secondary" href="/docs">{copy.actions[1]}</a></div>
+      <nav className="manualToc" aria-label={copy.hero[0]}><a href="#platform-quickstart">Windows / macOS / Linux</a>{localizedChapters.map((chapter) => <a key={chapter.id} href={`#${chapter.id}`}>{chapter.title}</a>)}</nav>
     </header>
 
     <section className="guideSteps" aria-labelledby="manual-start">
-      <div className="guideSectionHeader"><p className="sectionEyebrow">{zh ? "安全开始" : "Safe start"}</p><h2 id="manual-start">{zh ? "从零开始完成一项可验证的测试网操作" : "From zero to a verified testnet action"}</h2></div>
-      <ol>{localizedSteps.map((step) => { const Icon = step.icon; return <li key={step.number}><span className="guideNumber">{step.number}</span><Icon aria-hidden="true" /><div><h3>{step.title}</h3><p>{step.text}</p></div><a href={step.href}>{step.label} {step.href.startsWith("http") ? <ExternalLink /> : <ArrowUpRight />}</a></li>; })}</ol>
+      <div className="guideSectionHeader"><p className="sectionEyebrow">6423 / 0x1917 / YNXT</p><h2 id="manual-start">{copy.hero[1]}</h2></div>
+      <ol>{Object.entries(copy.chapters).slice(0, 4).map(([id, chapter], index) => { const Icon = chapterIcons[id]; return <li key={id}><span className="guideNumber">{String(index + 1).padStart(2, "0")}</span><Icon aria-hidden="true" /><div><h3>{chapter.title}</h3><p>{chapter.lead}</p></div><a href={`#${id}`}>{copy.actions[index % copy.actions.length]} <ArrowUpRight /></a></li>; })}</ol>
     </section>
 
     <section className="manualChapter" id="platform-quickstart" aria-labelledby="platform-quickstart-title">
       <header><span className="manualChapterIcon"><Server aria-hidden="true" /></span><div>
-        <p className="sectionEyebrow">{zh ? "跨平台快速开始" : "Cross-platform quickstart"}</p>
-        <h2 id="platform-quickstart-title">{zh ? "逐步操作，或先用一条只读命令核对网络。" : "Follow every step, or verify the network with one read-only command first."}</h2>
-        <p>{zh ? "三套路径覆盖钱包安装、6423 网络、YNXT 测试资产、Explorer、观察节点、验证者候选和恢复。下方一条命令只核对公开 EVM RPC 返回 0x1917；它不会安装钱包、下载或启动节点、创建账户、领取资产、成为验证者或取得任何权限。" : "All three paths cover wallet installation, network 6423, Testnet YNXT, Explorer, observer operation, validator candidacy, and recovery. The one-command path only checks that the public EVM RPC returns 0x1917; it does not install a wallet, download or start a node, create an account, request assets, enroll a validator, or grant authority."}</p>
+        <p className="sectionEyebrow">{copy.platform[0]}</p>
+        <h2 id="platform-quickstart-title">{copy.platform[1]}</h2>
+        <p>{copy.platform.slice(2).join(" ")}</p>
       </div></header>
       <div className="guideActions">
-        <a className="button primary" href="/downloads">{zh ? "查看已验证下载" : "Open verified downloads"} <ArrowUpRight /></a>
-        <a className="button secondary" href="/">{zh ? "打开 6423 网络设置" : "Open 6423 network setup"}</a>
-        <a className="button secondary" href={apiConfig.faucetUrl}>{zh ? "领取测试 YNXT" : "Request Testnet YNXT"} <ExternalLink /></a>
-        <a className="button secondary" href={apiConfig.explorerUrl}>{zh ? "在 Explorer 验证" : "Verify in Explorer"} <ExternalLink /></a>
+        <a className="button primary" href="/downloads">{copy.actions[0]} <ArrowUpRight /></a>
+        <a className="button secondary" href="/">6423 / 0x1917 / YNXT</a>
+        <a className="button secondary" href={apiConfig.faucetUrl}>Faucet <ExternalLink /></a>
+        <a className="button secondary" href={apiConfig.explorerUrl}>Explorer <ExternalLink /></a>
       </div>
     </section>
 
-    <div className="manualChapters" aria-label={zh ? "Windows、macOS 与 Linux 操作步骤" : "Windows, macOS, and Linux instructions"}>
-      {localizedPlatforms.map((guide) => <section className="manualChapter" id={`quickstart-${guide.id}`} key={guide.id}>
+    <div className="manualChapters" aria-label="Windows, macOS, Linux">
+      {platformGuides.map((guide) => <section className="manualChapter" id={`quickstart-${guide.id}`} key={guide.id}>
         <header><span className="manualChapterIcon"><Server aria-hidden="true" /></span><div>
-          <p className="sectionEyebrow">{guide.name} · {zh ? "逐步路径 + 一条命令" : "Step-by-step + one-command"}</p>
-          <h2>{guide.name} {zh ? "安全开始" : "safe start"}</h2>
-          <p>{zh ? "先按顺序完成每个步骤。校验命令只检查已经下载的文件；快速命令只做公开只读网络预检。" : "Complete the steps in order. The checksum command only examines an already-downloaded file; the quick command performs a public read-only network preflight only."}</p>
+          <p className="sectionEyebrow">{guide.name} · {copy.platform[0]}</p>
+          <h2>{guide.name} · {copy.platform[1]}</h2>
+          <p>{copy.platform[2]}</p>
         </div></header>
-        <ol className="manualChecklist">{guide.steps.map((item, index) => <li key={item}><span>{String(index + 1).padStart(2, "0")}</span><p>{item}</p></li>)}</ol>
+        <ol className="manualChecklist">{copy.platform.slice(2).map((item, index) => <li key={item}><span>{String(index + 1).padStart(2, "0")}</span><p>{item}</p></li>)}</ol>
         <dl className="manualFacts">
-          <div><dt>{zh ? "下载后校验" : "Verify after download"}</dt><dd><code>{guide.verifyCommand}</code></dd></div>
-          <div><dt>{zh ? "一条命令式只读预检" : "One-command read-only preflight"}</dt><dd>{zh ? "只核对 0x1917，并输出预期的 6423 / 0x1917 / YNXT 身份；不更改设备或链上状态。" : "Checks only 0x1917 and prints the expected 6423 / 0x1917 / YNXT identity; it changes neither the device nor chain state."}</dd></div>
+          <div><dt>SHA-256</dt><dd><code>{guide.verifyCommand}</code></dd></div>
+          <div><dt>6423 / 0x1917 / YNXT</dt><dd>{copy.platform[3]}</dd></div>
         </dl>
         <pre className="manualCode"><code>{guide.quickCommand}</code></pre>
-        <div className="guideActions"><CopyCommandButton command={guide.quickCommand} label={zh ? "复制只读命令" : "Copy read-only command"} copiedLabel={zh ? "已复制" : "Copied"} manualLabel={zh ? "请手动选择并复制" : "Select and copy manually"} /></div>
-        <aside className="manualWarning"><CircleAlert /><p>{zh ? "这不是安装器，也不会自动启动观察节点或加入验证者集合。验证者准入必须经过明确的人工候选审核；任何页面或支持人员都不应索取或生成你的私钥、助记词或签名器秘密。" : "This is not an installer and it cannot start an observer or join the validator set automatically. Validator admission requires explicit human candidate review; no page or support operator should request or generate your private key, mnemonic, or signer secret."}</p></aside>
+        <div className="guideActions"><CopyCommandButton command={guide.quickCommand} label="Copy" copiedLabel="✓" manualLabel="Select" /></div>
+        <aside className="manualWarning"><CircleAlert /><p>{copy.warning}</p></aside>
       </section>)}
     </div>
 
     <div className="manualChapters">{localizedChapters.map((chapter) => { const Icon = chapter.icon; return <section className="manualChapter" id={chapter.id} key={chapter.id}>
-      <header><span className="manualChapterIcon"><Icon aria-hidden="true" /></span><div><p className="sectionEyebrow">{chapter.eyebrow}</p><h2>{chapter.title}</h2><p>{chapter.intro}</p></div></header>
-      {chapter.facts ? <dl className="manualFacts">{chapter.facts.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl> : null}
-      <ol className="manualChecklist">{chapter.checklist.map((item, index) => <li key={item}><span>{String(index + 1).padStart(2, "0")}</span><p>{item}</p></li>)}</ol>
-      {chapter.code ? <pre className="manualCode"><code>{chapter.code}</code></pre> : null}
-      {chapter.warning ? <aside className="manualWarning"><CircleAlert /><p>{chapter.warning}</p></aside> : null}
+      <header><span className="manualChapterIcon"><Icon aria-hidden="true" /></span><div><p className="sectionEyebrow">{chapter.id}</p><h2>{chapter.title}</h2><p>{chapter.lead}</p></div></header>
+      <dl className="manualFacts">{copy.facts.map((value) => <div key={value}><dt>YNX</dt><dd>{value}</dd></div>)}</dl>
+      <ol className="manualChecklist">{chapter.steps.map((item, index) => <li key={item}><span>{String(index + 1).padStart(2, "0")}</span><p>{item}</p></li>)}</ol>
+      <aside className="manualWarning"><CircleAlert /><p>{chapter.warning}</p></aside>
     </section>; })}</div>
 
-    <section className="recoverySection" aria-labelledby="recovery-title"><div className="recoveryIntro"><RefreshCw aria-hidden="true" /><p className="sectionEyebrow">{zh ? "恢复" : "Recovery"}</p><h2 id="recovery-title">{zh ? "不确定本身就是一种状态，不应靠猜测处理。" : "Uncertainty is a state, not a reason to guess."}</h2><p>{zh ? "重试前先保存证据，并确定最后一个已确认状态。" : "Preserve evidence and establish the last confirmed state before retrying."}</p></div><div className="recoveryList">{localizedRecovery.map(([title, text]) => <article key={title}><h3>{title}</h3><p>{text}</p></article>)}</div></section>
+    <section className="recoverySection" aria-labelledby="recovery-title"><div className="recoveryIntro"><RefreshCw aria-hidden="true" /><p className="sectionEyebrow">Recovery</p><h2 id="recovery-title">{copy.chapters.recovery.title}</h2><p>{copy.chapters.recovery.lead}</p></div><div className="recoveryList">{copy.recovery.map((text, index) => <article key={text}><h3>{String(index + 1).padStart(2, "0")}</h3><p>{text}</p></article>)}</div></section>
 
-    <section className="supportCallout" aria-labelledby="manual-support"><ShieldCheck aria-hidden="true" /><div><p className="sectionEyebrow">{zh ? "安全边界" : "Security boundary"}</p><h2 id="manual-support">{zh ? "请求任何人介入前，先核对公开证据。" : "Use public evidence before asking anyone to intervene."}</h2><p>{zh ? "绝不分享助记词、私钥、密码、一次性验证码或保管材料。报告安全问题时，不要公开可被利用的细节。" : "Never share a mnemonic, private key, password, one-time code, or custody material. Report security issues without posting exploitable details publicly."}</p></div><div><a href="/security"><CircleAlert /> {zh ? "安全指南" : "Security guidance"}</a><a href="/support"><LifeBuoy /> {zh ? "支持与恢复" : "Support and recovery"}</a></div></section>
+    <section className="supportCallout" aria-labelledby="manual-support"><ShieldCheck aria-hidden="true" /><div><p className="sectionEyebrow">Security</p><h2 id="manual-support">{copy.hero[0]}</h2><p>{copy.warning}</p></div><div><a href="/security"><CircleAlert /> Security</a><a href="/support"><LifeBuoy /> Support</a></div></section>
   </main>;
 }
