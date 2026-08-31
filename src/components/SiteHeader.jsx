@@ -1,8 +1,8 @@
 import React from "react";
 import { ExternalLink, Menu, Moon, Search, Sun, WalletCards, X } from "lucide-react";
-import { lazy, Suspense, useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { apiConfig, networkParams, YNX_6423 } from "../lib/api/ynxApi.js";
-import { useLocale } from "../lib/i18n.jsx";
+import { SUPPORTED_LOCALES, useLocale } from "../lib/i18n.jsx";
 import { walletKind } from "../lib/walletProvider.js";
 
 const CommandPalette = lazy(() => import("./CommandPalette.jsx").then((module) => ({ default: module.CommandPalette })));
@@ -12,6 +12,12 @@ const navigation = [
   ["governance", "/governance"], ["ecosystem", "/ecosystem"], ["developers", "/developers"],
   ["downloads", "/downloads"], ["docs", "/docs"], ["more", "/more"]
 ];
+
+const localeLabels = {
+  en: "EN", "zh-CN": "简体", "zh-TW": "繁體", ja: "日本語", ko: "한국어",
+  es: "Español", fr: "Français", de: "Deutsch", pt: "Português", ru: "Русский",
+  ar: "العربية", id: "Bahasa Indonesia"
+};
 
 function collectInjectedProviders() {
   const injected = window.ethereum;
@@ -30,6 +36,12 @@ export function SiteHeader({ scrollProgress = 0 }) {
   const [wallet, setWallet] = useState({ state: "idle" });
   const [providers, setProviders] = useState([]);
   const [walletMenuOpen, setWalletMenuOpen] = useState(false);
+  const navRef = useRef(null);
+  const menuButtonRef = useRef(null);
+  const searchButtonRef = useRef(null);
+  const commandReturnFocusRef = useRef(null);
+  const walletButtonRef = useRef(null);
+  const walletMenuRef = useRef(null);
   const [theme, setTheme] = useState(() => {
     const saved = window.localStorage.getItem("ynx-theme");
     return saved === "dark" || saved === "light"
@@ -46,6 +58,36 @@ export function SiteHeader({ scrollProgress = 0 }) {
   useEffect(() => {
     window.localStorage.removeItem("ynx-direction");
   }, []);
+
+  useEffect(() => {
+    if (!open) return undefined;
+    const frame = window.requestAnimationFrame(() => navRef.current?.querySelector("a")?.focus());
+    const onKeyDown = (event) => {
+      if (event.key !== "Escape") return;
+      event.preventDefault();
+      setOpen(false);
+      menuButtonRef.current?.focus();
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [open]);
+
+  useEffect(() => {
+    if (!walletMenuOpen) return undefined;
+    const frame = window.requestAnimationFrame(() => walletMenuRef.current?.querySelector("button")?.focus());
+    const onPointerDown = (event) => {
+      if (walletMenuRef.current?.contains(event.target) || walletButtonRef.current?.contains(event.target)) return;
+      setWalletMenuOpen(false);
+    };
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      document.removeEventListener("pointerdown", onPointerDown);
+    };
+  }, [walletMenuOpen]);
 
   useEffect(() => {
     const addProvider = ({ detail }) => {
@@ -107,6 +149,17 @@ export function SiteHeader({ scrollProgress = 0 }) {
     setWallet({ state: "unavailable" });
   };
 
+  const closeWalletMenu = (returnFocus = false) => {
+    setWalletMenuOpen(false);
+    if (returnFocus) window.requestAnimationFrame(() => walletButtonRef.current?.focus());
+  };
+
+  const onWalletMenuKeyDown = (event) => {
+    if (event.key !== "Escape") return;
+    event.preventDefault();
+    closeWalletMenu(true);
+  };
+
   const switchToYNX = async () => {
     const provider = wallet.walletProvider;
     if (!provider?.request) return;
@@ -138,7 +191,10 @@ export function SiteHeader({ scrollProgress = 0 }) {
     const onKeyDown = (event) => {
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
         event.preventDefault();
-        setCommandOpen((value) => !value);
+        setCommandOpen((value) => {
+          if (!value) commandReturnFocusRef.current = document.activeElement;
+          return !value;
+        });
       }
     };
     window.addEventListener("keydown", onKeyDown);
@@ -151,45 +207,42 @@ export function SiteHeader({ scrollProgress = 0 }) {
       <header className="siteHeader">
         <span className="scrollProgress" style={{ transform: `scaleX(${scrollProgress})` }} aria-hidden="true" />
         <a className="brand" href="/" aria-label={t("home")}><img src="/ynx-logo.png" alt="" /><small>CHAIN</small></a>
-        <nav className={open ? "open" : ""} aria-label={t("primaryNav")}>
+        <nav ref={navRef} id="primary-navigation" className={open ? "open" : ""} aria-label={t("primaryNav")}>
           {navigation.map(([key, href]) => <a key={key} href={href} onClick={() => setOpen(false)}>{t(key)}</a>)}
           <a className="navExplorer" href={apiConfig.explorerUrl} aria-label={`${t("explorer")} — external site`}>{t("openExplorer")} <ExternalLink size={14} /></a>
         </nav>
         <div className="headerTools">
-          <button type="button" className="toolButton searchButton" onClick={() => setCommandOpen(true)} aria-label={t("searchOpen")}>
+          <button ref={searchButtonRef} type="button" className="toolButton searchButton" onClick={() => { commandReturnFocusRef.current = searchButtonRef.current; setCommandOpen(true); }} aria-label={t("searchOpen")} aria-haspopup="dialog" aria-expanded={commandOpen} aria-controls="command-palette">
             <Search /><span>{t("search")}</span><kbd>⌘K</kbd>
           </button>
-          <button type="button" className={`walletConnect ${wallet.state}`} onClick={activateWallet} aria-expanded={walletMenuOpen} aria-live="polite" aria-label={walletLabel} title={walletLabel}>
+          <button ref={walletButtonRef} type="button" className={`walletConnect ${wallet.state}`} onClick={activateWallet} aria-haspopup="dialog" aria-expanded={walletMenuOpen} aria-controls="wallet-connection-dialog" aria-label={walletLabel} title={walletLabel}>
             <WalletCards /><span>{walletLabel}</span>
           </button>
-          {walletMenuOpen ? <div className="walletMenu" role="dialog" aria-label={t("walletMenu")}>
+          <span className="visuallyHidden" role="status" aria-live="polite">{walletLabel}</span>
+          {walletMenuOpen ? <div ref={walletMenuRef} id="wallet-connection-dialog" className="walletMenu" role="dialog" aria-label={t("walletMenu")} onKeyDown={onWalletMenuKeyDown}>
+            <div className="walletMenuHeader"><strong>{t("walletMenu")}</strong><button type="button" className="walletMenuClose" onClick={() => closeWalletMenu(true)} aria-label={t("commandClose")}><X /></button></div>
             {wallet.state === "connected" ? <>
               <p><strong>{wallet.provider}</strong><span>{wallet.account}</span></p>
               <p className={wallet.chainId === YNX_6423.evmChainId ? "walletNetwork ready" : "walletNetwork"}>{t("walletNetwork")}: {wallet.chainId || t("unavailable")}</p>
               {wallet.chainId !== YNX_6423.evmChainId ? <button type="button" onClick={switchToYNX}>{t("switchTo6423")}</button> : null}
-              <button type="button" className="quiet" onClick={() => { setWallet({ state: "idle" }); setWalletMenuOpen(false); }}>{t("disconnectWallet")}</button>
+              <button type="button" className="quiet" onClick={() => { setWallet({ state: "idle" }); closeWalletMenu(true); }}>{t("disconnectWallet")}</button>
             </> : providers.map((entry, index) => <button type="button" key={`${entry.info.uuid || entry.info.name}-${index}`} onClick={() => connectWallet(entry.provider)}>{walletKind(entry.provider, entry.info)}</button>)}
           </div> : null}
           <label className="localeSelect" aria-label={t("language")}>
             <span className="visuallyHidden">{t("language")}</span>
             <select value={locale} onChange={(event) => setLocale(event.target.value)}>
-              <option value="en">English</option><option value="zh-CN">简体中文</option>
-              <option value="zh-TW">繁體中文</option><option value="ja">日本語</option>
-              <option value="ko">한국어</option><option value="es">Español</option>
-              <option value="fr">Français</option><option value="de">Deutsch</option>
-              <option value="pt">Português</option><option value="ru">Русский</option>
-              <option value="ar">العربية</option><option value="id">Bahasa Indonesia</option>
+              {SUPPORTED_LOCALES.map((value) => <option value={value} key={value}>{localeLabels[value] || value}</option>)}
             </select>
           </label>
           <button type="button" className="toolButton" onClick={() => setTheme(theme === "dark" ? "light" : "dark")} aria-label={t(theme === "dark" ? "light" : "dark")}>
             {theme === "dark" ? <Sun /> : <Moon />}
           </button>
-          <button type="button" className="menuButton" aria-expanded={open} aria-label={t(open ? "closeNav" : "openNav")} onClick={() => setOpen(!open)}>
+          <button ref={menuButtonRef} type="button" className="menuButton" aria-expanded={open} aria-controls="primary-navigation" aria-label={t(open ? "closeNav" : "openNav")} onClick={() => setOpen(!open)}>
             {open ? <X /> : <Menu />}
           </button>
         </div>
       </header>
-      {commandOpen && <Suspense fallback={<div className="commandLoading" role="status">Loading search…</div>}><CommandPalette open onClose={() => setCommandOpen(false)} /></Suspense>}
+      {commandOpen && <Suspense fallback={<div className="commandLoading" role="status">Loading search…</div>}><CommandPalette open onClose={() => setCommandOpen(false)} returnFocusRef={commandReturnFocusRef} /></Suspense>}
     </>
   );
 }

@@ -116,7 +116,7 @@ function App() {
     if (route === "/api") page = <ApiPage />;
     if (route === "/dapp/faucet") page = <FaucetPage />;
     if (route === "/dapp/square" || route.startsWith("/dapp/square/")) page = <SquarePage path={route} />;
-    return <><SiteHeader scrollProgress={scrollProgress} /><div id="main-content"><Suspense fallback={<RouteLoading />}>{page}</Suspense></div><SiteFooter /></>;
+    return <><SiteHeader scrollProgress={scrollProgress} /><div id="main-content" tabIndex={-1}><Suspense fallback={<RouteLoading />}>{page}</Suspense></div><SiteFooter /></>;
   }
 
   const { status = {}, summary = {}, validators = {}, evm = {} } = snapshot;
@@ -125,8 +125,9 @@ function App() {
   const serviceState = (name) => services[name]?.ok === true ? "live" : services[name]?.error ? "status unavailable" : "checking";
 
   return (
-    <main id="main-content">
+    <>
       <SiteHeader scrollProgress={scrollProgress} />
+      <main id="main-content" tabIndex={-1}>
       <HeroPortal snapshot={snapshot} connectionState={connectionState} onAddNetwork={addNetwork} />
 
       <section className="networkBand" id="network" aria-labelledby="network-title" data-reveal>
@@ -217,8 +218,9 @@ function App() {
         <div className="sectionHeader"><div><p className="sectionEyebrow">{zh ? "开始构建" : "Start building"}</p><h2 id="resources-title">{zh ? "公开入口" : "Public entry points"}</h2></div></div>
         <LinkGrid />
       </section>
+      </main>
       <SiteFooter />
-    </main>
+    </>
   );
 }
 

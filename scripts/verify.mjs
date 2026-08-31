@@ -575,13 +575,17 @@ if (!main.includes('navigator.serviceWorker.register("/sw.js")') || !indexHtml.i
   console.error("installable PWA shell is incomplete");
   process.exit(1);
 }
-if (!indexHtml.includes('class="notranslate"') || !indexHtml.includes('translate="no"') || !indexHtml.includes('<meta name="google" content="notranslate"') || !indexHtml.includes('<body class="notranslate" translate="no" dir="ltr">')) {
+if (!indexHtml.includes('class="notranslate"') || !indexHtml.includes('translate="no"') || !indexHtml.includes('<meta name="google" content="notranslate"') || !indexHtml.includes('<body class="notranslate" translate="no"')) {
   console.error("browser machine-translation opt-out is missing; native locale content could be mistranslated or mirrored");
   process.exit(1);
 }
-for (const requiredText of ['direction: ltr !important', 'body, #root { direction: ltr !important; }']) {
+if (/direction:\s*ltr\s*!important/.test(styles)) {
+  console.error("CSS must not force LTR because Arabic uses a native RTL document direction");
+  process.exit(1);
+}
+for (const requiredText of ['html[dir="rtl"] body', '[dir="rtl"] .scrollProgress', 'text-align: start']) {
   if (!styles.includes(requiredText)) {
-    console.error(`native LTR layout guard is missing: ${requiredText}`);
+    console.error(`locale-aware RTL layout guard is missing: ${requiredText}`);
     process.exit(1);
   }
 }
@@ -623,18 +627,18 @@ for (const requiredText of ["metaKey", "ctrlKey", "ynx-theme", "localStorage.rem
     process.exit(1);
   }
 }
-for (const requiredText of ["LocaleProvider", "SUPPORTED_LOCALES", '"zh-CN"', '"zh-TW"', '"ja"', '"ko"', "ynx-locale", "enforceNativeLtr", "MutationObserver", 'style.setProperty("direction", "ltr", "important")', "navigator.language"]) {
+for (const requiredText of ["LocaleProvider", "SUPPORTED_LOCALES", '"zh-CN"', '"zh-TW"', '"ja"', '"ko"', "ynx-locale", "MutationObserver", "navigator.language"]) {
   const localeSource = requiredText === "LocaleProvider" ? main : i18n;
   if (!localeSource.includes(requiredText)) {
     console.error(`native locale capability missing: ${requiredText}`);
     process.exit(1);
   }
 }
-if (!header.includes("localeSelect") || !header.includes('value="zh-TW"') || !header.includes('value="ja"') || !header.includes('value="ko"')) {
-  console.error("five-language locale control is missing");
+if (!header.includes("localeSelect") || !header.includes("SUPPORTED_LOCALES.map")) {
+  console.error("locale control is not derived from the canonical locale registry");
   process.exit(1);
 }
-for (const requiredText of ["role=\"dialog\"", "aria-modal=\"true\"", "ArrowDown", "ArrowUp", "commandNoMatch", "API reference"]) {
+for (const requiredText of ["role=\"dialog\"", "aria-modal=\"true\"", "role=\"combobox\"", "role=\"listbox\"", "aria-activedescendant", 'event.key === "Tab"', "returnFocusRef", "ArrowDown", "ArrowUp", "commandNoMatch", "API reference"]) {
   if (!commandPalette.includes(requiredText)) {
     console.error(`command palette capability missing: ${requiredText}`);
     process.exit(1);
@@ -658,7 +662,7 @@ for (const requiredText of ["Chain status", "Validator roles", "EVM JSON-RPC", "
     process.exit(1);
   }
 }
-for (const requiredText of ['[data-theme="dark"]', ":focus-visible", ".commandPalette"]) {
+for (const requiredText of ['[data-theme="dark"]', '[data-theme="dark"] .portalHeroV2', ":focus-visible", ".commandPalette", "@media (max-width: 420px)", "@media (pointer: coarse)", "min-height: 44px"]) {
   if (!styles.includes(requiredText)) {
     console.error(`accessibility or adaptive appearance styles missing: ${requiredText}`);
     process.exit(1);

@@ -21,12 +21,14 @@ const coreCommands = (t) => [
   { title: "Support", description: "Safe support paths and self-service checks", href: "/support", icon: CircleHelp, keywords: "support issue recovery contact" },
 ];
 
-export function CommandPalette({ open, onClose }) {
+export function CommandPalette({ open, onClose, returnFocusRef: preferredReturnFocusRef }) {
   const { t } = useLocale();
   const [query, setQuery] = useState("");
   const [activeIndex, setActiveIndex] = useState(0);
   const [searchError, setSearchError] = useState("");
   const inputRef = useRef(null);
+  const dialogRef = useRef(null);
+  const returnFocusRef = useRef(null);
 
   const commands = useMemo(() => {
     const articleCommands = docsAuthority.articles.map((article) => ({
@@ -62,6 +64,7 @@ export function CommandPalette({ open, onClose }) {
 
   useEffect(() => {
     if (!open) return undefined;
+    returnFocusRef.current = preferredReturnFocusRef?.current || (document.activeElement instanceof HTMLElement ? document.activeElement : null);
     setQuery("");
     setActiveIndex(0);
     const previousOverflow = document.body.style.overflow;
@@ -69,6 +72,8 @@ export function CommandPalette({ open, onClose }) {
     window.requestAnimationFrame(() => inputRef.current?.focus());
     return () => {
       document.body.style.overflow = previousOverflow;
+      const target = returnFocusRef.current;
+      window.requestAnimationFrame(() => target?.isConnected && target.focus());
     };
   }, [open]);
 
@@ -98,7 +103,22 @@ export function CommandPalette({ open, onClose }) {
   };
 
   const onKeyDown = (event) => {
-    if (event.key === "Escape") {
+    if (event.key === "Tab") {
+      const focusable = [...(dialogRef.current?.querySelectorAll(
+        "a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex='-1'])"
+      ) || [])].filter((element) => !element.hidden && element.getAttribute("aria-hidden") !== "true");
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (!first || !last) {
+        event.preventDefault();
+      } else if (event.shiftKey && (document.activeElement === first || document.activeElement === dialogRef.current)) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    } else if (event.key === "Escape") {
       event.preventDefault();
       onClose();
     } else if (event.key === "ArrowDown") {
@@ -118,13 +138,19 @@ export function CommandPalette({ open, onClose }) {
 
   return (
     <div className="commandBackdrop" onMouseDown={(event) => event.target === event.currentTarget && onClose()}>
-      <section className="commandPalette" role="dialog" aria-modal="true" aria-labelledby="command-title" onKeyDown={onKeyDown}>
+      <section ref={dialogRef} id="command-palette" className="commandPalette" role="dialog" aria-modal="true" aria-labelledby="command-title" aria-describedby="command-summary" onKeyDown={onKeyDown}>
+        <h2 className="visuallyHidden" id="command-title">{t("commandTitle")}</h2>
         <header className="commandSearch">
           <Search aria-hidden="true" />
-          <label className="visuallyHidden" htmlFor="command-query" id="command-title">{t("commandTitle")}</label>
+          <label className="visuallyHidden" htmlFor="command-query">{t("commandTitle")}</label>
           <input
             ref={inputRef}
             id="command-query"
+            role="combobox"
+            aria-autocomplete="list"
+            aria-expanded="true"
+            aria-controls="command-results"
+            aria-activedescendant={results[activeIndex] ? `command-option-${activeIndex}` : undefined}
             value={query}
             onChange={(event) => {
               setQuery(event.target.value);
@@ -135,15 +161,17 @@ export function CommandPalette({ open, onClose }) {
           />
           <button type="button" onClick={onClose} aria-label={t("commandClose")}><X /></button>
         </header>
-        <p className="commandSummary" role="status">
+        <p className="commandSummary" id="command-summary" role="status">
           {query.trim() ? t("commandResults").replace("{count}", results.length) : t("commandQuickNavigation")}
         </p>
-        <div className="commandResults" role="listbox" aria-label={t("commandSearchResults")}>
+        <div className="commandResults">
           {query.trim() && <button type="button" className="explorerSearchResult" onClick={searchExplorer}><Search aria-hidden="true" /><span><strong>{t("commandSearchExplorer")}</strong><small>{t("commandExplorerTypes")}</small></span><kbd>↵</kbd></button>}
+          <div className="commandOptions" id="command-results" role="listbox" aria-label={t("commandSearchResults")}>
           {results.map((command, index) => {
             const Icon = command.icon;
             return (
               <button
+                id={`command-option-${index}`}
                 type="button"
                 role="option"
                 aria-selected={index === activeIndex}
@@ -159,12 +187,13 @@ export function CommandPalette({ open, onClose }) {
             );
           })}
           {!results.length && (
-            <div className="commandEmpty">
+            <div className="commandEmpty" role="status">
               <Search aria-hidden="true" />
               <strong>{t("commandNoMatch")}</strong>
               <span>{t("commandTry")}</span>
             </div>
           )}
+          </div>
           {searchError && <p className="commandSearchError" role="alert">{searchError}</p>}
         </div>
         <footer><span><kbd>↑</kbd><kbd>↓</kbd> {t("commandNavigate")}</span><span><kbd>Esc</kbd> {t("commandClose")}</span></footer>
