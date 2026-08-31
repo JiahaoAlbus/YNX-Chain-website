@@ -21,7 +21,15 @@ const messages = {
     security: "安全", support: "支持", square: "广场", readiness: "就绪度", risk: "风险", privacy: "隐私", terms: "条款", faucet: "水龙头",
     footerBoundary: "公开测试网项目。未宣称主网上线、交易所上币、稳定币发行方支持、钱包默认支持或第三方合作关系。"
   },
-  "zh-TW": {}, ja: {}, ko: {}
+  "zh-TW": {
+    skip:"跳至內容",home:"YNX Chain 首頁",primaryNav:"主要導覽",products:"產品",dapps:"DApp",ecosystem:"YNX 生態",download:"下載",manual:"使用手冊",docs:"文件",status:"狀態",explorer:"瀏覽器",openExplorer:"開啟區塊瀏覽器",blockchain:"區塊鏈",tokens:"代幣",data:"資料",governance:"治理",developers:"開發者",downloads:"下載中心",more:"更多",search:"搜尋",searchOpen:"搜尋並開啟命令面板",light:"切換至淺色模式",dark:"切換至深色模式",openNav:"開啟導覽",closeNav:"關閉導覽",language:"語言",switchLanguage:"切換語言",footerLead:"以 YNXT 為核心的 Web4 L1 生態系統。",userManual:"使用手冊",developerDocs:"開發者文件",api:"API",faq:"常見問題",security:"安全",support:"支援",square:"廣場",readiness:"就緒度",risk:"風險",privacy:"隱私",terms:"條款",faucet:"水龍頭",footerBoundary:"公開測試網專案；未宣稱主網上線、交易所上幣、錢包預設支援或第三方合作。"
+  },
+  ja: {
+    skip:"本文へ移動",home:"YNX Chain ホーム",primaryNav:"メインナビゲーション",products:"プロダクト",dapps:"DApp",ecosystem:"YNX エコシステム",download:"ダウンロード",manual:"ユーザーガイド",docs:"ドキュメント",status:"ステータス",explorer:"エクスプローラー",openExplorer:"エクスプローラーを開く",blockchain:"ブロックチェーン",tokens:"トークン",data:"データ",governance:"ガバナンス",developers:"開発者",downloads:"ダウンロード",more:"その他",search:"検索",searchOpen:"検索パレットを開く",light:"ライトモードにする",dark:"ダークモードにする",openNav:"ナビゲーションを開く",closeNav:"ナビゲーションを閉じる",language:"言語",switchLanguage:"言語を切り替える",footerLead:"YNXT を中心とする Web4 L1 エコシステム。",userManual:"ユーザーガイド",developerDocs:"開発者ドキュメント",api:"API",faq:"よくある質問",security:"セキュリティ",support:"サポート",square:"スクエア",readiness:"準備状況",risk:"リスク",privacy:"プライバシー",terms:"利用規約",faucet:"フォーセット",footerBoundary:"公開テストネットです。メインネット、上場、ウォレットの標準対応、第三者提携は主張していません。"
+  },
+  ko: {
+    skip:"본문으로 건너뛰기",home:"YNX Chain 홈",primaryNav:"기본 탐색",products:"제품",dapps:"DApp",ecosystem:"YNX 생태계",download:"다운로드",manual:"사용자 가이드",docs:"문서",status:"상태",explorer:"익스플로러",openExplorer:"익스플로러 열기",blockchain:"블록체인",tokens:"토큰",data:"데이터",governance:"거버넌스",developers:"개발자",downloads:"다운로드",more:"더보기",search:"검색",searchOpen:"검색 팔레트 열기",light:"라이트 모드 사용",dark:"다크 모드 사용",openNav:"탐색 열기",closeNav:"탐색 닫기",language:"언어",switchLanguage:"언어 전환",footerLead:"YNXT 중심의 Web4 L1 생태계입니다.",userManual:"사용자 가이드",developerDocs:"개발자 문서",api:"API",faq:"자주 묻는 질문",security:"보안",support:"지원",square:"스퀘어",readiness:"준비 상태",risk:"위험",privacy:"개인정보",terms:"이용약관",faucet:"파우셋",footerBoundary:"공개 테스트넷 프로젝트입니다. 메인넷, 거래소 상장, 기본 지갑 지원 또는 제3자 파트너십을 주장하지 않습니다."
+  }
 };
 
 const LocaleContext = createContext({ locale: "en", setLocale: () => {}, t: (key) => key });
