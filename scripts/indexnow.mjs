@@ -19,7 +19,15 @@ if (!fs.existsSync(sitemapFile)) {
 }
 
 const sitemap = fs.readFileSync(sitemapFile, "utf8");
-const urlList = [...sitemap.matchAll(/<loc>(https:\/\/[^<]+)<\/loc>/g)].map((match) => match[1]);
+const sitemapLocations = [...sitemap.matchAll(/<loc>(https:\/\/[^<]+)<\/loc>/g)].map((match) => match[1]);
+const urlList = sitemap.includes("<sitemapindex")
+  ? sitemapLocations.flatMap((location) => {
+      const parsed = new URL(location);
+      const local = path.join(root, "dist", parsed.pathname.replace(/^\/+/, ""));
+      if (!fs.existsSync(local)) throw new Error(`indexed sitemap is missing from dist: ${parsed.pathname}`);
+      return [...fs.readFileSync(local, "utf8").matchAll(/<loc>(https:\/\/[^<]+)<\/loc>/g)].map((match) => match[1]);
+    })
+  : sitemapLocations;
 if (urlList.length === 0 || new Set(urlList).size !== urlList.length) {
   throw new Error("sitemap must contain a non-empty unique HTTPS URL list");
 }

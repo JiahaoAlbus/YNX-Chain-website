@@ -5,6 +5,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { createHostedArtifactManifest, emitDocsAuthority, loadDocsAuthority, verifyHostedDocsAuthority } from "./lib/docs-authority.mjs";
 import { createCoreRouteEntries, coreRouteJsonLd, renderCoreRouteBody, verifyCoreRouteEntries } from "./lib/core-route-content.mjs";
+import { applyTechnicalSeo, indexingPolicy, normalizeRoute, validateInternalLinks, validateRedirects, writeSitemapIndex, writeStatic404 } from "./lib/technical-seo.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const dist = path.join(root, "dist");
@@ -55,16 +56,19 @@ writeRoute("/docs", {
 emitDocsAuthority(path.join(dist, "docs-authority"), root);
 writePublicMetadata();
 writeDiscoveryFiles();
+finalizeTechnicalSeo();
 verifyOutput();
 process.stdout.write(`prerendered ${authority.articles.length + 1} authority routes and ${coreRouteEntries.length} core routes\n`);
 
 function writeRoute(route, { title, description, body, jsonLd }) {
-  const canonical = `${siteUrl}${route === "/" ? "" : route}`;
-  let html = baseHtml
-    .replace(/<title>[\s\S]*?<\/title>/, `<title>${escapeHtml(title)}</title>`)
-    .replace(/<meta name="description" content="[^"]*"\s*\/?>/, `<meta name="description" content="${escapeAttribute(description)}" />`)
-    .replace("</head>", `<link rel="canonical" href="${escapeAttribute(canonical)}" />\n    <script type="application/ld+json">${safeJson(jsonLd)}</script>\n  </head>`)
-    .replace('<div id="root"></div>', `<div id="root">${body}</div>`);
+  const html = applyTechnicalSeo(baseHtml.replace('<div id="root"></div>', `<div id="root">${body}</div>`), {
+    route,
+    title,
+    description,
+    pageJsonLd: jsonLd,
+    siteUrl,
+    robots: indexingPolicy(),
+  });
   const relativeRoute = route.replace(/^\/+/, "");
   const directory = path.join(dist, relativeRoute);
   fs.mkdirSync(directory, { recursive: true });
@@ -73,13 +77,20 @@ function writeRoute(route, { title, description, body, jsonLd }) {
 }
 
 function writeDiscoveryFiles() {
-  const routes = [
+  const groups = discoveryGroups();
+  const lastModified = authority.artifact.sourceCommitTime.slice(0, 10);
+  writeSitemapIndex({ dist, siteUrl, lastModified, groups });
+  fs.writeFileSync(path.join(dist, "robots.txt"), `User-agent: *\nAllow: /\n\nSitemap: ${siteUrl}/sitemap.xml\n`);
+}
+
+function discoveryGroups() {
+  const pages = [
     "/",
     "/dapp",
     "/dapp/download",
+    "/dapp/faucet",
     "/dapp/square",
     "/dapp/quant",
-    "/docs",
     "/manual",
     "/api",
     "/status",
@@ -91,14 +102,34 @@ function writeDiscoveryFiles() {
     "/developers",
     "/downloads",
     "/more",
-    ...releaseRegistry.products.map((product) => product.route),
-    ...authority.articles.map((article) => article.route),
   ];
-  const unique = [...new Set(routes)].sort();
-  const lastModified = authority.artifact.sourceCommitTime.slice(0, 10);
-  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${unique.map((route) => `  <url><loc>${escapeXml(`${siteUrl}${route}`)}</loc><lastmod>${lastModified}</lastmod></url>`).join("\n")}\n</urlset>\n`;
-  fs.writeFileSync(path.join(dist, "sitemap.xml"), sitemap);
-  fs.writeFileSync(path.join(dist, "robots.txt"), `User-agent: *\nAllow: /\n\nSitemap: ${siteUrl}/sitemap.xml\n`);
+  const configuredRedirects = new Map(
+    (JSON.parse(fs.readFileSync(path.join(root, "vercel.json"), "utf8")).redirects || [])
+      .filter((redirect) => !redirect.source.includes(":"))
+      .map((redirect) => [normalizeRoute(redirect.source), normalizeRoute(redirect.destination)]),
+  );
+  const registeredProductRoutes = releaseRegistry.products.map((product) => product.route);
+  const products = registeredProductRoutes.map((route) => configuredRedirects.get(normalizeRoute(route)) || normalizeRoute(route));
+  const docs = ["/docs", ...authority.articles.map((article) => article.route)];
+  const releases = [
+    "/releases/ecosystem-release-registry.json",
+    ...releaseRegistry.products.flatMap((product) => [product.productRelease, product.publicProductMetadata].filter(Boolean)),
+  ].filter((route) => fs.existsSync(path.join(dist, route.replace(/^\/+/, ""))));
+  const reserved = new Set([...products, ...docs].map(normalizeRoute));
+  return { pages: pages.filter((route) => !reserved.has(normalizeRoute(route))), products, docs, releases };
+}
+
+function finalizeTechnicalSeo() {
+  const htmlFiles = walkHtml(dist).filter((file) => path.basename(file) === "index.html");
+  for (const file of htmlFiles) {
+    const relative = path.relative(dist, path.dirname(file));
+    const route = normalizeRoute(relative === "" ? "/" : `/${relative}`);
+    const html = fs.readFileSync(file, "utf8");
+    const title = decodeHtml(html.match(/<title>([\s\S]*?)<\/title>/)?.[1] || "YNX Chain — Web4 Layer-1 Ecosystem");
+    const description = decodeHtml(html.match(/<meta name="description" content="([^"]*)"\s*\/?>/)?.[1] || "Explore the YNX 6423 public testnet and evidence-backed ecosystem software.");
+    fs.writeFileSync(file, applyTechnicalSeo(html, { route, title, description, siteUrl, robots: indexingPolicy() }));
+  }
+  writeStatic404({ dist, baseHtml, siteUrl });
 }
 
 function writePublicMetadata() {
@@ -147,10 +178,35 @@ function verifyOutput() {
     if (seenBodies.has(body)) throw new Error(`prerendered core route ${entry.route} reuses another route body`);
     seenBodies.add(body);
   }
-  for (const required of ["/what-is-ynx-chain", "/what-is-ynxt", "/faq"]) {
-    if (!fs.readFileSync(path.join(dist, "sitemap.xml"), "utf8").includes(required)) {
+  const sitemapIndex = fs.readFileSync(path.join(dist, "sitemap.xml"), "utf8");
+  for (const required of ["pages", "products", "docs", "releases"]) {
+    if (!sitemapIndex.includes(`/sitemaps/${required}.xml`)) {
       throw new Error(`sitemap is missing ${required}`);
     }
+  }
+  const docsSitemap = fs.readFileSync(path.join(dist, "sitemaps/docs.xml"), "utf8");
+  for (const required of ["/what-is-ynx-chain", "/what-is-ynxt", "/faq"]) {
+    if (!docsSitemap.includes(required)) throw new Error(`docs sitemap is missing ${required}`);
+  }
+  const notFound = fs.readFileSync(path.join(dist, "404.html"), "utf8");
+  if (!notFound.includes("Page not found") || !notFound.includes("noindex,nofollow,noarchive")) {
+    throw new Error("static 404 must be explicit and noindex");
+  }
+  const groups = discoveryGroups();
+  const canonicalRoutes = new Set(Object.values(groups).flat().map(normalizeRoute));
+  canonicalRoutes.add("/404");
+  const vercel = JSON.parse(fs.readFileSync(path.join(root, "vercel.json"), "utf8"));
+  const redirects = validateRedirects(vercel.redirects || [], canonicalRoutes);
+  const documents = walkHtml(dist).map((file) => ({
+    route: path.basename(file) === "index.html"
+      ? normalizeRoute(path.relative(dist, path.dirname(file)) || "/")
+      : normalizeRoute(`/${path.relative(dist, file).replace(/\.html$/, "")}`),
+    html: fs.readFileSync(file, "utf8"),
+  }));
+  validateInternalLinks(documents, canonicalRoutes, redirects);
+  const home = fs.readFileSync(path.join(dist, "index.html"), "utf8");
+  if (home === notFound || !notFound.includes("This address is not a published YNX page")) {
+    throw new Error("static 404 is a soft copy of the home page");
   }
   const publicMetadata = JSON.parse(fs.readFileSync(path.join(dist, "public-product-metadata.json"), "utf8"));
   const productRelease = JSON.parse(fs.readFileSync(path.join(dist, "product-release.json"), "utf8"));
@@ -203,10 +259,6 @@ function faqJsonLd(article) {
   };
 }
 
-function safeJson(value) {
-  return JSON.stringify(value).replaceAll("<", "\\u003c");
-}
-
 function escapeHtml(value) {
   return String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
 }
@@ -215,6 +267,14 @@ function escapeAttribute(value) {
   return escapeHtml(value).replaceAll("'", "&#39;");
 }
 
-function escapeXml(value) {
-  return escapeHtml(value).replaceAll("'", "&apos;");
+function walkHtml(directory) {
+  if (!fs.existsSync(directory)) return [];
+  return fs.readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
+    const target = path.join(directory, entry.name);
+    return entry.isDirectory() ? walkHtml(target) : entry.name.endsWith(".html") ? [target] : [];
+  });
+}
+
+function decodeHtml(value) {
+  return String(value).replaceAll("&quot;", '"').replaceAll("&gt;", ">").replaceAll("&lt;", "<").replaceAll("&amp;", "&");
 }
