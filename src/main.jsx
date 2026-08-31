@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Suspense, lazy, useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import {
   Activity, Bot, Box, Braces, CheckCircle2, CircleDollarSign, Clock3, Code2, Coins,
@@ -11,26 +11,28 @@ import { ProductPanel } from "./components/ProductPanel.jsx";
 import { LinkGrid } from "./components/LinkGrid.jsx";
 import { SiteHeader } from "./components/SiteHeader.jsx";
 import { SiteFooter } from "./components/SiteFooter.jsx";
-import { RoutePage } from "./components/RoutePage.jsx";
 import { AddressConverter } from "./components/AddressConverter.jsx";
 import { LatestRecords } from "./components/LatestRecords.jsx";
-import { AppsPage } from "./pages/AppsPage.jsx";
-import { DownloadPage } from "./pages/DownloadPage.jsx";
-import { DocsPage } from "./pages/DocsPage.jsx";
-import { AuthorityArticlePage } from "./pages/AuthorityArticlePage.jsx";
-import { ProductStatusPage } from "./pages/ProductStatusPage.jsx";
-import { SquarePage } from "./pages/SquarePage.jsx";
-import { ManualPage } from "./pages/ManualPage.jsx";
-import { ApiPage } from "./pages/ApiPage.jsx";
-import { FaucetPage } from "./pages/FaucetPage.jsx";
-import { WalletAuthCallbackPage } from "./pages/WalletAuthCallbackPage.jsx";
-import { PortalPage, portalRoutes } from "./pages/PortalPage.jsx";
 import { getLegacyDAppRedirect, getProductByRoute } from "./lib/ecosystemCatalog.js";
 import docsAuthority from "virtual:ynx-docs-authority";
 import { LocaleProvider, useLocale } from "./lib/i18n.jsx";
 import "./styles.css";
 
 const route = window.location.pathname.replace(/\/$/, "") || "/";
+const portalRoutes = new Set(["/blockchain", "/tokens", "/data", "/governance", "/developers", "/downloads", "/ecosystem", "/more"]);
+
+const RoutePage = lazyNamed(() => import("./components/RoutePage.jsx"), "RoutePage");
+const AppsPage = lazyNamed(() => import("./pages/AppsPage.jsx"), "AppsPage");
+const DownloadPage = lazyNamed(() => import("./pages/DownloadPage.jsx"), "DownloadPage");
+const DocsPage = lazyNamed(() => import("./pages/DocsPage.jsx"), "DocsPage");
+const AuthorityArticlePage = lazyNamed(() => import("./pages/AuthorityArticlePage.jsx"), "AuthorityArticlePage");
+const ProductStatusPage = lazyNamed(() => import("./pages/ProductStatusPage.jsx"), "ProductStatusPage");
+const SquarePage = lazyNamed(() => import("./pages/SquarePage.jsx"), "SquarePage");
+const ManualPage = lazyNamed(() => import("./pages/ManualPage.jsx"), "ManualPage");
+const ApiPage = lazyNamed(() => import("./pages/ApiPage.jsx"), "ApiPage");
+const FaucetPage = lazyNamed(() => import("./pages/FaucetPage.jsx"), "FaucetPage");
+const WalletAuthCallbackPage = lazyNamed(() => import("./pages/WalletAuthCallbackPage.jsx"), "WalletAuthCallbackPage");
+const PortalPage = lazyNamed(() => import("./pages/PortalPage.jsx"), "PortalPage");
 
 function App() {
   const { locale } = useLocale();
@@ -112,7 +114,7 @@ function App() {
     if (route === "/api") page = <ApiPage />;
     if (route === "/dapp/faucet") page = <FaucetPage />;
     if (route === "/dapp/square" || route.startsWith("/dapp/square/")) page = <SquarePage path={route} />;
-    return <><SiteHeader scrollProgress={scrollProgress} /><div id="main-content">{page}</div><SiteFooter /></>;
+    return <><SiteHeader scrollProgress={scrollProgress} /><div id="main-content"><Suspense fallback={<RouteLoading />}>{page}</Suspense></div><SiteFooter /></>;
   }
 
   const { status = {}, summary = {}, validators = {}, evm = {} } = snapshot;
@@ -216,6 +218,14 @@ function App() {
       <SiteFooter />
     </main>
   );
+}
+
+function lazyNamed(loader, exportName) {
+  return lazy(() => loader().then((module) => ({ default: module[exportName] })));
+}
+
+function RouteLoading() {
+  return <main className="routeLoading" aria-busy="true" aria-live="polite"><span className="routeLoadingMark" aria-hidden="true" /><p>Loading the requested YNX surface…</p></main>;
 }
 
 function Endpoint({ label, value }) {

@@ -1094,3 +1094,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
   [data-reveal] { opacity: 1; transform: none; }
   .executionScene { transform: translateX(-50%) scale(.5); }
 }
+/* Route and command surfaces are loaded on demand so the public landing page stays fast. */
+.routeLoading { min-height: 48vh; display: grid; place-content: center; justify-items: center; gap: 0.85rem; color: var(--muted); }
+.routeLoadingMark { width: 2rem; height: 2rem; border: 3px solid color-mix(in srgb, var(--blue) 20%, transparent); border-top-color: var(--blue); border-radius: 50%; animation: route-loading-spin 700ms linear infinite; }
+.commandLoading { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; background: color-mix(in srgb, var(--surface) 76%, transparent); color: var(--text); }
+@keyframes route-loading-spin { to { transform: rotate(1turn); } }
+@media (prefers-reduced-motion: reduce) { .routeLoadingMark { animation: none; } }

@@ -1,10 +1,11 @@
 import React from "react";
 import { ExternalLink, Menu, Moon, Search, Sun, WalletCards, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { apiConfig, networkParams, YNX_6423 } from "../lib/api/ynxApi.js";
-import { CommandPalette } from "./CommandPalette.jsx";
 import { useLocale } from "../lib/i18n.jsx";
 import { walletKind } from "../lib/walletProvider.js";
+
+const CommandPalette = lazy(() => import("./CommandPalette.jsx").then((module) => ({ default: module.CommandPalette })));
 
 const navigation = [
   ["blockchain", "/blockchain"], ["tokens", "/tokens"], ["data", "/data"],
@@ -188,7 +189,7 @@ export function SiteHeader({ scrollProgress = 0 }) {
           </button>
         </div>
       </header>
-      <CommandPalette open={commandOpen} onClose={() => setCommandOpen(false)} />
+      {commandOpen && <Suspense fallback={<div className="commandLoading" role="status">Loading search…</div>}><CommandPalette open onClose={() => setCommandOpen(false)} /></Suspense>}
     </>
   );
 }
