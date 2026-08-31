@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Activity, ArrowUpRight, Blocks, CheckCircle2, CircleAlert, ExternalLink, KeyRound, LifeBuoy,
   Network, Pickaxe, RefreshCw, Search, Server, ShieldCheck, WalletCards
@@ -12,6 +12,104 @@ const steps = [
   { number: "03", title: "Get test YNXT", text: "Use the Faucet for Testnet only. YNXT on this network has no represented monetary value or guaranteed liquidity.", href: apiConfig.faucetUrl, label: "Open Faucet", icon: CheckCircle2 },
   { number: "04", title: "Verify every result", text: "After a write, preserve the transaction hash and confirm the receipt in Explorer. A timeout is not proof that a transaction failed.", href: apiConfig.explorerUrl, label: "Open Explorer", icon: Search },
 ];
+
+const platformGuides = [
+  {
+    id: "windows",
+    name: "Windows",
+    verifyCommand: "Get-FileHash .\\downloaded-file -Algorithm SHA256",
+    quickCommand: "$ErrorActionPreference='Stop'; $body='{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"eth_chainId\",\"params\":[]}'; $r=Invoke-RestMethod -TimeoutSec 12 -Method Post -Uri 'https://evm.ynxweb4.com' -ContentType 'application/json' -Body $body; if ($r.result -ne '0x1917') { throw \"Wrong network: $($r.result)\" }; Write-Output 'YNX Testnet reachable: 6423 / 0x1917 / YNXT'",
+    steps: [
+      "Open Verified downloads. Install only an artifact that shows its exact byte size, SHA-256, source identity, signing class, and install evidence; unavailable means stop, not sideload.",
+      "In PowerShell, run the SHA-256 command below and compare every character with the checksum shown on the download record before opening the file.",
+      "Open the website network setup, choose Add 6423 to wallet, and review YNX Testnet, 0x1917, YNXT, RPC, and Explorer before approving the wallet prompt.",
+      "Request Testnet YNXT from Faucet only after the wallet shows 6423 / 0x1917. Preserve the returned hash and verify it in Explorer.",
+      "Use Windows for wallet and read-only network checks. The documented observer and validator-candidate host is supported 64-bit Linux; do not turn a personal Windows wallet device into a validator.",
+      "Back up the wallet recovery material offline, test recovery with the wallet's own documented flow, then remove the temporary recovery copy. Never upload it to support or this website.",
+    ],
+  },
+  {
+    id: "macos",
+    name: "macOS",
+    verifyCommand: "shasum -a 256 ./downloaded-file",
+    quickCommand: "result=$(/usr/bin/curl --connect-timeout 5 --max-time 12 -fsS -X POST https://evm.ynxweb4.com -H 'content-type: application/json' --data '{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"eth_chainId\",\"params\":[]}'); printf '%s' \"$result\" | grep -Eq '\"result\"[[:space:]]*:[[:space:]]*\"0x1917\"' && printf 'YNX Testnet reachable: 6423 / 0x1917 / YNXT\\n'",
+    steps: [
+      "Open Verified downloads. Use only an artifact with exact checksum and install evidence; Gatekeeper, notarization, and signing state must be shown truthfully before installation.",
+      "Run the SHA-256 command below in Terminal and compare the full output with the official record. A matching filename is not enough.",
+      "Open the website network setup, choose Add 6423 to wallet, and inspect YNX Testnet, 0x1917, YNXT, RPC, and Explorer before approving the wallet prompt.",
+      "Request Testnet YNXT from Faucet, save the transaction hash, and open that exact hash in Explorer. A wallet balance alone is not a receipt.",
+      "Use macOS for wallet and read-only preflight. A local development observer is not validator admission; production observer and validator-candidate guidance targets supported 64-bit Linux.",
+      "Create an offline recovery backup using the wallet's own flow, verify it without sharing it, and keep it separate from the Mac. Never paste it into Terminal, chat, a website, or a ticket.",
+    ],
+  },
+  {
+    id: "linux",
+    name: "Linux",
+    verifyCommand: "sha256sum ./downloaded-file",
+    quickCommand: "result=$(curl --connect-timeout 5 --max-time 12 -fsS -X POST https://evm.ynxweb4.com -H 'content-type: application/json' --data '{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"eth_chainId\",\"params\":[]}'); printf '%s' \"$result\" | grep -Eq '\"result\"[[:space:]]*:[[:space:]]*\"0x1917\"' && printf 'YNX Testnet reachable: 6423 / 0x1917 / YNXT\\n'",
+    steps: [
+      "Open Verified downloads and select only a published Linux artifact whose size, SHA-256, source identity, signing class, and install evidence are all present.",
+      "Run the SHA-256 command below and compare the complete checksum before executing any downloaded file. Do not pipe a download into a shell.",
+      "For a browser wallet, use the explicit Add 6423 to wallet action and verify YNX Testnet, 0x1917, YNXT, RPC, and Explorer in the wallet confirmation.",
+      "Request Testnet YNXT only from Faucet and verify the exact transaction hash in Explorer before relying on the balance.",
+      "For an observer, create a dedicated unprivileged service identity and persistent volume, bind admin/metrics locally, start without validator signing, then compare synchronized height and hash with public RPC.",
+      "A validator remains a reviewed candidate: document custody, monitoring, restore rehearsal, endpoint, and incident contact; wait for explicit admission before enabling signing.",
+      "Back up configuration and public key metadata separately from chain data. Keep signer and wallet secrets offline, test restore on an isolated host, and verify signer state before any restart.",
+    ],
+  },
+];
+
+const platformGuidesZh = {
+  windows: {
+    steps: [
+      "打开“已验证下载”。只安装明确显示字节数、SHA-256、源码身份、签名类别和安装证据的工件；显示不可用时应停止，不要侧载未知文件。",
+      "在 PowerShell 运行下方 SHA-256 命令；打开文件前，逐字符比对官网记录中的校验值。",
+      "打开官网网络设置，选择“将 6423 添加到钱包”；批准前在钱包提示中核对 YNX Testnet、0x1917、YNXT、RPC 与 Explorer。",
+      "钱包显示 6423 / 0x1917 后再从 Faucet 领取测试 YNXT；保存返回的哈希，并在 Explorer 核对。",
+      "Windows 只用于钱包与只读网络检查。文档中的观察节点和验证者候选主机要求受支持的 64 位 Linux；不要把个人 Windows 钱包设备变成验证者。",
+      "离线备份钱包恢复材料，使用钱包自身文档完成恢复演练，再删除临时恢复副本。绝不要把它上传给客服或本网站。",
+    ],
+  },
+  macos: {
+    steps: [
+      "打开“已验证下载”。只使用带精确校验值和安装证据的工件；安装前必须如实显示 Gatekeeper、公证与签名状态。",
+      "在终端运行下方 SHA-256 命令，并与官网记录完整比对；文件名相同不能证明文件相同。",
+      "打开官网网络设置，选择“将 6423 添加到钱包”；批准前核对 YNX Testnet、0x1917、YNXT、RPC 与 Explorer。",
+      "从 Faucet 领取测试 YNXT，保存交易哈希并在 Explorer 打开该精确哈希；钱包余额本身不是收据。",
+      "macOS 只用于钱包与只读预检。本地开发观察进程不等于验证者准入；生产观察节点与验证者候选指南面向受支持的 64 位 Linux。",
+      "使用钱包自身流程创建离线恢复备份，在不分享材料的前提下验证备份，并与 Mac 分开保存。绝不要把材料粘贴到终端、聊天、网站或工单。",
+    ],
+  },
+  linux: {
+    steps: [
+      "打开“已验证下载”，只选择字节数、SHA-256、源码身份、签名类别和安装证据均完整的 Linux 工件。",
+      "运行下方 SHA-256 命令，执行下载文件前完整比对校验值；不要把网络下载直接通过管道交给 shell。",
+      "浏览器钱包应使用明确的“将 6423 添加到钱包”操作，并在钱包确认中核对 YNX Testnet、0x1917、YNXT、RPC 与 Explorer。",
+      "只从 Faucet 领取测试 YNXT，并在依赖余额前用 Explorer 验证精确交易哈希。",
+      "观察节点使用专用非特权服务账户和持久卷，管理/指标端口只绑定本机；不启用验证者签名，同步后与公共 RPC 比较高度和哈希。",
+      "验证者仍需候选审核：提交保管、监控、恢复演练、端点与事故联系人证据；收到明确准入前不得开启签名。",
+      "配置和公钥元数据应与链数据分开备份。签名器与钱包秘密保持离线，在隔离主机演练恢复，并在重启前核对签名器状态。",
+    ],
+  },
+};
+
+function CopyCommandButton({ command, label, copiedLabel, manualLabel }) {
+  const [state, setState] = useState("idle");
+  async function copy() {
+    if (typeof navigator === "undefined" || !navigator.clipboard?.writeText) {
+      setState("unavailable");
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(command);
+      setState("copied");
+    } catch {
+      setState("unavailable");
+    }
+  }
+  const text = state === "copied" ? copiedLabel : state === "unavailable" ? manualLabel : label;
+  return <button className="button secondary" type="button" onClick={copy} aria-live="polite">{text}</button>;
+}
 
 const chapters = [
   {
@@ -158,6 +256,7 @@ export function ManualPage() {
   const { locale } = useLocale();
   const zh = locale === "zh-CN";
   const localizedSteps = zh ? steps.map((step, index) => ({ ...step, ...stepsZh[index] })) : steps;
+  const localizedPlatforms = platformGuides.map((guide) => ({ ...guide, ...(zh ? platformGuidesZh[guide.id] : {}) }));
   const localizedChapters = zh ? chapters.map((chapter) => ({ ...chapter, ...chaptersZh[chapter.id] })) : chapters;
   const localizedRecovery = zh ? recoveryZh : recovery;
   return <main className="guidePage">
@@ -166,13 +265,45 @@ export function ManualPage() {
       <h1>{zh ? "每一步都用证据运行 YNX 测试网。" : "Operate YNX Testnet with evidence at every step."}</h1>
       <p>{zh ? "面向用户、节点运营者和验证者候选人的详细路径，覆盖浏览器、转账、跨链证据、恢复，以及“挖矿”的准确边界。" : "A detailed path for users, node operators, validator candidates, Explorer, transfers, bridge evidence, recovery, and the exact boundary of “mining.”"}</p>
       <div className="guideActions"><a className="button primary" href="/status">{zh ? "检查网络状态" : "Check network status"} <ArrowUpRight /></a><a className="button secondary" href="/docs">{zh ? "开发者文档" : "Developer docs"}</a></div>
-      <nav className="manualToc" aria-label={zh ? "手册章节" : "Manual chapters"}>{localizedChapters.map((chapter) => <a key={chapter.id} href={`#${chapter.id}`}>{chapter.title}</a>)}</nav>
+      <nav className="manualToc" aria-label={zh ? "手册章节" : "Manual chapters"}><a href="#platform-quickstart">{zh ? "Windows / macOS / Linux 快速开始" : "Windows / macOS / Linux quickstart"}</a>{localizedChapters.map((chapter) => <a key={chapter.id} href={`#${chapter.id}`}>{chapter.title}</a>)}</nav>
     </header>
 
     <section className="guideSteps" aria-labelledby="manual-start">
       <div className="guideSectionHeader"><p className="sectionEyebrow">{zh ? "安全开始" : "Safe start"}</p><h2 id="manual-start">{zh ? "从零开始完成一项可验证的测试网操作" : "From zero to a verified testnet action"}</h2></div>
       <ol>{localizedSteps.map((step) => { const Icon = step.icon; return <li key={step.number}><span className="guideNumber">{step.number}</span><Icon aria-hidden="true" /><div><h3>{step.title}</h3><p>{step.text}</p></div><a href={step.href}>{step.label} {step.href.startsWith("http") ? <ExternalLink /> : <ArrowUpRight />}</a></li>; })}</ol>
     </section>
+
+    <section className="manualChapter" id="platform-quickstart" aria-labelledby="platform-quickstart-title">
+      <header><span className="manualChapterIcon"><Server aria-hidden="true" /></span><div>
+        <p className="sectionEyebrow">{zh ? "跨平台快速开始" : "Cross-platform quickstart"}</p>
+        <h2 id="platform-quickstart-title">{zh ? "逐步操作，或先用一条只读命令核对网络。" : "Follow every step, or verify the network with one read-only command first."}</h2>
+        <p>{zh ? "三套路径覆盖钱包安装、6423 网络、YNXT 测试资产、Explorer、观察节点、验证者候选和恢复。下方一条命令只核对公开 EVM RPC 返回 0x1917；它不会安装钱包、下载或启动节点、创建账户、领取资产、成为验证者或取得任何权限。" : "All three paths cover wallet installation, network 6423, Testnet YNXT, Explorer, observer operation, validator candidacy, and recovery. The one-command path only checks that the public EVM RPC returns 0x1917; it does not install a wallet, download or start a node, create an account, request assets, enroll a validator, or grant authority."}</p>
+      </div></header>
+      <div className="guideActions">
+        <a className="button primary" href="/downloads">{zh ? "查看已验证下载" : "Open verified downloads"} <ArrowUpRight /></a>
+        <a className="button secondary" href="/">{zh ? "打开 6423 网络设置" : "Open 6423 network setup"}</a>
+        <a className="button secondary" href={apiConfig.faucetUrl}>{zh ? "领取测试 YNXT" : "Request Testnet YNXT"} <ExternalLink /></a>
+        <a className="button secondary" href={apiConfig.explorerUrl}>{zh ? "在 Explorer 验证" : "Verify in Explorer"} <ExternalLink /></a>
+      </div>
+    </section>
+
+    <div className="manualChapters" aria-label={zh ? "Windows、macOS 与 Linux 操作步骤" : "Windows, macOS, and Linux instructions"}>
+      {localizedPlatforms.map((guide) => <section className="manualChapter" id={`quickstart-${guide.id}`} key={guide.id}>
+        <header><span className="manualChapterIcon"><Server aria-hidden="true" /></span><div>
+          <p className="sectionEyebrow">{guide.name} · {zh ? "逐步路径 + 一条命令" : "Step-by-step + one-command"}</p>
+          <h2>{guide.name} {zh ? "安全开始" : "safe start"}</h2>
+          <p>{zh ? "先按顺序完成每个步骤。校验命令只检查已经下载的文件；快速命令只做公开只读网络预检。" : "Complete the steps in order. The checksum command only examines an already-downloaded file; the quick command performs a public read-only network preflight only."}</p>
+        </div></header>
+        <ol className="manualChecklist">{guide.steps.map((item, index) => <li key={item}><span>{String(index + 1).padStart(2, "0")}</span><p>{item}</p></li>)}</ol>
+        <dl className="manualFacts">
+          <div><dt>{zh ? "下载后校验" : "Verify after download"}</dt><dd><code>{guide.verifyCommand}</code></dd></div>
+          <div><dt>{zh ? "一条命令式只读预检" : "One-command read-only preflight"}</dt><dd>{zh ? "只核对 0x1917，并输出预期的 6423 / 0x1917 / YNXT 身份；不更改设备或链上状态。" : "Checks only 0x1917 and prints the expected 6423 / 0x1917 / YNXT identity; it changes neither the device nor chain state."}</dd></div>
+        </dl>
+        <pre className="manualCode"><code>{guide.quickCommand}</code></pre>
+        <div className="guideActions"><CopyCommandButton command={guide.quickCommand} label={zh ? "复制只读命令" : "Copy read-only command"} copiedLabel={zh ? "已复制" : "Copied"} manualLabel={zh ? "请手动选择并复制" : "Select and copy manually"} /></div>
+        <aside className="manualWarning"><CircleAlert /><p>{zh ? "这不是安装器，也不会自动启动观察节点或加入验证者集合。验证者准入必须经过明确的人工候选审核；任何页面或支持人员都不应索取或生成你的私钥、助记词或签名器秘密。" : "This is not an installer and it cannot start an observer or join the validator set automatically. Validator admission requires explicit human candidate review; no page or support operator should request or generate your private key, mnemonic, or signer secret."}</p></aside>
+      </section>)}
+    </div>
 
     <div className="manualChapters">{localizedChapters.map((chapter) => { const Icon = chapter.icon; return <section className="manualChapter" id={chapter.id} key={chapter.id}>
       <header><span className="manualChapterIcon"><Icon aria-hidden="true" /></span><div><p className="sectionEyebrow">{chapter.eyebrow}</p><h2>{chapter.title}</h2><p>{chapter.intro}</p></div></header>
