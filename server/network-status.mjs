@@ -1,6 +1,7 @@
 const endpoints = Object.freeze({
   status: "https://rpc.ynxweb4.com/status",
   latestBlocks: "https://explorer.ynxweb4.com/api/blocks/latest",
+  latestTransactions: "https://explorer.ynxweb4.com/api/txs?limit=5",
   explorer: "https://explorer.ynxweb4.com/health",
   validators: "https://rpc.ynxweb4.com/validators",
   evm: "https://evm.ynxweb4.com",
@@ -18,6 +19,7 @@ export async function collectNetworkStatus() {
   const status = await getJson(endpoints.status);
   const explorer = await getJson(endpoints.explorer);
   const latestBlocks = await getJson(endpoints.latestBlocks);
+  const latestTransactions = await getJson(endpoints.latestTransactions);
   const validators = await getJson(endpoints.validators);
   const evm = await getJson(endpoints.evm, {
     method: "POST",
@@ -39,6 +41,7 @@ export async function collectNetworkStatus() {
     },
     explorer,
     latestBlocks,
+    latestTransactions,
     validators,
     evm,
     sources: endpoints,

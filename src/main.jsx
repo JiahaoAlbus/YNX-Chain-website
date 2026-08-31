@@ -13,6 +13,7 @@ import { SiteHeader } from "./components/SiteHeader.jsx";
 import { SiteFooter } from "./components/SiteFooter.jsx";
 import { RoutePage } from "./components/RoutePage.jsx";
 import { AddressConverter } from "./components/AddressConverter.jsx";
+import { LatestRecords } from "./components/LatestRecords.jsx";
 import { AppsPage } from "./pages/AppsPage.jsx";
 import { DownloadPage } from "./pages/DownloadPage.jsx";
 import { DocsPage } from "./pages/DocsPage.jsx";
@@ -159,6 +160,8 @@ function App() {
           }) : <div className="tableEmpty">{validators.error || (zh ? "正在连接验证者 API" : "Connecting to validator API")}</div>}
         </div>
       </section>
+
+      <LatestRecords snapshot={snapshot} />
 
       <section className="ecosystemSection" id="ecosystem" aria-labelledby="ecosystem-title" data-reveal>
         <div className="sectionHeader">

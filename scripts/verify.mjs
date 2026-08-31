@@ -59,6 +59,7 @@ const required = [
   "src/components/StatusCard.jsx",
   "src/components/ProductPanel.jsx",
   "src/components/LinkGrid.jsx",
+  "src/components/LatestRecords.jsx",
   "src/components/CommandPalette.jsx",
   "src/sections/Hero.jsx",
   "server/network-status.mjs",
@@ -221,9 +222,16 @@ const indexNowScript = fs.readFileSync("scripts/indexnow.mjs", "utf8");
 const viteConfig = fs.readFileSync("vite.config.js", "utf8");
 const signerSource = JSON.parse(fs.readFileSync("src/lib/ynx-signer/SOURCE.json", "utf8"));
 const explorerResolver = fs.readFileSync("api/explorer/resolve.js", "utf8");
+const networkStatusSource = fs.readFileSync("server/network-status.mjs", "utf8");
 if (!commandPalette.includes('/api/explorer/resolve') || !commandPalette.includes('Search this record in YNX Explorer') || !explorerResolver.includes('https://explorer.ynxweb4.com') || !explorerResolver.includes('/api/search?q=')) {
   console.error("global search does not resolve records through the separate Explorer");
   process.exit(1);
+}
+for (const requiredLiveEndpoint of ["https://explorer.ynxweb4.com/api/blocks/latest", "https://explorer.ynxweb4.com/api/txs?limit=5", "https://explorer.ynxweb4.com/health"]) {
+  if (!networkStatusSource.includes(requiredLiveEndpoint)) {
+    console.error(`home live-record source is missing: ${requiredLiveEndpoint}`);
+    process.exit(1);
+  }
 }
 for (const officialDestination of ["https://github.com/JiahaoAlbus/YNX-Chain", "https://github.com/JiahaoAlbus/YNX-Chain-website", "https://x.com/YNXChain", "https://discord.gg/t8KpAF2KE", "https://www.youtube.com/@YNX-Chain"]) {
   if (!footer.includes(officialDestination)) {
