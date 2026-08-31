@@ -68,6 +68,7 @@ const required = [
   "api/apps/health.js",
   "api/apps/square/feed.js",
   "api/apps/square/post.js",
+  "api/explorer/resolve.js",
   "vite.config.js",
   "app/README.md",
   "components/README.md",
@@ -218,6 +219,11 @@ const indexNowKey = fs.readFileSync("public/da45868fe3e0818f27f187b21a56ccb5.txt
 const indexNowScript = fs.readFileSync("scripts/indexnow.mjs", "utf8");
 const viteConfig = fs.readFileSync("vite.config.js", "utf8");
 const signerSource = JSON.parse(fs.readFileSync("src/lib/ynx-signer/SOURCE.json", "utf8"));
+const explorerResolver = fs.readFileSync("api/explorer/resolve.js", "utf8");
+if (!commandPalette.includes('/api/explorer/resolve') || !commandPalette.includes('Search this record in YNX Explorer') || !explorerResolver.includes('https://explorer.ynxweb4.com') || !explorerResolver.includes('/api/search?q=')) {
+  console.error("global search does not resolve records through the separate Explorer");
+  process.exit(1);
+}
 if (releaseRegistry.products.some((product) => Object.hasOwn(product, "branch"))) {
   console.error("public release registry exposes internal branch names");
   process.exit(1);

@@ -5,6 +5,7 @@ import {
 } from "lucide-react";
 import docsAuthority from "virtual:ynx-docs-authority";
 import { getCatalog } from "../lib/ecosystemCatalog.js";
+import { apiConfig } from "../lib/api/ynxApi.js";
 
 const coreCommands = [
   { title: "DApps", description: "Browse every evidence-backed YNX software product", href: "/dapp", icon: AppWindow, keywords: "dapp apps software ecosystem product" },
@@ -20,6 +21,7 @@ const coreCommands = [
 export function CommandPalette({ open, onClose }) {
   const [query, setQuery] = useState("");
   const [activeIndex, setActiveIndex] = useState(0);
+  const [searchError, setSearchError] = useState("");
   const inputRef = useRef(null);
 
   const commands = useMemo(() => {
@@ -71,9 +73,23 @@ export function CommandPalette({ open, onClose }) {
 
   if (!open) return null;
 
-  const openResult = (command) => {
+  const openResult = async (command) => {
     if (!command) return;
     window.location.assign(command.href);
+  };
+
+  const searchExplorer = async () => {
+    const q = query.trim();
+    if (!q) return;
+    setSearchError("");
+    try {
+      const response = await fetch(`/api/explorer/resolve?q=${encodeURIComponent(q)}`, { cache: "no-store" });
+      const resolved = await response.json();
+      if (!response.ok || !resolved.deepLink) throw new Error(resolved.error || "Explorer search is unavailable.");
+      window.location.assign(`${apiConfig.explorerUrl}${resolved.deepLink}`);
+    } catch (error) {
+      setSearchError(error.message || "Explorer search is unavailable.");
+    }
   };
 
   const onKeyDown = (event) => {
@@ -86,6 +102,9 @@ export function CommandPalette({ open, onClose }) {
     } else if (event.key === "ArrowUp") {
       event.preventDefault();
       setActiveIndex((index) => Math.max(index - 1, 0));
+    } else if (event.key === "Enter" && query.trim()) {
+      event.preventDefault();
+      searchExplorer();
     } else if (event.key === "Enter") {
       event.preventDefault();
       openResult(results[activeIndex]);
@@ -115,6 +134,7 @@ export function CommandPalette({ open, onClose }) {
           {query.trim() ? `${results.length} results` : "Quick navigation"}
         </p>
         <div className="commandResults" role="listbox" aria-label="Search results">
+          {query.trim() && <button type="button" className="explorerSearchResult" onClick={searchExplorer}><Search aria-hidden="true" /><span><strong>Search this record in YNX Explorer</strong><small>Block · transaction · address · contract · Token · validator</small></span><kbd>↵</kbd></button>}
           {results.map((command, index) => {
             const Icon = command.icon;
             return (
@@ -140,6 +160,7 @@ export function CommandPalette({ open, onClose }) {
               <span>Try “wallet”, “API”, “security”, or “testnet”.</span>
             </div>
           )}
+          {searchError && <p className="commandSearchError" role="alert">{searchError}</p>}
         </div>
         <footer><span><kbd>↑</kbd><kbd>↓</kbd> Navigate</span><span><kbd>Esc</kbd> Close</span></footer>
       </section>
