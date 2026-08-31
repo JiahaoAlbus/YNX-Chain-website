@@ -17,6 +17,7 @@ import { ECONOMIC_ROUTES } from "./lib/economicsEvidence.js";
 import { getLegacyDAppRedirect, getProductRouteMatch } from "./lib/ecosystemCatalog.js";
 import docsAuthority from "virtual:ynx-docs-authority";
 import { LocaleProvider, useLocale } from "./lib/i18n.jsx";
+import { getRuntimeCopy, loadRuntimeCopy } from "./content/runtimeLocaleContent.js";
 import "./styles.css";
 
 const route = window.location.pathname.replace(/\/$/, "") || "/";
@@ -38,12 +39,23 @@ const PortalPage = lazyNamed(() => import("./pages/PortalPage.jsx"), "PortalPage
 
 function App() {
   const { locale } = useLocale();
-  const zh = locale === "zh-CN";
+  const [copy, setCopy] = useState(() => getRuntimeCopy(locale));
   const [snapshot, setSnapshot] = useState({ status: {}, summary: {}, validators: {}, evm: {} });
   const [services, setServices] = useState({});
   const [connectionState, setConnectionState] = useState("loading");
   const [heightMoved, setHeightMoved] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+
+  useEffect(() => {
+    let active = true;
+    const immediate = getRuntimeCopy(locale);
+    if (immediate) setCopy(immediate);
+    else {
+      setCopy(null);
+      loadRuntimeCopy(locale).then((next) => { if (active) setCopy(next); });
+    }
+    return () => { active = false; };
+  }, [locale]);
 
   useEffect(() => {
     let active = true;
@@ -98,11 +110,13 @@ function App() {
     };
   }, []);
 
+  if (!copy) return <main className="routeLoading" aria-busy="true" aria-live="polite"><span className="routeLoadingMark" aria-hidden="true" /><p>…</p></main>;
+
   if (route !== "/") {
     if (route === "/dapp/wallet/wallet-auth/callback") return <WalletAuthCallbackPage />;
     const legacyTarget = getLegacyRouteTarget(route);
     if (legacyTarget) {
-      return <LegacyRouteRedirect target={legacyTarget} />;
+      return <LegacyRouteRedirect target={legacyTarget} copy={copy.utility.moved} />;
     }
     let page = ECONOMIC_ROUTES.has(route) ? <EconomicPage path={route} /> : portalRoutes.has(route) ? <PortalPage path={route} /> : <RoutePage path={route} />;
     const productMatch = getProductRouteMatch(route);
@@ -116,7 +130,7 @@ function App() {
     if (route === "/api") page = <ApiPage />;
     if (route === "/dapp/faucet") page = <FaucetPage />;
     if (route === "/dapp/square" || route.startsWith("/dapp/square/")) page = <SquarePage path={route} />;
-    return <><SiteHeader scrollProgress={scrollProgress} /><div id="main-content" tabIndex={-1}><Suspense fallback={<RouteLoading />}>{page}</Suspense></div><SiteFooter /></>;
+    return <><SiteHeader scrollProgress={scrollProgress} /><div id="main-content" tabIndex={-1}><Suspense fallback={<RouteLoading copy={copy.utility.loading} />}>{page}</Suspense></div><SiteFooter /></>;
   }
 
   const { status = {}, summary = {}, validators = {}, evm = {} } = snapshot;
@@ -128,30 +142,30 @@ function App() {
     <>
       <SiteHeader scrollProgress={scrollProgress} />
       <main id="main-content" tabIndex={-1}>
-      <HeroPortal snapshot={snapshot} connectionState={connectionState} onAddNetwork={addNetwork} />
+      <HeroPortal snapshot={snapshot} connectionState={connectionState} onAddNetwork={() => addNetwork(copy.utility.noWallet)} />
 
       <section className="networkBand" id="network" aria-labelledby="network-title" data-reveal>
         <div className="sectionHeader compact">
-          <div><p className="sectionEyebrow">{zh ? "实时网络" : "Live network"}</p><h2 id="network-title">{zh ? "当前公开测试网状态" : "Current public testnet state"}</h2></div>
-          <div className={`connection ${connectionState}`}><span />{connectionState === "live" ? `${zh ? "更新于" : "Updated"} ${formatTime(snapshot.checkedAt, locale)}` : connectionState}</div>
+          <div><p className="sectionEyebrow">{copy.network.eyebrow}</p><h2 id="network-title">{copy.network.title}</h2></div>
+          <div className={`connection ${connectionState}`}><span />{connectionState === "live" ? `${copy.network.updated} ${formatTime(snapshot.checkedAt, locale, copy.utility.now)}` : connectionState}</div>
         </div>
         <div className="metricsGrid">
-          <StatusCard icon={<Activity />} title={zh ? "区块高度" : "Block height"} value={formatNumber(status.height, locale)} label={heightMoved ? (zh ? "正在增长" : "Growing now") : (zh ? "实时 RPC 高度" : "Live RPC height")} error={status.error} emphasis />
-          <StatusCard icon={<Gauge />} title={zh ? "EVM 链" : "EVM chain"} value={evm.result} label={zh ? "预期 0x1917" : "Expected 0x1917"} error={evm.error} />
-          <StatusCard icon={<Database />} title={zh ? "交易数" : "Transactions"} value={formatNumber(summary.totalTransactions, locale)} label={zh ? "持久化测试网记录" : "Persisted testnet records"} error={summary.error} />
-          <StatusCard icon={<Network />} title={zh ? "验证者角色" : "Validator roles"} value={validators.validators?.length} label={zh ? "预期四个公开角色" : "Expected four public roles"} error={validators.error} />
-          <StatusCard icon={<Coins />} title={zh ? "原生资产" : "Native asset"} value={status.nativeCurrencySymbol} label={zh ? "Gas 与资源资产" : "Gas and resource asset"} error={status.error} />
-          <StatusCard icon={<Box />} title={zh ? "版本" : "Release"} value={shortRelease(buildRelease)} label={buildRelease} error={status.error} />
+          <StatusCard icon={<Activity />} title={copy.network.metrics[0]} value={formatNumber(status.height, locale)} label={heightMoved ? copy.network.growing : copy.network.labels[0]} error={status.error} emphasis />
+          <StatusCard icon={<Gauge />} title={copy.network.metrics[1]} value={evm.result} label={copy.network.labels[1]} error={evm.error} />
+          <StatusCard icon={<Database />} title={copy.network.metrics[2]} value={formatNumber(summary.totalTransactions, locale)} label={copy.network.labels[2]} error={summary.error} />
+          <StatusCard icon={<Network />} title={copy.network.metrics[3]} value={validators.validators?.length} label={copy.network.labels[3]} error={validators.error} />
+          <StatusCard icon={<Coins />} title={copy.network.metrics[4]} value={status.nativeCurrencySymbol} label={copy.network.labels[4]} error={status.error} />
+          <StatusCard icon={<Box />} title={copy.network.metrics[5]} value={shortRelease(buildRelease)} label={buildRelease} error={status.error} />
         </div>
       </section>
 
       <section className="validatorSection" aria-labelledby="validators-title" data-reveal>
         <div className="sectionHeader">
-          <div><p className="sectionEyebrow">{zh ? "四区域拓扑" : "Four-region topology"}</p><h2 id="validators-title">{zh ? "可检查的验证者角色" : "Inspectable validator roles"}</h2></div>
-          <p>{zh ? "每个角色独立报告当前高度。角色可用并不代表高度已经收敛，也不能证明公开 BFT 投票已经完成。" : "Each role reports its own current height. Height convergence and public BFT voting remain pending and are not inferred from role availability."}</p>
+          <div><p className="sectionEyebrow">{copy.validators.eyebrow}</p><h2 id="validators-title">{copy.validators.title}</h2></div>
+          <p>{copy.validators.lead}</p>
         </div>
-        <div className="validatorTable" role="table" aria-label="Live validator roles">
-          <div className="validatorRow validatorHead" role="row"><span>{zh ? "位置" : "Location"}</span><span>{zh ? "角色" : "Role"}</span><span>{zh ? "高度" : "Height"}</span><span>{zh ? "状态" : "Status"}</span></div>
+        <div className="validatorTable" role="table" aria-label={copy.validators.title}>
+          <div className="validatorRow validatorHead" role="row">{copy.validators.headers.map((label) => <span key={label}>{label}</span>)}</div>
           {validatorRows.length ? validatorRows.map((validator) => {
             const lag = Math.max(0, Number(status.height || 0) - Number(validator.latestHeight || 0));
             const current = validator.peerReady && lag <= 5;
@@ -159,45 +173,36 @@ function App() {
               <div className="validatorRow" role="row" key={validator.address}>
                 <span><strong>{validator.moniker?.replace("ynx-", "") || validator.address}</strong><small>{validator.address}</small></span>
                 <span>{validator.role}</span><span>{formatNumber(validator.latestHeight, locale)}</span>
-                <span className={current ? "ready" : "pending"}><i />{current ? (zh ? "当前" : "Current") : lag > 0 ? `${formatNumber(lag, locale)} ${zh ? "个区块落后" : "behind"}` : (zh ? "等待中" : "Pending")}</span>
+                <span className={current ? "ready" : "pending"}><i />{current ? copy.validators.current : lag > 0 ? `${formatNumber(lag, locale)} ${copy.validators.behind}` : copy.validators.pending}</span>
               </div>
             );
-          }) : <div className="tableEmpty">{validators.error ? (zh ? "验证者数据暂不可用，请稍后重试。" : "Validator data is unavailable. Try again shortly.") : (zh ? "正在连接验证者 API" : "Connecting to validator API")}</div>}
+          }) : <div className="tableEmpty">{validators.error ? copy.validators.unavailable : copy.validators.connecting}</div>}
         </div>
       </section>
 
-      <LatestRecords snapshot={snapshot} />
+      <LatestRecords snapshot={snapshot} copy={copy.records} />
 
       <section className="ecosystemSection" id="ecosystem" aria-labelledby="ecosystem-title" data-reveal>
         <div className="sectionHeader">
-          <div><p className="sectionEyebrow">{zh ? "全栈生态" : "Full-stack ecosystem"}</p><h2 id="ecosystem-title">{zh ? "一条链，连接全部运营界面" : "One chain, connected operational surfaces"}</h2></div>
-          <p>{zh ? "运行时、经济系统、服务、证据与集成工具共享同一个 YNX 测试网身份。" : "Runtime, economics, services, evidence, and integration tooling share the same YNX Testnet identity."}</p>
+          <div><p className="sectionEyebrow">{copy.ecosystem.eyebrow}</p><h2 id="ecosystem-title">{copy.ecosystem.title}</h2></div>
+          <p>{copy.ecosystem.lead}</p>
         </div>
         <div className="productGrid">
-          <ProductPanel icon={<Layers3 />} title={zh ? "L1 运行时" : "L1 Runtime"} text={zh ? "持久化链状态、RPC、EVM RPC、交易、收据、日志、余额与四角色复制。" : "Persistent chain state, RPC, EVM RPC, transactions, receipts, logs, balances, and four-role replication."} status="live" href={`${apiConfig.apiBase}/status`} />
-          <ProductPanel icon={<Coins />} title={zh ? "YNXT 经济系统" : "YNXT Economy"} text={zh ? "当前运行时中的原生 Gas 与资源资产，没有隐藏的直接冻结入口。" : "Native gas and resource asset with no hidden direct-freeze hook in the current runtime."} status="live" href="/testnet" />
-          <ProductPanel icon={<Search />} title={zh ? "索引器 + 浏览器" : "Indexer + Explorer"} text={zh ? "实时区块、交易、账户、验证者、搜索、SSE 更新与网络证据。" : "Live blocks, transactions, accounts, validators, search, SSE updates, and network evidence."} status="live" href={apiConfig.explorerUrl} />
-          <ProductPanel icon={<Bot />} title="AI Gateway" text="Session and permission architecture with policy-bounded action proposal, approval, and audit." status={serviceState("ai")} href="/dapp/ai" />
-          <ProductPanel icon={<CircleDollarSign />} title="Pay API" text="Merchant-bound intents, invoices, idempotency, webhook signing, refunds, and event records." status={serviceState("pay")} href="/dapp/pay" />
-          <ProductPanel icon={<ShieldCheck />} title="Trust + Chain Law" text="Evidence-bound tracing, advisory labels, request validity, appeals, corrections, and transparency." status={serviceState("trust")} href="/dapp/trust" />
-          <ProductPanel icon={<Gauge />} title="Resource Market" text="Policy-bound quotes, delegation, rental settlement, provider income, and analytics." status={serviceState("resource")} href="/dapp/resource" />
-          <ProductPanel icon={<Braces />} title="Developer SDKs" text="Dependency-free JavaScript and Python clients verified against the live REST and EVM endpoints." status="live" href="/docs" />
-          <ProductPanel icon={<WalletCards />} title="YNX-native Identity" text="ynx1 is the default account identity across first-party YNX surfaces. The equivalent 0x value is confined to the EVM compatibility adapter." status="live" href="/#address" />
-          <ProductPanel icon={<Landmark />} title="Exchange Integration Candidate" text="Public-testnet signed transaction broadcast, nonce, block, history, receipt, and log flows are verified. No exchange listing is claimed." status="live" href={apiConfig.exchangeUrl} />
+          {[Layers3, Coins, Search, Bot, CircleDollarSign, ShieldCheck, Gauge, Braces, WalletCards, Landmark].map((Icon, index) => <ProductPanel key={copy.ecosystem.products[index].title} icon={<Icon />} {...copy.ecosystem.products[index]} status={index === 3 ? serviceState("ai") : index === 4 ? serviceState("pay") : index === 5 ? serviceState("trust") : index === 6 ? serviceState("resource") : "live"} href={[`${apiConfig.apiBase}/status`, "/testnet", apiConfig.explorerUrl, "/dapp/ai", "/dapp/pay", "/dapp/trust", "/dapp/resource", "/docs", "/#address", apiConfig.exchangeUrl][index]} />)}
         </div>
       </section>
 
       <section className="developerSection" id="developers" aria-labelledby="developers-title" data-reveal>
         <div className="developerCopy">
-          <p className="sectionEyebrow">{zh ? "开发者界面" : "Developer surface"}</p><h2 id="developers-title">{zh ? "连接真实端点。" : "Connect to real endpoints."}</h2>
-          <p>{zh ? "链身份与网络状态来自实时公开测试网；SDK 检查只核对 REST 与 EVM 高度，不提交交易。" : "Chain identity and network state come from the live public testnet. SDK checks verify REST and EVM heights without submitting transactions."}</p>
-          <a className="textLink" href="/docs">{zh ? "打开开发者文档" : "Open developer docs"} <Code2 size={17} /></a>
+          <p className="sectionEyebrow">{copy.developer.eyebrow}</p><h2 id="developers-title">{copy.developer.title}</h2>
+          <p>{copy.developer.lead}</p>
+          <a className="textLink" href="/docs">{copy.developer.action} <Code2 size={17} /></a>
         </div>
         <div className="endpointList">
-          <Endpoint label="REST RPC" value={apiConfig.apiBase} />
-          <Endpoint label="EVM JSON-RPC" value={apiConfig.evmRpc} />
-          <Endpoint label="Explorer" value={apiConfig.explorerUrl} />
-          <Endpoint label="Chain ID" value="6423 / 0x1917" />
+          <Endpoint label="REST RPC" value={apiConfig.apiBase} copy={copy.developer.copy} />
+          <Endpoint label="EVM JSON-RPC" value={apiConfig.evmRpc} copy={copy.developer.copy} />
+          <Endpoint label="Explorer" value={apiConfig.explorerUrl} copy={copy.developer.copy} />
+          <Endpoint label="Chain ID" value="6423 / 0x1917" copy={copy.developer.copy} />
         </div>
       </section>
 
@@ -205,17 +210,17 @@ function App() {
 
       <section className="readinessSection" id="readiness" aria-labelledby="readiness-title" data-reveal>
         <div className="sectionHeader">
-          <div><p className="sectionEyebrow">{zh ? "不夸大的就绪度" : "Readiness without overclaiming"}</p><h2 id="readiness-title">{zh ? "始终区分当前状态与目标状态。" : "Current state and target state stay separate."}</h2></div>
+          <div><p className="sectionEyebrow">{copy.readiness.eyebrow}</p><h2 id="readiness-title">{copy.readiness.title}</h2></div>
         </div>
         <div className="readinessColumns">
-          <div><h3><CheckCircle2 /> {zh ? "当前已验证" : "Verified now"}</h3><ul>{(zh ? ["链 ID 6423 的公开 YNX 测试网", "四个远程部署的验证者角色", "实时 RPC、EVM、水龙头、索引器与浏览器", "YNX 原生 ynx1 身份与隔离 EVM 适配器", "已签名交易与交易所候选 RPC 流程", "AI 操作、Pay、Trust、资源与治理界面", "带校验和的发布、备份与回滚工具"] : ["Public YNX Testnet on chain ID 6423", "Four remotely deployed validator roles", "Live RPC, EVM, Faucet, Indexer and Explorer", "YNX-native ynx1 identity with an isolated EVM adapter", "Signed transaction and exchange-candidate RPC flows", "AI action, Pay, Trust, Resource and governance surfaces", "Checksummed releases, backup and rollback tooling"]).map((item) => <li key={item}>{item}</li>)}</ul></div>
-          <div><h3><Clock3 /> {zh ? "仍然需要" : "Still required"}</h3><ul>{(zh ? ["YNX 原生钱包生产发布与保管移交", "公开 CometBFT 投票与切换证明", "独立公网观察点证据", "外部安全审计与主网法律审查", "外部钱包、交易所、发行方与跨链桥批准"] : ["YNX native wallet production release and custody handover", "Public CometBFT voting and cutover proof", "Independent public-vantage evidence", "External security audit and mainnet legal review", "External wallet, exchange, issuer and bridge approvals"]).map((item) => <li key={item}>{item}</li>)}</ul></div>
-          <div className="claimBoundary"><Scale size={28} /><h3>{zh ? "不作虚假声明" : "No fake claims"}</h3><p>{zh ? "本项目不宣称主网上线、交易所上币、稳定币发行方支持、钱包默认支持或第三方合作关系。" : "This project does not claim mainnet launch, exchange listing, stablecoin issuer support, wallet default support, or third-party partnerships."}</p><a href="/readiness">{zh ? "查看完整边界" : "Read full boundaries"}</a></div>
+          <div><h3><CheckCircle2 /> {copy.readiness.verifiedTitle}</h3><ul>{copy.readiness.verified.map((item) => <li key={item}>{item}</li>)}</ul></div>
+          <div><h3><Clock3 /> {copy.readiness.requiredTitle}</h3><ul>{copy.readiness.required.map((item) => <li key={item}>{item}</li>)}</ul></div>
+          <div className="claimBoundary"><Scale size={28} /><h3>{copy.readiness.boundaryTitle}</h3><p>{copy.readiness.boundary}</p><a href="/readiness">{copy.readiness.action}</a></div>
         </div>
       </section>
 
       <section className="resourceSection" aria-labelledby="resources-title" data-reveal>
-        <div className="sectionHeader"><div><p className="sectionEyebrow">{zh ? "开始构建" : "Start building"}</p><h2 id="resources-title">{zh ? "公开入口" : "Public entry points"}</h2></div></div>
+        <div className="sectionHeader"><div><p className="sectionEyebrow">{copy.readiness.resourcesEyebrow}</p><h2 id="resources-title">{copy.readiness.resourcesTitle}</h2></div></div>
         <LinkGrid />
       </section>
       </main>
@@ -228,13 +233,13 @@ function lazyNamed(loader, exportName) {
   return lazy(() => loader().then((module) => ({ default: module[exportName] })));
 }
 
-function RouteLoading() {
-  return <main className="routeLoading" aria-busy="true" aria-live="polite"><span className="routeLoadingMark" aria-hidden="true" /><p>Loading the requested YNX surface…</p></main>;
+function RouteLoading({ copy }) {
+  return <main className="routeLoading" aria-busy="true" aria-live="polite"><span className="routeLoadingMark" aria-hidden="true" /><p>{copy}</p></main>;
 }
 
-function Endpoint({ label, value }) {
+function Endpoint({ label, value, copy: copyLabels }) {
   const [copyState, setCopyState] = useState("idle");
-  const copy = async () => {
+  const copyValue = async () => {
     try {
       await navigator.clipboard.writeText(value);
       setCopyState("copied");
@@ -243,8 +248,8 @@ function Endpoint({ label, value }) {
     }
     window.setTimeout(() => setCopyState("idle"), 1400);
   };
-  const copyLabel = copyState === "copied" ? "Copied" : copyState === "failed" ? "Copy failed" : `Copy ${label}`;
-  return <div className="endpoint"><span>{label}</span><code>{value}</code><button onClick={copy} aria-label={copyLabel} title={copyLabel}>{copyState === "copied" ? <CheckCircle2 size={17} /> : <Code2 size={17} />}</button></div>;
+  const copyLabel = copyState === "copied" ? copyLabels[1] : copyState === "failed" ? copyLabels[2] : `${copyLabels[0]} ${label}`;
+  return <div className="endpoint"><span>{label}</span><code>{value}</code><button onClick={copyValue} aria-label={copyLabel} title={copyLabel}>{copyState === "copied" ? <CheckCircle2 size={17} /> : <Code2 size={17} />}</button></div>;
 }
 
 function getLegacyRouteTarget(path) {
@@ -257,7 +262,7 @@ function getLegacyRouteTarget(path) {
   return getLegacyDAppRedirect(path);
 }
 
-function LegacyRouteRedirect({ target }) {
+function LegacyRouteRedirect({ target, copy: moved }) {
   const destination = `${target}${window.location.search}${window.location.hash}`;
   useEffect(() => {
     window.location.replace(destination);
@@ -265,22 +270,22 @@ function LegacyRouteRedirect({ target }) {
   return (
     <main id="main-content" className="routePage">
       <div className="routeInner">
-        <p className="sectionEyebrow">DApp route moved</p>
-        <h1>This software now lives under /dapp.</h1>
-        <p className="routeLead">Redirecting to the canonical DApp address.</p>
-        <a className="button primary" href={destination}>Continue to DApps</a>
+        <p className="sectionEyebrow">{moved[0]}</p>
+        <h1>{moved[1]}</h1>
+        <p className="routeLead">{moved[2]}</p>
+        <a className="button primary" href={destination}>{moved[3]}</a>
       </div>
     </main>
   );
 }
 
-async function addNetwork() {
-  if (!window.ethereum) return window.alert("No EIP-1193 wallet detected.");
+async function addNetwork(noWallet) {
+  if (!window.ethereum) return window.alert(noWallet);
   await window.ethereum.request({ method: "wallet_addEthereumChain", params: [networkParams()] });
 }
 
 function formatNumber(value, locale = "en") { return Number.isFinite(Number(value)) ? new Intl.NumberFormat(locale).format(Number(value)) : undefined; }
-function formatTime(value, locale = "en") { return value ? new Intl.DateTimeFormat(locale, { hour: "2-digit", minute: "2-digit", second: "2-digit" }).format(new Date(value)) : (locale === "zh-CN" ? "现在" : "now"); }
+function formatTime(value, locale = "en", now = "now") { return value ? new Intl.DateTimeFormat(locale, { hour: "2-digit", minute: "2-digit", second: "2-digit" }).format(new Date(value)) : now; }
 function shortRelease(value) { return value.startsWith("ynx-chain-") ? value.replace("ynx-chain-", "") : value; }
 
 createRoot(document.getElementById("root")).render(<LocaleProvider><App /></LocaleProvider>);

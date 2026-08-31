@@ -3,6 +3,7 @@ import { ArrowUpRight, Droplets, Search, ShieldCheck } from "lucide-react";
 import { getCatalog, STATUS_CONFIG, DOWNLOAD_LABELS, PRODUCT_STATUS } from "../lib/ecosystemCatalog.js";
 import { getProductPublicContract, getProductPublicDisplayStatus, productSectionRoute } from "../lib/productPublicContract.js";
 import { useLocale } from "../lib/i18n.jsx";
+import { getAppsCopy } from "../content/businessLocaleContent.js";
 
 const categories = [
   {
@@ -37,14 +38,6 @@ const categories = [
   },
 ];
 
-const zhCategoryCopy = {
-  commerce: ["货币与商业", "支付、市场、商户运营、金融与交易工作流。"],
-  community: ["身份与社区", "账户保管、通信、身份协作与日程安排。"],
-  builders: ["构建与运维", "开发、可观测性、链数据、文档、浏览器与发现工具。"],
-  media: ["AI、媒体与数据", "AI 辅助工作流、内容、存储、播放与创作工具。"],
-  trust: ["信任与基础设施", "证据、治理、申诉、资源报价与结算边界。"],
-};
-
 function renderProductLink({ label, href, external }, notReady = "Not ready") {
   if (!href) {
     return (
@@ -55,14 +48,14 @@ function renderProductLink({ label, href, external }, notReady = "Not ready") {
   return (
     <a href={href} rel={external ? "noopener" : undefined}>
       {label} <ArrowUpRight size={15} />
-      {external ? <span className="visuallyHidden"> external</span> : null}
+      {external ? <span className="visuallyHidden">↗</span> : null}
     </a>
   );
 }
 
 export function AppsPage() {
   const { locale } = useLocale();
-  const zh = locale === "zh-CN";
+  const copy = getAppsCopy(locale);
   const catalog = useMemo(() => getCatalog().map((product) => {
     const publicContract = getProductPublicContract(product);
     return { ...product, publicContract, publicStatus: getProductPublicDisplayStatus(publicContract) };
@@ -70,8 +63,8 @@ export function AppsPage() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("all");
   const [status, setStatus] = useState("all");
-  const localizedCategories = useMemo(() => categories.map((group) => zh ? { ...group, label: zhCategoryCopy[group.id][0], description: zhCategoryCopy[group.id][1] } : group), [zh]);
-  const statusFilters = zh ? [["all", "全部证据状态"], [PRODUCT_STATUS.LIVE, "Registry 公开网页"], [PRODUCT_STATUS.LOCAL, "Registry 候选版本"], [PRODUCT_STATUS.PLANNED, "候选版本未完整"], [PRODUCT_STATUS.NOT_READY, "未登记"]] : [["all", "All registry states"], [PRODUCT_STATUS.LIVE, "Registry public web"], [PRODUCT_STATUS.LOCAL, "Registry candidate"], [PRODUCT_STATUS.PLANNED, "Candidate incomplete"], [PRODUCT_STATUS.NOT_READY, "Not registered"]];
+  const localizedCategories = useMemo(() => categories.map((group, index) => ({ ...group, label: copy.categories[index][0], description: copy.categories[index][1] })), [copy]);
+  const statusFilters = copy.statusFilters;
   const categoryByProduct = useMemo(() => new Map(categories.flatMap((group) => group.keys.map((key) => [key, group.id]))), []);
   const visibleGroups = useMemo(() => {
     const needle = query.trim().toLowerCase();
@@ -92,49 +85,49 @@ export function AppsPage() {
     <main className="appsPage">
       <header className="productPageHeader">
         <p className="sectionEyebrow">YNX DApps</p>
-        <h1>{zh ? `${catalog.length} 个软件产品，统一归入 /dapp 路由。` : `${catalog.length} software products, organized under one /dapp route.`}</h1>
-        <p>{zh ? "该目录如实区分已经实现与仍被阻塞的能力。每个状态都以证据为依据，并提供产品入口、文档、发布证据或下载信息。" : "This DApp directory shows only what is implemented and what is still blocked. Every label is an evidence-backed status; open entry, docs, release evidence, or downloads for each product."}</p>
-        <p className="statusMeta">{zh ? "公开网页、候选代码、本地构建、托管下载、生产签名与应用商店发布始终是相互独立的状态。" : "Public web, candidate code, local builds, hosted downloads, production signing, and store release remain separate states."}</p>
-        <div className="statusLegend" aria-label={zh ? "应用状态图例" : "Application status legend"}>
-          <span className="live">{zh ? "公开网页" : "Public web"}</span>
-          <span className="local">{zh ? "候选版本" : "Candidate"}</span>
-          <span className="planned">{zh ? "候选版本未完整" : "Candidate incomplete"}</span>
-          <span className="not-ready">{zh ? "尚未就绪" : "Not ready"}</span>
+        <h1>{catalog.length} {copy.title}</h1>
+        <p>{copy.lead}</p>
+        <p className="statusMeta">{copy.statusLead}</p>
+        <div className="statusLegend" aria-label={copy.statusFilters[0][1]}>
+          <span className="live">{copy.statusLabels[PRODUCT_STATUS.LIVE]}</span>
+          <span className="local">{copy.statusLabels[PRODUCT_STATUS.LOCAL]}</span>
+          <span className="planned">{copy.statusLabels[PRODUCT_STATUS.PLANNED]}</span>
+          <span className="not-ready">{copy.statusLabels[PRODUCT_STATUS.NOT_READY]}</span>
         </div>
       </header>
 
       <section className="appTryNow" aria-labelledby="try-now-title">
         <span className="appIcon"><Droplets /></span>
-        <div><p className="sectionEyebrow">{zh ? "现在就试" : "Try it now"}</p><h2 id="try-now-title">YNX Testnet Faucet</h2><p>{zh ? "直接在官网领取 100 YNXT 测试币，随后跳转 Explorer 验证真实链上交易。" : "Claim 100 Testnet YNXT directly on the official website, then verify the real transaction in Explorer."}</p></div>
-        <a className="button primary" href="/dapp/faucet">{zh ? "打开 Faucet" : "Open Faucet"}<ArrowUpRight /></a>
+        <div><p className="sectionEyebrow">{copy.tryEyebrow}</p><h2 id="try-now-title">YNX Testnet Faucet</h2><p>{copy.tryLead}</p></div>
+        <a className="button primary" href="/dapp/faucet">Faucet<ArrowUpRight /></a>
       </section>
 
-      <section className="appDiscovery" aria-label={zh ? "筛选 YNX DApp" : "Filter YNX DApps"}>
+      <section className="appDiscovery" aria-label={copy.search}>
         <label className="appSearch">
           <Search aria-hidden="true" />
-          <span className="visuallyHidden">{zh ? "搜索 DApp" : "Search DApps"}</span>
-          <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={zh ? "查找产品、工作流或能力" : "Find a product, workflow, or capability"} />
+          <span className="visuallyHidden">{copy.search}</span>
+          <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={copy.search} />
         </label>
-        <div className="appFilterRow" aria-label="DApp categories">
-          <button className={category === "all" ? "active" : ""} onClick={() => setCategory("all")}>{zh ? "全部分类" : "All categories"} <span>{catalog.length}</span></button>
+        <div className="appFilterRow" aria-label={copy.allCategories}>
+          <button className={category === "all" ? "active" : ""} onClick={() => setCategory("all")}>{copy.allCategories} <span>{catalog.length}</span></button>
           {localizedCategories.map((group) => <button key={group.id} className={category === group.id ? "active" : ""} onClick={() => setCategory(group.id)}>{group.label} <span>{group.keys.length}</span></button>)}
         </div>
-        <div className="appStatusFilters" aria-label="Evidence status">
+        <div className="appStatusFilters" aria-label={copy.statusFilters[0][1]}>
           {statusFilters.map(([value, label]) => <button key={value} className={status === value ? "active" : ""} onClick={() => setStatus(value)}>{label}</button>)}
-          <p role="status">{zh ? <>共 {catalog.length} 个产品，当前显示 <strong>{visibleCount}</strong> 个</> : <>Showing <strong>{visibleCount}</strong> of {catalog.length} products</>}</p>
+          <p role="status"><strong>{visibleCount}</strong> / {catalog.length}</p>
         </div>
       </section>
 
       <div className="appGroups">
         {visibleGroups.map((group) => <section className="appGroup" key={group.id} aria-labelledby={`dapp-${group.id}`}>
           <header className="appGroupHeader">
-            <div><p className="sectionEyebrow">{zh ? "DApp 分类" : "DApp category"}</p><h2 id={`dapp-${group.id}`}>{group.label}</h2></div>
+            <div><p className="sectionEyebrow">DApp</p><h2 id={`dapp-${group.id}`}>{group.label}</h2></div>
             <p>{group.description}</p>
-            <strong>{zh ? `${group.products.length} 个产品` : `${group.products.length} product${group.products.length === 1 ? "" : "s"}`}</strong>
+            <strong>{group.products.length}</strong>
           </header>
           <div className="appDirectory">
           {group.products.map((product) => {
-          const statusLabel = zh ? ({ [PRODUCT_STATUS.LIVE]: "Registry 公开网页", [PRODUCT_STATUS.LOCAL]: "Registry 候选版本", [PRODUCT_STATUS.PLANNED]: "候选版本未完整", [PRODUCT_STATUS.NOT_READY]: "未登记" }[product.publicStatus] || product.publicStatus) : (STATUS_CONFIG[product.publicStatus]?.label || product.publicStatus);
+          const statusLabel = copy.statusLabels[product.publicStatus] || product.publicStatus;
           const statusTone = STATUS_CONFIG[product.publicStatus]?.tone || product.publicStatus;
           const surfaces = [
             ...(product.publicContract.publicWebVerified ? ["Web"] : []),
@@ -149,27 +142,27 @@ export function AppsPage() {
               </header>
               <div className="appCopy"><strong>{product.name}</strong><small>{product.detail}</small></div>
               <dl className="appCardFacts">{product.metrics.map(([label, value]) => <div key={`${product.key}-${label}`}><dt>{label}</dt><dd>{value}</dd></div>)}</dl>
-              <div className="appSurfaces"><span>{zh ? "可用平台" : "Available surfaces"}</span><strong>{surfaces.length ? surfaces.join(" · ") : (zh ? "暂无公开软件包" : "No public package")}</strong></div>
+              <div className="appSurfaces"><span>{copy.available}</span><strong>{surfaces.length ? surfaces.join(" · ") : copy.noPackage}</strong></div>
               <footer className="appCardActions">
-                <a className="appPrimaryLink" href={productSectionRoute(product.route, "overview")}>{zh ? "查看产品" : "View product"} <ArrowUpRight /></a>
-                <a href={productSectionRoute(product.route, "open-download")}>{zh ? "打开 / 下载" : "Open / download"} <ArrowUpRight size={15} /></a>
-                <a href={productSectionRoute(product.route, "risks")}>{zh ? "风险" : "Risks"} <ArrowUpRight size={15} /></a>
-                {renderProductLink(product.docs, zh ? "尚未就绪" : "Not ready")}
-                {product.publicContract.releaseEvidence.status === "available" ? renderProductLink({ label: zh ? "发布证据" : "Release evidence", href: product.publicContract.releaseEvidence.href, external: /^https?:\/\//.test(product.publicContract.releaseEvidence.href) }, zh ? "尚未就绪" : "Not ready") : null}
+                <a className="appPrimaryLink" href={productSectionRoute(product.route, "overview")}>{copy.view} <ArrowUpRight /></a>
+                <a href={productSectionRoute(product.route, "open-download")}>{copy.openDownload} <ArrowUpRight size={15} /></a>
+                <a href={productSectionRoute(product.route, "risks")}>{copy.risks} <ArrowUpRight size={15} /></a>
+                {renderProductLink(product.docs, copy.statusLabels[PRODUCT_STATUS.NOT_READY])}
+                {product.publicContract.releaseEvidence.status === "available" ? renderProductLink({ label: copy.release, href: product.publicContract.releaseEvidence.href, external: /^https?:\/\//.test(product.publicContract.releaseEvidence.href) }, copy.statusLabels[PRODUCT_STATUS.NOT_READY]) : null}
               </footer>
             </article>
           );
           })}
           </div>
         </section>)}
-        {!visibleCount ? <section className="appsNoResults"><Search /><h2>{zh ? "没有匹配的 DApp" : "No matching DApps"}</h2><p>{zh ? "清除筛选条件，或按产品名称、工作流、证据或能力搜索。" : "Clear a filter or search by product name, workflow, evidence, or capability."}</p></section> : null}
+        {!visibleCount ? <section className="appsNoResults"><Search /><h2>{copy.noneTitle}</h2><p>{copy.noneLead}</p></section> : null}
       </div>
 
       <aside className="evidenceBoundary">
         <ShieldCheck />
         <div>
-          <strong>{zh ? "产品状态服从证据。" : "Product status follows evidence."}</strong>
-          <p>{zh ? "只有在用户工作流、安全边界、部署和公开验证均存在时，后端代码、就绪包和未来计划才能被视为完成的应用。" : "Backend code, readiness packages, and future plans do not become finished applications until user workflow, security boundary, deployment, and public verification exist."}</p>
+          <strong>{copy.boundaryTitle}</strong>
+          <p>{copy.boundary}</p>
         </div>
       </aside>
     </main>
