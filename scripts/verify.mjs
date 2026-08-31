@@ -631,6 +631,10 @@ for (const requiredText of ['[data-theme="dark"]', ":focus-visible", ".commandPa
     process.exit(1);
   }
 }
+if (!styles.includes("prefers-reduced-motion: reduce")) {
+  console.error("reduced-motion preference is not respected");
+  process.exit(1);
+}
 for (const requiredText of ["Public web", "Candidate", "Candidate incomplete", "Not ready", "evidence-backed status", "Money & commerce", "Identity & community", "Build & operate", "AI, media & data", "Trust & infrastructure", "Find a product, workflow, or capability", "Available surfaces", "View product", "appCardFacts"]) {
   if (!appsPage.includes(requiredText)) {
     console.error(`application truth status missing: ${requiredText}`);
