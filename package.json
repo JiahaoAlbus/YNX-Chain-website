@@ -7,6 +7,7 @@
     "build": "vite build && node scripts/verify-bundle-split.mjs && node scripts/prerender.mjs && node scripts/indexnow.mjs --dry-run",
     "preview": "vite preview --host 127.0.0.1",
     "test": "node --test test/*.test.mjs && node scripts/docs-authority.mjs --verify-hosting && node scripts/verify.mjs",
+    "test:ops-evidence": "node scripts/generate-website-sbom.mjs && node scripts/verify-website-ops-evidence.mjs",
     "docs:verify": "node scripts/docs-authority.mjs --verify",
     "indexnow:dry-run": "node scripts/indexnow.mjs --dry-run",
     "release:indexnow": "node scripts/indexnow.mjs",

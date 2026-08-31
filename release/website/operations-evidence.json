@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "ynx-website-operations-evidence/v1",
+  "productId": "28",
+  "sourceBaseline": "5de72fcc7f472c98733146d0bbfd47ce39cc4bf0",
+  "evidenceAsOf": "2026-09-01",
+  "scope": "operations-security-release-truth-documentation-handoff",
+  "network": {
+    "chainId": 6423,
+    "evmChainId": "0x1917",
+    "nativeAsset": "YNXT",
+    "mainnet": false
+  },
+  "handoffIntegration": {
+    "expectedCount": 5,
+    "integratedCount": 0,
+    "allIntegrated": false,
+    "integrationReceipt": null
+  },
+  "releaseTruth": {
+    "implementedLocal": false,
+    "testedLocal": false,
+    "installedLocal": false,
+    "integratedCentral": false,
+    "deployedStaging": false,
+    "deployedPublic": false,
+    "downloadHosted": false,
+    "productionSigned": false,
+    "storeReleased": false
+  },
+  "directEvidence": {
+    "focusedVerifierPassed": true,
+    "cleanIntegratedBuildPassed": false,
+    "exactSourcePublicReadback": false,
+    "productionSloMeasured": false,
+    "capacityRunCompleted": false,
+    "unitEconomicsInputsAccepted": false,
+    "dependencyReviewAccepted": false,
+    "secretScanPassed": false,
+    "sastPassed": false,
+    "dastPassed": false,
+    "artifactScanPassed": false,
+    "reproducibleBuildProved": false,
+    "backupRestoreDrillPassed": false,
+    "rollbackDrillPassed": false,
+    "productionObservabilityAccepted": false,
+    "accessibilityMatrixPassed": false,
+    "searchProviderReceiptsAccepted": false
+  },
+  "sbom": {
+    "path": "docs/SBOM.spdx.json",
+    "source": "package-lock.json",
+    "lockfileVersion": 3,
+    "generated": true,
+    "independentDependencyReviewAccepted": false
+  },
+  "evidenceIndex": "docs/EVIDENCE_INDEX.md",
+  "operatorInputs": "release/operator-inputs.request.json",
+  "notes": [
+    "This record describes a local documentation handoff only.",
+    "All runtime, public, performance, security-scan, recovery, accessibility and search-provider claims remain false until direct receipts are attached.",
+    "The five parallel Website handoffs are not integrated into this source baseline."
+  ]
+}
