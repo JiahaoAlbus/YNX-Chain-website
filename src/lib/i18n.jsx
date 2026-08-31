@@ -60,7 +60,15 @@ export function LocaleProvider({ children }) {
     return normalizeLocale(queryLocale || saved || navigator.language);
   });
 
-  const setLocale = (next) => setLocaleState(normalizeLocale(next));
+  const setLocale = (next) => {
+    const normalized = normalizeLocale(next);
+    setLocaleState(normalized);
+    // A deliberate language choice must survive copying, refresh and history
+    // navigation; automatic browser-language selection remains query-free.
+    const url = new URL(window.location.href);
+    url.searchParams.set("lang", normalized);
+    window.history.replaceState(window.history.state, "", `${url.pathname}${url.search}${url.hash}`);
+  };
 
   useEffect(() => {
     document.documentElement.lang = locale;

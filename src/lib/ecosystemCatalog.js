@@ -44,10 +44,16 @@ const makeDownloads = (items = {}) => ({
   ...items
 });
 
-const WEBSITE_HOSTED_ARTIFACTS = new Set();
+// This is deliberately an allow-list, not a source-tree-path guess. A file
+// becomes downloadable only when its immutable path is part of this website
+// build and registered in its release manifest.
+const WEBSITE_HOSTED_ARTIFACTS = new Set([
+  "/releases/wallet/60e7426c1758/ynx-mobile-android.apk",
+  "/releases/wallet/60e7426c1758/ynx-wallet-desktop-windows-x64.exe"
+]);
 
-const artifactDownload = (status, artifactPath, note, href = null) => {
-  const hosted = !!href || WEBSITE_HOSTED_ARTIFACTS.has(artifactPath);
+const artifactDownload = (status, artifactPath, note, href = null, metadata = {}) => {
+  const hosted = WEBSITE_HOSTED_ARTIFACTS.has(href);
   return {
     status,
     label: hosted && status === PRODUCT_STATUS.LIVE ? "Web" : undefined,
@@ -55,7 +61,8 @@ const artifactDownload = (status, artifactPath, note, href = null) => {
     external: hosted && /^https?:\/\//.test(href || ""),
     downloadHosted: hosted,
     artifactPath,
-    note: hosted ? note : `${note} (not hosted on this website)`
+    note: hosted ? note : `${note} (not hosted on this website)`,
+    ...metadata
   };
 };
 
@@ -149,11 +156,11 @@ const evidence = {
       pwa: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-web-pwa-0.1.0.zip", "Unsigned PWA Testnet Preview · source a1c680982b63 · SHA-256 63d83cd2…d287 · 272,706 bytes · requires Service Worker and Web Crypto.", "/downloads/wallet-web/sha256-63d83cd20925f2d52c0f21f548fa7a857a4d056e03e5fa16244f173164a7d287/ynx-wallet-web-pwa-0.1.0.zip"),
       chromeEdge: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-chrome-edge-0.1.0.zip", "Unsigned unpacked Chrome/Edge Testnet Preview · source a1c680982b63 · SHA-256 c733093d…e2aa · 188,846 bytes · Chrome/Edge 120+.", "/downloads/wallet-web/sha256-c733093dea47c6612c8a9d5ecea40be2227f62402f4b4966955c9e1accf4e2aa/ynx-wallet-chrome-edge-0.1.0.zip"),
       firefox: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-firefox-0.1.0.zip", "Unsigned unpacked Firefox Testnet Preview · source a1c680982b63 · SHA-256 417d9b9e…36b3 · 188,883 bytes · Firefox 128+.", "/downloads/wallet-web/sha256-417d9b9e5babf05fdfdf8161504389eb99c636be75f94444bf4ff91a9b4536b3/ynx-wallet-firefox-0.1.0.zip"),
-      android: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-1.0.3-testnet-preview-3ab8c24c-local-test-signed.apk", "Android Testnet Preview 1.0.3 · source 3ab8c24c · SHA-256 afd68685…e0 · 78,233,954 bytes · Android API 24+ / target API 36 · direct retry after an authoritative Testnet read failure; API 36 install, two cold starts, biometric unlock and real Testnet account read verified · local test signer only, not production signed or Play Store released.", "/downloads/wallet/sha256-afd686851ef07fbb07823295d07179b79e1a4a078d1b528bc149bd619c8689e0/ynx-wallet-1.0.3-testnet-preview-3ab8c24c-local-test-signed.apk"),
+      android: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-mobile-android.apk", "Legacy Android Testnet Preview. It is website-hosted but not production signed, store released, or backed by published device-install proof.", "/releases/wallet/60e7426c1758/ynx-mobile-android.apk", { version: "1.0.0", sizeBytes: 78313394, sha256: "68d7cec948a7bf8ab1e0b7f34ddbd45e6f0cc91d7ca59d780134679470f8b746", signingClass: "disposable-qa-release-key", sourceCommit: "ccaf878c", installProof: "not published" }),
       ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS project exists; simulator/launch evidence not completed on this host." },
       macos: installerReplacement("macOS", ".dmg", "ynx-wallet-cli-darwin-arm64.gz", "wallet-platform"),
       linux: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-desktop-0.1.0-x86_64.rpm", "Unsigned Linux x64 RPM candidate · evidence c2622ca2e189 · SHA-256 8cf24d83…2bea · 86,926,281 bytes · Fedora 42 x64 lifecycle verified; official hosting gate pending."),
-      windows: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-desktop-windows-x64.exe", "Fixed-source Windows Testnet Candidate · source 018cf5ab · SHA-256 8f1839de821e753ec348b07315d77f0ccbc7bc6af5fb4156858c023d73631d32 · 104,731,961 bytes · signing class unsigned.", "/releases/wallet/60e7426c1758/ynx-wallet-desktop-windows-x64.exe")
+      windows: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-desktop-windows-x64.exe", "Windows Testnet Preview. It is website-hosted but unsigned and has no published device-install proof.", "/releases/wallet/60e7426c1758/ynx-wallet-desktop-windows-x64.exe", { version: "1.0.0", sizeBytes: 104731961, sha256: "8f1839de821e753ec348b07315d77f0ccbc7bc6af5fb4156858c023d73631d32", signingClass: "unsigned", sourceCommit: "ccaf878c", installProof: "website-hosted artifact; runtime/install proof pending" })
     }
   },
   social: {

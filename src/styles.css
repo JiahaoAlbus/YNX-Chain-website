@@ -369,6 +369,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .downloadItem a { display: inline-flex; align-items: center; min-height: 44px; gap: 7px; text-decoration: none; color: var(--blue); font-weight: 700; font-size: 12px; }
 .downloadItem a:hover { text-decoration: underline; }
 .downloadItem.preview { border-color: rgba(0,47,167,.28); background: #f5f8ff; }
+.downloadEvidence { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px 14px; width: 100%; margin: 10px 0 2px; padding: 10px 0 0; border-top: 1px solid var(--line); }
+.downloadEvidence div { min-width: 0; }
+.downloadEvidence dt { color: var(--muted); font-size: 10px; font-weight: 750; letter-spacing: .03em; text-transform: uppercase; }
+.downloadEvidence dd { margin: 2px 0 0; overflow-wrap: anywhere; color: var(--ink); font-size: 11px; line-height: 1.4; }
+.downloadEvidence code { font-size: 10px; }
 .evidenceBoundary { margin-top: 38px; padding: 24px 0; display: grid; grid-template-columns: 32px minmax(0,1fr); gap: 16px; border-top: 1px solid var(--blue); border-bottom: 1px solid var(--line); }
 .evidenceBoundary svg { color: var(--blue); }
 .evidenceBoundary p { margin: 6px 0 0; max-width: 850px; color: var(--muted); line-height: 1.55; }

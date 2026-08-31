@@ -3,6 +3,15 @@ import { ArrowUpRight, Download, FileJson2, ShieldCheck } from "lucide-react";
 import { getCatalog, DOWNLOAD_LABELS, PLATFORM_STATUS, PRODUCT_STATUS } from "../lib/ecosystemCatalog.js";
 import { useLocale } from "../lib/i18n.jsx";
 
+function formatBytes(bytes, locale) {
+  if (!Number.isFinite(Number(bytes))) return null;
+  const units = ["B", "KB", "MB", "GB"];
+  let value = Number(bytes);
+  let index = 0;
+  while (value >= 1024 && index < units.length - 1) { value /= 1024; index += 1; }
+  return `${new Intl.NumberFormat(locale, { maximumFractionDigits: 1 }).format(value)} ${units[index]}`;
+}
+
 function renderTarget(platform, item, productName, zh) {
   const name = DOWNLOAD_LABELS[platform] || platform;
   const status = PLATFORM_STATUS[item.status] || { text: "Not ready" };
@@ -19,6 +28,14 @@ function renderTarget(platform, item, productName, zh) {
         {item.downloadHosted ? <Download size={14} /> : <ArrowUpRight size={14} />}
       </a>
       {item.note ? <small>{item.note}</small> : null}
+      {item.downloadHosted ? <dl className="downloadEvidence" aria-label={`${productName} ${name} release evidence`}>
+        <div><dt>{zh ? "版本" : "Version"}</dt><dd>{item.version || "Unavailable"}</dd></div>
+        <div><dt>{zh ? "大小" : "Size"}</dt><dd>{formatBytes(item.sizeBytes, zh ? "zh-CN" : "en") || "Unavailable"}</dd></div>
+        <div><dt>SHA-256</dt><dd><code>{item.sha256 || "Unavailable"}</code></dd></div>
+        <div><dt>{zh ? "签名" : "Signing"}</dt><dd>{item.signingClass || "Unavailable"}</dd></div>
+        <div><dt>{zh ? "来源提交" : "Source commit"}</dt><dd><code>{item.sourceCommit || "Unavailable"}</code></dd></div>
+        <div><dt>{zh ? "安装验证" : "Install proof"}</dt><dd>{item.installProof || "Unavailable"}</dd></div>
+      </dl> : null}
     </li>
   );
 }
