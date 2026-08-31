@@ -49,6 +49,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .toolButton:hover { color: var(--blue); border-color: rgba(0,47,167,.35); }
 .toolButton svg { width: 17px; }
 .toolButton span { font-size: 12px; font-weight: 700; }
+.walletConnect { height: 40px; display: inline-flex; align-items: center; gap: 7px; padding: 0 12px; border: 1px solid var(--blue); border-radius: 8px; color: white; background: var(--blue); box-shadow: 0 5px 12px rgba(0,47,167,.16); cursor: pointer; font: inherit; transition: transform .2s ease, background .2s ease, box-shadow .2s ease; }
+.walletConnect:hover { background: var(--blue-dark); transform: translateY(-1px); box-shadow: 0 8px 18px rgba(0,47,167,.22); }
+.walletConnect svg { width: 16px; }
+.walletConnect span { max-width: 152px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; font-weight: 750; }
+.walletConnect.unavailable, .walletConnect.error { background: var(--surface-raised); color: #b54708; border-color: #f4c58e; box-shadow: none; }
 .localeButton { min-width: 48px; color: var(--blue); }
 .localeSelect { height: 40px; display: inline-flex; align-items: center; border: 1px solid var(--line); border-radius: 8px; color: var(--blue); background: var(--surface-raised); }
 .localeSelect select { height: 100%; min-width: 58px; padding: 0 7px; border: 0; outline: 0; color: inherit; background: transparent; font: 700 12px/1 inherit; cursor: pointer; }
@@ -869,6 +874,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
   .siteHeader nav a { font-size: 12px; }
   .siteHeader .navExplorer { padding: 8px 9px; }
   .searchButton kbd { display: none; }
+  .searchButton span, .walletConnect span { display: none; }
+  .walletConnect { width: 40px; justify-content: center; padding: 0; }
   .metricsGrid { grid-template-columns: repeat(3, 1fr); }
   .productGrid { grid-template-columns: repeat(2, 1fr); }
   .readinessColumns { grid-template-columns: 1fr 1fr; }
@@ -900,6 +907,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
   .headerTools { gap: 2px; }
   .localeSelect { height: 40px; }
   .toolButton { padding: 0; }
+  .walletConnect { width: 40px; justify-content: center; padding: 0; }
+  .walletConnect span { display: none; }
   .siteHeader nav { display: none; position: absolute; top: 66px; left: 0; right: 0; padding: 18px; background: rgba(255,255,255,.98); border-bottom: 1px solid var(--line); flex-direction: column; align-items: stretch; gap: 0; }
   [data-theme="dark"] .siteHeader nav { background: rgba(8,13,25,.98); }
   .siteHeader nav.open { display: flex; }

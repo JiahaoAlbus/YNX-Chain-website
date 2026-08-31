@@ -61,7 +61,7 @@ const required = [
   "src/components/LinkGrid.jsx",
   "src/components/LatestRecords.jsx",
   "src/components/CommandPalette.jsx",
-  "src/sections/Hero.jsx",
+  "src/sections/HeroPortal.jsx",
   "server/network-status.mjs",
   "server/app-gateway.mjs",
   "api/network/status.js",
@@ -168,7 +168,7 @@ for (const key of ["VITE_YNX_API_BASE_URL", "VITE_YNX_EVM_RPC_URL", "VITE_YNX_EX
   }
 }
 const styles = fs.readFileSync("src/styles.css", "utf8");
-const hero = fs.readFileSync("src/sections/Hero.jsx", "utf8");
+const hero = fs.readFileSync("src/sections/HeroPortal.jsx", "utf8");
 const addressConverter = fs.readFileSync("src/components/AddressConverter.jsx", "utf8");
 const main = fs.readFileSync("src/main.jsx", "utf8");
 const indexHtml = fs.readFileSync("index.html", "utf8");
@@ -203,6 +203,10 @@ const downloadsPage = fs.readFileSync("src/pages/DownloadPage.jsx", "utf8");
 const productStatusPage = fs.readFileSync("src/pages/ProductStatusPage.jsx", "utf8");
 const ecosystemCatalog = fs.readFileSync("src/lib/ecosystemCatalog.js", "utf8");
 const installerReplacementMatrix = JSON.parse(fs.readFileSync("public/releases/installer-replacement-matrix.json", "utf8"));
+if (!header.includes('method: "eth_requestAccounts"') || !header.includes('t("connectWallet")')) {
+  console.error("header wallet connection must remain explicit and visible");
+  process.exit(1);
+}
 for (const platform of ["pwa", "chromeEdge", "firefox"]) {
   if (!downloadsPage.includes(`"${platform}"`) || !productStatusPage.includes(`"${platform}"`)) {
     console.error(`Wallet Web download platform is hidden from a public page: ${platform}`);
@@ -482,12 +486,12 @@ if (
   console.error("Wallet/Auth P0 runtime publication or its claim boundary is not visible in Docs");
   process.exit(1);
 }
-if (!styles.includes("--blue: #002fa7") || !styles.includes(".heroStage.isPulling")) {
-  console.error("missing Klein blue palette or draggable hero interaction");
+if (!styles.includes("--blue: #002fa7") || !styles.includes(".portalHeroV2")) {
+  console.error("missing Klein blue palette or visible portal hero");
   process.exit(1);
 }
-if (!hero.includes("executionScene") || !hero.includes("onPointerMove") || hero.includes("<img") || hero.includes("ynx-execution-sculpture.png")) {
-  console.error("CSS execution scene or pull interaction is not configured correctly");
+if (!hero.includes("YNX_6423.cosmosChainId") || !hero.includes("Open Explorer") || !hero.includes("onAddNetwork")) {
+  console.error("6423 portal hero identity or explicit actions are incomplete");
   process.exit(1);
 }
 const nativeOutput = addressConverter.indexOf('label="YNX native (default)"');
