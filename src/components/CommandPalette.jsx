@@ -7,6 +7,7 @@ import docsAuthority from "virtual:ynx-docs-authority";
 import { getCatalog } from "../lib/ecosystemCatalog.js";
 import { apiConfig } from "../lib/api/ynxApi.js";
 import { useLocale } from "../lib/i18n.jsx";
+import { ECONOMIC_COMMANDS } from "../lib/economicsEvidence.js";
 
 const coreCommands = (t) => [
   { title: "DApps", description: "Browse every evidence-backed YNX software product", href: "/dapp", icon: AppWindow, keywords: "dapp apps software ecosystem product" },
@@ -42,7 +43,8 @@ export function CommandPalette({ open, onClose }) {
       keywords: `product ${product.key} ${product.status}`,
     }));
     const seen = new Set();
-    return [...coreCommands(t), ...articleCommands, ...productCommands].filter((command) => {
+    const economicCommands = ECONOMIC_COMMANDS.map((command) => ({ ...command, icon: CircleHelp }));
+    return [...coreCommands(t), ...economicCommands, ...articleCommands, ...productCommands].filter((command) => {
       if (seen.has(command.href)) return false;
       seen.add(command.href);
       return true;

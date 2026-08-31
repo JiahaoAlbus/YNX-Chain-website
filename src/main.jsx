@@ -13,6 +13,7 @@ import { SiteHeader } from "./components/SiteHeader.jsx";
 import { SiteFooter } from "./components/SiteFooter.jsx";
 import { AddressConverter } from "./components/AddressConverter.jsx";
 import { LatestRecords } from "./components/LatestRecords.jsx";
+import { ECONOMIC_ROUTES } from "./lib/economicsEvidence.js";
 import { getLegacyDAppRedirect, getProductByRoute } from "./lib/ecosystemCatalog.js";
 import docsAuthority from "virtual:ynx-docs-authority";
 import { LocaleProvider, useLocale } from "./lib/i18n.jsx";
@@ -22,6 +23,7 @@ const route = window.location.pathname.replace(/\/$/, "") || "/";
 const portalRoutes = new Set(["/blockchain", "/tokens", "/data", "/governance", "/developers", "/downloads", "/ecosystem", "/more"]);
 
 const RoutePage = lazyNamed(() => import("./components/RoutePage.jsx"), "RoutePage");
+const EconomicPage = lazyNamed(() => import("./pages/EconomicPage.jsx"), "EconomicPage");
 const AppsPage = lazyNamed(() => import("./pages/AppsPage.jsx"), "AppsPage");
 const DownloadPage = lazyNamed(() => import("./pages/DownloadPage.jsx"), "DownloadPage");
 const DocsPage = lazyNamed(() => import("./pages/DocsPage.jsx"), "DocsPage");
@@ -102,7 +104,7 @@ function App() {
     if (legacyTarget) {
       return <LegacyRouteRedirect target={legacyTarget} />;
     }
-    let page = portalRoutes.has(route) ? <PortalPage path={route} /> : <RoutePage path={route} />;
+    let page = ECONOMIC_ROUTES.has(route) ? <EconomicPage path={route} /> : portalRoutes.has(route) ? <PortalPage path={route} /> : <RoutePage path={route} />;
     const product = getProductByRoute(route);
     const authorityArticle = docsAuthority.articles.find((article) => article.route === route);
     if (product) page = <ProductStatusPage product={product} article={authorityArticle} artifact={docsAuthority.artifact} />;
