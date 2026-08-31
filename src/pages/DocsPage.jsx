@@ -3,6 +3,7 @@ import { ArrowRight, BookOpen, CheckCircle2, Download, Search, ShieldCheck, Spar
 import { apiConfig } from "../lib/api/ynxApi.js";
 import { getCatalog } from "../lib/ecosystemCatalog.js";
 import { guideFor } from "../content/ecosystemGuides.js";
+import { DOCS_UI_CJK } from "../content/docsUiCjk.js";
 import docsAuthority from "virtual:ynx-docs-authority";
 import docsLocales from "virtual:ynx-docs-locales";
 import { useLocale } from "../lib/i18n.jsx";
@@ -71,12 +72,14 @@ const DOCS_UI = {
   },
 };
 
+Object.assign(DOCS_UI, DOCS_UI_CJK);
+
 const textFromHtml = (html) => html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
 
 export function DocsPage() {
   const { locale } = useLocale();
   const localizedDocs = selectLocalizedDocs({ ...docsAuthority, ...docsLocales }, locale);
-  const ui = DOCS_UI[locale] || DOCS_UI.en;
+  const ui = DOCS_UI[locale];
   const articles = localizedDocs.articles;
   const catalog = useMemo(() => getCatalog(), []);
   const [query, setQuery] = useState("");
@@ -189,7 +192,7 @@ export function DocsPage() {
         <div className="sectionHeader compact">
           <div><p className="sectionEyebrow">{ui.ecosystemEyebrow}</p><h2 id="ecosystem-rules-title">{ui.ecosystemTitle}</h2><p>{ui.ecosystemLead}</p></div>
         </div>
-        <div className="docsProductGuides">
+        {ui.guidesAvailable === false ? null : <div className="docsProductGuides">
           {catalog.map((product) => {
             const guide = guideFor(product.key);
             if (!guide) return null;
@@ -205,7 +208,7 @@ export function DocsPage() {
               </details>
             );
           })}
-        </div>
+        </div>}
       </section>
 
       <section className="docsSessionRelease" id="wallet-session-release" aria-labelledby="wallet-session-release-title">

@@ -18,7 +18,7 @@ export function loadDocsLocales(root, sourceArticles) {
       missingMatrix[locale] = [...sourceRoutes];
       continue;
     }
-    const records = validateArtifact(readJson(path.join(localeRoot, artifactName)), locale, sourceArticles, manifest.direction[locale]);
+    const records = validateArtifact(readJson(path.join(localeRoot, artifactName)), locale, sourceArticles, manifest.direction[locale], manifest.changeLogHeading[locale]);
     byLocale[locale] = records;
     missingMatrix[locale] = sourceRoutes.filter((route) => !records.some((article) => article.route === route));
   }
@@ -28,7 +28,7 @@ export function loadDocsLocales(root, sourceArticles) {
   return { schema: manifest.schema, sourceLocale: manifest.sourceLocale, requestedLocales: manifest.requestedLocales, publishedLocales: manifest.publishedLocales, direction: manifest.direction, byLocale, missingMatrix };
 }
 
-function validateArtifact(artifact, locale, sourceArticles, direction) {
+function validateArtifact(artifact, locale, sourceArticles, direction, changeLogHeading) {
   if (artifact.schema !== "ynx-docs-locale-artifact/v1" || artifact.locale !== locale || artifact.direction !== direction) throw new Error(`invalid docs locale artifact: ${locale}`);
   if (!Array.isArray(artifact.articles)) throw new Error(`docs locale has no articles: ${locale}`);
   const sourceByRoute = new Map(sourceArticles.map((article) => [article.route, article]));
@@ -38,7 +38,10 @@ function validateArtifact(artifact, locale, sourceArticles, direction) {
     if (!source || seen.has(record.route)) throw new Error(`invalid or duplicate localized route: ${locale}:${record.route}`);
     seen.add(record.route);
     for (const field of ["h1", "description", "markdown"]) if (typeof record[field] !== "string" || !record[field].trim()) throw new Error(`empty ${field}: ${locale}:${record.route}`);
-    if (!record.markdown.includes("## ") || !record.markdown.includes("## 变更记录")) throw new Error(`localized article lacks body or change log: ${locale}:${record.route}`);
+    if (!changeLogHeading || !record.markdown.includes("## ") || !record.markdown.includes(`## ${changeLogHeading}`)) throw new Error(`localized article lacks body or change log: ${locale}:${record.route}`);
+    const sourceSectionCount = source.markdown.match(/^##\s+/gm)?.length || 0;
+    const localizedSectionCount = record.markdown.match(/^##\s+/gm)?.length || 0;
+    if (localizedSectionCount < sourceSectionCount) throw new Error(`localized article drops semantic sections: ${locale}:${record.route}`);
     const publicText = `${record.h1}\n${record.description}\n${record.markdown}`;
     for (const pattern of BANNED_PUBLIC_TEXT) if (pattern.test(publicText)) throw new Error(`localized article exposes banned text: ${locale}:${record.route}`);
     if (normalized(publicText) === normalized(`${source.h1}\n${source.description}\n${source.markdown}`)) throw new Error(`localized article silently copies English: ${locale}:${record.route}`);

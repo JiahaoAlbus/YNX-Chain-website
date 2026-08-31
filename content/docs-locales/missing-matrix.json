@@ -4,12 +4,12 @@
   "requestedLocaleCount": 12,
   "completeLocales": [
     "en",
-    "zh-CN"
-  ],
-  "incompleteLocales": [
+    "zh-CN",
     "zh-TW",
     "ja",
-    "ko",
+    "ko"
+  ],
+  "incompleteLocales": [
     "es",
     "fr",
     "de",
@@ -21,54 +21,9 @@
   "missingMatrix": {
     "en": [],
     "zh-CN": [],
-    "zh-TW": [
-      "/developer",
-      "/dex",
-      "/economics",
-      "/exchange",
-      "/faq",
-      "/products",
-      "/quant",
-      "/security",
-      "/testnet",
-      "/trust",
-      "/wallet",
-      "/what-is-ynx-chain",
-      "/what-is-ynx-web4",
-      "/what-is-ynxt"
-    ],
-    "ja": [
-      "/developer",
-      "/dex",
-      "/economics",
-      "/exchange",
-      "/faq",
-      "/products",
-      "/quant",
-      "/security",
-      "/testnet",
-      "/trust",
-      "/wallet",
-      "/what-is-ynx-chain",
-      "/what-is-ynx-web4",
-      "/what-is-ynxt"
-    ],
-    "ko": [
-      "/developer",
-      "/dex",
-      "/economics",
-      "/exchange",
-      "/faq",
-      "/products",
-      "/quant",
-      "/security",
-      "/testnet",
-      "/trust",
-      "/wallet",
-      "/what-is-ynx-chain",
-      "/what-is-ynx-web4",
-      "/what-is-ynxt"
-    ],
+    "zh-TW": [],
+    "ja": [],
+    "ko": [],
     "es": [
       "/developer",
       "/dex",
