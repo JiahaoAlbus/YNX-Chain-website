@@ -157,7 +157,7 @@ function App() {
                 <span className={current ? "ready" : "pending"}><i />{current ? (zh ? "当前" : "Current") : lag > 0 ? `${formatNumber(lag, locale)} ${zh ? "个区块落后" : "behind"}` : (zh ? "等待中" : "Pending")}</span>
               </div>
             );
-          }) : <div className="tableEmpty">{validators.error || (zh ? "正在连接验证者 API" : "Connecting to validator API")}</div>}
+          }) : <div className="tableEmpty">{validators.error ? (zh ? "验证者数据暂不可用，请稍后重试。" : "Validator data is unavailable. Try again shortly.") : (zh ? "正在连接验证者 API" : "Connecting to validator API")}</div>}
         </div>
       </section>
 
