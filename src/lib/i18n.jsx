@@ -1,11 +1,11 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
 
-export const SUPPORTED_LOCALES = ["en", "zh-CN"];
+export const SUPPORTED_LOCALES = ["en", "zh-CN", "zh-TW", "ja", "ko"];
 
 const messages = {
   en: {
     skip: "Skip to content", home: "YNX Chain home", primaryNav: "Primary navigation",
-    products: "Products", dapps: "DApps", ecosystem: "Ecosystem", download: "Download", manual: "Manual", docs: "Docs", status: "Status", explorer: "Explorer",
+    products: "Products", dapps: "DApps", ecosystem: "YNX Ecosystem", download: "Download", manual: "Manual", docs: "Docs", status: "Status", explorer: "Explorer", openExplorer: "Open Explorer", blockchain: "Blockchain", tokens: "Tokens", data: "Data", governance: "Governance", developers: "Developers", downloads: "Downloads", more: "More",
     search: "Search", searchOpen: "Search and open command palette", light: "Use light mode", dark: "Use dark mode",
     openNav: "Open navigation", closeNav: "Close navigation", language: "Language", switchLanguage: "切换到简体中文",
     footerLead: "Web4 L1 ecosystem built around YNXT.", userManual: "User manual", developerDocs: "Developer docs", api: "API", faq: "FAQ",
@@ -14,13 +14,14 @@ const messages = {
   },
   "zh-CN": {
     skip: "跳到正文", home: "YNX Chain 首页", primaryNav: "主导航",
-    products: "产品", dapps: "DApp", ecosystem: "生态", download: "下载", manual: "使用手册", docs: "文档", status: "状态", explorer: "浏览器",
+    products: "产品", dapps: "DApp", ecosystem: "YNX 生态", download: "下载", manual: "使用手册", docs: "文档", status: "状态", explorer: "浏览器", openExplorer: "打开区块浏览器", blockchain: "区块链", tokens: "代币", data: "数据", governance: "治理", developers: "开发者", downloads: "下载中心", more: "更多",
     search: "搜索", searchOpen: "搜索并打开命令面板", light: "切换到浅色模式", dark: "切换到深色模式",
     openNav: "打开导航", closeNav: "关闭导航", language: "语言", switchLanguage: "Switch to English",
     footerLead: "围绕 YNXT 构建的 Web4 L1 生态系统。", userManual: "用户手册", developerDocs: "开发者文档", api: "API", faq: "常见问题",
     security: "安全", support: "支持", square: "广场", readiness: "就绪度", risk: "风险", privacy: "隐私", terms: "条款",
     footerBoundary: "公开测试网项目。未宣称主网上线、交易所上币、稳定币发行方支持、钱包默认支持或第三方合作关系。"
-  }
+  },
+  "zh-TW": {}, ja: {}, ko: {}
 };
 
 const LocaleContext = createContext({ locale: "en", setLocale: () => {}, t: (key) => key });
@@ -36,7 +37,12 @@ function enforceNativeLtr() {
 }
 
 function normalizeLocale(value) {
-  return value === "zh-CN" || String(value || "").toLowerCase().startsWith("zh") ? "zh-CN" : "en";
+  const candidate = String(value || "");
+  if (SUPPORTED_LOCALES.includes(candidate)) return candidate;
+  if (candidate.toLowerCase().startsWith("zh")) return candidate.toLowerCase().includes("tw") || candidate.toLowerCase().includes("hk") ? "zh-TW" : "zh-CN";
+  if (candidate.toLowerCase().startsWith("ja")) return "ja";
+  if (candidate.toLowerCase().startsWith("ko")) return "ko";
+  return "en";
 }
 
 export function LocaleProvider({ children }) {

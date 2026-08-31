@@ -1,8 +1,9 @@
 const endpoints = Object.freeze({
   status: "https://rpc.ynxweb4.com/status",
-  summary: "https://rpc.ynxweb4.com/explorer/summary",
+  latestBlocks: "https://explorer.ynxweb4.com/api/blocks/latest",
+  explorer: "https://explorer.ynxweb4.com/health",
   validators: "https://rpc.ynxweb4.com/validators",
-  evm: "https://rpc.ynxweb4.com/evm",
+  evm: "https://evm.ynxweb4.com",
   faucet: "https://faucet.ynxweb4.com/health",
   ai: "https://ai.ynxweb4.com/health",
   pay: "https://pay.ynxweb4.com/health",
@@ -15,22 +16,34 @@ export async function collectNetworkStatus() {
   // Fetch the identity-bearing endpoints in sequence. The public ingress can
   // throttle concurrent requests from one deployment worker.
   const status = await getJson(endpoints.status);
-  const summary = await getJson(endpoints.summary);
+  const explorer = await getJson(endpoints.explorer);
+  const latestBlocks = await getJson(endpoints.latestBlocks);
   const validators = await getJson(endpoints.validators);
   const evm = await getJson(endpoints.evm, {
     method: "POST",
     headers: { "content-type": "application/json" },
     body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: "eth_chainId", params: [] })
   });
-  const identityValid = status.chainId === 6423 && status.nativeCurrencySymbol === "YNXT" && evm.result === "0x1917";
+  const rpcMatchesExplorer = explorer.ok === true && explorer.network?.chainId === 6423 && explorer.rpcHeight === explorer.indexedHeight && explorer.indexerOk === true;
+  const identityValid = status.chainId === 6423 && status.nativeCurrencySymbol === "YNXT" && evm.result === "0x1917" && rpcMatchesExplorer;
   return {
     ok: identityValid,
     checkedAt,
     status,
-    summary,
+    summary: {
+      totalTransactions: explorer.indexedTxCount,
+      indexedHeight: explorer.indexedHeight,
+      indexedBlockCount: explorer.indexedBlockCount,
+      syncLagBlocks: explorer.syncLagBlocks,
+      error: explorer.error
+    },
+    explorer,
+    latestBlocks,
     validators,
     evm,
-    sources: endpoints
+    sources: endpoints,
+    degraded: !identityValid,
+    degradedReason: !rpcMatchesExplorer ? "RPC and Explorer Indexer are not both verified for YNX 6423." : undefined
   };
 }
 

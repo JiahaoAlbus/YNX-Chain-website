@@ -23,6 +23,7 @@ import { ManualPage } from "./pages/ManualPage.jsx";
 import { ApiPage } from "./pages/ApiPage.jsx";
 import { FaucetPage } from "./pages/FaucetPage.jsx";
 import { WalletAuthCallbackPage } from "./pages/WalletAuthCallbackPage.jsx";
+import { PortalPage, portalRoutes } from "./pages/PortalPage.jsx";
 import { getLegacyDAppRedirect, getProductByRoute } from "./lib/ecosystemCatalog.js";
 import docsAuthority from "virtual:ynx-docs-authority";
 import { LocaleProvider, useLocale } from "./lib/i18n.jsx";
@@ -98,7 +99,7 @@ function App() {
     if (legacyTarget) {
       return <LegacyRouteRedirect target={legacyTarget} />;
     }
-    let page = <RoutePage path={route} />;
+    let page = portalRoutes.has(route) ? <PortalPage path={route} /> : <RoutePage path={route} />;
     const product = getProductByRoute(route);
     const authorityArticle = docsAuthority.articles.find((article) => article.route === route);
     if (product) page = <ProductStatusPage product={product} article={authorityArticle} artifact={docsAuthority.artifact} />;

@@ -50,6 +50,7 @@ const required = [
   "src/pages/SquarePage.jsx",
   "src/pages/ManualPage.jsx",
   "src/pages/ApiPage.jsx",
+  "src/pages/PortalPage.jsx",
   "src/lib/ecosystemCatalog.js",
   "src/lib/ynx-signer/index.js",
   "src/lib/ynx-signer/client.js",
@@ -113,6 +114,19 @@ for (const file of walk(".")) {
     if (source.includes(term)) {
       console.error(`disallowed term in ${file}: ${term}`);
       process.exit(1);
+    }
+  }
+}
+for (const root of ["src", "server", "api", "vercel.json"]) {
+  const candidates = root.endsWith(".json") ? [root] : walk(root);
+  for (const file of candidates) {
+    if (!/\.(js|jsx|json)$/i.test(file)) continue;
+    const source = fs.readFileSync(file, "utf8");
+    for (const retired of ["9102", "0x238e", "ynx_9102-1"]) {
+      if (source.includes(retired)) {
+        console.error(`retired network identity leaked into production source: ${file}: ${retired}`);
+        process.exit(1);
+      }
     }
   }
 }
@@ -522,8 +536,14 @@ for (const boundary of ['url.origin !== self.location.origin', 'url.pathname.sta
     process.exit(1);
   }
 }
-if (!header.includes('["dapps", "/dapp"]') || !header.includes('["ecosystem", "/dapp"]') || !header.includes('["docs", "/docs"]') || !header.includes('["status", "/status"]')) {
-  console.error("stable DApps, Ecosystem, Docs, and Status navigation is missing");
+for (const requiredRoute of ['["blockchain", "/blockchain"]', '["tokens", "/tokens"]', '["data", "/data"]', '["governance", "/governance"]', '["ecosystem", "/ecosystem"]', '["developers", "/developers"]', '["downloads", "/downloads"]', '["docs", "/docs"]', '["more", "/more"]']) {
+  if (!header.includes(requiredRoute)) {
+    console.error(`required official navigation route is missing: ${requiredRoute}`);
+    process.exit(1);
+  }
+}
+if (!header.includes('apiConfig.explorerUrl') || !header.includes('navExplorer')) {
+  console.error("separate Explorer entry is missing from official navigation");
   process.exit(1);
 }
 for (const requiredText of ["metaKey", "ctrlKey", "ynx-theme", "localStorage.removeItem(\"ynx-direction\")", "CommandPalette", 't("skip")']) {
@@ -532,15 +552,15 @@ for (const requiredText of ["metaKey", "ctrlKey", "ynx-theme", "localStorage.rem
     process.exit(1);
   }
 }
-for (const requiredText of ["LocaleProvider", "SUPPORTED_LOCALES", '"zh-CN"', "ynx-locale", "enforceNativeLtr", "MutationObserver", 'style.setProperty("direction", "ltr", "important")', "navigator.language"]) {
+for (const requiredText of ["LocaleProvider", "SUPPORTED_LOCALES", '"zh-CN"', '"zh-TW"', '"ja"', '"ko"', "ynx-locale", "enforceNativeLtr", "MutationObserver", 'style.setProperty("direction", "ltr", "important")', "navigator.language"]) {
   const localeSource = requiredText === "LocaleProvider" ? main : i18n;
   if (!localeSource.includes(requiredText)) {
     console.error(`native locale capability missing: ${requiredText}`);
     process.exit(1);
   }
 }
-if (!header.includes("localeButton") || !header.includes('setLocale(locale === "en" ? "zh-CN" : "en")')) {
-  console.error("native English/Simplified Chinese locale control is missing");
+if (!header.includes("localeSelect") || !header.includes('value="zh-TW"') || !header.includes('value="ja"') || !header.includes('value="ko"')) {
+  console.error("five-language locale control is missing");
   process.exit(1);
 }
 for (const requiredText of ["role=\"dialog\"", "aria-modal=\"true\"", "ArrowDown", "ArrowUp", "No matching YNX resource", "API reference"]) {

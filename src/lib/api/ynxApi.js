@@ -1,3 +1,20 @@
+export const YNX_6423 = Object.freeze({
+  cosmosChainId: "ynx_6423-1",
+  chainId: 6423,
+  evmChainId: "0x1917",
+  networkName: "YNX Testnet",
+  nativeCurrency: Object.freeze({ name: "YNXT", symbol: "YNXT", decimals: 18 }),
+  mainnet: false,
+  services: Object.freeze({
+    rpc: "https://rpc.ynxweb4.com",
+    evm: "https://evm.ynxweb4.com",
+    explorer: "https://explorer.ynxweb4.com",
+    faucet: "https://faucet.ynxweb4.com",
+    monitor: "https://monitor.ynxweb4.com",
+    gateway: "https://api.ynxweb4.com"
+  })
+});
+
 const DEFAULTS = {
   apiBase: "https://rpc.ynxweb4.com",
   evmRpc: "https://evm.ynxweb4.com",
@@ -52,9 +69,9 @@ export async function loadServiceHealth() {
 
 export function networkParams() {
   return {
-    chainId: "0x1917",
-    chainName: "YNX Testnet",
-    nativeCurrency: { name: "YNXT", symbol: "YNXT", decimals: 18 },
+    chainId: YNX_6423.evmChainId,
+    chainName: YNX_6423.networkName,
+    nativeCurrency: YNX_6423.nativeCurrency,
     rpcUrls: [apiConfig.evmRpc],
     blockExplorerUrls: [apiConfig.explorerUrl]
   };

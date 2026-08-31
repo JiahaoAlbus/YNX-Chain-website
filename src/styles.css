@@ -36,7 +36,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .brand { display: inline-flex; align-items: center; min-height: 44px; gap: 8px; color: var(--blue); text-decoration: none; }
 .brand img { display: block; width: 52px; height: 28px; object-fit: contain; }
 .brand small { font-size: 10px; font-weight: 800; }
-.siteHeader nav { display: flex; align-items: center; gap: 26px; }
+.siteHeader nav { display: flex; align-items: center; gap: 18px; }
 .siteHeader nav a { position: relative; color: #4b5261; font-size: 14px; text-decoration: none; transition: color .2s ease; }
 .siteHeader nav > a:not(.navExplorer)::after { content: ""; position: absolute; left: 0; right: 0; bottom: -7px; height: 1px; background: var(--blue); transform: scaleX(0); transition: transform .2s ease; }
 .siteHeader nav > a:hover { color: var(--blue); }
@@ -50,6 +50,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .toolButton svg { width: 17px; }
 .toolButton span { font-size: 12px; font-weight: 700; }
 .localeButton { min-width: 48px; color: var(--blue); }
+.localeSelect { height: 40px; display: inline-flex; align-items: center; border: 1px solid var(--line); border-radius: 8px; color: var(--blue); background: var(--surface-raised); }
+.localeSelect select { height: 100%; min-width: 58px; padding: 0 7px; border: 0; outline: 0; color: inherit; background: transparent; font: 700 12px/1 inherit; cursor: pointer; }
 .toolButton kbd { padding: 2px 5px; border: 1px solid var(--line); border-radius: 4px; color: var(--muted); background: var(--soft); font-size: 10px; }
 .commandBackdrop { position: fixed; z-index: 110; inset: 0; display: grid; place-items: start center; padding: min(16vh, 130px) 18px 18px; background: rgba(2,8,24,.52); backdrop-filter: blur(10px); }
 .commandPalette { width: min(680px, 100%); max-height: min(690px, 78svh); overflow: hidden; display: grid; grid-template-rows: auto auto minmax(0,1fr) auto; border: 1px solid rgba(255,255,255,.35); border-radius: 14px; color: var(--ink); background: var(--surface-raised); box-shadow: 0 34px 90px rgba(0,15,60,.28); }
@@ -247,6 +249,23 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .footerLinks a:hover { text-decoration: underline; }
 .footerBoundary { grid-column: 1 / -1; padding-top: 26px; border-top: 1px solid rgba(255,255,255,.26); font-size: 12px; }
 .routePage { min-height: 76svh; background: white; padding: 100px 24px; }
+.portalPage { width:min(1240px,calc(100% - 48px)); margin:0 auto; padding:70px 0 108px; }
+.portalHero { display:grid; gap:16px; max-width:850px; padding:24px 0 46px; border-bottom:1px solid var(--line); }
+.portalHero h1 { max-width:800px; margin:0; font-size:clamp(38px,5vw,68px); line-height:1.04; letter-spacing:-.045em; }
+.portalHero > p:not(.sectionEyebrow) { max-width:760px; margin:0; color:var(--muted); font-size:18px; line-height:1.65; }
+.portalActions { display:flex; flex-wrap:wrap; gap:10px; margin-top:10px; }
+.portalStatus { display:grid; grid-template-columns:.8fr 1.2fr; gap:24px; margin-top:32px; padding:26px; border:1px solid var(--line); border-top:3px solid var(--blue); border-radius:12px; background:var(--soft); }
+.portalStatus h2,.portalFacts h2,.portalConfig h2,.unavailableChart h2,.ynxtCard h2 { margin:11px 0 6px; font-size:22px; }
+.portalStatus p,.portalConfig p,.unavailableChart p,.ynxtCard p { margin:0; color:var(--muted); line-height:1.55; font-size:13px; }
+.statusPill { display:inline-flex; align-items:center; gap:6px; padding:6px 8px; border-radius:999px; color:#055c36; background:#e8f6ef; font-size:12px; font-weight:800; }
+.statusPill svg { width:15px; }.statusPill.degraded,.statusPill.unavailable,.statusPill.checking { color:#8a4a00; background:#fff4e5; }
+.portalLiveValues { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); border-left:1px solid var(--line); }
+.portalLiveValues span { min-width:0; padding:13px 16px; border-right:1px solid var(--line); }.portalLiveValues span:last-child { border-right:0; }
+.portalLiveValues small,.portalConfigRow > span { display:block; color:var(--muted); font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.04em; }.portalLiveValues strong { display:block; margin-top:8px; overflow-wrap:anywhere; font-size:18px; }
+.portalLayout { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:24px; }.portalFacts,.portalConfig { padding:28px; border:1px solid var(--line); border-radius:12px; background:#fff; }
+.portalFacts ul { display:grid; gap:17px; margin:22px 0 0; padding:0; list-style:none; }.portalFacts li { display:grid; grid-template-columns:19px minmax(0,1fr); gap:10px; color:#33405a; line-height:1.5; font-size:14px; }.portalFacts li svg { width:18px; color:var(--green); }
+.portalConfigHead { display:flex; gap:12px; align-items:flex-start; padding-bottom:14px; border-bottom:1px solid var(--line); }.portalConfigHead > svg { width:24px; height:24px; color:var(--blue); }.portalConfigHead h2 { margin:0; }.portalConfigRow { display:grid; grid-template-columns:72px minmax(0,1fr) 36px; gap:10px; align-items:center; min-height:55px; border-bottom:1px solid var(--line); }.portalConfigRow:last-child { border-bottom:0; }.portalConfigRow code { overflow-wrap:anywhere; color:var(--blue); font-size:12px; }.copyMini { width:32px; height:32px; display:inline-flex; align-items:center; justify-content:center; border:1px solid var(--line); border-radius:7px; color:var(--blue); background:#fff; cursor:pointer; }.copyMini svg { width:15px; }
+.unavailableChart,.ynxtCard { display:flex; justify-content:space-between; gap:28px; align-items:center; margin-top:24px; padding:28px; border:1px dashed #aebbd7; border-radius:12px; background:var(--soft); }.unavailableChart > div { display:grid; grid-template-columns:30px minmax(0,1fr); column-gap:12px; }.unavailableChart > div > svg { grid-row:1 / span 2; color:#a56a00; }.unavailableChart h2,.unavailableChart p { grid-column:2; }.unavailableChart button { display:inline-flex; align-items:center; gap:8px; min-height:40px; border:1px solid var(--line); border-radius:8px; color:var(--muted); background:#fff; cursor:not-allowed; }.unavailableChart button svg { width:15px; }.ynxtCard { border-style:solid; border-color:#c9d6ff; background:#f1f5ff; }.ynxtCard > svg { width:36px; height:36px; color:var(--blue); }.ynxtCard > div { flex:1; }.ynxtCard h2 { margin-top:2px; }
 .routeInner { width: min(920px, 100%); margin: 0 auto; }
 .backLink { display: inline-flex; gap: 7px; align-items: center; margin-bottom: 70px; color: var(--blue); text-decoration: none; font-size: 13px; font-weight: 700; }
 .routePage h1 { max-width: 760px; color: var(--blue); font-size: 58px; }
@@ -838,6 +857,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
 [data-theme="dark"] .manualWarning { background: #2b1718; }
 [data-theme="dark"] .squareLoading span { background: linear-gradient(100deg, var(--soft) 20%, #253149 38%, var(--soft) 56%); background-size: 220% 100%; }
 @media (max-width: 1000px) {
+  .siteHeader { padding-left: 18px; padding-right: 18px; }
+  .siteHeader nav { gap: 10px; }
+  .siteHeader nav a { font-size: 12px; }
+  .siteHeader .navExplorer { padding: 8px 9px; }
+  .searchButton kbd { display: none; }
   .metricsGrid { grid-template-columns: repeat(3, 1fr); }
   .productGrid { grid-template-columns: repeat(2, 1fr); }
   .readinessColumns { grid-template-columns: 1fr 1fr; }
@@ -867,6 +891,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
   .menuButton { display: inline-flex; }
   .searchButton span, .searchButton kbd { display: none; }
   .headerTools { gap: 2px; }
+  .localeSelect { height: 40px; }
   .toolButton { padding: 0; }
   .siteHeader nav { display: none; position: absolute; top: 66px; left: 0; right: 0; padding: 18px; background: rgba(255,255,255,.98); border-bottom: 1px solid var(--line); flex-direction: column; align-items: stretch; gap: 0; }
   [data-theme="dark"] .siteHeader nav { background: rgba(8,13,25,.98); }
@@ -925,6 +950,16 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
   .routePage { padding: 70px 18px; }
   .backLink { margin-bottom: 48px; }
   .routePage h1 { font-size: 42px; }
+  .portalPage { width:calc(100% - 36px); padding:44px 0 72px; }
+  .portalHero { padding-top:8px; padding-bottom:34px; }
+  .portalHero > p:not(.sectionEyebrow) { font-size:16px; }
+  .portalStatus,.portalLayout { grid-template-columns:1fr; }
+  .portalStatus { padding:20px; }
+  .portalLiveValues { border-top:1px solid var(--line); border-left:0; }
+  .portalLiveValues span { padding:14px 9px; }
+  .portalLiveValues strong { font-size:14px; }
+  .portalFacts,.portalConfig { padding:20px; }
+  .unavailableChart,.ynxtCard { align-items:flex-start; flex-direction:column; padding:20px; }
   .routeLead { font-size: 17px; }
   .routeFacts { grid-template-columns: repeat(2, 1fr); }
   .appsPage, .squarePage, .docsPage, .downloadPage { width: calc(100% - 36px); padding: 58px 0 78px; }
