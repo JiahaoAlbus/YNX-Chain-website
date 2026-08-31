@@ -44,7 +44,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .siteHeader .navExplorer { color: white; background: var(--blue); border-radius: 8px; padding: 9px 12px; display: inline-flex; gap: 6px; align-items: center; transition: background .2s ease, transform .2s ease; }
 .siteHeader .navExplorer:hover { color: white; background: var(--blue-dark); transform: translateY(-1px); }
 .menuButton { display: none; width: 44px; height: 44px; border: 0; color: var(--blue); background: transparent; align-items: center; justify-content: center; }
-.headerTools { display: flex; align-items: center; gap: 6px; }
+.headerTools { position: relative; display: flex; align-items: center; gap: 6px; }
 .toolButton { min-width: 40px; height: 40px; padding: 0 10px; display: inline-flex; align-items: center; justify-content: center; gap: 7px; border: 1px solid var(--line); border-radius: 8px; color: var(--muted); background: var(--surface-raised); cursor: pointer; }
 .toolButton:hover { color: var(--blue); border-color: rgba(0,47,167,.35); }
 .toolButton svg { width: 17px; }
@@ -54,6 +54,16 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .walletConnect svg { width: 16px; }
 .walletConnect span { max-width: 152px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; font-weight: 750; }
 .walletConnect.unavailable, .walletConnect.error { background: var(--surface-raised); color: #b54708; border-color: #f4c58e; box-shadow: none; }
+.walletMenu { position: absolute; z-index: 65; top: calc(100% + 10px); right: 0; width: min(300px, calc(100vw - 28px)); padding: 8px; border: 1px solid var(--line); border-radius: 10px; color: var(--ink); background: var(--surface-raised); box-shadow: 0 18px 46px rgba(0,20,78,.2); }
+.walletMenu p { display: grid; gap: 4px; margin: 5px 6px 9px; color: var(--muted); font-size: 12px; }
+.walletMenu p strong { color: var(--ink); }
+.walletMenu p span { overflow-wrap: anywhere; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; }
+.walletMenu button { width: 100%; min-height: 40px; padding: 9px 10px; border: 0; border-radius: 7px; color: white; background: var(--blue); font: 700 12px/1.2 inherit; text-align: left; cursor: pointer; }
+.walletMenu button + button { margin-top: 5px; }
+.walletMenu button:hover { background: var(--blue-dark); }
+.walletMenu button.quiet { color: var(--muted); background: var(--soft); }
+.walletMenu .walletNetwork { padding: 7px 8px; border-radius: 6px; color: #9a4e04; background: #fff7ed; }
+.walletMenu .walletNetwork.ready { color: var(--green); background: #edfaf2; }
 .localeButton { min-width: 48px; color: var(--blue); }
 .localeSelect { height: 40px; display: inline-flex; align-items: center; border: 1px solid var(--line); border-radius: 8px; color: var(--blue); background: var(--surface-raised); }
 .localeSelect select { height: 100%; min-width: 58px; padding: 0 7px; border: 0; outline: 0; color: inherit; background: transparent; font: 700 12px/1 inherit; cursor: pointer; }
