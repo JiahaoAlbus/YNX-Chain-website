@@ -127,3 +127,13 @@ test('standalone still rejects arbitrary rewrite patterns and non-root use of th
     await assert.rejects(createStandaloneServer({ distRoot, sourceIdentity: identity, environment: {}, routingConfig: { rewrites: [rewrite] } }), /Rewrite sources must be exact paths/);
   }
 });
+
+// Vercel applies this path rule to missing resources too, so it must not make a 404 immutable.
+test('Vercel asset-path headers require revalidation for both existing and missing resources', () => {
+  const rules = configuration.headers.filter((rule) => rule.source === '/assets/:path*');
+  assert.equal(rules.length, 1);
+  const controls = rules[0].headers.filter((header) => header.key.toLowerCase() === 'cache-control');
+  assert.equal(controls.length, 1);
+  assert.deepEqual(controls[0].value.split(',').map((value) => value.trim().toLowerCase()), ['public', 'max-age=0', 'must-revalidate']);
+  assert.doesNotMatch(controls[0].value, /immutable/i);
+});
