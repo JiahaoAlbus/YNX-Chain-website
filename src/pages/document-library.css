@@ -1,4 +1,4 @@
-.documentLibraryPage, .documentReader { --doc-blue: #123bd6; --doc-ink: #15213c; --doc-muted: #59667c; --doc-line: #dce3ee; --doc-paper: #fff; --doc-soft: #f5f7fc; color: var(--doc-ink); }
+.documentLibraryPage, .documentReader { --doc-blue: #002fa7; --doc-ink: #002fa7; --doc-muted: #465d87; --doc-line: #dbe4f6; --doc-paper: #fff; --doc-soft: #f5f8ff; color: var(--doc-ink); color-scheme: light; }
 .documentLibraryPage { max-width: 1360px; padding: 54px 40px 100px; margin-inline: auto; }
 .documentLibraryHero { margin-block-end: 44px; }
 .documentBack { display: inline-flex; align-items: center; gap: 9px; font-size: 14px; color: var(--doc-muted); text-decoration: none; margin-block-end: 38px; }
@@ -52,7 +52,7 @@
 .documentBody ul, .documentBody ol { padding-inline-start: 25px; margin-block: 13px 24px; }
 .documentBody li { margin-block: 8px; }
 .documentBody a { color: var(--doc-blue); text-decoration: underline; text-underline-offset: 3px; }
-.documentBody pre { padding: 20px; margin-block: 20px 27px; background: #101c37; color: #e8efff; border-radius: 5px; overflow-x: auto; line-height: 1.75; white-space: pre; word-break: normal; overflow-wrap: normal; }
+.documentBody pre { padding: 20px; margin-block: 20px 27px; background: #002fa7; color: #fff; border-radius: 5px; overflow-x: auto; line-height: 1.75; white-space: pre; word-break: normal; overflow-wrap: normal; }
 .documentBody code { font: .84em/1.7 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
 .documentBody p code, .documentBody li code { padding: 2px 5px; background: var(--doc-soft); border-radius: 3px; }
 .documentBody blockquote { border-inline-start: 3px solid var(--doc-line); padding-inline-start: 20px; margin-inline: 0; color: var(--doc-muted); }
@@ -86,7 +86,4 @@
   .documentBody { font-size: 14px; }
   .documentBody pre { padding: 16px; }
   .documentBody h3 { font-size: 19px; }
-}
-@media (prefers-color-scheme: dark) {
-  .documentLibraryPage, .documentReader { --doc-blue: #89a9ff; --doc-ink: #e3eafb; --doc-muted: #aab7ce; --doc-line: #34435b; --doc-paper: #121d30; --doc-soft: #1b2940; }
 }

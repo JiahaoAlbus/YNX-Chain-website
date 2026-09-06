@@ -1,0 +1,169 @@
+{
+  "documentId": "whitepaper-streambft-specification",
+  "locale": "zh-TW",
+  "sourceLocale": "en",
+  "sourceSha256": "68e08662dc2e57bf6ca0499a40d88cf8497d8c60ecb41ff69ae52c68b3c4de78",
+  "translationStatus": "translated-draft",
+  "translationOfVersion": "0.1.1-candidate",
+  "translationNote": "繁體中文全文譯稿。版本日期、草案狀態與證據界線均沿用英文原文，不代表目前實網功能已通過驗證。",
+  "translatedSha256": "7e254292d10d754c28313faac6af3da7220ffe661844773f1fdd5b3d59676576",
+  "markdown": "# YNX StreamBFT 規範\n\n| 中繼資料 | 值 |\n| --- | --- |\n| 版本 | 0.1.1-candidate |\n| 生效日期 | 2026-07-22 |\n| 來源提交 | `719e1018267ed5a53e6fae5211c5fd8a1503c35c` |\n| 已審閱的影子候選原始碼 | `9c2d39799b9eef0be06e3b04d4ffe2e9087cc5b8` |\n| 產品發佈狀態 | YNX Testnet 文件候選版本 |\n| 最近審閱 | 2026-07-22 |\n| 替代版本 | 無 |\n| 審閱狀態 | 工程規範；需要獨立的共識與安全審閱 |\n\n## 1. 範圍與術語\n\nYNX 當前有兩條不同的共識路線。CometBFT `v0.38.23` 配合 YNX ABCI 2.0 應用，是已接受的安全基線。較新的 StreamBFT 實現僅存在於已審閱的候選原始碼提交中，是預設禁用、經過本機測試的影子候選版本。本文不聲稱公開網路運行 StreamBFT，該影子候選版本也未整合到上方標明的統一原始碼中。\n\n第 2 至 17 節先定義統一原始碼所代表的、已接受的 CometBFT/ABCI 行為。第 18 節單獨記錄較新的 StreamBFT 影子候選版本。主網參數、無須許可的驗證者准入、罰沒經濟機制、形式化驗證產物、公開 StreamBFT 部署和正式環境去中心化，均不在已證明範圍內。\n\n規範性術語 `MUST`（必須）、`MUST NOT`（不得）、`SHOULD`（應當）和 `MAY`（可以）描述候選行為。只有在標明的原始碼提交上，與某項要求直接相關的測試及部署證據通過後，該要求才能成為發佈聲明。\n\n## 2. 網路與軟體身份\n\n| 屬性 | 候選值 |\n| --- | --- |\n| 網路 | YNX Testnet |\n| 數值型應用/EVM 鏈 ID | `6423` |\n| Comet 鏈 ID | `ynx_6423-1` |\n| 原生測試網資產 | YNXT |\n| CometBFT | `v0.38.23` |\n| ABCI 應用名稱 | `ynx-abci` |\n| ABCI 預設傳輸方式 | Socket |\n| ABCI 預設監聽地址 | 回送 TCP 連接埠 26658 |\n| 遷移狀態版本 | 1 |\n| 已提交狀態版本 | 7 |\n| 原生交易版本 | 1 |\n\n正式環境候選包必須綁定唯一且精確的二進制與原始碼發佈版本、遷移狀態雜湊、創世組態、驗證者公開清單及包內文件摘要。候選包不得包含驗證者或節點私鑰。\n\n## 3. 信任與故障模型\n\nCometBFT 提供共識網路、提案、投票、提交和驗證者集合機制。YNX 應用假定已組態的驗證者集合與金鑰綁定真實可信。四角色候選方案使用 `primary`、`singapore`、`silicon-valley` 和 `seoul` 作為運營身份；這些名稱不能證明所有權獨立，也不能證明地理去中心化。\n\n候選方案的安全性依賴於：\n\n- CometBFT 的法定人數假設對所組態投票權成立；\n- 創世組態與遷移錨點逐位元組一致；\n- Ed25519 驗證者金鑰綁定正確；\n- 應用執行具有確定性；\n- 持久化的已提交狀態完整；\n- 運營者與主機訪問受到保護；\n- 拒絕格式錯誤、重放、未授權或鏈不匹配的操作。\n\n本機四驗證者故障測試證明，在一個本機驗證者及其 ABCI 進程停止後，仍可繼續出塊。它不能證明網際網路分區、相關主機同時故障、拜佔庭運營者行為、公開入口遭受拒絕服務攻擊，或達到法定投票權的節點被攻破時的行為。\n\n## 4. 遷移錨點\n\n應用從版本 1 的 `ConsensusMigrationState` 啟動。遷移文件包含：\n\n- 來源格式 `ynx-devnet-state-v1`；\n- 網路身份；\n- 最近已提交高度和區塊雜湊；\n- 按地址排序且唯一的帳戶；\n- 按地址排序且唯一的驗證者；\n- 資源政策；\n- 可用和質押 YNXT 總量；\n- 確定性狀態雜湊。\n\n每個帳戶的餘額、質押、資源使用量和批次數量必須非負。可用及質押總量必須與帳戶之和一致，且不得發生整數溢出。每個驗證者必須具有唯一身份、正投票權；存在共識金鑰綁定時，該綁定必須有效。必須至少存在一個具有正投票權的活躍驗證者。\n\n遷移雜湊綁定規範化的遷移內容。ABCI 應用必須拒絕格式錯誤、未排序、不匹配或雜湊不一致的遷移。初始 AppHash 等於通過驗證的遷移狀態雜湊。\n\n## 5. 驗證者身份與金鑰保管\n\n共識公開金鑰使用 Comet/Tendermint Ed25519 金鑰類型。正式環境清單必須且只能包含獲准的活躍角色，並必須拒絕角色缺失、重複項、公開金鑰格式錯誤、角色綁定錯誤、非正投票權、重複端點、使用公網或回送位址的私有 P2P 組態，以及派生地址不匹配。\n\n每個運營者在分配的主機上生成驗證者和節點私鑰。私鑰文件必須僅允許指定擁有者讀取，不得打印、提取到證據包、提交到原始碼，或通過聊天發送。金鑰檢查器在本機派生公開身份，並與獲准清單比較。\n\n覆蓋網路的金鑰生成流程和 WireGuard 部署是獨立的運營關卡。創建覆蓋網路金鑰並不授權修改路由；部署覆蓋網路也不授權切換公開共識。\n\n## 6. 原生交易封套\n\n版本 1 原生交易是單個嚴格的 JSON 值，大小不得超過 16 KiB。未知字段和尾隨 JSON 值會被拒絕。\n\n| 字段 | 約束 |\n| --- | --- |\n| `version` | 精確為 `1` |\n| `chainId` | 為正且等於組態的鏈 ID |\n| `type` | 精確為 `transfer` |\n| `from` | 規範的小寫 EVM 相容地址 |\n| `to` | 規範的小寫 EVM 相容地址，且不同於發送方 |\n| `amount` | 狀態邊界內的正有符號 64 位整數 |\n| `fee` | 當前受限模型中精確為 `1` 個 YNXT 單位 |\n| `nonce` | 為正且等於權威狀態中的帳戶下一 nonce |\n| `publicKey` | 十六進制編碼的壓縮 secp256k1 公開金鑰 |\n| `signature` | 十六進制編碼的 DER ECDSA 簽章，具有規範的 low-S 值 |\n\n原生地址的生成方式是：對去掉格式前綴的未壓縮 secp256k1 公開金鑰計算傳統 Keccak-256，取最後 20 位元組。派生地址必須等於 `from`。\n\n簽章位元組是上述字段的規範 JSON，不含簽章字段，域為 `YNX_NATIVE_TX_V1`。使用提供的 secp256k1 金鑰驗證這些位元組的 SHA-256 摘要。鏈不匹配、發送方與金鑰不匹配、簽章不規範、向自己轉帳、金額無效、費用不匹配、nonce 過舊或超前、餘額不足，或重放，都必須拒絕執行。\n\n## 7. 應用操作封套\n\n應用還支持帶簽章和域隔離的操作封套，用於受限 AI 權限、Pay、Resource、治理、Trust、IDE 及相關狀態。每種操作類型定義自己的載荷驗證、簽署者權限、冪等性、到期、費用和稽核行為。某種操作類型存在，並不意味著它授權了超出精確已提交狀態轉換的外部供應商操作或使用者資產轉移。\n\n應用操作必須具有確定性，並且必須拒絕未知操作類型、鏈不匹配的簽章、重放、格式錯誤的識別碼、未授權狀態轉換、作用域擴大、過期批准和不一致的冪等輸入。\n\n## 8. ABCI 交易生命週期\n\n### 8.1 CheckTx\n\n`CheckTx` 克隆已提交執行狀態，並在不持久化的情況下應用候選交易。有效交易返回成功、確定性的交易雜湊資料，以及當前實現所表示的受限 gas 記賬。驗證或狀態轉換錯誤返回非零代碼，且不修改狀態。\n\n交易記憶體池接受不等於最終性。通過 `CheckTx` 的交易之後仍可能被排除，或因更早提交的交易改變了相關 nonce、餘額、權限或冪等狀態而失效。\n\n### 8.2 PrepareProposal\n\n`PrepareProposal` 從已提交狀態開始，按順序評估候選交易。只有滿足以下條件，交易才會被納入：\n\n- 如果提供的交易最大位元組上限為正，交易符合該上限；\n- 解碼和簽章檢查通過；\n- 在所有已選交易之後應用該交易能夠成功。\n\n無效或過大的候選交易會被跳過。所選順序是傳入順序經過確定性篩選後的結果；當前實現不聲稱具備公開費用拍賣或最大可提取價值政策。\n\n### 8.3 ProcessProposal\n\n對於非零高度，如果它不精確等於下一個高度，`ProcessProposal` 會拒絕。它從已提交狀態開始，按順序重放每筆提案交易。任何一筆交易失敗都會導致整個提案被拒絕。只有完全有效的有序列表才會被接受。\n\n### 8.4 FinalizeBlock\n\n`FinalizeBlock` 要求高度連續遞增；當另一個已最終確定的狀態仍等待提交時，它拒絕最終確定新區塊。它按順序評估交易，發出逐筆交易結果和受限事件，封存確定性的候選狀態，並返回所得 AppHash。\n\n實現會記錄失敗的執行結果，但不應用其狀態變化。預期提案處理會在最終確定前拒絕這些交易；測試與遠端證據必須能夠發現提案驗證和最終確定行為之間的差異。\n\n### 8.5 Commit\n\n`Commit` 要求存在等待提交的已最終確定狀態。狀態經過驗證後，以原子方式寫入組態的持久狀態文件。只有持久化成功後，待提交狀態才成為已提交狀態。寫入失敗必須使此前記憶體中的已提交狀態繼續保持權威地位。\n\n## 9. 確定性狀態與 AppHash\n\n已提交狀態的版本 7 在 `YNX_ABCI_STATE_V7` 域下綁定遷移狀態雜湊、鏈 ID、已排序帳戶狀態、應用記錄及稽核資料。雜湊文件覆蓋帳戶；AI 權限、操作與稽核；Pay 記錄；Resource 記錄與贊助；治理與 Trust 記錄；受限合約記錄；EVM 回執與日誌；以及 IDE 冪等性。\n\n高度會持久化以支持重啟恢復，但不計入 AppHash。因此，沒有改變應用狀態的空塊保留前一個 AppHash。狀態驗證器檢查身份唯一且已排序、數值非負、轉換特定的不變量、可用加質押 YNXT 總量守恆、遷移綁定，以及 AppHash 的精確復現。\n\n處理相同遷移錨點和相同有序交易的節點，必須生成逐位元組等價的已提交應用狀態，以及相同的 AppHash。\n\n## 10. 供應量、費用與帳戶不變量\n\n原生轉帳執行必須：\n\n- 保持可用與質押 YNXT 總量不變；\n- 從發送方扣除金額加精確的當前費用；\n- 向接收方增加對應金額；\n- 按當前確定性的驗證者規則分配費用；\n- 將發送方 nonce 精確遞增一次；\n- 更新資源使用量，且不得出現負值；\n- 按確定性的排序順序移動可追溯批次。\n\n固定費用和當前費用接收方規則屬於測試網實現細節，不是最終經濟政策。任何費用市場或驗證者經濟機制升級，都需要新版本、相容計劃、測試、遷移、治理批准和發佈披露。\n\n## 11. 查詢行為\n\nABCI 查詢路徑提供受限的已提交視圖，涵蓋遷移與狀態、帳戶、AI、Pay、Resource Market、治理、Trust、受限 IDE 合約與呼叫、EVM 回執和日誌，以及透明度記錄。查詢必須返回已提交狀態，不得修改狀態。未知路徑會失敗，並明確提示支持的介面範圍。\n\nGateway、Indexer、Explorer 或第三方快取都是派生視圖。它們必須註明來源、觀察時間、版本及過期或不可用狀態，不得覆蓋權威的已提交狀態。\n\n## 12. 打包與部署邊界\n\n候選生成器產出僅含公開金鑰的包，其中包含遷移錨點、共同創世組態、逐角色組態、候選專用服務單元，以及安裝、健康檢查、備份和回復指令碼。SHA-256 校驗覆蓋包內每個文件。\n\n候選 RPC、ABCI 和指標端點綁定回送位址。P2P 綁定獲准的私有地址。候選服務使用不同的名稱和資料根目錄，在經批准的切換操作前，不得替換權威服務。\n\n生成包和部署演練證明的是輸入驗證與打包，而不是遠端安裝、在線法定人數、容錯性、公開入口或公開可用性。\n\n## 13. 證據關卡\n\n| 關卡 | 直接檢查的行為 | 不能證明 |\n| --- | --- | --- |\n| 遷移檢查 | 確定性導出、驗證、雜湊及供應量不變量 | 遠端共識 |\n| ABCI 檢查 | 應用生命週期與狀態行為 | 多節點法定人數 |\n| 簽章轉帳檢查 | 信封、簽章、nonce、費用、餘額和持久化規則 | 公開交易可用性 |\n| 本機法定人數檢查 | 四個本機節點、收斂、簽署者參與、單節點停止與重啟 | 獨立運營者或遠端韌性 |\n| 正式環境包檢查 | 清單、雜湊、金鑰綁定、二進制及部署演練 | 安裝或公開切換 |\n| 候選驗證器 | 遠端一致高度與雜湊、驗證者集合、簽章和對等節點 | 故障恢復或公開可達性 |\n| 遠端故障演練 | 候選網路持續推進及重啟追趕 | 超出所測故障範圍的拜佔庭容錯 |\n| 擁有者簽章交易演練 | 收斂的遠端帳戶轉換與交易證據 | 一般公眾提交能力 |\n| 公開證明 | 獨立端點身份、推進、發佈和交易證據 | 主網就緒或未來可用性 |\n\n每個證據包必須綁定原始碼提交、包摘要、網路身份、觀察時間、命令或流程版本、結果和失敗狀態。\n\n## 14. 安全邊界\n\n- CometBFT 共識金鑰與使用者 secp256k1 交易金鑰分離。\n- 候選主機金鑰和覆蓋網路金鑰保留在所屬主機，並限制文件權限。\n- ABCI 不儲存使用者私鑰。\n- 公開 RPC 不意味著能夠訪問管理、ABCI、指標或簽署者路徑。\n- 已簽章的公開交易位元組可以經過 Gateway；原始私鑰不可以。\n- 運營者批准標誌只授權指明的受限操作。\n- 證據採集必須隱藏秘密，同時保留公開身份、交易雜湊、高度、區塊雜湊、發佈身份和摘要。\n\n## 15. 恢復與回復\n\n安裝或切換前，運營者必須備份權威狀態、組態和發佈身份。恢復時，必須先驗證狀態完整性與網路身份，再啟用服務。候選檢查失敗時，必須保留或恢復權威服務。只有重新驗證鏈推進、帳戶狀態、發佈身份、監控和公開路由後，回復才算完成。\n\n重啟持久化不等於恢復演練。發佈聲明需要記錄備份創建、隔離恢復、完整性比較、恢復時間證據、恢復點證據和清理。\n\n## 16. 已知限制與待審閱事項\n\n- StreamBFT 當前組合使用 CometBFT 與 YNX ABCI 應用；不聲稱已有獨立的形式化共識證明。\n- 指定名稱的四角色拓撲不能證明驗證者所有權獨立。\n- 當前固定費用不是擁堵市場。\n- 本文未規定無須許可的驗證者接入、委託經濟機制、解除綁定、罰沒、暫停驗證資格、獎勵及治理。\n- 網際網路分區、拜佔庭驗證者、公開拒絕服務、儲存損壞、長距離恢復和升級互操作性測試，仍需更多證據。\n- 公開部署和公開交易證據與具體發佈版本綁定，不得根據本機或運營者控制的測試推斷。\n\n## 17. 已接受基線的原始碼索引\n\n| 關注事項 | 原始碼 |\n| --- | --- |\n| 原生交易封套與簽章驗證 | `internal/consensus/transaction.go` |\n| ABCI 生命週期與確定性應用 | `internal/consensus/application.go` |\n| 持久狀態與 AppHash | `internal/consensus/state.go` |\n| 遷移錨點與驗證者綁定 | `internal/chain/consensus_migration.go` |\n| 創世組態與候選包 | `internal/consensus/genesis.go`、`internal/consensus/production.go` |\n| 候選清單約束 | `chain/consensus/production-validator-manifest.schema.json` |\n| 運營證據流程 | `chain/consensus/README.md`、共識驗證指令碼 |\n| 測試覆蓋 | `internal/consensus/*_test.go`、`Makefile` 中的共識驗證目標 |\n\n如果本規範與原始碼不一致，實現行為應以標明的原始碼提交及其測試為準；在差異修正之前，必須阻止發佈。\n\n## 18. StreamBFT 影子候選版本\n\n已審閱的影子候選版本將資料可用性、排序和執行分離。它不屬於已接受的中央基線，不得投票、提交或改變權威的公開狀態。\n\n### 18.1 資料可用性與排序\n\n工作節點形成規範化的 DAG 批次。只有當代表所組態驗證者投票權超過三分之二的 Ed25519 投票綁定該批次摘要後，批次才可參與排序。排序使用確定性的領導者輪換、域隔離的法定人數證書、持久化的鎖定 QC 投票，以及three-certified-chain 提交判定條件。異步回退使用獨立的證書域。候選版本 1 不信任聚合簽章或門限簽章，仍要求逐個驗證 Ed25519 簽章。\n\n### 18.2 語義通道\n\n交易按確定性順序分配到九條固定通道：\n\n1. 共識與治理；\n2. 預言機、跨鏈橋與風險；\n3. 清算；\n4. 取消與批量取消；\n5. 交易委託單；\n6. Pay 與穩定結算；\n7. 通用 EVM；\n8. 服務結算；\n9. 批量資料承諾。\n\n每條通道都有獨立的容量和最低費用組態。規範排序將取消操作放在新交易委託單之前。通用 EVM 通道飽和時，不得消耗共識與恢復通道或 Pay 通道的預算。\n\n### 18.3 確定性並行執行\n\n交易聲明唯一且已排序的讀集合與寫集合。候選實現拒絕空的、過大的、未排序的、重複的或未聲明的寫入鍵。互不衝突的交易可以併發執行；寫入按確定性的依賴批次提交。順序執行路徑執行同一提案。差分測試要求，在不同工作線程數量下，並行與順序執行的狀態根一致。\n\n資源計量覆蓋計算、儲存讀取、儲存寫入、頻寬和狀態增長，並檢查溢出。狀態根對帶長度定界且已排序的鍵進行雜湊。\n\n### 18.4 候選局部費用市場\n\n每條通道可維護受限基礎費，由之前的基礎費、目標計算使用量、觀察到的計算使用量、變化分母，以及組態的最小值和最大值推導。資源成本是各項計量資源單位乘以組態價格後，經過檢查的總和。發生溢出時必須拒絕執行。\n\n該機制僅為候選代碼。它不是已啟用的費用政策，未整合到中央共識狀態中，沒有治理啟用，也沒有公開費用或銷毀證據。\n\n### 18.5 晉級條件\n\n候選模式為 `disabled`、`shadow` 和 `canary`。除非下列所有直接證據類別均為 true，否則 Canary 模式判定會回退到 Shadow：\n\n- 形式化安全驗證；\n- 差分重放與狀態根一致；\n- 4、7、13 和 21 個驗證者的數量證據；\n- 至少三個廣域網地區；\n- 拜佔庭、分區與丟包、狀態同步與恢復、長期運行及回復測試；\n- 相對於已接受的 CometBFT 基線，具有綜合運營優勢。\n\n當前儲存庫證據明確未滿足這一晉級條件。存在針對四個驗證者和一個拜佔庭驗證者的有限 TLA+ 模型原始碼，但尚未找到 TLC 或 Apalache 的運行產物；模型原始碼本身不是形式化驗證證據。\n\n### 18.6 影子候選版本的原始碼索引\n\n| 關注事項 | 已審閱的候選原始碼 |\n| --- | --- |\n| 候選模式與晉級證據 | `internal/streambft/mode.go` |\n| DAG、提案、法定人數證書、安全與節拍器 | `internal/streambft` 候選模組 |\n| 語義通道與訪問集合 | `internal/streambft/types.go` |\n| 確定性執行器與狀態根 | `internal/streambft/executor.go` |\n| 按通道基礎費與資源定價 | `internal/streambft/fees.go` |\n| 有限安全模型原始碼 | `docs/formal/streambft` |\n| 本機候選驗證關卡 | `scripts/verify/streambft-candidate-check.sh` |\n\n這些路徑指向已審閱的候選提交，不是已接受統一原始碼中的文件。在整合獲准並重新驗證之前，發佈時必須保留這一區別。\n\n## 變更記錄\n\n- 0.1.1-candidate（2026-07-22）：區分已接受的 CometBFT/ABCI 安全基線與較新的預設禁用 StreamBFT 影子候選版本，並記錄其通道、確定性執行、費用市場，以及未滿足證據就拒絕晉級的機制。\n- 0.1.0-candidate（2026-07-22）：首次按證據邊界描述 CometBFT/ABCI 候選方案、遷移錨點、原生交易封套、交易生命週期、確定性狀態、打包、安全、恢復和證據邊界。\n",
+  "html": "<h2 id=\"whitepaper-streambft-specification-section-1\">YNX StreamBFT 規範</h2>\n<div class=\"documentTable\"><table><thead><tr><th>中繼資料</th><th>值</th></tr></thead><tbody><tr><td>版本</td><td>0.1.1-candidate</td></tr><tr><td>生效日期</td><td>2026-07-22</td></tr><tr><td>來源提交</td><td><code>719e1018267ed5a53e6fae5211c5fd8a1503c35c</code></td></tr><tr><td>已審閱的影子候選原始碼</td><td><code>9c2d39799b9eef0be06e3b04d4ffe2e9087cc5b8</code></td></tr><tr><td>產品發佈狀態</td><td>YNX Testnet 文件候選版本</td></tr><tr><td>最近審閱</td><td>2026-07-22</td></tr><tr><td>替代版本</td><td>無</td></tr><tr><td>審閱狀態</td><td>工程規範；需要獨立的共識與安全審閱</td></tr></tbody></table></div>\n<h3 id=\"whitepaper-streambft-specification-section-2\">1. 範圍與術語</h3>\n<p>YNX 當前有兩條不同的共識路線。CometBFT <code>v0.38.23</code> 配合 YNX ABCI 2.0 應用，是已接受的安全基線。較新的 StreamBFT 實現僅存在於已審閱的候選原始碼提交中，是預設禁用、經過本機測試的影子候選版本。本文不聲稱公開網路運行 StreamBFT，該影子候選版本也未整合到上方標明的統一原始碼中。</p>\n<p>第 2 至 17 節先定義統一原始碼所代表的、已接受的 CometBFT/ABCI 行為。第 18 節單獨記錄較新的 StreamBFT 影子候選版本。主網參數、無須許可的驗證者准入、罰沒經濟機制、形式化驗證產物、公開 StreamBFT 部署和正式環境去中心化，均不在已證明範圍內。</p>\n<p>規範性術語 <code>MUST</code>（必須）、<code>MUST NOT</code>（不得）、<code>SHOULD</code>（應當）和 <code>MAY</code>（可以）描述候選行為。只有在標明的原始碼提交上，與某項要求直接相關的測試及部署證據通過後，該要求才能成為發佈聲明。</p>\n<h3 id=\"whitepaper-streambft-specification-section-3\">2. 網路與軟體身份</h3>\n<div class=\"documentTable\"><table><thead><tr><th>屬性</th><th>候選值</th></tr></thead><tbody><tr><td>網路</td><td>YNX Testnet</td></tr><tr><td>數值型應用/EVM 鏈 ID</td><td><code>6423</code></td></tr><tr><td>Comet 鏈 ID</td><td><code>ynx_6423-1</code></td></tr><tr><td>原生測試網資產</td><td>YNXT</td></tr><tr><td>CometBFT</td><td><code>v0.38.23</code></td></tr><tr><td>ABCI 應用名稱</td><td><code>ynx-abci</code></td></tr><tr><td>ABCI 預設傳輸方式</td><td>Socket</td></tr><tr><td>ABCI 預設監聽地址</td><td>回送 TCP 連接埠 26658</td></tr><tr><td>遷移狀態版本</td><td>1</td></tr><tr><td>已提交狀態版本</td><td>7</td></tr><tr><td>原生交易版本</td><td>1</td></tr></tbody></table></div>\n<p>正式環境候選包必須綁定唯一且精確的二進制與原始碼發佈版本、遷移狀態雜湊、創世組態、驗證者公開清單及包內文件摘要。候選包不得包含驗證者或節點私鑰。</p>\n<h3 id=\"whitepaper-streambft-specification-section-4\">3. 信任與故障模型</h3>\n<p>CometBFT 提供共識網路、提案、投票、提交和驗證者集合機制。YNX 應用假定已組態的驗證者集合與金鑰綁定真實可信。四角色候選方案使用 <code>primary</code>、<code>singapore</code>、<code>silicon-valley</code> 和 <code>seoul</code> 作為運營身份；這些名稱不能證明所有權獨立，也不能證明地理去中心化。</p>\n<p>候選方案的安全性依賴於：</p>\n<ul><li>CometBFT 的法定人數假設對所組態投票權成立；</li><li>創世組態與遷移錨點逐位元組一致；</li><li>Ed25519 驗證者金鑰綁定正確；</li><li>應用執行具有確定性；</li><li>持久化的已提交狀態完整；</li><li>運營者與主機訪問受到保護；</li><li>拒絕格式錯誤、重放、未授權或鏈不匹配的操作。</li></ul>\n<p>本機四驗證者故障測試證明，在一個本機驗證者及其 ABCI 進程停止後，仍可繼續出塊。它不能證明網際網路分區、相關主機同時故障、拜佔庭運營者行為、公開入口遭受拒絕服務攻擊，或達到法定投票權的節點被攻破時的行為。</p>\n<h3 id=\"whitepaper-streambft-specification-section-5\">4. 遷移錨點</h3>\n<p>應用從版本 1 的 <code>ConsensusMigrationState</code> 啟動。遷移文件包含：</p>\n<ul><li>來源格式 <code>ynx-devnet-state-v1</code>；</li><li>網路身份；</li><li>最近已提交高度和區塊雜湊；</li><li>按地址排序且唯一的帳戶；</li><li>按地址排序且唯一的驗證者；</li><li>資源政策；</li><li>可用和質押 YNXT 總量；</li><li>確定性狀態雜湊。</li></ul>\n<p>每個帳戶的餘額、質押、資源使用量和批次數量必須非負。可用及質押總量必須與帳戶之和一致，且不得發生整數溢出。每個驗證者必須具有唯一身份、正投票權；存在共識金鑰綁定時，該綁定必須有效。必須至少存在一個具有正投票權的活躍驗證者。</p>\n<p>遷移雜湊綁定規範化的遷移內容。ABCI 應用必須拒絕格式錯誤、未排序、不匹配或雜湊不一致的遷移。初始 AppHash 等於通過驗證的遷移狀態雜湊。</p>\n<h3 id=\"whitepaper-streambft-specification-section-6\">5. 驗證者身份與金鑰保管</h3>\n<p>共識公開金鑰使用 Comet/Tendermint Ed25519 金鑰類型。正式環境清單必須且只能包含獲准的活躍角色，並必須拒絕角色缺失、重複項、公開金鑰格式錯誤、角色綁定錯誤、非正投票權、重複端點、使用公網或回送位址的私有 P2P 組態，以及派生地址不匹配。</p>\n<p>每個運營者在分配的主機上生成驗證者和節點私鑰。私鑰文件必須僅允許指定擁有者讀取，不得打印、提取到證據包、提交到原始碼，或通過聊天發送。金鑰檢查器在本機派生公開身份，並與獲准清單比較。</p>\n<p>覆蓋網路的金鑰生成流程和 WireGuard 部署是獨立的運營關卡。創建覆蓋網路金鑰並不授權修改路由；部署覆蓋網路也不授權切換公開共識。</p>\n<h3 id=\"whitepaper-streambft-specification-section-7\">6. 原生交易封套</h3>\n<p>版本 1 原生交易是單個嚴格的 JSON 值，大小不得超過 16 KiB。未知字段和尾隨 JSON 值會被拒絕。</p>\n<div class=\"documentTable\"><table><thead><tr><th>字段</th><th>約束</th></tr></thead><tbody><tr><td><code>version</code></td><td>精確為 <code>1</code></td></tr><tr><td><code>chainId</code></td><td>為正且等於組態的鏈 ID</td></tr><tr><td><code>type</code></td><td>精確為 <code>transfer</code></td></tr><tr><td><code>from</code></td><td>規範的小寫 EVM 相容地址</td></tr><tr><td><code>to</code></td><td>規範的小寫 EVM 相容地址，且不同於發送方</td></tr><tr><td><code>amount</code></td><td>狀態邊界內的正有符號 64 位整數</td></tr><tr><td><code>fee</code></td><td>當前受限模型中精確為 <code>1</code> 個 YNXT 單位</td></tr><tr><td><code>nonce</code></td><td>為正且等於權威狀態中的帳戶下一 nonce</td></tr><tr><td><code>publicKey</code></td><td>十六進制編碼的壓縮 secp256k1 公開金鑰</td></tr><tr><td><code>signature</code></td><td>十六進制編碼的 DER ECDSA 簽章，具有規範的 low-S 值</td></tr></tbody></table></div>\n<p>原生地址的生成方式是：對去掉格式前綴的未壓縮 secp256k1 公開金鑰計算傳統 Keccak-256，取最後 20 位元組。派生地址必須等於 <code>from</code>。</p>\n<p>簽章位元組是上述字段的規範 JSON，不含簽章字段，域為 <code>YNX_NATIVE_TX_V1</code>。使用提供的 secp256k1 金鑰驗證這些位元組的 SHA-256 摘要。鏈不匹配、發送方與金鑰不匹配、簽章不規範、向自己轉帳、金額無效、費用不匹配、nonce 過舊或超前、餘額不足，或重放，都必須拒絕執行。</p>\n<h3 id=\"whitepaper-streambft-specification-section-8\">7. 應用操作封套</h3>\n<p>應用還支持帶簽章和域隔離的操作封套，用於受限 AI 權限、Pay、Resource、治理、Trust、IDE 及相關狀態。每種操作類型定義自己的載荷驗證、簽署者權限、冪等性、到期、費用和稽核行為。某種操作類型存在，並不意味著它授權了超出精確已提交狀態轉換的外部供應商操作或使用者資產轉移。</p>\n<p>應用操作必須具有確定性，並且必須拒絕未知操作類型、鏈不匹配的簽章、重放、格式錯誤的識別碼、未授權狀態轉換、作用域擴大、過期批准和不一致的冪等輸入。</p>\n<h3 id=\"whitepaper-streambft-specification-section-9\">8. ABCI 交易生命週期</h3>\n<h4 id=\"whitepaper-streambft-specification-section-10\">8.1 CheckTx</h4>\n<p><code>CheckTx</code> 克隆已提交執行狀態，並在不持久化的情況下應用候選交易。有效交易返回成功、確定性的交易雜湊資料，以及當前實現所表示的受限 gas 記賬。驗證或狀態轉換錯誤返回非零代碼，且不修改狀態。</p>\n<p>交易記憶體池接受不等於最終性。通過 <code>CheckTx</code> 的交易之後仍可能被排除，或因更早提交的交易改變了相關 nonce、餘額、權限或冪等狀態而失效。</p>\n<h4 id=\"whitepaper-streambft-specification-section-11\">8.2 PrepareProposal</h4>\n<p><code>PrepareProposal</code> 從已提交狀態開始，按順序評估候選交易。只有滿足以下條件，交易才會被納入：</p>\n<ul><li>如果提供的交易最大位元組上限為正，交易符合該上限；</li><li>解碼和簽章檢查通過；</li><li>在所有已選交易之後應用該交易能夠成功。</li></ul>\n<p>無效或過大的候選交易會被跳過。所選順序是傳入順序經過確定性篩選後的結果；當前實現不聲稱具備公開費用拍賣或最大可提取價值政策。</p>\n<h4 id=\"whitepaper-streambft-specification-section-12\">8.3 ProcessProposal</h4>\n<p>對於非零高度，如果它不精確等於下一個高度，<code>ProcessProposal</code> 會拒絕。它從已提交狀態開始，按順序重放每筆提案交易。任何一筆交易失敗都會導致整個提案被拒絕。只有完全有效的有序列表才會被接受。</p>\n<h4 id=\"whitepaper-streambft-specification-section-13\">8.4 FinalizeBlock</h4>\n<p><code>FinalizeBlock</code> 要求高度連續遞增；當另一個已最終確定的狀態仍等待提交時，它拒絕最終確定新區塊。它按順序評估交易，發出逐筆交易結果和受限事件，封存確定性的候選狀態，並返回所得 AppHash。</p>\n<p>實現會記錄失敗的執行結果，但不應用其狀態變化。預期提案處理會在最終確定前拒絕這些交易；測試與遠端證據必須能夠發現提案驗證和最終確定行為之間的差異。</p>\n<h4 id=\"whitepaper-streambft-specification-section-14\">8.5 Commit</h4>\n<p><code>Commit</code> 要求存在等待提交的已最終確定狀態。狀態經過驗證後，以原子方式寫入組態的持久狀態文件。只有持久化成功後，待提交狀態才成為已提交狀態。寫入失敗必須使此前記憶體中的已提交狀態繼續保持權威地位。</p>\n<h3 id=\"whitepaper-streambft-specification-section-15\">9. 確定性狀態與 AppHash</h3>\n<p>已提交狀態的版本 7 在 <code>YNX_ABCI_STATE_V7</code> 域下綁定遷移狀態雜湊、鏈 ID、已排序帳戶狀態、應用記錄及稽核資料。雜湊文件覆蓋帳戶；AI 權限、操作與稽核；Pay 記錄；Resource 記錄與贊助；治理與 Trust 記錄；受限合約記錄；EVM 回執與日誌；以及 IDE 冪等性。</p>\n<p>高度會持久化以支持重啟恢復，但不計入 AppHash。因此，沒有改變應用狀態的空塊保留前一個 AppHash。狀態驗證器檢查身份唯一且已排序、數值非負、轉換特定的不變量、可用加質押 YNXT 總量守恆、遷移綁定，以及 AppHash 的精確復現。</p>\n<p>處理相同遷移錨點和相同有序交易的節點，必須生成逐位元組等價的已提交應用狀態，以及相同的 AppHash。</p>\n<h3 id=\"whitepaper-streambft-specification-section-16\">10. 供應量、費用與帳戶不變量</h3>\n<p>原生轉帳執行必須：</p>\n<ul><li>保持可用與質押 YNXT 總量不變；</li><li>從發送方扣除金額加精確的當前費用；</li><li>向接收方增加對應金額；</li><li>按當前確定性的驗證者規則分配費用；</li><li>將發送方 nonce 精確遞增一次；</li><li>更新資源使用量，且不得出現負值；</li><li>按確定性的排序順序移動可追溯批次。</li></ul>\n<p>固定費用和當前費用接收方規則屬於測試網實現細節，不是最終經濟政策。任何費用市場或驗證者經濟機制升級，都需要新版本、相容計劃、測試、遷移、治理批准和發佈披露。</p>\n<h3 id=\"whitepaper-streambft-specification-section-17\">11. 查詢行為</h3>\n<p>ABCI 查詢路徑提供受限的已提交視圖，涵蓋遷移與狀態、帳戶、AI、Pay、Resource Market、治理、Trust、受限 IDE 合約與呼叫、EVM 回執和日誌，以及透明度記錄。查詢必須返回已提交狀態，不得修改狀態。未知路徑會失敗，並明確提示支持的介面範圍。</p>\n<p>Gateway、Indexer、Explorer 或第三方快取都是派生視圖。它們必須註明來源、觀察時間、版本及過期或不可用狀態，不得覆蓋權威的已提交狀態。</p>\n<h3 id=\"whitepaper-streambft-specification-section-18\">12. 打包與部署邊界</h3>\n<p>候選生成器產出僅含公開金鑰的包，其中包含遷移錨點、共同創世組態、逐角色組態、候選專用服務單元，以及安裝、健康檢查、備份和回復指令碼。SHA-256 校驗覆蓋包內每個文件。</p>\n<p>候選 RPC、ABCI 和指標端點綁定回送位址。P2P 綁定獲准的私有地址。候選服務使用不同的名稱和資料根目錄，在經批准的切換操作前，不得替換權威服務。</p>\n<p>生成包和部署演練證明的是輸入驗證與打包，而不是遠端安裝、在線法定人數、容錯性、公開入口或公開可用性。</p>\n<h3 id=\"whitepaper-streambft-specification-section-19\">13. 證據關卡</h3>\n<div class=\"documentTable\"><table><thead><tr><th>關卡</th><th>直接檢查的行為</th><th>不能證明</th></tr></thead><tbody><tr><td>遷移檢查</td><td>確定性導出、驗證、雜湊及供應量不變量</td><td>遠端共識</td></tr><tr><td>ABCI 檢查</td><td>應用生命週期與狀態行為</td><td>多節點法定人數</td></tr><tr><td>簽章轉帳檢查</td><td>信封、簽章、nonce、費用、餘額和持久化規則</td><td>公開交易可用性</td></tr><tr><td>本機法定人數檢查</td><td>四個本機節點、收斂、簽署者參與、單節點停止與重啟</td><td>獨立運營者或遠端韌性</td></tr><tr><td>正式環境包檢查</td><td>清單、雜湊、金鑰綁定、二進制及部署演練</td><td>安裝或公開切換</td></tr><tr><td>候選驗證器</td><td>遠端一致高度與雜湊、驗證者集合、簽章和對等節點</td><td>故障恢復或公開可達性</td></tr><tr><td>遠端故障演練</td><td>候選網路持續推進及重啟追趕</td><td>超出所測故障範圍的拜佔庭容錯</td></tr><tr><td>擁有者簽章交易演練</td><td>收斂的遠端帳戶轉換與交易證據</td><td>一般公眾提交能力</td></tr><tr><td>公開證明</td><td>獨立端點身份、推進、發佈和交易證據</td><td>主網就緒或未來可用性</td></tr></tbody></table></div>\n<p>每個證據包必須綁定原始碼提交、包摘要、網路身份、觀察時間、命令或流程版本、結果和失敗狀態。</p>\n<h3 id=\"whitepaper-streambft-specification-section-20\">14. 安全邊界</h3>\n<ul><li>CometBFT 共識金鑰與使用者 secp256k1 交易金鑰分離。</li><li>候選主機金鑰和覆蓋網路金鑰保留在所屬主機，並限制文件權限。</li><li>ABCI 不儲存使用者私鑰。</li><li>公開 RPC 不意味著能夠訪問管理、ABCI、指標或簽署者路徑。</li><li>已簽章的公開交易位元組可以經過 Gateway；原始私鑰不可以。</li><li>運營者批准標誌只授權指明的受限操作。</li><li>證據採集必須隱藏秘密，同時保留公開身份、交易雜湊、高度、區塊雜湊、發佈身份和摘要。</li></ul>\n<h3 id=\"whitepaper-streambft-specification-section-21\">15. 恢復與回復</h3>\n<p>安裝或切換前，運營者必須備份權威狀態、組態和發佈身份。恢復時，必須先驗證狀態完整性與網路身份，再啟用服務。候選檢查失敗時，必須保留或恢復權威服務。只有重新驗證鏈推進、帳戶狀態、發佈身份、監控和公開路由後，回復才算完成。</p>\n<p>重啟持久化不等於恢復演練。發佈聲明需要記錄備份創建、隔離恢復、完整性比較、恢復時間證據、恢復點證據和清理。</p>\n<h3 id=\"whitepaper-streambft-specification-section-22\">16. 已知限制與待審閱事項</h3>\n<ul><li>StreamBFT 當前組合使用 CometBFT 與 YNX ABCI 應用；不聲稱已有獨立的形式化共識證明。</li><li>指定名稱的四角色拓撲不能證明驗證者所有權獨立。</li><li>當前固定費用不是擁堵市場。</li><li>本文未規定無須許可的驗證者接入、委託經濟機制、解除綁定、罰沒、暫停驗證資格、獎勵及治理。</li><li>網際網路分區、拜佔庭驗證者、公開拒絕服務、儲存損壞、長距離恢復和升級互操作性測試，仍需更多證據。</li><li>公開部署和公開交易證據與具體發佈版本綁定，不得根據本機或運營者控制的測試推斷。</li></ul>\n<h3 id=\"whitepaper-streambft-specification-section-23\">17. 已接受基線的原始碼索引</h3>\n<div class=\"documentTable\"><table><thead><tr><th>關注事項</th><th>原始碼</th></tr></thead><tbody><tr><td>原生交易封套與簽章驗證</td><td><code>internal/consensus/transaction.go</code></td></tr><tr><td>ABCI 生命週期與確定性應用</td><td><code>internal/consensus/application.go</code></td></tr><tr><td>持久狀態與 AppHash</td><td><code>internal/consensus/state.go</code></td></tr><tr><td>遷移錨點與驗證者綁定</td><td><code>internal/chain/consensus_migration.go</code></td></tr><tr><td>創世組態與候選包</td><td><code>internal/consensus/genesis.go</code>、<code>internal/consensus/production.go</code></td></tr><tr><td>候選清單約束</td><td><code>chain/consensus/production-validator-manifest.schema.json</code></td></tr><tr><td>運營證據流程</td><td><code>chain/consensus/README.md</code>、共識驗證指令碼</td></tr><tr><td>測試覆蓋</td><td><code>internal/consensus/*_test.go</code>、<code>Makefile</code> 中的共識驗證目標</td></tr></tbody></table></div>\n<p>如果本規範與原始碼不一致，實現行為應以標明的原始碼提交及其測試為準；在差異修正之前，必須阻止發佈。</p>\n<h3 id=\"whitepaper-streambft-specification-section-24\">18. StreamBFT 影子候選版本</h3>\n<p>已審閱的影子候選版本將資料可用性、排序和執行分離。它不屬於已接受的中央基線，不得投票、提交或改變權威的公開狀態。</p>\n<h4 id=\"whitepaper-streambft-specification-section-25\">18.1 資料可用性與排序</h4>\n<p>工作節點形成規範化的 DAG 批次。只有當代表所組態驗證者投票權超過三分之二的 Ed25519 投票綁定該批次摘要後，批次才可參與排序。排序使用確定性的領導者輪換、域隔離的法定人數證書、持久化的鎖定 QC 投票，以及three-certified-chain 提交判定條件。異步回退使用獨立的證書域。候選版本 1 不信任聚合簽章或門限簽章，仍要求逐個驗證 Ed25519 簽章。</p>\n<h4 id=\"whitepaper-streambft-specification-section-26\">18.2 語義通道</h4>\n<p>交易按確定性順序分配到九條固定通道：</p>\n<ol><li>共識與治理；</li><li>預言機、跨鏈橋與風險；</li><li>清算；</li><li>取消與批量取消；</li><li>交易委託單；</li><li>Pay 與穩定結算；</li><li>通用 EVM；</li><li>服務結算；</li><li>批量資料承諾。</li></ol>\n<p>每條通道都有獨立的容量和最低費用組態。規範排序將取消操作放在新交易委託單之前。通用 EVM 通道飽和時，不得消耗共識與恢復通道或 Pay 通道的預算。</p>\n<h4 id=\"whitepaper-streambft-specification-section-27\">18.3 確定性並行執行</h4>\n<p>交易聲明唯一且已排序的讀集合與寫集合。候選實現拒絕空的、過大的、未排序的、重複的或未聲明的寫入鍵。互不衝突的交易可以併發執行；寫入按確定性的依賴批次提交。順序執行路徑執行同一提案。差分測試要求，在不同工作線程數量下，並行與順序執行的狀態根一致。</p>\n<p>資源計量覆蓋計算、儲存讀取、儲存寫入、頻寬和狀態增長，並檢查溢出。狀態根對帶長度定界且已排序的鍵進行雜湊。</p>\n<h4 id=\"whitepaper-streambft-specification-section-28\">18.4 候選局部費用市場</h4>\n<p>每條通道可維護受限基礎費，由之前的基礎費、目標計算使用量、觀察到的計算使用量、變化分母，以及組態的最小值和最大值推導。資源成本是各項計量資源單位乘以組態價格後，經過檢查的總和。發生溢出時必須拒絕執行。</p>\n<p>該機制僅為候選代碼。它不是已啟用的費用政策，未整合到中央共識狀態中，沒有治理啟用，也沒有公開費用或銷毀證據。</p>\n<h4 id=\"whitepaper-streambft-specification-section-29\">18.5 晉級條件</h4>\n<p>候選模式為 <code>disabled</code>、<code>shadow</code> 和 <code>canary</code>。除非下列所有直接證據類別均為 true，否則 Canary 模式判定會回退到 Shadow：</p>\n<ul><li>形式化安全驗證；</li><li>差分重放與狀態根一致；</li><li>4、7、13 和 21 個驗證者的數量證據；</li><li>至少三個廣域網地區；</li><li>拜佔庭、分區與丟包、狀態同步與恢復、長期運行及回復測試；</li><li>相對於已接受的 CometBFT 基線，具有綜合運營優勢。</li></ul>\n<p>當前儲存庫證據明確未滿足這一晉級條件。存在針對四個驗證者和一個拜佔庭驗證者的有限 TLA+ 模型原始碼，但尚未找到 TLC 或 Apalache 的運行產物；模型原始碼本身不是形式化驗證證據。</p>\n<h4 id=\"whitepaper-streambft-specification-section-30\">18.6 影子候選版本的原始碼索引</h4>\n<div class=\"documentTable\"><table><thead><tr><th>關注事項</th><th>已審閱的候選原始碼</th></tr></thead><tbody><tr><td>候選模式與晉級證據</td><td><code>internal/streambft/mode.go</code></td></tr><tr><td>DAG、提案、法定人數證書、安全與節拍器</td><td><code>internal/streambft</code> 候選模組</td></tr><tr><td>語義通道與訪問集合</td><td><code>internal/streambft/types.go</code></td></tr><tr><td>確定性執行器與狀態根</td><td><code>internal/streambft/executor.go</code></td></tr><tr><td>按通道基礎費與資源定價</td><td><code>internal/streambft/fees.go</code></td></tr><tr><td>有限安全模型原始碼</td><td><code>docs/formal/streambft</code></td></tr><tr><td>本機候選驗證關卡</td><td><code>scripts/verify/streambft-candidate-check.sh</code></td></tr></tbody></table></div>\n<p>這些路徑指向已審閱的候選提交，不是已接受統一原始碼中的文件。在整合獲准並重新驗證之前，發佈時必須保留這一區別。</p>\n<h3 id=\"whitepaper-streambft-specification-section-31\">變更記錄</h3>\n<ul><li>0.1.1-candidate（2026-07-22）：區分已接受的 CometBFT/ABCI 安全基線與較新的預設禁用 StreamBFT 影子候選版本，並記錄其通道、確定性執行、費用市場，以及未滿足證據就拒絕晉級的機制。</li><li>0.1.0-candidate（2026-07-22）：首次按證據邊界描述 CometBFT/ABCI 候選方案、遷移錨點、原生交易封套、交易生命週期、確定性狀態、打包、安全、恢復和證據邊界。</li></ul>",
+  "headings": [
+    {
+      "id": "whitepaper-streambft-specification-section-1",
+      "title": "YNX StreamBFT 規範",
+      "level": 1
+    },
+    {
+      "id": "whitepaper-streambft-specification-section-2",
+      "title": "1. 範圍與術語",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-streambft-specification-section-3",
+      "title": "2. 網路與軟體身份",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-streambft-specification-section-4",
+      "title": "3. 信任與故障模型",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-streambft-specification-section-5",
+      "title": "4. 遷移錨點",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-streambft-specification-section-6",
+      "title": "5. 驗證者身份與金鑰保管",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-streambft-specification-section-7",
+      "title": "6. 原生交易封套",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-streambft-specification-section-8",
+      "title": "7. 應用操作封套",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-streambft-specification-section-9",
+      "title": "8. ABCI 交易生命週期",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-streambft-specification-section-10",
+      "title": "8.1 CheckTx",
+      "level": 3
+    },
+    {
+      "id": "whitepaper-streambft-specification-section-11",
+      "title": "8.2 PrepareProposal",
+      "level": 3
+    },
+    {
+      "id": "whitepaper-streambft-specification-section-12",
+      "title": "8.3 ProcessProposal",
+      "level": 3
+    },
+    {
+      "id": "whitepaper-streambft-specification-section-13",
+      "title": "8.4 FinalizeBlock",
+      "level": 3
+    },
+    {
+      "id": "whitepaper-streambft-specification-section-14",
+      "title": "8.5 Commit",
+      "level": 3
+    },
+    {
+      "id": "whitepaper-streambft-specification-section-15",
+      "title": "9. 確定性狀態與 AppHash",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-streambft-specification-section-16",
+      "title": "10. 供應量、費用與帳戶不變量",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-streambft-specification-section-17",
+      "title": "11. 查詢行為",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-streambft-specification-section-18",
+      "title": "12. 打包與部署邊界",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-streambft-specification-section-19",
+      "title": "13. 證據關卡",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-streambft-specification-section-20",
+      "title": "14. 安全邊界",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-streambft-specification-section-21",
+      "title": "15. 恢復與回復",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-streambft-specification-section-22",
+      "title": "16. 已知限制與待審閱事項",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-streambft-specification-section-23",
+      "title": "17. 已接受基線的原始碼索引",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-streambft-specification-section-24",
+      "title": "18. StreamBFT 影子候選版本",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-streambft-specification-section-25",
+      "title": "18.1 資料可用性與排序",
+      "level": 3
+    },
+    {
+      "id": "whitepaper-streambft-specification-section-26",
+      "title": "18.2 語義通道",
+      "level": 3
+    },
+    {
+      "id": "whitepaper-streambft-specification-section-27",
+      "title": "18.3 確定性並行執行",
+      "level": 3
+    },
+    {
+      "id": "whitepaper-streambft-specification-section-28",
+      "title": "18.4 候選局部費用市場",
+      "level": 3
+    },
+    {
+      "id": "whitepaper-streambft-specification-section-29",
+      "title": "18.5 晉級條件",
+      "level": 3
+    },
+    {
+      "id": "whitepaper-streambft-specification-section-30",
+      "title": "18.6 影子候選版本的原始碼索引",
+      "level": 3
+    },
+    {
+      "id": "whitepaper-streambft-specification-section-31",
+      "title": "變更記錄",
+      "level": 2
+    }
+  ]
+}

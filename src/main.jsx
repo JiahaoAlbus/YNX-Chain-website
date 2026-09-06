@@ -15,7 +15,8 @@ import { SiteFooter } from "./components/SiteFooter.jsx";
 import { AddressConverter } from "./components/AddressConverter.jsx";
 import { LatestRecords } from "./components/LatestRecords.jsx";
 import { LocaleProvider, useLocale } from "./lib/i18n.jsx";
-import { getRuntimeCopy, loadRuntimeCopy } from "./content/runtimeLocaleContent.js";
+import { getRuntimeCopy } from "./content/runtimeLocaleContent.js";
+import { resolveRuntimeCopy, getRuntimeLoadingNotice } from "./lib/runtimeCopyRecovery.js";
 import { PageErrorBoundary } from "./components/PageErrorBoundary.jsx";
 import { getHomeCopy } from "./content/homeLocaleContent.js";
 import { getHomeRedesignCopy } from "./content/homeRedesignContent.js";
@@ -23,6 +24,7 @@ import { getHomeEntryCopy } from "./content/homeEntryContent.js";
 import { HomeCommunity } from "./components/HomeCommunity.jsx";
 import { getContactCopy } from "./content/contactLocaleContent.js";
 import "./pages/ContactPage.css";
+import "./components/RuntimeLanguageNotice.css";
 import "./styles.css";
 import "./redesign.css";
 
@@ -34,6 +36,7 @@ const RoutedContent = lazyNamed(() => import("./pages/RoutedContent.jsx"), "Rout
 function App() {
   const { locale, t } = useLocale();
   const [copy, setCopy] = useState(() => getRuntimeCopy(locale));
+  const [copyLoadFailed, setCopyLoadFailed] = useState(false);
   const [snapshot, setSnapshot] = useState({ status: {}, summary: {}, validators: {}, evm: {} });
   const [services, setServices] = useState({});
   const [connectionState, setConnectionState] = useState("loading");
@@ -44,11 +47,14 @@ function App() {
 
   useEffect(() => {
     let active = true;
+    setCopyLoadFailed(false);
     const immediate = getRuntimeCopy(locale);
     if (immediate) setCopy(immediate);
     else {
       setCopy(null);
-      loadRuntimeCopy(locale).then((next) => { if (active) setCopy(next); });
+      resolveRuntimeCopy(locale).then(({ copy: next, failed }) => {
+        if (active) { setCopy(next); setCopyLoadFailed(failed); }
+      });
     }
     return () => { active = false; };
   }, [locale]);
@@ -137,9 +143,12 @@ function App() {
 
   if (!copy) return <main className="routeLoading" aria-busy="true" aria-live="polite"><span className="routeLoadingMark" aria-hidden="true" /><p>…</p></main>;
 
+  const loadingNotice = getRuntimeLoadingNotice(locale);
+  const languageNotice = copyLoadFailed ? <aside className="runtimeLanguageNotice" role="status"><p>{loadingNotice[0]}</p><button type="button" className="button secondary" onClick={() => window.location.reload()}>{loadingNotice[1]}</button></aside> : null;
+
   if (route !== "/") {
     const page = <RoutedContent route={route} copy={copy} />;
-    return <><SiteHeader /><div id="main-content" tabIndex={-1}><Suspense fallback={<RouteLoading copy={copy.utility.loading} />}>{page}</Suspense></div><SiteFooter /></>;
+    return <><SiteHeader /><div id="main-content" tabIndex={-1}>{languageNotice}<Suspense fallback={<RouteLoading copy={copy.utility.loading} />}>{page}</Suspense></div><SiteFooter /></>;
   }
 
   const design = getHomeRedesignCopy(locale);
@@ -152,6 +161,7 @@ function App() {
     <>
       <SiteHeader networkRequest={networkRequest} />
       <main id="main-content" tabIndex={-1}>
+      {languageNotice}
       <HeroPortal snapshot={snapshot} connectionState={connectionState} onAddNetwork={() => setNetworkRequest((request) => request + 1)} />
 
       <section className="ecosystemSection editorialEcosystem" id="ecosystem" aria-labelledby="ecosystem-title">

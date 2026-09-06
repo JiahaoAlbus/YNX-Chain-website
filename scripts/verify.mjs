@@ -1,4 +1,5 @@
 import fs from "node:fs";
+import { findRetiredNetworkIdentity } from "./lib/retired-network.mjs";
 import path from "node:path";
 import crypto from "node:crypto";
 import { verifyLearningContent } from "./lib/verify-learning-content.mjs";
@@ -148,11 +149,10 @@ for (const root of ["src", "server", "api", "vercel.json"]) {
   for (const file of candidates) {
     if (!/\.(js|jsx|json)$/i.test(file)) continue;
     const source = fs.readFileSync(file, "utf8");
-    for (const retired of ["9102", "0x238e", "ynx_9102-1"]) {
-      if (source.includes(retired)) {
-        console.error(`retired network identity leaked into production source: ${file}: ${retired}`);
-        process.exit(1);
-      }
+    const retired = findRetiredNetworkIdentity(source);
+    if (retired) {
+      console.error(`retired network identity leaked into production source: ${file}: ${retired}`);
+      process.exit(1);
     }
   }
 }

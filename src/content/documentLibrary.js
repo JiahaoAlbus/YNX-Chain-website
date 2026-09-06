@@ -1,5 +1,7 @@
+import { DOCUMENT_TRANSLATIONS } from './documentTranslations.js';
+
 // Restored source snapshots; draft/archive text does not establish live capability.
-export const DOCUMENT_LIBRARY = [
+const SOURCE_DOCUMENTS = [
   {
     "id": "whitepaper-execution-and-local-fee-markets",
     "title": "YNX Execution and Local Fee Markets",
@@ -1111,6 +1113,11 @@ export const DOCUMENT_LIBRARY = [
     "translatedBodyLocales": []
   }
 ];
+
+export const DOCUMENT_LIBRARY = SOURCE_DOCUMENTS.map(source => {
+  const translations = DOCUMENT_TRANSLATIONS[source.id] || {};
+  return { ...source, translations, bodyUrls: { ...source.bodyUrls, ...Object.fromEntries(Object.entries(translations).map(([locale, body]) => [locale, body.bodyUrl])) }, translatedBodyLocales: Object.keys(translations) };
+});
 
 export const WHITEPAPERS = DOCUMENT_LIBRARY.filter(document => document.category === 'whitepaper');
 export function getDocumentById(id) { return DOCUMENT_LIBRARY.find(document => document.id === id) || null; }

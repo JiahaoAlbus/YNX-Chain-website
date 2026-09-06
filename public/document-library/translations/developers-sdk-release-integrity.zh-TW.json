@@ -1,0 +1,19 @@
+{
+  "documentId": "developers-sdk-release-integrity",
+  "locale": "zh-TW",
+  "sourceLocale": "en",
+  "sourceSha256": "e23aea1990d49975a4153cc61553ef55ab43b59379b5dd4c13b08ccc99fc56dd",
+  "translationStatus": "translated-draft",
+  "translationOfVersion": null,
+  "translationNote": "繁體中文全文譯稿。版本日期、來源狀態與證據界線均沿用英文原文；歷史來源內容不代表目前實網功能、套件發布或操作流程已通過驗證。",
+  "translatedSha256": "7e34bb29791ef8a82e8eeec709e0a21255849642714fbc1a5093900ff9ce862c",
+  "markdown": "# SDK 發佈完整性\n\nYNX Chain 使用規範清單建置本機 JavaScript 和 Python SDK 產物。這界定的是可復現打包與驗證，不代表已經發佈到 npm 或 PyPI。\n\n生成未簽章的本機套件組：\n\n```bash\nmake sdk-release-package\n```\n\n`tmp/packages/sdk-release` 下的輸出包含：\n\n- 與 npm 相容、可確定性建置的 JavaScript `.tgz`；\n- 可確定性建置、可離線安裝的純 Python `.whl`；\n- `sdk-release-manifest.json`，綁定兩個套件的名稱和版本、鏈 ID、`YNXT`、原始碼提交、地址測試向量摘要、限定範圍的原始碼與歸檔文件、建置產物大小及 SHA-256 值；\n- 每個套件明確的 `registryPublished: false` 狀態。\n\n驗證清單、原始碼檢出、歸檔、路徑、權限、摘要、套件中繼資料和未發佈狀態：\n\n```bash\nnode scripts/verify/sdk-release-verify.mjs \\\n  --manifest tmp/packages/sdk-release/sdk-release-manifest.json \\\n  --artifacts tmp/packages/sdk-release \\\n  --source-root .\n```\n\n擁有者可使用已有的 Ed25519 金鑰獨立簽署清單的精確位元組。儲存庫工具不會生成或讀取擁有者私鑰。驗證在外部生成的分離簽章：\n\n```bash\nnode scripts/verify/sdk-release-verify.mjs \\\n  --manifest tmp/packages/sdk-release/sdk-release-manifest.json \\\n  --artifacts tmp/packages/sdk-release \\\n  --source-root . \\\n  --public-key owner-sdk-release-public.pem \\\n  --signature sdk-release-manifest.sig\n```\n\n`make sdk-release-integrity-check` 執行兩次乾淨建置，比較每個輸出摘要，驗證僅用於測試的臨時 Ed25519 簽章，拒絕被修改的產物、中繼資料、向量和簽章，拒絕歸檔中額外的條目、路徑穿越條目和符號連結，並將兩個產物安裝到隔離的使用端中。此檢查不會登入套件登錄庫，也不會發佈。\n\n只有當擁有者批准精確清單，通過外部受保護流程提供套件登錄庫憑證，發佈同一組已驗證產物位元組，並由獨立使用端驗證從套件登錄庫下載的內容後，發佈才算完成。本機產物、分離測試簽章或就緒包，不得被描述為已發佈到 npm 或 PyPI。\n",
+  "html": "<h2 id=\"developers-sdk-release-integrity-section-1\">SDK 發佈完整性</h2>\n<p>YNX Chain 使用規範清單建置本機 JavaScript 和 Python SDK 產物。這界定的是可復現打包與驗證，不代表已經發佈到 npm 或 PyPI。</p>\n<p>生成未簽章的本機套件組：</p>\n<pre><code>make sdk-release-package</code></pre>\n<p><code>tmp/packages/sdk-release</code> 下的輸出包含：</p>\n<ul><li>與 npm 相容、可確定性建置的 JavaScript <code>.tgz</code>；</li><li>可確定性建置、可離線安裝的純 Python <code>.whl</code>；</li><li><code>sdk-release-manifest.json</code>，綁定兩個套件的名稱和版本、鏈 ID、<code>YNXT</code>、原始碼提交、地址測試向量摘要、限定範圍的原始碼與歸檔文件、建置產物大小及 SHA-256 值；</li><li>每個套件明確的 <code>registryPublished: false</code> 狀態。</li></ul>\n<p>驗證清單、原始碼檢出、歸檔、路徑、權限、摘要、套件中繼資料和未發佈狀態：</p>\n<pre><code>node scripts/verify/sdk-release-verify.mjs \\\n  --manifest tmp/packages/sdk-release/sdk-release-manifest.json \\\n  --artifacts tmp/packages/sdk-release \\\n  --source-root .</code></pre>\n<p>擁有者可使用已有的 Ed25519 金鑰獨立簽署清單的精確位元組。儲存庫工具不會生成或讀取擁有者私鑰。驗證在外部生成的分離簽章：</p>\n<pre><code>node scripts/verify/sdk-release-verify.mjs \\\n  --manifest tmp/packages/sdk-release/sdk-release-manifest.json \\\n  --artifacts tmp/packages/sdk-release \\\n  --source-root . \\\n  --public-key owner-sdk-release-public.pem \\\n  --signature sdk-release-manifest.sig</code></pre>\n<p><code>make sdk-release-integrity-check</code> 執行兩次乾淨建置，比較每個輸出摘要，驗證僅用於測試的臨時 Ed25519 簽章，拒絕被修改的產物、中繼資料、向量和簽章，拒絕歸檔中額外的條目、路徑穿越條目和符號連結，並將兩個產物安裝到隔離的使用端中。此檢查不會登入套件登錄庫，也不會發佈。</p>\n<p>只有當擁有者批准精確清單，通過外部受保護流程提供套件登錄庫憑證，發佈同一組已驗證產物位元組，並由獨立使用端驗證從套件登錄庫下載的內容後，發佈才算完成。本機產物、分離測試簽章或就緒包，不得被描述為已發佈到 npm 或 PyPI。</p>",
+  "headings": [
+    {
+      "id": "developers-sdk-release-integrity-section-1",
+      "title": "SDK 發佈完整性",
+      "level": 1
+    }
+  ]
+}

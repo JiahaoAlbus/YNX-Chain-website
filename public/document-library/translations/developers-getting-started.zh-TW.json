@@ -1,0 +1,19 @@
+{
+  "documentId": "developers-getting-started",
+  "locale": "zh-TW",
+  "sourceLocale": "en",
+  "sourceSha256": "b7c7248db7f6638d5735b1169ba4bb115c357cee2db0f42b3d19d382cd1ad7e1",
+  "translationStatus": "translated-draft",
+  "translationOfVersion": null,
+  "translationNote": "繁體中文全文譯稿。版本日期、來源狀態與證據界線均沿用英文原文；歷史來源內容不代表目前實網功能、套件發布或操作流程已通過驗證。",
+  "translatedSha256": "9894ff25ad37102153c9aac230240b2b59e474962152a5d8e36cef94548df8da",
+  "markdown": "# 開始使用\n\n執行 `make devnet`，然後使用 `http://127.0.0.1:6420` 存取 REST，使用 `/evm` 存取 JSON-RPC。\n\n審閱者快速檢查：\n\n```bash\nmake developer-quickstart-check\n```\n\n此檢查會啟動或重用一個本機 YNX Testnet 端點，申請 Faucet YNXT，通過 IDE API 編譯 Solidity 範例，部署並驗證合約，呼叫 Trust、Resource Market 的報價、委託、租賃、收入和分析介面，以及 Pay 範例 API，並檢查 JavaScript 和 Python SDK 入口。\n",
+  "html": "<h2 id=\"developers-getting-started-section-1\">開始使用</h2>\n<p>執行 <code>make devnet</code>，然後使用 <code>http://127.0.0.1:6420</code> 存取 REST，使用 <code>/evm</code> 存取 JSON-RPC。</p>\n<p>審閱者快速檢查：</p>\n<pre><code>make developer-quickstart-check</code></pre>\n<p>此檢查會啟動或重用一個本機 YNX Testnet 端點，申請 Faucet YNXT，通過 IDE API 編譯 Solidity 範例，部署並驗證合約，呼叫 Trust、Resource Market 的報價、委託、租賃、收入和分析介面，以及 Pay 範例 API，並檢查 JavaScript 和 Python SDK 入口。</p>",
+  "headings": [
+    {
+      "id": "developers-getting-started-section-1",
+      "title": "開始使用",
+      "level": 1
+    }
+  ]
+}

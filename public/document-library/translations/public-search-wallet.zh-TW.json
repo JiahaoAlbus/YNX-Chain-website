@@ -1,0 +1,54 @@
+{
+  "documentId": "public-search-wallet",
+  "locale": "zh-TW",
+  "sourceLocale": "en",
+  "sourceSha256": "ed5828d15eed7448090639353a6c73b6a43e026c878f940f9e9dbe793cce28dc",
+  "translationStatus": "translated-draft",
+  "translationOfVersion": "1.0.0-candidate",
+  "translationNote": "繁體中文全文譯稿。版本日期、來源狀態與證據界線均沿用英文原文；歷史來源內容不代表目前實網功能、套件發布或操作流程已通過驗證。",
+  "translatedSha256": "cfc02db3f0261457eb98fe146c40771c1781b030723ec814ed9b2ed8d43e5c25",
+  "markdown": "# YNX Wallet\n\n| 欄位 | 值 |\n| --- | --- |\n| 版本 | 1.0.0-candidate |\n| 生效日期 | 2026-07-22 |\n| 證據來源提交 | `719e1018267ed5a53e6fae5211c5fd8a1503c35c` |\n| 已審閱的錢包候選提交 | `da82c8b07b72b615ccb24b86a2a7ac66ee85b4d8` |\n| 產品發佈狀態 | YNX Testnet 文件候選版本 |\n| 最近審閱 | 2026-07-22 |\n| 規範地址 | `https://ynxweb4.com/wallet` |\n| 標題 | YNX Wallet——測試網帳戶、簽章與產品權限 |\n| 中繼描述 | 瞭解 YNX Wallet 的測試網信任模型、交易審閱、產品範圍批准、資產邊界及當前發佈狀態。 |\n| H1 | YNX Wallet |\n\n## 直接回答\n\nYNX Wallet 是設計上用於管理 YNX 帳戶、交易審閱、簽章和產品範圍批准的使用者授權主體。它不得匯出使用者助記詞，也不得向產品授予任意提款、擁有者變更或通配權限。\n\n## 帳戶與簽章邊界\n\n原生交易綁定鏈 ID、發送方、接收方、正金額、精確的當前費用、下一個 nonce、壓縮 secp256k1 公開金鑰及規範簽章。錢包應在批准前展示這些欄位，重新檢查權威狀態，要求適當的本機授權，並追蹤待確認、已提交、失敗和未知結果。\n\n收款只應公開帳戶和網路的公共資訊。支援服務、AI、瀏覽器和應用服務從不需要助記詞或原始私鑰。\n\n## 產品批准\n\n目標通用協議綁定產品、應用程式套件、裝置、帳戶、作用域、到期時間、挑戰、批准、工作階段、狀態內省、撤銷和稽核。遇到重放、篡改、產品或應用程式套件或裝置不匹配、作用域擴大、過期和撤銷時，必須拒絕執行。產品候選版本僅僅內建或測試了一份協議副本，並不代表已完成統一整合。\n\n## 當前狀態\n\n存在 Wallet/Auth 候選工程和測試證據，包括行動端和協議工作。正式環境簽章、完整統一整合、原生 iOS 與實體裝置證明、瀏覽器擴充功能、獨立稽核和商店發佈，都需要元件特定的證據。本頁不聲稱這些狀態已完成。\n\n## 使用者安全\n\n- 使用隔離的測試網帳戶。\n- 驗證鏈 ID 6423 及 YNXT 測試網狀態。\n- 絕不分享助記詞或私鑰。\n- 拒絕不符合預期的產品、作用域、裝置或到期時間。\n- 提交結果未知時，先核驗雜湊和 nonce，再考慮重試。\n- 不要將測試網 YNXT 視為貨幣或具有保證價值的資產。\n\n## 證據與相關頁面\n\n證據：技術白皮書、Wallet 整合指南、產品驗收及發佈狀態記錄。\n\n- [YNX 測試網指南](/testnet)\n- [什麼是 YNXT？](/what-is-ynxt)\n- [YNX 安全](/security)\n- [YNX 產品](/products)\n- [常見問題](/faq)\n\n## 變更記錄\n\n- 1.0.0-candidate（2026-07-22）：首次記錄授權主體、簽章、批准、狀態與安全說明。\n",
+  "html": "<h2 id=\"public-search-wallet-section-1\">YNX Wallet</h2>\n<div class=\"documentTable\"><table><thead><tr><th>欄位</th><th>值</th></tr></thead><tbody><tr><td>版本</td><td>1.0.0-candidate</td></tr><tr><td>生效日期</td><td>2026-07-22</td></tr><tr><td>證據來源提交</td><td><code>719e1018267ed5a53e6fae5211c5fd8a1503c35c</code></td></tr><tr><td>已審閱的錢包候選提交</td><td><code>da82c8b07b72b615ccb24b86a2a7ac66ee85b4d8</code></td></tr><tr><td>產品發佈狀態</td><td>YNX Testnet 文件候選版本</td></tr><tr><td>最近審閱</td><td>2026-07-22</td></tr><tr><td>規範地址</td><td><code>https://ynxweb4.com/wallet</code></td></tr><tr><td>標題</td><td>YNX Wallet——測試網帳戶、簽章與產品權限</td></tr><tr><td>中繼描述</td><td>瞭解 YNX Wallet 的測試網信任模型、交易審閱、產品範圍批准、資產邊界及當前發佈狀態。</td></tr><tr><td>H1</td><td>YNX Wallet</td></tr></tbody></table></div>\n<h3 id=\"public-search-wallet-section-2\">直接回答</h3>\n<p>YNX Wallet 是設計上用於管理 YNX 帳戶、交易審閱、簽章和產品範圍批准的使用者授權主體。它不得匯出使用者助記詞，也不得向產品授予任意提款、擁有者變更或通配權限。</p>\n<h3 id=\"public-search-wallet-section-3\">帳戶與簽章邊界</h3>\n<p>原生交易綁定鏈 ID、發送方、接收方、正金額、精確的當前費用、下一個 nonce、壓縮 secp256k1 公開金鑰及規範簽章。錢包應在批准前展示這些欄位，重新檢查權威狀態，要求適當的本機授權，並追蹤待確認、已提交、失敗和未知結果。</p>\n<p>收款只應公開帳戶和網路的公共資訊。支援服務、AI、瀏覽器和應用服務從不需要助記詞或原始私鑰。</p>\n<h3 id=\"public-search-wallet-section-4\">產品批准</h3>\n<p>目標通用協議綁定產品、應用程式套件、裝置、帳戶、作用域、到期時間、挑戰、批准、工作階段、狀態內省、撤銷和稽核。遇到重放、篡改、產品或應用程式套件或裝置不匹配、作用域擴大、過期和撤銷時，必須拒絕執行。產品候選版本僅僅內建或測試了一份協議副本，並不代表已完成統一整合。</p>\n<h3 id=\"public-search-wallet-section-5\">當前狀態</h3>\n<p>存在 Wallet/Auth 候選工程和測試證據，包括行動端和協議工作。正式環境簽章、完整統一整合、原生 iOS 與實體裝置證明、瀏覽器擴充功能、獨立稽核和商店發佈，都需要元件特定的證據。本頁不聲稱這些狀態已完成。</p>\n<h3 id=\"public-search-wallet-section-6\">使用者安全</h3>\n<ul><li>使用隔離的測試網帳戶。</li><li>驗證鏈 ID 6423 及 YNXT 測試網狀態。</li><li>絕不分享助記詞或私鑰。</li><li>拒絕不符合預期的產品、作用域、裝置或到期時間。</li><li>提交結果未知時，先核驗雜湊和 nonce，再考慮重試。</li><li>不要將測試網 YNXT 視為貨幣或具有保證價值的資產。</li></ul>\n<h3 id=\"public-search-wallet-section-7\">證據與相關頁面</h3>\n<p>證據：技術白皮書、Wallet 整合指南、產品驗收及發佈狀態記錄。</p>\n<ul><li><a href=\"/testnet\">YNX 測試網指南</a></li><li><a href=\"/what-is-ynxt\">什麼是 YNXT？</a></li><li><a href=\"/security\">YNX 安全</a></li><li><a href=\"/products\">YNX 產品</a></li><li><a href=\"/faq\">常見問題</a></li></ul>\n<h3 id=\"public-search-wallet-section-8\">變更記錄</h3>\n<ul><li>1.0.0-candidate（2026-07-22）：首次記錄授權主體、簽章、批准、狀態與安全說明。</li></ul>",
+  "headings": [
+    {
+      "id": "public-search-wallet-section-1",
+      "title": "YNX Wallet",
+      "level": 1
+    },
+    {
+      "id": "public-search-wallet-section-2",
+      "title": "直接回答",
+      "level": 2
+    },
+    {
+      "id": "public-search-wallet-section-3",
+      "title": "帳戶與簽章邊界",
+      "level": 2
+    },
+    {
+      "id": "public-search-wallet-section-4",
+      "title": "產品批准",
+      "level": 2
+    },
+    {
+      "id": "public-search-wallet-section-5",
+      "title": "當前狀態",
+      "level": 2
+    },
+    {
+      "id": "public-search-wallet-section-6",
+      "title": "使用者安全",
+      "level": 2
+    },
+    {
+      "id": "public-search-wallet-section-7",
+      "title": "證據與相關頁面",
+      "level": 2
+    },
+    {
+      "id": "public-search-wallet-section-8",
+      "title": "變更記錄",
+      "level": 2
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "documentId": "developers-faucet-guide",
+  "locale": "zh-TW",
+  "sourceLocale": "en",
+  "sourceSha256": "1ec0a10928b42409d8262e10403873841743f8943316a50ee1e408e14c89462b",
+  "translationStatus": "translated-draft",
+  "translationOfVersion": null,
+  "translationNote": "繁體中文全文譯稿。版本日期、來源狀態與證據界線均沿用英文原文；歷史來源內容不代表目前實網功能、套件發布或操作流程已通過驗證。",
+  "translatedSha256": "99ae6296854da24db9cb0e0c09dc9dcb00683a006ee028de3990baf345452482",
+  "markdown": "# Faucet 指南\n\n本機鏈 RPC 仍支援 `POST /faucet`，用於開發者冒煙測試。公開 Faucet 流量應經過 `ynx-faucetd`；它會驗證地址，按 IP 和地址限流，並寫入權限為 `0600` 的 JSONL 請求日誌。\n\n`YNX_FAUCET_UPSTREAM_MODE=authoritative` 保留當前與回復相容的特權 RPC 路徑。`YNX_FAUCET_UPSTREAM_MODE=bft` 只接受規範的小寫 EVM 相容接收地址，要求鏈 ID 為 `6423`，派生並驗證 `YNX_FAUCET_ADDRESS`，查詢帳戶精確的下一個 nonce，在本機簽章，並且只向回送位址上的 BFT Gateway 提交規範的已簽章交易封套。必須且只能提供一種金鑰來源：規範十六進制格式的 `FAUCET_PRIVATE_KEY`，或位於 `YNX_FAUCET_PRIVATE_KEY_FILE`、權限受限且為一般檔案的原始 32 位元組金鑰檔案。金鑰必須留在處理程序內，絕不能記錄到日誌或發送到上游。\n\n本機驗證：\n\n```bash\nmake faucet-check\n```\n\n請求：\n\n```bash\ncurl -fsS -X POST http://127.0.0.1:6428/request \\\n  -H 'content-type: application/json' \\\n  -d '{\"address\":\"ynx_developer\"}'\n```\n",
+  "html": "<h2 id=\"developers-faucet-guide-section-1\">Faucet 指南</h2>\n<p>本機鏈 RPC 仍支援 <code>POST /faucet</code>，用於開發者冒煙測試。公開 Faucet 流量應經過 <code>ynx-faucetd</code>；它會驗證地址，按 IP 和地址限流，並寫入權限為 <code>0600</code> 的 JSONL 請求日誌。</p>\n<p><code>YNX_FAUCET_UPSTREAM_MODE=authoritative</code> 保留當前與回復相容的特權 RPC 路徑。<code>YNX_FAUCET_UPSTREAM_MODE=bft</code> 只接受規範的小寫 EVM 相容接收地址，要求鏈 ID 為 <code>6423</code>，派生並驗證 <code>YNX_FAUCET_ADDRESS</code>，查詢帳戶精確的下一個 nonce，在本機簽章，並且只向回送位址上的 BFT Gateway 提交規範的已簽章交易封套。必須且只能提供一種金鑰來源：規範十六進制格式的 <code>FAUCET_PRIVATE_KEY</code>，或位於 <code>YNX_FAUCET_PRIVATE_KEY_FILE</code>、權限受限且為一般檔案的原始 32 位元組金鑰檔案。金鑰必須留在處理程序內，絕不能記錄到日誌或發送到上游。</p>\n<p>本機驗證：</p>\n<pre><code>make faucet-check</code></pre>\n<p>請求：</p>\n<pre><code>curl -fsS -X POST http://127.0.0.1:6428/request \\\n  -H &#39;content-type: application/json&#39; \\\n  -d &#39;{&quot;address&quot;:&quot;ynx_developer&quot;}&#39;</code></pre>",
+  "headings": [
+    {
+      "id": "developers-faucet-guide-section-1",
+      "title": "Faucet 指南",
+      "level": 1
+    }
+  ]
+}

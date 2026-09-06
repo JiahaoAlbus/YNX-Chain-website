@@ -1,0 +1,74 @@
+{
+  "documentId": "public-search-ynx-testnet-guide",
+  "locale": "zh-TW",
+  "sourceLocale": "en",
+  "sourceSha256": "4883dd129f42b397f4739639882b3a78686949bc6998c60815a75280b014fb19",
+  "translationStatus": "translated-draft",
+  "translationOfVersion": "1.0.0-candidate",
+  "translationNote": "繁體中文全文譯稿。版本日期、來源狀態與證據界線均沿用英文原文；歷史來源內容不代表目前實網功能、套件發布或操作流程已通過驗證。",
+  "translatedSha256": "6fe175f990514653e59a3b0bd1aa6f5061bc6fe4eaf020021a6d8f1c92c75891",
+  "markdown": "# YNX 測試網指南\n\n| 欄位 | 值 |\n| --- | --- |\n| 版本 | 1.0.0-candidate |\n| 生效日期 | 2026-07-22 |\n| 證據來源提交 | `719e1018267ed5a53e6fae5211c5fd8a1503c35c` |\n| 產品發佈狀態 | YNX Testnet 文件候選版本 |\n| 最近審閱 | 2026-07-22 |\n| 替代版本 | 無 |\n| 規範地址 | `https://ynxweb4.com/testnet` |\n| 標題 | YNX 測試網指南——網路身份、錢包設定與安全 |\n| 中繼描述 | 使用 EVM 鏈 ID 6423、YNXT 測試資產、證據檢查和清晰的公開服務限制，安全使用 YNX Testnet。 |\n| H1 | YNX 測試網指南 |\n\n## 直接回答\n\nYNX Testnet 是 YNX Chain 的測試網路。它使用 EVM 鏈 ID 6423（`0x1917`）、Comet/Cosmos 鏈 ID `ynx_6423-1`，並以 YNXT 作為原生測試網資產。測試資產不代表貨幣價值，也不保證流動性。\n\n## 連接前先驗證\n\n| 欄位 | 預期值 |\n| --- | --- |\n| 網路名稱 | YNX Testnet |\n| EVM 鏈 ID | 6423 |\n| 十六進制鏈 ID | `0x1917` |\n| 原生資產 | YNXT |\n| 網路中繼資料中的小數位數 | 18 |\n| 官方域名 | `https://ynxweb4.com` |\n\n驗證端點身份、TLS、鏈 ID、區塊推進、發佈版本和資訊時效。當前已發佈的中繼資料列出了 EVM RPC、Explorer 和 Faucet 子域名，但此次文件稽核沒有獨立重新檢查每個服務端點。對於失敗或未經驗證的端點，應視為不可用。\n\n## 錢包安全\n\n使用隔離的測試網帳戶。絕不要在網站、支援服務訊息、AI 提示或文件表單中輸入助記詞或私鑰。自訂網路請求只應新增或切換到預期網路，並重新檢查所選鏈。新增網路不得自動請求帳戶或交易。\n\n簽章前審閱接收方、金額、精確費用、nonce、鏈 ID 和交易雜湊。結果未知不等於成功：在考慮再次提交前，先按雜湊、發送方和 nonce 查詢權威狀態。\n\n## 獲取測試網 YNXT\n\nFaucet 必須驗證目標地址、報告限流，並回傳真實交易或證據結果。僅有 Faucet 介面回應並不足夠。如果公開 Faucet 不可用或未經驗證，不要使用非官方供應商，也不要聲稱已成功到帳。\n\n## 開發者使用\n\n原始碼包含 Hardhat、Foundry、SDK 和合約驗證工作流。相容性僅限於經過測試的方法和建置產物，不代表通用以太坊相容。在鏈身份、位元組碼、原始碼、小數位數、符號和授權主體得到驗證之前，不要發佈代幣或合約地址。\n\n## 最終性與派生服務\n\n已提交鏈狀態具有權威性。Explorer 和 Indexer 記錄是派生資料，可能滯後、重建或不可用。錢包或服務應分別展示待確認、已提交、失敗和未知狀態，並註明來源與觀察時間。\n\n## 跨鏈橋與穩定幣提示\n\n本文不聲稱存在已上線的 Bridge 或官方穩定幣路徑。本機 Bridge 協調器已禁用外部執行，穩定幣服務僅記錄不執行操作的審閱意圖。不要向未經批准的跨鏈橋或穩定幣合約發送價值。\n\n## 測試網與主網\n\n測試網程式碼、餘額、驗證者、軟體套件和端點不能證明主網已成立。正式環境簽章、託管、經濟政策、法律審閱、公開容量和獨立安全證據，都需要單獨的發佈記錄。\n\n## 故障排查\n\n- 鏈 ID 錯誤：停止，不要簽章或提交。\n- 端點不可用：顯示失敗，稍後重試；不要虛構健康狀態。\n- Explorer 資料過期：與權威 RPC 和來源時效比較。\n- Faucet 拒絕：保留原因與限流狀態；不要聲稱產生了交易。\n- 交易結果未知：重試前按雜湊和發送方 nonce 查詢。\n- 可疑的秘密資訊請求：停止，並在官方支援或安全通報地址公佈且驗證後，通過該途徑處理。\n\n## 相關頁面\n\n- [什麼是 YNX Chain？](/what-is-ynx-chain)\n- [什麼是 YNXT？](/what-is-ynxt)\n- [YNX Wallet](/wallet)\n- [YNX 開發者](/developer)\n- [YNX 安全](/security)\n- [常見問題](/faq)\n\n## 變更記錄\n\n- 1.0.0-candidate（2026-07-22）：首次記錄網路身份、驗證、Wallet、Faucet、開發者、最終性、Bridge 與穩定幣、主網及故障排查指南。\n",
+  "html": "<h2 id=\"public-search-ynx-testnet-guide-section-1\">YNX 測試網指南</h2>\n<div class=\"documentTable\"><table><thead><tr><th>欄位</th><th>值</th></tr></thead><tbody><tr><td>版本</td><td>1.0.0-candidate</td></tr><tr><td>生效日期</td><td>2026-07-22</td></tr><tr><td>證據來源提交</td><td><code>719e1018267ed5a53e6fae5211c5fd8a1503c35c</code></td></tr><tr><td>產品發佈狀態</td><td>YNX Testnet 文件候選版本</td></tr><tr><td>最近審閱</td><td>2026-07-22</td></tr><tr><td>替代版本</td><td>無</td></tr><tr><td>規範地址</td><td><code>https://ynxweb4.com/testnet</code></td></tr><tr><td>標題</td><td>YNX 測試網指南——網路身份、錢包設定與安全</td></tr><tr><td>中繼描述</td><td>使用 EVM 鏈 ID 6423、YNXT 測試資產、證據檢查和清晰的公開服務限制，安全使用 YNX Testnet。</td></tr><tr><td>H1</td><td>YNX 測試網指南</td></tr></tbody></table></div>\n<h3 id=\"public-search-ynx-testnet-guide-section-2\">直接回答</h3>\n<p>YNX Testnet 是 YNX Chain 的測試網路。它使用 EVM 鏈 ID 6423（<code>0x1917</code>）、Comet/Cosmos 鏈 ID <code>ynx_6423-1</code>，並以 YNXT 作為原生測試網資產。測試資產不代表貨幣價值，也不保證流動性。</p>\n<h3 id=\"public-search-ynx-testnet-guide-section-3\">連接前先驗證</h3>\n<div class=\"documentTable\"><table><thead><tr><th>欄位</th><th>預期值</th></tr></thead><tbody><tr><td>網路名稱</td><td>YNX Testnet</td></tr><tr><td>EVM 鏈 ID</td><td>6423</td></tr><tr><td>十六進制鏈 ID</td><td><code>0x1917</code></td></tr><tr><td>原生資產</td><td>YNXT</td></tr><tr><td>網路中繼資料中的小數位數</td><td>18</td></tr><tr><td>官方域名</td><td><code>https://ynxweb4.com</code></td></tr></tbody></table></div>\n<p>驗證端點身份、TLS、鏈 ID、區塊推進、發佈版本和資訊時效。當前已發佈的中繼資料列出了 EVM RPC、Explorer 和 Faucet 子域名，但此次文件稽核沒有獨立重新檢查每個服務端點。對於失敗或未經驗證的端點，應視為不可用。</p>\n<h3 id=\"public-search-ynx-testnet-guide-section-4\">錢包安全</h3>\n<p>使用隔離的測試網帳戶。絕不要在網站、支援服務訊息、AI 提示或文件表單中輸入助記詞或私鑰。自訂網路請求只應新增或切換到預期網路，並重新檢查所選鏈。新增網路不得自動請求帳戶或交易。</p>\n<p>簽章前審閱接收方、金額、精確費用、nonce、鏈 ID 和交易雜湊。結果未知不等於成功：在考慮再次提交前，先按雜湊、發送方和 nonce 查詢權威狀態。</p>\n<h3 id=\"public-search-ynx-testnet-guide-section-5\">獲取測試網 YNXT</h3>\n<p>Faucet 必須驗證目標地址、報告限流，並回傳真實交易或證據結果。僅有 Faucet 介面回應並不足夠。如果公開 Faucet 不可用或未經驗證，不要使用非官方供應商，也不要聲稱已成功到帳。</p>\n<h3 id=\"public-search-ynx-testnet-guide-section-6\">開發者使用</h3>\n<p>原始碼包含 Hardhat、Foundry、SDK 和合約驗證工作流。相容性僅限於經過測試的方法和建置產物，不代表通用以太坊相容。在鏈身份、位元組碼、原始碼、小數位數、符號和授權主體得到驗證之前，不要發佈代幣或合約地址。</p>\n<h3 id=\"public-search-ynx-testnet-guide-section-7\">最終性與派生服務</h3>\n<p>已提交鏈狀態具有權威性。Explorer 和 Indexer 記錄是派生資料，可能滯後、重建或不可用。錢包或服務應分別展示待確認、已提交、失敗和未知狀態，並註明來源與觀察時間。</p>\n<h3 id=\"public-search-ynx-testnet-guide-section-8\">跨鏈橋與穩定幣提示</h3>\n<p>本文不聲稱存在已上線的 Bridge 或官方穩定幣路徑。本機 Bridge 協調器已禁用外部執行，穩定幣服務僅記錄不執行操作的審閱意圖。不要向未經批准的跨鏈橋或穩定幣合約發送價值。</p>\n<h3 id=\"public-search-ynx-testnet-guide-section-9\">測試網與主網</h3>\n<p>測試網程式碼、餘額、驗證者、軟體套件和端點不能證明主網已成立。正式環境簽章、託管、經濟政策、法律審閱、公開容量和獨立安全證據，都需要單獨的發佈記錄。</p>\n<h3 id=\"public-search-ynx-testnet-guide-section-10\">故障排查</h3>\n<ul><li>鏈 ID 錯誤：停止，不要簽章或提交。</li><li>端點不可用：顯示失敗，稍後重試；不要虛構健康狀態。</li><li>Explorer 資料過期：與權威 RPC 和來源時效比較。</li><li>Faucet 拒絕：保留原因與限流狀態；不要聲稱產生了交易。</li><li>交易結果未知：重試前按雜湊和發送方 nonce 查詢。</li><li>可疑的秘密資訊請求：停止，並在官方支援或安全通報地址公佈且驗證後，通過該途徑處理。</li></ul>\n<h3 id=\"public-search-ynx-testnet-guide-section-11\">相關頁面</h3>\n<ul><li><a href=\"/what-is-ynx-chain\">什麼是 YNX Chain？</a></li><li><a href=\"/what-is-ynxt\">什麼是 YNXT？</a></li><li><a href=\"/wallet\">YNX Wallet</a></li><li><a href=\"/developer\">YNX 開發者</a></li><li><a href=\"/security\">YNX 安全</a></li><li><a href=\"/faq\">常見問題</a></li></ul>\n<h3 id=\"public-search-ynx-testnet-guide-section-12\">變更記錄</h3>\n<ul><li>1.0.0-candidate（2026-07-22）：首次記錄網路身份、驗證、Wallet、Faucet、開發者、最終性、Bridge 與穩定幣、主網及故障排查指南。</li></ul>",
+  "headings": [
+    {
+      "id": "public-search-ynx-testnet-guide-section-1",
+      "title": "YNX 測試網指南",
+      "level": 1
+    },
+    {
+      "id": "public-search-ynx-testnet-guide-section-2",
+      "title": "直接回答",
+      "level": 2
+    },
+    {
+      "id": "public-search-ynx-testnet-guide-section-3",
+      "title": "連接前先驗證",
+      "level": 2
+    },
+    {
+      "id": "public-search-ynx-testnet-guide-section-4",
+      "title": "錢包安全",
+      "level": 2
+    },
+    {
+      "id": "public-search-ynx-testnet-guide-section-5",
+      "title": "獲取測試網 YNXT",
+      "level": 2
+    },
+    {
+      "id": "public-search-ynx-testnet-guide-section-6",
+      "title": "開發者使用",
+      "level": 2
+    },
+    {
+      "id": "public-search-ynx-testnet-guide-section-7",
+      "title": "最終性與派生服務",
+      "level": 2
+    },
+    {
+      "id": "public-search-ynx-testnet-guide-section-8",
+      "title": "跨鏈橋與穩定幣提示",
+      "level": 2
+    },
+    {
+      "id": "public-search-ynx-testnet-guide-section-9",
+      "title": "測試網與主網",
+      "level": 2
+    },
+    {
+      "id": "public-search-ynx-testnet-guide-section-10",
+      "title": "故障排查",
+      "level": 2
+    },
+    {
+      "id": "public-search-ynx-testnet-guide-section-11",
+      "title": "相關頁面",
+      "level": 2
+    },
+    {
+      "id": "public-search-ynx-testnet-guide-section-12",
+      "title": "變更記錄",
+      "level": 2
+    }
+  ]
+}

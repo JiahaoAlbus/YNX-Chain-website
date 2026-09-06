@@ -2,18 +2,23 @@ import React, { useEffect, useState } from 'react';
 import { ArrowDownToLine, BookOpen, ChevronDown, FileText } from 'lucide-react';
 import { useLocale } from '../lib/i18n.jsx';
 import { getDocumentLibraryCopy } from '../content/documentLibraryCopy.js';
+import { getDocumentTranslationCopy } from '../content/documentTranslationCopy.js';
+import { documentLanguageName, selectDocumentBody, validateDocumentBody } from '../lib/documentBody.js';
 import '../pages/document-library.css';
 
 const bodyCache = new Map();
+const operatorArchives = new Set(['developers-getting-started', 'developers-faucet-guide', 'guides-developer-guide', 'guides-validator-guide']);
 
 export function DocumentReader({ document: source, locale: requestedLocale, showTitle = true }) {
   const context = useLocale();
   const locale = requestedLocale || context.locale;
   const copy = getDocumentLibraryCopy(locale);
+  const translationCopy = getDocumentTranslationCopy(locale);
   const detail = source ? copy.documents[source.id] : null;
-  const bodyLocale = source?.bodyUrls?.[locale] ? locale : source?.sourceLocale;
-  const bodyUrl = source?.bodyUrls?.[bodyLocale];
-  const bodyKey = source ? `${source.id}:${bodyLocale}:${source.sha256}` : '';
+  const selection = selectDocumentBody(source, locale);
+  const bodyLocale = selection.locale;
+  const bodyUrl = selection.url;
+  const bodyKey = selection.key;
   const [bodyState, setBodyState] = useState({key:'', status:'loading', body:null});
   const [attempt, setAttempt] = useState(0);
   const currentBody = bodyState.key === bodyKey ? bodyState : {key:bodyKey, status:'loading', body:null};
@@ -31,12 +36,7 @@ export function DocumentReader({ document: source, locale: requestedLocale, show
     fetch(bodyUrl,{signal:controller.signal}).then(async response => {
       if (!response.ok) throw new Error('Document unavailable');
       const body = await response.json();
-      if (body.documentId !== source.id || body.locale !== bodyLocale || body.sourceSha256 !== source.sha256 || typeof body.markdown !== 'string' || typeof body.html !== 'string' || !Array.isArray(body.headings)) throw new Error('Document identity mismatch');
-      if (bodyLocale === source.sourceLocale && window.crypto?.subtle) {
-        const bytes = new TextEncoder().encode(body.markdown);
-        const digest = [...new Uint8Array(await window.crypto.subtle.digest('SHA-256',bytes))].map(value=>value.toString(16).padStart(2,'0')).join('');
-        if (digest !== source.sha256 || bytes.length !== source.bytes) throw new Error('Document integrity mismatch');
-      }
+      await validateDocumentBody(body, source, selection, window.crypto?.subtle);
       if (controller.signal.aborted) return;
       window.clearTimeout(timeout);
       bodyCache.set(bodyKey,body);
@@ -54,7 +54,7 @@ export function DocumentReader({ document: source, locale: requestedLocale, show
     try { anchor = decodeURIComponent(window.location.hash.slice(1)); } catch { return; }
     const frame = window.requestAnimationFrame(() => window.document.getElementById(anchor)?.scrollIntoView({block:'start'}));
     return () => window.cancelAnimationFrame(frame);
-  }, [source?.id,currentBody.status]);
+  }, [bodyKey,currentBody.status]);
 
   if (!source || !detail) return <p className="documentEmpty">{copy.noResults}</p>;
   const headings = currentBody.body?.headings.filter(heading => heading.level === 2 || heading.level === 3) || [];
@@ -64,7 +64,7 @@ export function DocumentReader({ document: source, locale: requestedLocale, show
       <header className="documentReaderHeader">
         <div className="documentBadges">
           <span><FileText size={14} aria-hidden="true" />{source.status === 'draft' ? copy.draft : copy.archive}</span>
-          <span>{copy.original} · {copy.english}</span>
+          <span>{selection.isTranslated ? translationCopy.translated : copy.original} · {documentLanguageName(bodyLocale, locale)}</span>
         </div>
         {showTitle ? <h2>{detail.title}</h2> : null}
         <p>{detail.description}</p>
@@ -77,7 +77,9 @@ export function DocumentReader({ document: source, locale: requestedLocale, show
       <aside className="documentReadingNote" aria-labelledby={`reading-note-${source.id}`}>
         <h3 id={`reading-note-${source.id}`}><BookOpen size={18} aria-hidden="true" />{copy.readingNote}</h3>
         {detail.readingNotes.map((note, index) => <p key={index}>{note}</p>)}
-        {locale !== source.sourceLocale ? <p className="documentTranslationState"><strong>{copy.translationPending}.</strong> {copy.originalBodyNotice}</p> : null}
+        {selection.isFallback ? <p className="documentTranslationState"><strong>{copy.translationPending}.</strong> {copy.originalBodyNotice}</p> : null}
+        {selection.isTranslated ? <p className="documentTranslationState">{translationCopy.translationNotice}</p> : null}
+        {operatorArchives.has(source.id) ? <p className="documentTranslationState">{translationCopy.operatorNotice} <a href={`/manual?path=${source.id === 'guides-validator-guide' ? 'participate' : 'develop'}&lang=${encodeURIComponent(locale)}`}>{translationCopy.currentGuide}</a></p> : null}
       </aside>
 
       <details className="documentIntegrity">
@@ -87,7 +89,9 @@ export function DocumentReader({ document: source, locale: requestedLocale, show
           <div><dt>{copy.source}</dt><dd><code dir="ltr">{source.sourcePath}</code><code dir="ltr">{source.sourceCommit}</code></dd></div>
           <div><dt>{copy.checksum}</dt><dd><code dir="ltr">{source.sha256}</code></dd></div>
           <div><dt>{copy.bytes}</dt><dd><bdi>{source.bytes.toLocaleString(locale)}</bdi></dd></div>
-          <div><dt>{copy.sourceLanguage}</dt><dd>{copy.english}</dd></div>
+          <div><dt>{translationCopy.originalLanguage}</dt><dd>{documentLanguageName(source.sourceLocale, locale)}</dd></div>
+          <div><dt>{translationCopy.bodyLanguage}</dt><dd>{documentLanguageName(bodyLocale, locale)}</dd></div>
+          {selection.isTranslated ? <div><dt>{translationCopy.translationChecksum}</dt><dd><code dir="ltr">{selection.sha256}</code></dd></div> : null}
         </dl>
         <a className="documentDownload" href={source.downloadUrl} download><ArrowDownToLine size={16} aria-hidden="true" />{copy.download}</a>
       </details>

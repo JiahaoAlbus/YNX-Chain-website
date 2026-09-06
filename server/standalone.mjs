@@ -138,6 +138,9 @@ export async function createStandaloneServer(options = {}) {
   const maxApiConcurrent = boundedInteger(options.maxApiConcurrent ?? environment.YNX_WEBSITE_MAX_API_CONCURRENT, 4, 8);
   const highWaterMark = 64 * 1024;
   const collectors = options.collectors || { collectNetworkStatus, collectServiceHealth };
+  const collectionFlights = new Map();
+  // Keep the public stats field name; it counts actual API work, not waiters
+  // joining one of the three fixed collector variants.
   const stats = { activeRequests: 0, activeApiRequests: 0, activeStreams: 0, maxObservedStreams: 0, maxConcurrent, maxApiConcurrent, streamHighWaterMark: highWaterMark };
   let manifest = {};
   const manifestFile = options.assetManifestPath || environment.YNX_WEBSITE_ASSET_MANIFEST || path.join(path.dirname(distRoot), "asset-manifest.json");
@@ -145,6 +148,19 @@ export async function createStandaloneServer(options = {}) {
     if ((await fsp.stat(manifestFile)).size > 8 * 1024 * 1024) throw new Error("Asset manifest is too large");
     manifest = JSON.parse(await fsp.readFile(manifestFile, "utf8")).files || {};
   } catch (error) { if (error.code !== "ENOENT") throw error; }
+
+  function acquireCollectionFlight(key, collect) {
+    const existing = collectionFlights.get(key);
+    if (existing) return existing;
+    if (stats.activeApiRequests >= maxApiConcurrent) return null;
+    stats.activeApiRequests += 1;
+    const promise = Promise.resolve().then(collect).finally(() => {
+      if (collectionFlights.get(key) === promise) collectionFlights.delete(key);
+      stats.activeApiRequests -= 1;
+    });
+    collectionFlights.set(key, promise);
+    return promise;
+  }
 
   function headers(response, pathname) {
     response.setHeader("X-Content-Type-Options", "nosniff");
@@ -250,12 +266,12 @@ export async function createStandaloneServer(options = {}) {
     if (["/source-identity.json", "/asset-manifest.json", "/package-manifest.json"].includes(pathname)) return json(request, response, 404, { error: "NOT_FOUND" });
     if (["/api/network/status", "/api/services/health"].includes(pathname)) {
       if (request.method === "HEAD") { response.writeHead(200, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": NO_STORE }); return response.end(); }
-      if (stats.activeApiRequests >= maxApiConcurrent) return json(request, response, 503, { error: "SERVER_BUSY" }, { "Retry-After": "1" });
-      stats.activeApiRequests += 1;
-      try {
-        const payload = pathname === "/api/network/status" ? await collectors.collectNetworkStatus({ detailed: target.query.get("view") !== "summary" }) : await collectors.collectServiceHealth();
-        return json(request, response, 200, payload);
-      } finally { stats.activeApiRequests -= 1; }
+      const network = pathname === "/api/network/status";
+      const detailed = target.query.get("view") !== "summary";
+      const key = network ? (detailed ? "network-detail" : "network-summary") : "services";
+      const pending = acquireCollectionFlight(key, () => network ? collectors.collectNetworkStatus({ detailed }) : collectors.collectServiceHealth());
+      if (!pending) return json(request, response, 503, { error: "SERVER_BUSY" }, { "Retry-After": "1" });
+      return json(request, response, 200, await pending);
     }
     if (Object.hasOwn(PUBLIC_API_HANDLERS, pathname)) {
       if (request.method === "HEAD") { response.writeHead(200, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": NO_STORE }); return response.end(); }

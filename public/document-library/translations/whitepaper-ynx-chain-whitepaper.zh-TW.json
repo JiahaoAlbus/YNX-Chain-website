@@ -1,0 +1,134 @@
+{
+  "documentId": "whitepaper-ynx-chain-whitepaper",
+  "locale": "zh-TW",
+  "sourceLocale": "en",
+  "sourceSha256": "4d0bfbdb7d760c4e11a8fbeb37a81dd2ec95d69abe1ada2c1fec4e3baeaa0f42",
+  "translationStatus": "translated-draft",
+  "translationOfVersion": "0.2.0-candidate",
+  "translationNote": "繁體中文全文譯稿。版本日期、草案狀態與證據界線均沿用英文原文，不代表目前實網功能已通過驗證。",
+  "translatedSha256": "290478e282e62e080925179d7c5c5682e36341fbed782149cdd8c5f4fa029b5a",
+  "markdown": "# YNX Chain 技術白皮書\n\n| 中繼資料 | 內容 |\n| --- | --- |\n| 版本 | 0.2.0-candidate |\n| 生效日期 | 2026-07-22 |\n| 原始碼提交 | `719e1018267ed5a53e6fae5211c5fd8a1503c35c` |\n| 產品發佈 | YNX 測試網文件候選版本 |\n| 最後審閱 | 2026-07-22 |\n| 被替代版本 | 最初的三段式儲存庫摘要 |\n| 審閱狀態 | 技術草案；仍需獨立安全、經濟及法律審閱 |\n\n## 直接說明\n\nYNX Chain 是正在進行測試網工程開發的 Web4 第 1 層生態系統。YNX Web4 是由 YNX Chain 驅動的應用生態，YNXT 是原生測試網資產。YNX Testnet 使用 EVM 鏈 ID `6423`（`0x1917`）以及 Comet/Cosmos 鏈 ID `ynx_6423-1`。\n\n本文件中的「Web4」描述項目希望結合的能力：使用者控制的帳戶、受權限約束的應用、可驗證執行、關聯證據的自動化，以及明確的人類批准。這是 YNX 的產品術語，並不宣稱一種新的網際網路標準已經得到採用。\n\nYNX 與無關的 Lynx 品牌產品沒有關聯。\n\n## 狀態與閱讀規則\n\n這是一份測試網技術披露，不是主網上線聲明、代幣銷售文件、投資說明書、稽核報告、儲備證明或監管批准。當前原始碼包含經過本機測試的元件、部署工具、運營方控制的遠端證據和候選產品。這些證據類別不能相互替代。\n\n每個元件都必須分別評估以下發佈狀態：\n\n| 狀態 | 含義 |\n| --- | --- |\n| `implementedLocal` | 所聲明的行為存在於所標識提交的原始碼中。 |\n| `testedLocal` | 與該行為直接相關的本機測試在該原始碼上通過。 |\n| `installedLocal` | 所聲明的軟體套件已在指定目標上安裝並冷啟動。 |\n| `integratedCentral` | 已接受的元件已納入統一發行主線。 |\n| `deployedStaging` | 有直接證據證明預發佈部署。 |\n| `deployedPublic` | 有直接證據證明可獨立訪問的公開部署。 |\n| `downloadHosted` | 可下載產物具有不可變 URL、位元組數和摘要。 |\n| `productionSigned` | 產物具有經擁有者批准的正式環境簽章。 |\n| `storeReleased` | 指定商店正在公開分發該確切版本。 |\n\n任何狀態都不能由另一狀態推斷。模擬器運行不等於設備安裝；測試簽章不等於正式環境簽章；儲存庫目錄不等於部署；測試網資產不等於主網資產。\n\n## 1. 設計目標\n\nYNX Chain 圍繞五項有明確範圍的目標進行工程開發：\n\n1. 使帳戶和交易狀態具有確定性，其權威結果來自鏈上執行，而非使用者介面或第三方 API；\n2. 明確分離使用者資產保管、應用權限、服務運營和協議權限；\n3. 為支付、信任、資源、開發和 AI 輔助流程構建關聯證據的應用；\n4. 通過版本化狀態、可觀測故障、備份和回復程序實現可恢復運營；\n5. 如實披露發佈狀態，區分已實現、已測試、已安裝、已整合、已預發佈、已公開、已簽章和已分發。\n\n當前工程範圍不能證明網際網路規模的容量、無許可驗證者參與、主網經濟機制、正式環境等級資產保管、穩定幣儲備、跨鏈橋流動性、交易所流動性或持續公開可用性。\n\n## 2. 網路身份\n\n| 字段 | YNX Testnet 數值 | 權威來源 |\n| --- | --- | --- |\n| 網路名稱 | YNX Testnet | 規範網路中繼資料 |\n| 原生測試網資產 | YNXT | 規範網路中繼資料 |\n| EVM 鏈 ID | `6423` / `0x1917` | `chain-metadata/ynx-testnet.json` |\n| Comet/Cosmos 鏈 ID | `ynx_6423-1` | 共識遷移和套件結構定義 |\n| 原生資產小數位數 | 18 | 規範網路中繼資料 |\n| 官方站點名稱 | YNX Chain | 公開品牌事實 |\n| 應用生態 | YNX Web4 | 公開品牌事實 |\n\n儲存庫也包含一份主網草案。不能把草案中的識別碼或組態理解為已經運行的主網。當前面向公眾的表述必須明確說明 YNXT 是原生測試網資產。\n\n## 3. 共識架構\n\n共識候選版本固定使用 CometBFT `v0.38.23`，通過 ABCI 2.0 連接 YNX 應用。在候選網路啟動前，確定性的遷移導出會固定帳戶、供應量、驗證者及相關應用狀態。\n\n共識路徑在 `CheckTx` 中驗證交易，通過提案處理確定順序，在 `FinalizeBlock` 中依次執行，並提交得到的應用雜湊。持久帳戶狀態和 AppHash 原子寫入；磁碟提交失敗時，不得推進記憶體高度。\n\n本機法定人數驗證會創建四個獨立驗證者目錄，分別使用不同的 Ed25519 驗證者金鑰和節點金鑰。它檢查：\n\n- 一致的 genesis，以及固定高度的區塊雜湊收斂；\n- 預期驗證者身份和簽章參與情況；\n- 通過 CometBFT RPC 提交一筆已簽章的 YNXT 轉帳；\n- 停止一個驗證者及其應用後，仍能繼續提交；\n- 已停止驗證者重新啟動並追趕狀態。\n\n該驗證屬於本機法定人數證據，本身不能證明遠端容錯或公開去中心化。正式環境候選軟體套件不將驗證者及節點私鑰放入 Git，通過公開身份綁定四個指定運營角色，對每個打包文件計算雜湊，並將候選 RPC、ABCI 和指標介面保留在回送位址。遠端部署、故障演練、由擁有者簽章的交易演練、公開入口批准和獨立公開證明仍是需要分別完成的操作。\n\n詳細行為及限制在發佈後的 `docs/whitepaper/STREAMBFT_SPECIFICATION.md` 中規定；在此之前，`chain/consensus/README.md` 和共識測試是工程依據。\n\n## 4. 帳戶與原生交易\n\n當前原生轉帳封裝採用規範 JSON，並使用 secp256k1 ECDSA 簽章。簽署者地址是從未壓縮公開金鑰派生的小寫 EVM 相容地址。簽章域 `YNX_NATIVE_TX_V1` 綁定：\n\n- 封裝版本；\n- 數值型鏈 ID；\n- 交易類型；\n- 發送者和接收者；\n- 金額和手續費；\n- 帳戶的下一個 nonce；\n- 壓縮公開金鑰。\n\n應用驗證簽章，不保存使用者私鑰。順序執行保持 YNXT 總供應量不變，遞增 nonce 和已計量的頻寬使用量，並按確定性順序移動可追溯批次。當前有明確範圍的原生模型使用固定手續費，不能據此證明動態費用市場已經定案。\n\n使用者金鑰、助記詞、任意提款權限、擁有者變更權限及可重複使用的正式環境簽章材料，不得轉交瀏覽器、AI 供應商、應用服務或文件系統。\n\n## 5. 執行與 EVM 相容性\n\nYNX Testnet 發佈面向 EVM 的網路中繼資料和開發工具，包括 JSON-RPC 預期行為、Hardhat 和 Foundry 組態、合約驗證流程、SDK 輔助方法及示例合約。相容性僅限當前測試和公開證據直接驗證的方法與行為，不代表普遍相容所有 Ethereum 用戶端、操作碼、錢包、索引器、交易所、跨鏈橋或去中心化應用。\n\n合約地址在部署、鏈上位元組碼、原始碼驗證、鏈身份、小數位數、符號及發行方權限得到直接核查前，不得進入公開代幣列表或整合指南。因此，只有滿足這些條件後，規範測試網代幣列表才能包含相應項目，否則保持為空。\n\n## 6. 費用與資源計量\n\n當前測試網工程模型使用 YNXT 支付原生交易費用並進行資源計量。已提交的原生轉帳實現使用精確的固定手續費，並按當前驗證者規則分配該費用。這是有明確範圍的執行階段實現事實，不是對未來費率、驗證者收入、代幣價值、收益或主網政策的承諾。\n\n後續任何局部費用市場都必須定義、版本化並測試：\n\n- 被計量的單位；\n- 基礎費用或拍賣計算方式；\n- 擁堵和優先級處理；\n- 提案者和協議之間的分配；\n- 捨入和計價單位規則；\n- 使用者授權的最高成本；\n- 失敗交易的處理；\n- 抵抗垃圾請求和拒絕服務攻擊的能力；\n- 升級及回復相容性。\n\n本白皮書不作收入、銷毀、回購、年化收益率或盈利能力聲明。這些聲明需要特定期間的毛額與淨額、成本、風險、回撤、鎖定及退出條款、網路類別、證據 ID，以及明確的無保證說明。\n\n## 7. 質押與驗證者安全\n\n遷移和共識軟體套件表示候選網路所需的驗證者身份及質押狀態。完整的公開質押規範必須另行定義委託、解除綁定、獎勵、傭金、罰沒、暫停驗證資格、治理控制、金鑰輪換、驗證者退出和狀態遷移。驗證者記錄的存在並不意味著這些經濟規則已經定案。\n\n流動性質押和安全模組僅是設計候選方案，直到其合約或執行階段邏輯、稽核、部署、資產保管範圍、流動性、提款路徑、資不抵債處理及事件控制獲得直接證據支持。本文件不承諾質押年化收益或流動性質押贖回。\n\n## 8. 錢包、認證與應用權限\n\n預期的共同信任路徑採用規範 Wallet 批准和按產品限定範圍的 Gateway 會話，而不是長期有效的瀏覽器 bearer token 或產品專用相容登入。完整且被接受的流程應綁定產品身份、軟體套件身份、設備金鑰、使用者帳戶、權限範圍、到期時間、挑戰、批准、內省、撤銷和稽核記錄。\n\n每個驗證器都必須在重放、篡改、錯誤產品、錯誤軟體套件、錯誤設備、權限擴大、過期和撤銷情況下拒絕操作。只有已接受協議及這些反向用例在統一發行主線上通過，候選產品才能被描述為已經統一整合。\n\n應用可以請求限定範圍的操作，但不能繼承資產保管權。使用者資產只能位於使用者 Wallet、明確披露的交易所子帳戶、使用者批准的策略金庫、已標識的託管供應商或獲批的協議合約中。策略授權需要最小權限、資產和交易場所白名單、金額及頻率限制、到期時間、nonce 域、立即撤銷、緊急停止、緊急退出和可稽核回執。\n\n## 9. AI 治理\n\nAI 是受約束的建議層，可以起草、解釋、翻譯、總結、研究、預覽、模擬、提議或生成可審閱的補丁。它不得獨立簽章、付款、交易、兌換、提款、開卡、發送消息、發佈內容、刪除資料、變更權限、修改風險、改變發行、操作金庫、升級共識或繞過人類批准。\n\nAI 輔助操作需要上下文同意、供應商及模型狀態、適用時的資源或成本可見性、預覽、批准／拒絕控制、稽核記錄以及如實的失敗行為。成功生成文本，不等於鏈、帳戶、餘額、交易、結算、信任案件或權限的權威狀態。\n\n## 10. 支付、交易與量化系統\n\nYNX Pay 工程包括限定範圍的意圖、帳單、結算驗證、回執和測試流程。公開支付網路還需要獲接受的 Wallet 整合、商戶身份、正式環境運營、退款及爭議處理，以及直接公開證據。\n\nExchange、DEX 和量化候選產品必須遵守以下規則：\n\n- 除非明確的受管理金庫或付費服務協議另有約定，使用者盈虧仍歸使用者所有；\n- 費用必須在操作前披露並獲批准；\n- 服務不得隱藏價差、對未實現利潤收費、重置計費基準以重複收費、偽造成交量或流動性，或保證回報；\n- 市場、委託單、餘額和結算狀態必須標明權威來源及新鮮度；\n- AI 或策略引擎不得超出使用者簽署的授權。\n\n在機制、對抗模型、模擬、測量結果、實現、部署及市場誠信控制附證據公開之前，UltraLiquidity 和 FairFlow 不能被視為公開性能聲明。\n\n## 11. 穩定幣、儲備與贖回\n\nYNX Chain 不宣稱對 USDT、USDC 或任何其他發行方穩定幣的支持、批准或合作關係。本機 `ynx-stablecoind` 控制面記錄審閱和意圖狀態，但執行功能處於禁用狀態：沒有簽署者、合約呼叫、外部交易、鑄造、銷毀、凍結、扣押、黑名單或資金移動實現。\n\n原生 YNXT 以及協議質押、資源和金庫狀態不接受發行方控制。未來穩定幣整合需要已標識的發行方、法律及資產保管審閱、規範資產與映射資產政策、儲備範圍、獨立證明、贖回條款、費用、時限、暫停與資不抵債處理、事件響應、部署和公開證據。\n\n發行方記錄、治理請求或證據雜湊只是引用，不是儲備或贖回能力證明。\n\n## 12. 跨鏈橋、預言機與資料邊界\n\n本機跨鏈橋協調器持久化轉移意圖、拒絕重複使用的來源事件、支持精確冪等性、驗證白名單 Ed25519 中繼者證明、要求組態最終性且至少有兩個中繼者，並記錄雜湊鏈稽核軌跡。它只最終確認本機協調器狀態。\n\n外部提交被禁用。本文件不宣稱存在外部鏈交易、鑄造、銷毀、已注資跨鏈橋帳戶、正式環境中繼者資產保管、遠端跨鏈橋、公開跨鏈橋入口、流動性或供應商批准。\n\n除非由獲批的 YNX 協議機制寫入，預言機和市場資料值屬於第三方或派生資料。每條記錄必須標明來源、觀測時間、版本、適用時的覆蓋範圍或置信度，以及明確的過期／不可用／錯誤狀態。第三方資料不能替代 YNX Wallet 身份、鏈狀態、餘額、權限、交易、結算、回執或 Trust 案件。\n\n## 13. 信任、申訴與市場誠信\n\nTrust 架構將證據、請求有效性、拒絕原因、申訴、更正和透明度作為明確狀態。介面或外部供應商不得悄悄把指控、模型評分、快取值或第三方標籤轉換為權威執行措施。\n\n影響使用者訪問或資產的控制，需要定義權限主體、範圍、證據引用、生效時間、到期或復審日期、申訴路徑、更正路徑及稽核標識。對原生 YNXT 施加發行方式凍結或扣押，不在當前穩定幣控制面的範圍內。\n\n## 14. 產品架構\n\nYNX Web4 由通過明確協議連接的獨立產品組成。Wallet、Social、Pay、Exchange、Shop、Explorer、Developer、AI、Monitor、Trust Center、Resource Market、Browser、Music、Video、Cloud、Docs、Search、Finance、Mail 和 Calendar 保持各自產品身份及最小權限綁定。共同鏈身份不能成為超級應用或共享無限制會話的理由。\n\n產品組合中包含成熟度各異的工程候選版本。只有元件專屬發佈記錄才能確立實現、測試、安裝、整合、部署、簽章、下載或商店狀態。\n\n## 15. 安全與供應鏈\n\n儲存庫的基礎控制包括環境驗證、秘密及佔位內容掃描、限定範圍的 CORS 和限流政策、管理介面隔離、稽核日誌、備份及回復工具、事件程序、依賴檢查、升級政策和 AI 權限限制。完整發佈還需要威脅模型、安全邊界、SBOM、第三方聲明、鎖定檔審閱、構建指令碼白名單、SAST、DAST、容器和產物掃描、來源記錄以及可復現構建證據。\n\n公開產物必須標識不可變 URL、SHA-256 摘要、位元組數、簽章類別、最低作業系統要求、原始碼提交，以及真實安裝和冷啟動證據。沒有已知漏洞不等於稽核意見。\n\n## 16. 運營與恢復\n\n模式、狀態、API、組態和產物都需要明確版本。發佈運營必須覆蓋遷移、舊用戶端相容、棄用、回復遷移、備份、恢復演練、導出和刪除、保留期限，以及服務終止時的退出路徑。僅能在重啟後持久保存，不等於災難恢復。\n\n運營證據必須包含結構化日誌、指標、已實現的追蹤、請求／錯誤／稽核標識、健康及版本介面、告警、SLO 儀表板、事件響應、狀態溝通、支持、適用時的退款及爭議處理，以及恢復。面向使用者的錯誤不得暴露堆疊、秘密、伺服器路徑或供應商憑證。\n\n## 17. 性能與經濟證據\n\n項目不得將小規模本機測試外推為正式環境容量。容量聲明需要測量 p50、p95 和 p99 延遲、吞吐量、併發、佇列行為、儲存增長、供應商延遲及限流、冷啟動、錯誤率、可用性和 RTO/RPO，並記錄硬體、軟體、資料集、持續時間和原始碼提交。\n\n單位經濟分析需要每個活躍使用者的基礎設施及供應商成本、免費額度、補貼、支持負擔、候選服務收入和可持續毛利情景。估算必須標為估算，並與實際帳單或用量分開。\n\n## 18. 治理與變更控制\n\n協議、經濟、安全和發佈變更需要版本化提案、審閱權限、相容性分析、測試證據、部署批准、回復條件及公開變更記錄。AI 可以起草或解釋變更，但不能批准或執行共識升級、發行變更、金庫操作或風險政策變更。\n\n主網啟用需要超出本儲存庫範圍的證據：獨立安全審閱、經濟及法律審閱、驗證者和金鑰儀式批准、遠端故障及恢復演練、公開壓力測試、治理設置、事件準備，以及明確的發佈授權。\n\n## 19. 已知限制\n\n截至生效日期：\n\n- 文件及公開披露軟體套件尚不完整，也未部署；\n- 所有已聲明服務端點的獨立公開證明尚不完整；\n- 候選產品不會自動整合到中央發佈中；\n- 本文件未確立最終代幣分配、質押經濟機制、流動性質押、安全模組、金庫、收入、銷毀、回購及主網政策；\n- 未確立穩定幣儲備或贖回聲明；\n- 跨鏈橋沒有啟用外部執行，也沒有映射資產流動性；\n- 不宣稱正式環境等級資產保管、交易所流動性、量化性能和使用者盈利能力；\n- 仍需獨立安全、財務和法律意見；\n- 正式環境簽章及商店發佈因產品而異，需要直接證明。\n\n## 20. 證據映射\n\n| 主題 | 當前工程來源 | 證據類別 |\n| --- | --- | --- |\n| 網路身份 | `chain-metadata/ynx-testnet.json` | 版本化儲存庫中繼資料 |\n| 共識與原生交易 | `chain/consensus/README.md`、共識原始碼及測試 | 本機實現與測試規範 |\n| 部署及回復 | `docs/deployment/TESTNET_DEPLOYMENT_GUIDE.md`、部署指令碼 | 運營方程序；部署需獨立證據 |\n| 產品邊界 | `docs/ecosystem/PRODUCT_ARCHITECTURE.md` | 架構與交付合同 |\n| 跨鏈橋 | `docs/bridge/BRIDGE_INTEGRATION_READINESS.md`、跨鏈橋原始碼及測試 | 僅本機協調器 |\n| 穩定幣控制面 | `docs/stablecoin/STABLECOIN_ISSUER_READINESS.md`、服務原始碼及測試 | 本機、不執行操作的控制面 |\n| 公開證明規則 | `docs/public-proof/PUBLIC_TESTNET_PROOF.md` | 必需證據合同 |\n| 當前項目狀態 | `docs/acceptance/PROJECT_STATE.md` | 運營方維護的證據台帳；條目需要來源核驗 |\n| 發佈真實狀態 | `release/product-release.json` | 機器可讀的候選狀態 |\n| 完成度缺口 | `docs/acceptance/DOCS_COMPLIANCE_REQUIREMENTS.json` | 機器可讀稽核 |\n\n## 變更記錄\n\n- 0.2.0-candidate（2026-07-22）：以有明確範圍的技術披露替代初始摘要，覆蓋身份、狀態語義、共識、帳戶、執行、費用、質押、Wallet/Auth、AI、支付、交易、穩定幣、跨鏈橋與資料、Trust、產品、安全、運營、經濟、治理、限制及證據來源。\n",
+  "html": "<h2 id=\"whitepaper-ynx-chain-whitepaper-section-1\">YNX Chain 技術白皮書</h2>\n<div class=\"documentTable\"><table><thead><tr><th>中繼資料</th><th>內容</th></tr></thead><tbody><tr><td>版本</td><td>0.2.0-candidate</td></tr><tr><td>生效日期</td><td>2026-07-22</td></tr><tr><td>原始碼提交</td><td><code>719e1018267ed5a53e6fae5211c5fd8a1503c35c</code></td></tr><tr><td>產品發佈</td><td>YNX 測試網文件候選版本</td></tr><tr><td>最後審閱</td><td>2026-07-22</td></tr><tr><td>被替代版本</td><td>最初的三段式儲存庫摘要</td></tr><tr><td>審閱狀態</td><td>技術草案；仍需獨立安全、經濟及法律審閱</td></tr></tbody></table></div>\n<h3 id=\"whitepaper-ynx-chain-whitepaper-section-2\">直接說明</h3>\n<p>YNX Chain 是正在進行測試網工程開發的 Web4 第 1 層生態系統。YNX Web4 是由 YNX Chain 驅動的應用生態，YNXT 是原生測試網資產。YNX Testnet 使用 EVM 鏈 ID <code>6423</code>（<code>0x1917</code>）以及 Comet/Cosmos 鏈 ID <code>ynx_6423-1</code>。</p>\n<p>本文件中的「Web4」描述項目希望結合的能力：使用者控制的帳戶、受權限約束的應用、可驗證執行、關聯證據的自動化，以及明確的人類批准。這是 YNX 的產品術語，並不宣稱一種新的網際網路標準已經得到採用。</p>\n<p>YNX 與無關的 Lynx 品牌產品沒有關聯。</p>\n<h3 id=\"whitepaper-ynx-chain-whitepaper-section-3\">狀態與閱讀規則</h3>\n<p>這是一份測試網技術披露，不是主網上線聲明、代幣銷售文件、投資說明書、稽核報告、儲備證明或監管批准。當前原始碼包含經過本機測試的元件、部署工具、運營方控制的遠端證據和候選產品。這些證據類別不能相互替代。</p>\n<p>每個元件都必須分別評估以下發佈狀態：</p>\n<div class=\"documentTable\"><table><thead><tr><th>狀態</th><th>含義</th></tr></thead><tbody><tr><td><code>implementedLocal</code></td><td>所聲明的行為存在於所標識提交的原始碼中。</td></tr><tr><td><code>testedLocal</code></td><td>與該行為直接相關的本機測試在該原始碼上通過。</td></tr><tr><td><code>installedLocal</code></td><td>所聲明的軟體套件已在指定目標上安裝並冷啟動。</td></tr><tr><td><code>integratedCentral</code></td><td>已接受的元件已納入統一發行主線。</td></tr><tr><td><code>deployedStaging</code></td><td>有直接證據證明預發佈部署。</td></tr><tr><td><code>deployedPublic</code></td><td>有直接證據證明可獨立訪問的公開部署。</td></tr><tr><td><code>downloadHosted</code></td><td>可下載產物具有不可變 URL、位元組數和摘要。</td></tr><tr><td><code>productionSigned</code></td><td>產物具有經擁有者批准的正式環境簽章。</td></tr><tr><td><code>storeReleased</code></td><td>指定商店正在公開分發該確切版本。</td></tr></tbody></table></div>\n<p>任何狀態都不能由另一狀態推斷。模擬器運行不等於設備安裝；測試簽章不等於正式環境簽章；儲存庫目錄不等於部署；測試網資產不等於主網資產。</p>\n<h3 id=\"whitepaper-ynx-chain-whitepaper-section-4\">1. 設計目標</h3>\n<p>YNX Chain 圍繞五項有明確範圍的目標進行工程開發：</p>\n<ol><li>使帳戶和交易狀態具有確定性，其權威結果來自鏈上執行，而非使用者介面或第三方 API；</li><li>明確分離使用者資產保管、應用權限、服務運營和協議權限；</li><li>為支付、信任、資源、開發和 AI 輔助流程構建關聯證據的應用；</li><li>通過版本化狀態、可觀測故障、備份和回復程序實現可恢復運營；</li><li>如實披露發佈狀態，區分已實現、已測試、已安裝、已整合、已預發佈、已公開、已簽章和已分發。</li></ol>\n<p>當前工程範圍不能證明網際網路規模的容量、無許可驗證者參與、主網經濟機制、正式環境等級資產保管、穩定幣儲備、跨鏈橋流動性、交易所流動性或持續公開可用性。</p>\n<h3 id=\"whitepaper-ynx-chain-whitepaper-section-5\">2. 網路身份</h3>\n<div class=\"documentTable\"><table><thead><tr><th>字段</th><th>YNX Testnet 數值</th><th>權威來源</th></tr></thead><tbody><tr><td>網路名稱</td><td>YNX Testnet</td><td>規範網路中繼資料</td></tr><tr><td>原生測試網資產</td><td>YNXT</td><td>規範網路中繼資料</td></tr><tr><td>EVM 鏈 ID</td><td><code>6423</code> / <code>0x1917</code></td><td><code>chain-metadata/ynx-testnet.json</code></td></tr><tr><td>Comet/Cosmos 鏈 ID</td><td><code>ynx_6423-1</code></td><td>共識遷移和套件結構定義</td></tr><tr><td>原生資產小數位數</td><td>18</td><td>規範網路中繼資料</td></tr><tr><td>官方站點名稱</td><td>YNX Chain</td><td>公開品牌事實</td></tr><tr><td>應用生態</td><td>YNX Web4</td><td>公開品牌事實</td></tr></tbody></table></div>\n<p>儲存庫也包含一份主網草案。不能把草案中的識別碼或組態理解為已經運行的主網。當前面向公眾的表述必須明確說明 YNXT 是原生測試網資產。</p>\n<h3 id=\"whitepaper-ynx-chain-whitepaper-section-6\">3. 共識架構</h3>\n<p>共識候選版本固定使用 CometBFT <code>v0.38.23</code>，通過 ABCI 2.0 連接 YNX 應用。在候選網路啟動前，確定性的遷移導出會固定帳戶、供應量、驗證者及相關應用狀態。</p>\n<p>共識路徑在 <code>CheckTx</code> 中驗證交易，通過提案處理確定順序，在 <code>FinalizeBlock</code> 中依次執行，並提交得到的應用雜湊。持久帳戶狀態和 AppHash 原子寫入；磁碟提交失敗時，不得推進記憶體高度。</p>\n<p>本機法定人數驗證會創建四個獨立驗證者目錄，分別使用不同的 Ed25519 驗證者金鑰和節點金鑰。它檢查：</p>\n<ul><li>一致的 genesis，以及固定高度的區塊雜湊收斂；</li><li>預期驗證者身份和簽章參與情況；</li><li>通過 CometBFT RPC 提交一筆已簽章的 YNXT 轉帳；</li><li>停止一個驗證者及其應用後，仍能繼續提交；</li><li>已停止驗證者重新啟動並追趕狀態。</li></ul>\n<p>該驗證屬於本機法定人數證據，本身不能證明遠端容錯或公開去中心化。正式環境候選軟體套件不將驗證者及節點私鑰放入 Git，通過公開身份綁定四個指定運營角色，對每個打包文件計算雜湊，並將候選 RPC、ABCI 和指標介面保留在回送位址。遠端部署、故障演練、由擁有者簽章的交易演練、公開入口批准和獨立公開證明仍是需要分別完成的操作。</p>\n<p>詳細行為及限制在發佈後的 <code>docs/whitepaper/STREAMBFT_SPECIFICATION.md</code> 中規定；在此之前，<code>chain/consensus/README.md</code> 和共識測試是工程依據。</p>\n<h3 id=\"whitepaper-ynx-chain-whitepaper-section-7\">4. 帳戶與原生交易</h3>\n<p>當前原生轉帳封裝採用規範 JSON，並使用 secp256k1 ECDSA 簽章。簽署者地址是從未壓縮公開金鑰派生的小寫 EVM 相容地址。簽章域 <code>YNX_NATIVE_TX_V1</code> 綁定：</p>\n<ul><li>封裝版本；</li><li>數值型鏈 ID；</li><li>交易類型；</li><li>發送者和接收者；</li><li>金額和手續費；</li><li>帳戶的下一個 nonce；</li><li>壓縮公開金鑰。</li></ul>\n<p>應用驗證簽章，不保存使用者私鑰。順序執行保持 YNXT 總供應量不變，遞增 nonce 和已計量的頻寬使用量，並按確定性順序移動可追溯批次。當前有明確範圍的原生模型使用固定手續費，不能據此證明動態費用市場已經定案。</p>\n<p>使用者金鑰、助記詞、任意提款權限、擁有者變更權限及可重複使用的正式環境簽章材料，不得轉交瀏覽器、AI 供應商、應用服務或文件系統。</p>\n<h3 id=\"whitepaper-ynx-chain-whitepaper-section-8\">5. 執行與 EVM 相容性</h3>\n<p>YNX Testnet 發佈面向 EVM 的網路中繼資料和開發工具，包括 JSON-RPC 預期行為、Hardhat 和 Foundry 組態、合約驗證流程、SDK 輔助方法及示例合約。相容性僅限當前測試和公開證據直接驗證的方法與行為，不代表普遍相容所有 Ethereum 用戶端、操作碼、錢包、索引器、交易所、跨鏈橋或去中心化應用。</p>\n<p>合約地址在部署、鏈上位元組碼、原始碼驗證、鏈身份、小數位數、符號及發行方權限得到直接核查前，不得進入公開代幣列表或整合指南。因此，只有滿足這些條件後，規範測試網代幣列表才能包含相應項目，否則保持為空。</p>\n<h3 id=\"whitepaper-ynx-chain-whitepaper-section-9\">6. 費用與資源計量</h3>\n<p>當前測試網工程模型使用 YNXT 支付原生交易費用並進行資源計量。已提交的原生轉帳實現使用精確的固定手續費，並按當前驗證者規則分配該費用。這是有明確範圍的執行階段實現事實，不是對未來費率、驗證者收入、代幣價值、收益或主網政策的承諾。</p>\n<p>後續任何局部費用市場都必須定義、版本化並測試：</p>\n<ul><li>被計量的單位；</li><li>基礎費用或拍賣計算方式；</li><li>擁堵和優先級處理；</li><li>提案者和協議之間的分配；</li><li>捨入和計價單位規則；</li><li>使用者授權的最高成本；</li><li>失敗交易的處理；</li><li>抵抗垃圾請求和拒絕服務攻擊的能力；</li><li>升級及回復相容性。</li></ul>\n<p>本白皮書不作收入、銷毀、回購、年化收益率或盈利能力聲明。這些聲明需要特定期間的毛額與淨額、成本、風險、回撤、鎖定及退出條款、網路類別、證據 ID，以及明確的無保證說明。</p>\n<h3 id=\"whitepaper-ynx-chain-whitepaper-section-10\">7. 質押與驗證者安全</h3>\n<p>遷移和共識軟體套件表示候選網路所需的驗證者身份及質押狀態。完整的公開質押規範必須另行定義委託、解除綁定、獎勵、傭金、罰沒、暫停驗證資格、治理控制、金鑰輪換、驗證者退出和狀態遷移。驗證者記錄的存在並不意味著這些經濟規則已經定案。</p>\n<p>流動性質押和安全模組僅是設計候選方案，直到其合約或執行階段邏輯、稽核、部署、資產保管範圍、流動性、提款路徑、資不抵債處理及事件控制獲得直接證據支持。本文件不承諾質押年化收益或流動性質押贖回。</p>\n<h3 id=\"whitepaper-ynx-chain-whitepaper-section-11\">8. 錢包、認證與應用權限</h3>\n<p>預期的共同信任路徑採用規範 Wallet 批准和按產品限定範圍的 Gateway 會話，而不是長期有效的瀏覽器 bearer token 或產品專用相容登入。完整且被接受的流程應綁定產品身份、軟體套件身份、設備金鑰、使用者帳戶、權限範圍、到期時間、挑戰、批准、內省、撤銷和稽核記錄。</p>\n<p>每個驗證器都必須在重放、篡改、錯誤產品、錯誤軟體套件、錯誤設備、權限擴大、過期和撤銷情況下拒絕操作。只有已接受協議及這些反向用例在統一發行主線上通過，候選產品才能被描述為已經統一整合。</p>\n<p>應用可以請求限定範圍的操作，但不能繼承資產保管權。使用者資產只能位於使用者 Wallet、明確披露的交易所子帳戶、使用者批准的策略金庫、已標識的託管供應商或獲批的協議合約中。策略授權需要最小權限、資產和交易場所白名單、金額及頻率限制、到期時間、nonce 域、立即撤銷、緊急停止、緊急退出和可稽核回執。</p>\n<h3 id=\"whitepaper-ynx-chain-whitepaper-section-12\">9. AI 治理</h3>\n<p>AI 是受約束的建議層，可以起草、解釋、翻譯、總結、研究、預覽、模擬、提議或生成可審閱的補丁。它不得獨立簽章、付款、交易、兌換、提款、開卡、發送消息、發佈內容、刪除資料、變更權限、修改風險、改變發行、操作金庫、升級共識或繞過人類批准。</p>\n<p>AI 輔助操作需要上下文同意、供應商及模型狀態、適用時的資源或成本可見性、預覽、批准／拒絕控制、稽核記錄以及如實的失敗行為。成功生成文本，不等於鏈、帳戶、餘額、交易、結算、信任案件或權限的權威狀態。</p>\n<h3 id=\"whitepaper-ynx-chain-whitepaper-section-13\">10. 支付、交易與量化系統</h3>\n<p>YNX Pay 工程包括限定範圍的意圖、帳單、結算驗證、回執和測試流程。公開支付網路還需要獲接受的 Wallet 整合、商戶身份、正式環境運營、退款及爭議處理，以及直接公開證據。</p>\n<p>Exchange、DEX 和量化候選產品必須遵守以下規則：</p>\n<ul><li>除非明確的受管理金庫或付費服務協議另有約定，使用者盈虧仍歸使用者所有；</li><li>費用必須在操作前披露並獲批准；</li><li>服務不得隱藏價差、對未實現利潤收費、重置計費基準以重複收費、偽造成交量或流動性，或保證回報；</li><li>市場、委託單、餘額和結算狀態必須標明權威來源及新鮮度；</li><li>AI 或策略引擎不得超出使用者簽署的授權。</li></ul>\n<p>在機制、對抗模型、模擬、測量結果、實現、部署及市場誠信控制附證據公開之前，UltraLiquidity 和 FairFlow 不能被視為公開性能聲明。</p>\n<h3 id=\"whitepaper-ynx-chain-whitepaper-section-14\">11. 穩定幣、儲備與贖回</h3>\n<p>YNX Chain 不宣稱對 USDT、USDC 或任何其他發行方穩定幣的支持、批准或合作關係。本機 <code>ynx-stablecoind</code> 控制面記錄審閱和意圖狀態，但執行功能處於禁用狀態：沒有簽署者、合約呼叫、外部交易、鑄造、銷毀、凍結、扣押、黑名單或資金移動實現。</p>\n<p>原生 YNXT 以及協議質押、資源和金庫狀態不接受發行方控制。未來穩定幣整合需要已標識的發行方、法律及資產保管審閱、規範資產與映射資產政策、儲備範圍、獨立證明、贖回條款、費用、時限、暫停與資不抵債處理、事件響應、部署和公開證據。</p>\n<p>發行方記錄、治理請求或證據雜湊只是引用，不是儲備或贖回能力證明。</p>\n<h3 id=\"whitepaper-ynx-chain-whitepaper-section-15\">12. 跨鏈橋、預言機與資料邊界</h3>\n<p>本機跨鏈橋協調器持久化轉移意圖、拒絕重複使用的來源事件、支持精確冪等性、驗證白名單 Ed25519 中繼者證明、要求組態最終性且至少有兩個中繼者，並記錄雜湊鏈稽核軌跡。它只最終確認本機協調器狀態。</p>\n<p>外部提交被禁用。本文件不宣稱存在外部鏈交易、鑄造、銷毀、已注資跨鏈橋帳戶、正式環境中繼者資產保管、遠端跨鏈橋、公開跨鏈橋入口、流動性或供應商批准。</p>\n<p>除非由獲批的 YNX 協議機制寫入，預言機和市場資料值屬於第三方或派生資料。每條記錄必須標明來源、觀測時間、版本、適用時的覆蓋範圍或置信度，以及明確的過期／不可用／錯誤狀態。第三方資料不能替代 YNX Wallet 身份、鏈狀態、餘額、權限、交易、結算、回執或 Trust 案件。</p>\n<h3 id=\"whitepaper-ynx-chain-whitepaper-section-16\">13. 信任、申訴與市場誠信</h3>\n<p>Trust 架構將證據、請求有效性、拒絕原因、申訴、更正和透明度作為明確狀態。介面或外部供應商不得悄悄把指控、模型評分、快取值或第三方標籤轉換為權威執行措施。</p>\n<p>影響使用者訪問或資產的控制，需要定義權限主體、範圍、證據引用、生效時間、到期或復審日期、申訴路徑、更正路徑及稽核標識。對原生 YNXT 施加發行方式凍結或扣押，不在當前穩定幣控制面的範圍內。</p>\n<h3 id=\"whitepaper-ynx-chain-whitepaper-section-17\">14. 產品架構</h3>\n<p>YNX Web4 由通過明確協議連接的獨立產品組成。Wallet、Social、Pay、Exchange、Shop、Explorer、Developer、AI、Monitor、Trust Center、Resource Market、Browser、Music、Video、Cloud、Docs、Search、Finance、Mail 和 Calendar 保持各自產品身份及最小權限綁定。共同鏈身份不能成為超級應用或共享無限制會話的理由。</p>\n<p>產品組合中包含成熟度各異的工程候選版本。只有元件專屬發佈記錄才能確立實現、測試、安裝、整合、部署、簽章、下載或商店狀態。</p>\n<h3 id=\"whitepaper-ynx-chain-whitepaper-section-18\">15. 安全與供應鏈</h3>\n<p>儲存庫的基礎控制包括環境驗證、秘密及佔位內容掃描、限定範圍的 CORS 和限流政策、管理介面隔離、稽核日誌、備份及回復工具、事件程序、依賴檢查、升級政策和 AI 權限限制。完整發佈還需要威脅模型、安全邊界、SBOM、第三方聲明、鎖定檔審閱、構建指令碼白名單、SAST、DAST、容器和產物掃描、來源記錄以及可復現構建證據。</p>\n<p>公開產物必須標識不可變 URL、SHA-256 摘要、位元組數、簽章類別、最低作業系統要求、原始碼提交，以及真實安裝和冷啟動證據。沒有已知漏洞不等於稽核意見。</p>\n<h3 id=\"whitepaper-ynx-chain-whitepaper-section-19\">16. 運營與恢復</h3>\n<p>模式、狀態、API、組態和產物都需要明確版本。發佈運營必須覆蓋遷移、舊用戶端相容、棄用、回復遷移、備份、恢復演練、導出和刪除、保留期限，以及服務終止時的退出路徑。僅能在重啟後持久保存，不等於災難恢復。</p>\n<p>運營證據必須包含結構化日誌、指標、已實現的追蹤、請求／錯誤／稽核標識、健康及版本介面、告警、SLO 儀表板、事件響應、狀態溝通、支持、適用時的退款及爭議處理，以及恢復。面向使用者的錯誤不得暴露堆疊、秘密、伺服器路徑或供應商憑證。</p>\n<h3 id=\"whitepaper-ynx-chain-whitepaper-section-20\">17. 性能與經濟證據</h3>\n<p>項目不得將小規模本機測試外推為正式環境容量。容量聲明需要測量 p50、p95 和 p99 延遲、吞吐量、併發、佇列行為、儲存增長、供應商延遲及限流、冷啟動、錯誤率、可用性和 RTO/RPO，並記錄硬體、軟體、資料集、持續時間和原始碼提交。</p>\n<p>單位經濟分析需要每個活躍使用者的基礎設施及供應商成本、免費額度、補貼、支持負擔、候選服務收入和可持續毛利情景。估算必須標為估算，並與實際帳單或用量分開。</p>\n<h3 id=\"whitepaper-ynx-chain-whitepaper-section-21\">18. 治理與變更控制</h3>\n<p>協議、經濟、安全和發佈變更需要版本化提案、審閱權限、相容性分析、測試證據、部署批准、回復條件及公開變更記錄。AI 可以起草或解釋變更，但不能批准或執行共識升級、發行變更、金庫操作或風險政策變更。</p>\n<p>主網啟用需要超出本儲存庫範圍的證據：獨立安全審閱、經濟及法律審閱、驗證者和金鑰儀式批准、遠端故障及恢復演練、公開壓力測試、治理設置、事件準備，以及明確的發佈授權。</p>\n<h3 id=\"whitepaper-ynx-chain-whitepaper-section-22\">19. 已知限制</h3>\n<p>截至生效日期：</p>\n<ul><li>文件及公開披露軟體套件尚不完整，也未部署；</li><li>所有已聲明服務端點的獨立公開證明尚不完整；</li><li>候選產品不會自動整合到中央發佈中；</li><li>本文件未確立最終代幣分配、質押經濟機制、流動性質押、安全模組、金庫、收入、銷毀、回購及主網政策；</li><li>未確立穩定幣儲備或贖回聲明；</li><li>跨鏈橋沒有啟用外部執行，也沒有映射資產流動性；</li><li>不宣稱正式環境等級資產保管、交易所流動性、量化性能和使用者盈利能力；</li><li>仍需獨立安全、財務和法律意見；</li><li>正式環境簽章及商店發佈因產品而異，需要直接證明。</li></ul>\n<h3 id=\"whitepaper-ynx-chain-whitepaper-section-23\">20. 證據映射</h3>\n<div class=\"documentTable\"><table><thead><tr><th>主題</th><th>當前工程來源</th><th>證據類別</th></tr></thead><tbody><tr><td>網路身份</td><td><code>chain-metadata/ynx-testnet.json</code></td><td>版本化儲存庫中繼資料</td></tr><tr><td>共識與原生交易</td><td><code>chain/consensus/README.md</code>、共識原始碼及測試</td><td>本機實現與測試規範</td></tr><tr><td>部署及回復</td><td><code>docs/deployment/TESTNET_DEPLOYMENT_GUIDE.md</code>、部署指令碼</td><td>運營方程序；部署需獨立證據</td></tr><tr><td>產品邊界</td><td><code>docs/ecosystem/PRODUCT_ARCHITECTURE.md</code></td><td>架構與交付合同</td></tr><tr><td>跨鏈橋</td><td><code>docs/bridge/BRIDGE_INTEGRATION_READINESS.md</code>、跨鏈橋原始碼及測試</td><td>僅本機協調器</td></tr><tr><td>穩定幣控制面</td><td><code>docs/stablecoin/STABLECOIN_ISSUER_READINESS.md</code>、服務原始碼及測試</td><td>本機、不執行操作的控制面</td></tr><tr><td>公開證明規則</td><td><code>docs/public-proof/PUBLIC_TESTNET_PROOF.md</code></td><td>必需證據合同</td></tr><tr><td>當前項目狀態</td><td><code>docs/acceptance/PROJECT_STATE.md</code></td><td>運營方維護的證據台帳；條目需要來源核驗</td></tr><tr><td>發佈真實狀態</td><td><code>release/product-release.json</code></td><td>機器可讀的候選狀態</td></tr><tr><td>完成度缺口</td><td><code>docs/acceptance/DOCS_COMPLIANCE_REQUIREMENTS.json</code></td><td>機器可讀稽核</td></tr></tbody></table></div>\n<h3 id=\"whitepaper-ynx-chain-whitepaper-section-24\">變更記錄</h3>\n<ul><li>0.2.0-candidate（2026-07-22）：以有明確範圍的技術披露替代初始摘要，覆蓋身份、狀態語義、共識、帳戶、執行、費用、質押、Wallet/Auth、AI、支付、交易、穩定幣、跨鏈橋與資料、Trust、產品、安全、運營、經濟、治理、限制及證據來源。</li></ul>",
+  "headings": [
+    {
+      "id": "whitepaper-ynx-chain-whitepaper-section-1",
+      "title": "YNX Chain 技術白皮書",
+      "level": 1
+    },
+    {
+      "id": "whitepaper-ynx-chain-whitepaper-section-2",
+      "title": "直接說明",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-ynx-chain-whitepaper-section-3",
+      "title": "狀態與閱讀規則",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-ynx-chain-whitepaper-section-4",
+      "title": "1. 設計目標",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-ynx-chain-whitepaper-section-5",
+      "title": "2. 網路身份",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-ynx-chain-whitepaper-section-6",
+      "title": "3. 共識架構",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-ynx-chain-whitepaper-section-7",
+      "title": "4. 帳戶與原生交易",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-ynx-chain-whitepaper-section-8",
+      "title": "5. 執行與 EVM 相容性",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-ynx-chain-whitepaper-section-9",
+      "title": "6. 費用與資源計量",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-ynx-chain-whitepaper-section-10",
+      "title": "7. 質押與驗證者安全",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-ynx-chain-whitepaper-section-11",
+      "title": "8. 錢包、認證與應用權限",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-ynx-chain-whitepaper-section-12",
+      "title": "9. AI 治理",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-ynx-chain-whitepaper-section-13",
+      "title": "10. 支付、交易與量化系統",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-ynx-chain-whitepaper-section-14",
+      "title": "11. 穩定幣、儲備與贖回",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-ynx-chain-whitepaper-section-15",
+      "title": "12. 跨鏈橋、預言機與資料邊界",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-ynx-chain-whitepaper-section-16",
+      "title": "13. 信任、申訴與市場誠信",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-ynx-chain-whitepaper-section-17",
+      "title": "14. 產品架構",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-ynx-chain-whitepaper-section-18",
+      "title": "15. 安全與供應鏈",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-ynx-chain-whitepaper-section-19",
+      "title": "16. 運營與恢復",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-ynx-chain-whitepaper-section-20",
+      "title": "17. 性能與經濟證據",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-ynx-chain-whitepaper-section-21",
+      "title": "18. 治理與變更控制",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-ynx-chain-whitepaper-section-22",
+      "title": "19. 已知限制",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-ynx-chain-whitepaper-section-23",
+      "title": "20. 證據映射",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-ynx-chain-whitepaper-section-24",
+      "title": "變更記錄",
+      "level": 2
+    }
+  ]
+}
