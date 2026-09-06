@@ -42,6 +42,62 @@
   ],
   "headers": [
     {
+      "source": "/favicon.ico",
+      "headers": [
+        { "key": "Content-Type", "value": "image/vnd.microsoft.icon" },
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/ynx-favicon.svg",
+      "headers": [
+        { "key": "Content-Type", "value": "image/svg+xml" },
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/ynx-favicon-48.png",
+      "headers": [
+        { "key": "Content-Type", "value": "image/png" },
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/ynx-icon-96.png",
+      "headers": [
+        { "key": "Content-Type", "value": "image/png" },
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/ynx-icon-192.png",
+      "headers": [
+        { "key": "Content-Type", "value": "image/png" },
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/ynx-icon-512.png",
+      "headers": [
+        { "key": "Content-Type", "value": "image/png" },
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/ynx-icon-maskable-512.png",
+      "headers": [
+        { "key": "Content-Type", "value": "image/png" },
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/manifest.webmanifest",
+      "headers": [
+        { "key": "Content-Type", "value": "application/manifest+json" },
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
+    },
+    {
       "source": "/sw.js",
       "headers": [
         { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" },
