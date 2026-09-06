@@ -1,0 +1,425 @@
+{
+  "observedAt": "2026-09-06T09:13:20.928Z",
+  "origin": "https://ynxweb4.com",
+  "network": "Primary egress with ordinary public DNS and trusted HTTPS; no address pin or TLS bypass",
+  "expectedIdentity": {
+    "sourceCommit": "30e6c187a1c62ba8424217e07540420162e0a410",
+    "sourceTree": "cdd28850e7bd6803a5048b8b60c1e0ab5256f6b9",
+    "release": "website-video-creator-20260906-30e6c187a1c6"
+  },
+  "runtimeIdentity": {
+    "schemaVersion": "ynx.website.build-identity.v1",
+    "sourceCommit": "30e6c187a1c62ba8424217e07540420162e0a410",
+    "sourceTree": "cdd28850e7bd6803a5048b8b60c1e0ab5256f6b9",
+    "chainId": 6423,
+    "chainIdHex": "0x1917",
+    "nativeAsset": "YNXT",
+    "release": "website-video-creator-20260906-30e6c187a1c6"
+  },
+  "identityMatches": true,
+  "allMatch": true,
+  "files": [
+    {
+      "path": "/assets/CommandPalette-DKImMoyQ.js",
+      "status": 200,
+      "bytes": 6600,
+      "sha256": "13330aa65fae5def8aa2630175abe25d0f5a060e9762945ca30e5a87bf902f51",
+      "matches": true,
+      "attempt": 1
+    },
+    {
+      "path": "/assets/DocsPage-BSlBH21_.js",
+      "status": 200,
+      "bytes": 69618,
+      "sha256": "4de2818be03dacafb05f890558751d8b9b552946a5979f7f0b014b0c0bcd0206",
+      "matches": true,
+      "attempt": 1
+    },
+    {
+      "path": "/assets/DownloadPage-B-KN1GC_.js",
+      "status": 200,
+      "bytes": 4469,
+      "sha256": "3eafa41a3cd1a153931e6517cf67ed454fd841c8faf5c5bbdfc10e16b498988e",
+      "matches": true,
+      "attempt": 1
+    },
+    {
+      "path": "/assets/EconomicPage-B2I_DwPR.js",
+      "status": 200,
+      "bytes": 3753,
+      "sha256": "69e456128156090f9218a6818eb7af366e227ea068558218bc768bb120d4aed1",
+      "matches": true,
+      "attempt": 1
+    },
+    {
+      "path": "/assets/ApiPage-CxpN9WN2.js",
+      "status": 200,
+      "bytes": 5147,
+      "sha256": "e75c47f50395be6a8e1ab55582883c8d16182fbb2141830394ae4f3cdd15796f",
+      "matches": true,
+      "attempt": 1
+    },
+    {
+      "path": "/assets/FaucetPage-BFjSvdAY.js",
+      "status": 200,
+      "bytes": 7184,
+      "sha256": "9f025bdd1ab2195388ec7878441b64e8f5b51bbdd9fa5cb3ed5924fc19340626",
+      "matches": true,
+      "attempt": 1
+    },
+    {
+      "path": "/assets/AuthorityArticlePage-CwC1YjJD.js",
+      "status": 200,
+      "bytes": 2010,
+      "sha256": "5091c96677469cd2779603af8f69f9578436861db04fd294e0650f75035ce1a0",
+      "matches": true,
+      "attempt": 1
+    },
+    {
+      "path": "/assets/AppsPage-B2LvdlRh.js",
+      "status": 200,
+      "bytes": 6594,
+      "sha256": "9b9f2cc9e90d08eb0e5682da04a50d198377a7f5b198595dd3e05f50ed0f33cf",
+      "matches": true,
+      "attempt": 1
+    },
+    {
+      "path": "/assets/ManualPage-BYwRXucA.js",
+      "status": 200,
+      "bytes": 11862,
+      "sha256": "afb9c92450526bb6abe7eef403b71997c27ad2399cdf89d84017bf3330f18e58",
+      "matches": true,
+      "attempt": 1
+    },
+    {
+      "path": "/assets/ProductStatusPage-VvyGDc_E.js",
+      "status": 200,
+      "bytes": 38997,
+      "sha256": "b8caa84db5d167bc9b3dd3a22cdba652b4a349722ed9ae21d3f250a403f25489",
+      "matches": true,
+      "attempt": 1
+    },
+    {
+      "path": "/assets/RoutedContent-D-6CdOju.js",
+      "status": 200,
+      "bytes": 4019,
+      "sha256": "334ee3b6319f413430944e70393c034aa72282f6874b964e353fb3ffe9069126",
+      "matches": true,
+      "attempt": 1
+    },
+    {
+      "path": "/assets/RoutePage-7rmXp6jh.js",
+      "status": 200,
+      "bytes": 9769,
+      "sha256": "2ab1340bd58959191280058284c3e02e6a431acab892ba74966709cf58822b9b",
+      "matches": true,
+      "attempt": 1
+    },
+    {
+      "path": "/assets/SquarePage-B-vQRCW_.js",
+      "status": 200,
+      "bytes": 11197,
+      "sha256": "10768e4790b5ac3a214fbaf2fdee33824375425b6232c9df6163a6de534ecffe",
+      "matches": true,
+      "attempt": 1
+    },
+    {
+      "path": "/assets/PortalPage-D4SGiBzN.js",
+      "status": 200,
+      "bytes": 4640,
+      "sha256": "a69b244a960f9ba94d3d73922d0cfaae715d2b89d9910c8f731c0ae28ba51bb0",
+      "matches": true,
+      "attempt": 1
+    },
+    {
+      "path": "/assets/arrow-left-XaIbj9mC.js",
+      "status": 200,
+      "bytes": 161,
+      "sha256": "40335b73f49c2eaa674bd951ab4bbbe3e9ff1899c84ed581a77dd793bf029d65",
+      "matches": true,
+      "attempt": 1
+    },
+    {
+      "path": "/assets/ar-uYUiOKPW.js",
+      "status": 200,
+      "bytes": 151192,
+      "sha256": "a6122de00e34b660e271f07a74d08a89148ddbdc27b6b3473f858bb1e06440d4",
+      "matches": true,
+      "attempt": 1
+    },
+    {
+      "path": "/assets/WalletAuthCallbackPage-Cla2M00r.js",
+      "status": 200,
+      "bytes": 5096,
+      "sha256": "55b35b5e2434221d09b1049ae677d4e8c5107cbadd16b63b961eef53410dd256",
+      "matches": true,
+      "attempt": 1
+    },
+    {
+      "path": "/assets/arrow-right-B9cquAog.js",
+      "status": 200,
+      "bytes": 161,
+      "sha256": "94a5cd17407eb419e5705d7d75c2426e3cdcca1141a92872acc4394ae6723e32",
+      "matches": true,
+      "attempt": 1
+    },
+    {
+      "path": "/assets/coreLocaleContent-Bk-94lw3.js",
+      "status": 200,
+      "bytes": 38875,
+      "sha256": "3ba92bb11e516f19ec9e93e45d0914f17c22ae9a51fc5835bd5dfc271bed06fc",
+      "matches": true,
+      "attempt": 1
+    },
+    {
+      "path": "/assets/download-B5GFDq05.js",
+      "status": 200,
+      "bytes": 259,
+      "sha256": "5a1823f93204fada02567e9a87504a6393bd0b7f93dc21bbaad7d92870ea42de",
+      "matches": true,
+      "attempt": 1
+    },
+    {
+      "path": "/assets/de-BJHzeSKx.js",
+      "status": 200,
+      "bytes": 113859,
+      "sha256": "5179a62aaaa0b55ac25d1bde69d955072e229b71caea1c4eda3a516576b22f30",
+      "matches": true,
+      "attempt": 1
+    },
+    {
+      "path": "/assets/ecosystemGuides-Bbs3Ehiv.js",
+      "status": 200,
+      "bytes": 21774,
+      "sha256": "2719f8eb392722eccb8c0f030e8fa7cffbcbbb448ee831541258484cbbda3d55",
+      "matches": true,
+      "attempt": 1
+    },
+    {
+      "path": "/assets/en-2byQ623Z.js",
+      "status": 200,
+      "bytes": 101434,
+      "sha256": "4ae3d6f83b592d147ca93bf142d9cf84b30ad6beabbf348c0f2ddc10058052b3",
+      "matches": true,
+      "attempt": 1
+    },
+    {
+      "path": "/assets/economicsEvidence-DoUXXVJl.js",
+      "status": 200,
+      "bytes": 177400,
+      "sha256": "86d5a90013a9ae2d168026b80aaab933a43acfb28449379848c9b7b8afef6c00",
+      "matches": true,
+      "attempt": 1
+    },
+    {
+      "path": "/assets/es-BjdSR8CE.js",
+      "status": 200,
+      "bytes": 116310,
+      "sha256": "d7a25c55203f90d628e4e4f3977a71d94a2cc6b390306bea51afdc5f2a3068e1",
+      "matches": true,
+      "attempt": 1
+    },
+    {
+      "path": "/assets/file-json-2-BGq11tiu.js",
+      "status": 200,
+      "bytes": 399,
+      "sha256": "858f69ea3630317ba7dd0e2c3d5aee454f080332c4dd229463f41b59fb4577bf",
+      "matches": true,
+      "attempt": 1
+    },
+    {
+      "path": "/assets/file-text--vzJVfvL.js",
+      "status": 200,
+      "bytes": 329,
+      "sha256": "ca0873aeb36c5bb9af59223a96458150b0b9dd154f4da2950272bdf6c8b3b441",
+      "matches": true,
+      "attempt": 1
+    },
+    {
+      "path": "/assets/fr-Be7XDHjI.js",
+      "status": 200,
+      "bytes": 122531,
+      "sha256": "1fee58e38c93b766e89265123d842cda2460d83f75c989a1648adce3e32d68ad",
+      "matches": true,
+      "attempt": 1
+    },
+    {
+      "path": "/assets/id-CM9XG9Mc.js",
+      "status": 200,
+      "bytes": 108090,
+      "sha256": "1ee4b3b3de942c4a8099cb0c626bb46f35a12a19a98dd2bd1ca6347f5b2795e7",
+      "matches": true,
+      "attempt": 1
+    },
+    {
+      "path": "/assets/index-CtllS2Nm.css",
+      "status": 200,
+      "bytes": 115825,
+      "sha256": "23f4b848abbc3e945c0f7065659faa1e30c7c9006eb45fa60650413a4eeece87",
+      "matches": true,
+      "attempt": 1
+    },
+    {
+      "path": "/assets/ja-CBaU4hW7.js",
+      "status": 200,
+      "bytes": 84887,
+      "sha256": "854ad62385dcd3eee8c5882c8161643a409918d393d5e633e8ad7c2910383912",
+      "matches": true,
+      "attempt": 1
+    },
+    {
+      "path": "/assets/ko-CIVapCBa.js",
+      "status": 200,
+      "bytes": 82711,
+      "sha256": "fc3868f00d500d9a5ac571234ae15b9d8e34b26876b0a475384ad8aa691bd485",
+      "matches": true,
+      "attempt": 1
+    },
+    {
+      "path": "/assets/index-CyXuUb8T.js",
+      "status": 200,
+      "bytes": 300852,
+      "sha256": "f409b432c2362da1a5c9ec496983213e36c868de87bdf077289253aa29af6c43",
+      "matches": true,
+      "attempt": 1
+    },
+    {
+      "path": "/assets/pt-de35sQKd.js",
+      "status": 200,
+      "bytes": 116102,
+      "sha256": "2e4654aadeea2bb9ba0421ffc37af9004a17028f5196aa279004c9f0ed0c3a16",
+      "matches": true,
+      "attempt": 1
+    },
+    {
+      "path": "/assets/ru-DKeNHM-_.js",
+      "status": 200,
+      "bytes": 179227,
+      "sha256": "2fb1437b6bef5cb54ba71b41e02e309bd1638d6ba4b6d03d14fa8cad5039604f",
+      "matches": true,
+      "attempt": 1
+    },
+    {
+      "path": "/assets/refresh-cw-Cn565sz2.js",
+      "status": 200,
+      "bytes": 317,
+      "sha256": "d7900d4e875db86a097da7fc81ef784b78c585d447a60d0f30e51c0a47524e9a",
+      "matches": true,
+      "attempt": 1
+    },
+    {
+      "path": "/assets/runtimeLocaleContentExtended-DAjlNWok.js",
+      "status": 200,
+      "bytes": 6725,
+      "sha256": "01708b4e1d2fba8b9678920ed6e115ac28d0399142f682ccc39368e5571a3251",
+      "matches": true,
+      "attempt": 1
+    },
+    {
+      "path": "/assets/useLocalizedDocs-CvaSQNuM.js",
+      "status": 200,
+      "bytes": 1175,
+      "sha256": "f2e0be079d8af185c97d1df7f62d9765e6ad31dd536af536ffc59c50af254923",
+      "matches": true,
+      "attempt": 1
+    },
+    {
+      "path": "/assets/triangle-alert-BdSTjJPI.js",
+      "status": 200,
+      "bytes": 261,
+      "sha256": "1d234669273bcd66f0c475e42206c9899699372db26458116cc0ecde0415a0f7",
+      "matches": true,
+      "attempt": 1
+    },
+    {
+      "path": "/assets/server-DVCHibKz.js",
+      "status": 200,
+      "bytes": 335,
+      "sha256": "988924bc4de505190b6f45f781b22ab39d2705bbced651b7c605a7bac835a07c",
+      "matches": true,
+      "attempt": 1
+    },
+    {
+      "path": "/assets/zh-CN-B7VjNP8N.js",
+      "status": 200,
+      "bytes": 74109,
+      "sha256": "5abd85e0c5fd5d680e9ee8a6332eeb20ab3cc795ef5ffa2588115c02bdddc2a8",
+      "matches": true,
+      "attempt": 1
+    },
+    {
+      "path": "/assets/zh-TW-G4ELhG7V.js",
+      "status": 200,
+      "bytes": 74250,
+      "sha256": "2830e76d3fd78ca65152e977b6adb56ea74fc8dbc9059ee38f1f295e4bb32d4e",
+      "matches": true,
+      "attempt": 1
+    },
+    {
+      "path": "/dapp/creator/open-download",
+      "status": 200,
+      "bytes": 7571,
+      "sha256": "3cf89d9da866447742df9e7318715e97a6cfb4b6d2c15be7901489b93e8bc56a",
+      "matches": true,
+      "attempt": 1
+    },
+    {
+      "path": "/dapp/video/open-download",
+      "status": 200,
+      "bytes": 7465,
+      "sha256": "06ded22fd2076375eb714a581449837682cb08bb04bb9bf0f977ecfeb7ad71aa",
+      "matches": true,
+      "attempt": 1
+    },
+    {
+      "path": "/",
+      "status": 200,
+      "bytes": 5454,
+      "sha256": "bbbf914910d9ab145b6c50be864ef6fd4ef1293036b40514794bdcf7399d156e",
+      "matches": true,
+      "attempt": 1
+    },
+    {
+      "path": "/assets/businessLocaleContent-DCa6712Q.js",
+      "status": 200,
+      "bytes": 33352,
+      "sha256": "ab1a264f7ec4afb3f21486e805d5457814bb405a4091f6f654650a36818300bb",
+      "matches": true,
+      "attempt": 1
+    },
+    {
+      "path": "/releases/creator-studio/b6af671d04a4/public-runtime.json",
+      "status": 200,
+      "bytes": 5628,
+      "sha256": "6e0aebe0aa4088ec2609a060e65dd17bc98d693b7845a9e3741f7f9803f43a52",
+      "matches": true,
+      "attempt": 1
+    },
+    {
+      "path": "/releases/ecosystem-release-registry.json",
+      "status": 200,
+      "bytes": 6398,
+      "sha256": "f84b459f7ffea79852729bd95cf7e5fe002a4f3f73d01d77a74373a46ee9c060",
+      "matches": true,
+      "attempt": 1
+    },
+    {
+      "path": "/sw.js",
+      "status": 200,
+      "bytes": 1451,
+      "sha256": "e27778b79aa0e62e3cf393a5a6ced06e382fd02b4bb59961eef0abd807288733",
+      "matches": true,
+      "attempt": 1
+    },
+    {
+      "path": "/releases/video/91bad5347d4f/public-runtime.json",
+      "status": 200,
+      "bytes": 6690,
+      "sha256": "576e528283f3cb1ab5eb2b8b9b1cff207a6fd2c0de8810118e52bb8b2098073c",
+      "matches": true,
+      "attempt": 1
+    }
+  ],
+  "checkedFiles": 50,
+  "browserUIVerified": false
+}
