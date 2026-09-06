@@ -1,7 +1,7 @@
 import React from "react";
 import {
-  ArrowUpRight, CheckCircle2, CircleDashed, Download, FileText, GitBranch,
-  Link2, LockKeyhole, Network, PackageOpen, ShieldCheck, TriangleAlert
+  ArrowUpRight, CheckCircle2, CircleDashed, Download, FileText, GitBranch, Globe,
+  Link2, LockKeyhole, Network, ShieldCheck, TriangleAlert
 } from "lucide-react";
 import { DOWNLOAD_LABELS, PLATFORM_STATUS, PRODUCT_STATUS, STATUS_CONFIG } from "../lib/ecosystemCatalog.js";
 import {
@@ -11,6 +11,8 @@ import { ECOSYSTEM_GUIDES } from "../content/ecosystemGuides.js";
 import docsAuthority from "virtual:ynx-docs-authority";
 import { useLocale } from "../lib/i18n.jsx";
 import { useLocalizedDocs } from "../lib/useLocalizedDocs.js";
+import { PRODUCT_UI_COPY, PRODUCT_SECTION_LABEL_KEYS } from "../content/productUiCopy.js";
+import { ProductDownloads } from "../components/ProductDownloads.jsx";
 
 const platformOrder = ["web", "pwa", "chromeEdge", "firefox", "android", "ios", "macos", "windows", "windowsX64", "windowsArm64", "linux"];
 
@@ -24,8 +26,8 @@ function Surface({ platform, item, registryAllowsDownloads }) {
   return <li className={`productSurface ${item?.status || PRODUCT_STATUS.NOT_READY}`}><span><strong>{DOWNLOAD_LABELS[platform]}</strong><small>{item?.note || "No verified release evidence."}</small></span>{canOpen ? <a href={item.href} rel={item.external ? "noopener" : undefined}>Download <ArrowUpRight size={14} /></a> : <em>{item?.href ? "Registry verification required" : state.text}</em>}</li>;
 }
 
-function SectionNavigation({ contract, activeSection }) {
-  return <nav className="productMicrositeNav" aria-label={`${contract.name} sections`}>{contract.sections.map((section) => <a key={section.id} href={section.href} aria-current={section.id === activeSection ? "page" : undefined}><span>{section.label}</span><small>{section.description}</small></a>)}</nav>;
+function SectionNavigation({ contract, activeSection, copy }) {
+  return <nav className="productMicrositeNav" aria-label={`${contract.name} · ${copy.productSections}`}>{contract.sections.map((section) => <a key={section.id} href={section.href} aria-current={section.id === activeSection ? "page" : undefined}><span>{copy[PRODUCT_SECTION_LABEL_KEYS[section.id]]}</span></a>)}</nav>;
 }
 
 function UnavailableAction({ title, reason }) {
@@ -36,18 +38,15 @@ function AvailableAction({ title, detail, href, external = false, icon: Icon = A
   return <a className="productAction available" href={href} rel={external ? "noopener" : undefined}><Icon aria-hidden="true" /><div><strong>{title}</strong><p>{detail}</p></div><ArrowUpRight aria-hidden="true" /></a>;
 }
 
-function SectionPage({ product, contract, sectionId, guide }) {
+function SectionPage({ product, contract, sectionId, guide, copy, locale }) {
   const definition = PRODUCT_PUBLIC_SECTIONS.find((section) => section.id === sectionId);
   const riskMetric = product.metrics?.find(([label]) => /risk|boundary/i.test(label));
   return <section className="productMicrositeSection" aria-labelledby="product-section-title">
-    <header><p className="sectionEyebrow">{product.name} public contract</p><h2 id="product-section-title">{definition.label}</h2><p>{definition.description}</p></header>
+    <header>{sectionId !== "open-download" && <p className="sectionEyebrow">{product.name}</p>}<h2 id="product-section-title">{copy[PRODUCT_SECTION_LABEL_KEYS[sectionId]] || definition.label}</h2>{sectionId !== "open-download" && <p>{definition.description}</p>}</header>
 
     {sectionId === "features" ? <div className="productFeatureGrid">{(product.metrics || []).map(([label, value]) => <article key={`${label}-${value}`}><strong>{label}</strong><p>{value}</p></article>)}{guide?.workflow?.map((step, index) => <article key={step}><strong>Workflow {String(index + 1).padStart(2, "0")}</strong><p>{step}</p></article>)}{!product.metrics?.length && !guide?.workflow?.length ? <article><strong>notApplicable</strong><p>The product owner has not supplied public feature detail in the current website evidence set.</p></article> : null}</div> : null}
 
-    {sectionId === "open-download" ? <div className="productActionList">
-      {contract.publicEntry.status === "available" ? <AvailableAction title={contract.publicEntry.label} detail="Registry-verified public product URL." href={contract.publicEntry.href} external /> : <UnavailableAction title={`Open ${product.name}`} reason={contract.publicEntry.reason} />}
-      {contract.downloads.status === "available" ? contract.downloads.items.map((item) => <AvailableAction key={`${item.platform}-${item.href}`} title={`Download ${DOWNLOAD_LABELS[item.platform] || item.platform}`} detail={item.note || "Registry-verified hosted package."} href={item.href} external={item.external} icon={PackageOpen} />) : <UnavailableAction title="Download product" reason={contract.downloads.reason} />}
-    </div> : null}
+    {sectionId === "open-download" ? <ProductDownloads product={product} contract={contract} copy={copy} locale={locale} /> : null}
 
     {sectionId === "docs-api" ? <div className="productActionList">
       {contract.docs.status === "available" ? <AvailableAction title={contract.docs.label} detail="Open the product documentation entry." href={contract.docs.href} external={contract.docs.external} icon={FileText} /> : <UnavailableAction title="Product documentation" reason={contract.docs.reason} />}
@@ -76,6 +75,7 @@ function SectionPage({ product, contract, sectionId, guide }) {
     </div> : null}
 
     {sectionId === "releases" ? <div className="productActionList">
+      {contract.runtimeEvidence && <AvailableAction title={copy.releaseDetails} detail={contract.publicEntry.href} href={contract.runtimeEvidence} icon={Globe} />}
       {contract.releaseEvidence.status === "available" ? <AvailableAction title={contract.releaseEvidence.label} detail={`Registry commit ${contract.registryCommit || "not recorded"}; state ${contract.registryState}.`} href={contract.releaseEvidence.href} icon={GitBranch} /> : <UnavailableAction title="Product release evidence" reason={contract.releaseEvidence.reason} />}
       <article className="productReleaseRecord"><GitBranch /><div><strong>Public release-registry record</strong><dl><div><dt>Linked</dt><dd>{String(contract.registryLinked)}</dd></div><div><dt>State</dt><dd>{contract.registryState}</dd></div><div><dt>Commit</dt><dd><code>{contract.registryCommit || "not registered"}</code></dd></div><div><dt>Central accepted</dt><dd>{String(contract.centralAccepted)}</dd></div><div><dt>Public web verified</dt><dd>{String(contract.publicWebVerified)}</dd></div><div><dt>Hosted download verified</dt><dd>{String(contract.downloadHostedVerified)}</dd></div></dl></div></article>
     </div> : null}
@@ -84,6 +84,7 @@ function SectionPage({ product, contract, sectionId, guide }) {
 
 export function ProductStatusPage({ product, sectionId = "overview", article, artifact }) {
   const { locale } = useLocale();
+  const copy = PRODUCT_UI_COPY[locale] || PRODUCT_UI_COPY.en;
   const localeState = useLocalizedDocs(locale);
   const localizedArticle = article ? localeState.articles.find((candidate) => candidate.route === article.route) : null;
   const contract = getProductPublicContract(product);
@@ -96,11 +97,11 @@ export function ProductStatusPage({ product, sectionId = "overview", article, ar
   const guide = ECOSYSTEM_GUIDES[product.key];
   const overview = sectionId === "overview";
 
-  return <main className="productStatusPage" data-product={product.key} data-public-contract={contract.schema}>
-    <header className="productStatusHero"><span className="productStatusIcon"><product.icon size={28} /></span><div><p className="sectionEyebrow">Independent YNX product</p><h1>{product.name}</h1><p>{product.detail}</p></div><span className={`appState ${status.tone}`}>{status.label}</span></header>
-    <SectionNavigation contract={contract} activeSection={sectionId} />
+  return <main className="productStatusPage" data-product={product.key} data-section={sectionId} data-public-contract={contract.schema}>
+    <header className="productStatusHero"><span className="productStatusIcon"><product.icon size={28} /></span><div><p className="sectionEyebrow">YNX · {copy.testnetPreview}</p><h1>{product.name}</h1><p>{sectionId === "open-download" ? copy.choosePlatform : product.detail}</p></div><span className={`appState ${status.tone}`}>{sectionId === "open-download" ? copy.testnetPreview : status.label}</span></header>
+    <SectionNavigation contract={contract} activeSection={sectionId} copy={copy} />
 
-    {!overview ? <SectionPage product={product} contract={contract} sectionId={sectionId} guide={guide} /> : <>
+    {!overview ? <SectionPage product={product} contract={contract} sectionId={sectionId} guide={guide} copy={copy} locale={locale} /> : <>
       <section className="productStatusLayout">
         <div className="productStatusMain">
           <div className="productStatusSection"><div className="sectionHeader compact"><div><p className="sectionEyebrow">Current evidence</p><h2>What this status proves</h2></div></div><ul className="productEvidenceList">

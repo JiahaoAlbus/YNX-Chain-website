@@ -278,10 +278,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .footerBoundary { grid-column: 1 / -1; padding-top: 26px; border-top: 1px solid rgba(255,255,255,.26); font-size: 12px; }
 .routePage { min-height: 76svh; background: white; padding: 100px 24px; }
 .portalPage { width:min(1240px,calc(100% - 48px)); margin:0 auto; padding:70px 0 108px; }
-.portalHeroV2 { min-height:0; max-height:none; display:block; overflow:visible; border-bottom:1px solid var(--line); background:linear-gradient(110deg,#f4f7ff 0%,#fff 60%,#edf2ff 100%); }
+.portalHeroV2 { min-height:0; max-height:none; display:block; overflow:visible; border-bottom:1px solid var(--line); background:var(--surface); }
 .portalHeroV2 .heroInner { width:min(1240px,calc(100% - 48px)); min-height:0; display:grid; grid-template-columns:1.08fr .92fr; gap:46px; align-items:center; padding:56px 0 48px; }
 .portalHeroV2 .heroCopy { min-width:0; }.portalHeroV2 .liveBadge { color:var(--blue); border-color:#b9c9f5; background:#fff; backdrop-filter:none; }.portalHeroV2 .liveBadge.isLive .statusDot { background:var(--green); box-shadow:none; animation:none; }.heroEyebrow { margin:22px 0 9px; color:var(--blue); font-size:11px; font-weight:850; letter-spacing:.1em; }.portalHeroV2 h1 { max-width:720px; margin:0; color:var(--ink); font-size:clamp(37px,4.1vw,62px); line-height:1.04; letter-spacing:-.05em; }.portalHeroV2 .heroLead { max-width:680px; margin-top:16px; color:#46516a; font-size:18px; line-height:1.6; }.portalHeroV2 .button.secondary { border-color:#c2cde6; color:var(--blue); background:#fff; backdrop-filter:none; }.portalHeroV2 .button.secondary:hover { background:#edf2ff; }.portalHeroV2 .heroBoundary { max-width:710px; margin:22px 0 0; color:var(--muted); font-size:12px; line-height:1.55; }
-.heroStatus { padding:22px; border:1px solid #ced8f1; border-radius:12px; background:#fff; box-shadow:0 18px 42px rgba(0,47,167,.08); }.heroStatusHead { display:flex; align-items:center; justify-content:space-between; padding-bottom:16px; border-bottom:1px solid var(--line); }.heroStatusHead p { margin:0; color:var(--muted); font-size:11px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; }.heroStatusHead strong { display:block; margin-top:5px; color:var(--blue); font-size:18px; }.heroStatusHead > span { width:36px; height:36px; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; color:var(--green); background:#e8f6ef; }.heroStatusHead svg { width:18px; }.heroStatusGrid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); border-left:1px solid var(--line); margin-top:16px; }.heroStatusGrid > div { min-width:0; min-height:88px; padding:13px; border-right:1px solid var(--line); border-bottom:1px solid var(--line); }.heroStatusGrid > div:nth-child(3),.heroStatusGrid > div:nth-child(4) { border-bottom:0; }.heroStatusGrid span { display:flex; align-items:center; gap:6px; color:var(--muted); font-size:11px; font-weight:750; }.heroStatusGrid span svg { width:14px; color:var(--blue); }.heroStatusGrid strong { display:block; margin-top:16px; overflow-wrap:anywhere; color:var(--ink); font-size:15px; }.heroStatusFoot { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:16px; padding-top:14px; border-top:1px solid var(--line); }.heroStatusFoot span { display:grid; gap:4px; color:var(--muted); font-size:11px; }.heroStatusFoot strong { color:var(--ink); font-size:13px; }
+.heroStatus { padding:22px; border:1px solid #ced8f1; border-radius:12px; background:#fff; box-shadow:none; }.heroStatusHead { display:flex; align-items:center; justify-content:space-between; padding-bottom:16px; border-bottom:1px solid var(--line); }.heroStatusHead p { margin:0; color:var(--muted); font-size:11px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; }.heroStatusHead strong { display:block; margin-top:5px; color:var(--blue); font-size:18px; }.heroStatusHead > span { width:36px; height:36px; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; color:var(--green); background:#e8f6ef; }.heroStatusHead svg { width:18px; }.heroStatusGrid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); border-left:1px solid var(--line); margin-top:16px; }.heroStatusGrid > div { min-width:0; min-height:88px; padding:13px; border-right:1px solid var(--line); border-bottom:1px solid var(--line); }.heroStatusGrid > div:nth-child(3),.heroStatusGrid > div:nth-child(4) { border-bottom:0; }.heroStatusGrid span { display:flex; align-items:center; gap:6px; color:var(--muted); font-size:11px; font-weight:750; }.heroStatusGrid span svg { width:14px; color:var(--blue); }.heroStatusGrid strong { display:block; margin-top:16px; overflow-wrap:anywhere; color:var(--ink); font-size:15px; }.heroStatusFoot { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:16px; padding-top:14px; border-top:1px solid var(--line); }.heroStatusFoot span { display:grid; gap:4px; color:var(--muted); font-size:11px; }.heroStatusFoot strong { color:var(--ink); font-size:13px; }
 .portalHero { display:grid; gap:16px; max-width:850px; padding:24px 0 46px; border-bottom:1px solid var(--line); }
 .portalHero h1 { max-width:800px; margin:0; font-size:clamp(38px,5vw,68px); line-height:1.04; letter-spacing:-.045em; }
 .portalHero > p:not(.sectionEyebrow) { max-width:760px; margin:0; color:var(--muted); font-size:18px; line-height:1.65; }
@@ -1249,7 +1249,7 @@ html[dir="rtl"] body, html[dir="rtl"] #root { direction: rtl; }
 
 /* Dark mode must cover the cards that use literal light surfaces in the base
    theme, not only the document background. */
-[data-theme="dark"] .portalHeroV2 { background: linear-gradient(110deg,#0c1427 0%,#080d19 60%,#111c38 100%); }
+[data-theme="dark"] .portalHeroV2 { background: var(--surface); }
 [data-theme="dark"] .portalHeroV2 h1,
 [data-theme="dark"] .portalHeroV2 .heroLead,
 [data-theme="dark"] .portalHeroV2 .heroBoundary { color: var(--ink); }
@@ -1323,4 +1323,62 @@ html[dir="rtl"] body, html[dir="rtl"] #root { direction: rtl; }
   .portalConfigRow { grid-template-columns: 64px minmax(0,1fr) 44px; }
   .copyMini { width: 44px; }
   .footerLinks a { min-width: 44px; justify-content: center; }
+}
+
+/* Product controls stay steady; color and focus carry their state. */
+.portalHeroV2 .button.primary { color:#fff; background:#002fa7; border-color:#002fa7; }
+.portalHeroV2 .button.primary:hover { background:#00247e; border-color:#00247e; }
+[data-theme="dark"] .portalHeroV2 .button.primary { border-color:#a7beff; }
+.button:hover, .walletConnect:hover, .siteHeader .navExplorer:hover { transform:none; }
+.walletConnect, .walletConnect:hover { box-shadow:none; }
+.heroStatusHead > .checking { color:var(--muted); background:var(--soft); }
+:lang(zh) .portalHeroV2 h1, :lang(zh) .portalHero h1 { letter-spacing:0; line-height:1.18; }
+
+/* Platform choices are readable rows; detailed provenance stays available on demand. */
+.productMicrositeNav { display:flex; gap:24px; padding:0; margin-block:28px 40px; overflow-x:auto; border:0; border-bottom:1px solid var(--line); border-radius:0; background:transparent; scrollbar-width:thin; }
+.productMicrositeNav > a { flex:0 0 auto; min-height:48px; padding:14px 0; border:0; border-bottom:2px solid transparent; border-radius:0; background:transparent; color:var(--muted); text-decoration:none; }
+.productMicrositeNav > a[aria-current="page"] { color:var(--blue); border-bottom-color:var(--blue); background:transparent; }
+.productMicrositeNav > a:hover { color:var(--blue); background:transparent; transform:none; }
+.productDownloads { max-width:1040px; }
+.productBrowserEntry { display:grid; grid-template-columns:26px minmax(0,1fr) auto; align-items:center; gap:18px; padding:24px 0; border-block:1px solid var(--line); }
+.productBrowserEntry > svg,.downloadPlatformIcon { color:var(--blue); }
+.productBrowserEntry h3,.productDownloadRow h3 { margin:0; font-size:20px; font-weight:650; }
+.productBrowserEntry p { margin:8px 0 0; color:var(--muted); line-height:1.6; }
+.downloadInstallNotice { margin:24px 0 8px; color:var(--muted); font-size:14px; line-height:1.6; }
+.productDownloadRows { list-style:none; margin:0; padding:0; }
+.productDownloadRow { display:grid; grid-template-columns:26px minmax(0,1fr) auto; gap:18px; padding:28px 0; border-bottom:1px solid var(--line); }
+.downloadPlatformIcon { margin-top:3px; }
+.downloadPlatformInfo { min-width:0; }
+.downloadPlatformInfo > p { margin:8px 0 0; font-size:14px; line-height:1.6; color:var(--muted); }
+.downloadPlatformInfo .downloadLimitation { max-width:70ch; }
+.downloadPlatformInfo .downloadLimitation.blocked { color:#805400; }
+.downloadPlatformAction { align-self:start; min-width:116px; }
+.downloadUnavailable { display:inline-flex; min-height:46px; align-items:center; color:var(--muted); font-size:14px; }
+.downloadReleaseDetails { margin-top:12px; font-size:13px; line-height:1.65; color:var(--muted); }
+.downloadReleaseDetails summary { width:fit-content; min-height:32px; cursor:pointer; color:var(--blue); }
+.downloadReleaseDetails p { overflow-wrap:anywhere; }
+.downloadReleaseDetails code { display:block; overflow-wrap:anywhere; }
+.downloadReleaseDetails a { display:inline-flex; align-items:center; gap:6px; margin-inline-end:18px; color:var(--blue); }
+[data-theme="dark"] .downloadPlatformInfo .downloadLimitation.blocked { color:#e8c888; }
+@media (max-width:640px) {
+  .productMicrositeNav { gap:20px; margin-block:20px 28px; }
+  .productBrowserEntry,.productDownloadRow { grid-template-columns:22px minmax(0,1fr); gap:12px; }
+  .productBrowserEntry > .button,.productBrowserEntry > .downloadUnavailable,.downloadPlatformAction { grid-column:2; justify-self:start; }
+  .productBrowserEntry > .button,.downloadPlatformAction.button { width:100%; min-height:48px; }
+  .productDownloadRow { padding-block:24px; }
+}
+.productStatusPage[data-section="open-download"] { max-width:1040px; padding-top:48px; }
+.productStatusPage[data-section="open-download"] .productStatusHero { min-height:0; grid-template-columns:48px minmax(0,1fr) auto; gap:20px; padding:0 0 24px; border-bottom:0; }
+.productStatusPage[data-section="open-download"] .productStatusHero h1 { font-size:40px; color:var(--ink); line-height:1.15; }
+.productStatusPage[data-section="open-download"] .productStatusHero p:not(.sectionEyebrow) { margin-top:8px; font-size:16px; }
+.productStatusPage[data-section="open-download"] .productStatusIcon { width:48px; height:48px; }
+.productStatusPage[data-section="open-download"] .productMicrositeSection { padding-top:0; }
+.productStatusPage[data-section="open-download"] .productMicrositeSection > header { margin-bottom:20px; }
+.productStatusPage[data-section="open-download"] .productMicrositeSection > header h2 { font-size:28px; line-height:1.2; letter-spacing:0; }
+@media (max-width:640px) {
+  .productStatusPage[data-section="open-download"] { padding-top:28px; }
+  .productStatusPage[data-section="open-download"] .productStatusHero { grid-template-columns:40px minmax(0,1fr); gap:14px; }
+  .productStatusPage[data-section="open-download"] .productStatusIcon { width:40px; height:40px; }
+  .productStatusPage[data-section="open-download"] .productStatusHero h1 { font-size:32px; }
+  .productStatusPage[data-section="open-download"] .productStatusHero > .appState { grid-column:2; justify-self:start; }
 }

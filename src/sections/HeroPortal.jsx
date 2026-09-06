@@ -34,7 +34,7 @@ export function HeroPortal({ snapshot, connectionState, onAddNetwork }) {
         <p className="heroBoundary">6423 · 0x1917 · YNXT</p>
       </div>
       <aside className="heroStatus" aria-label="6423 network identity">
-        <div className="heroStatusHead"><div><p>{copy.eyebrow}</p><strong>{YNX_6423.cosmosChainId}</strong></div><span>{verified ? <CheckCircle2 /> : <Activity />}</span></div>
+        <div className="heroStatusHead"><div><p>{copy.eyebrow}</p><strong>{YNX_6423.cosmosChainId}</strong></div><span className={verified ? "verified" : "checking"} aria-label={state}>{verified ? <CheckCircle2 /> : <Activity />}</span></div>
         <div className="heroStatusGrid">{cards.map(([label, value, icon]) => <div key={label}><span>{icon}{label}</span><strong>{value}</strong></div>)}</div>
         <div className="heroStatusFoot"><span>{copy.labels.height}<strong>{status.height ?? copy.labels.unavailable}</strong></span><span>{copy.labels.source}<strong>{verified ? "RPC + Explorer" : copy.labels.checking}</strong></span></div>
       </aside>

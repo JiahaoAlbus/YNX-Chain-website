@@ -9,7 +9,7 @@
     "externalClaimsRequireIndependentEvidence": true
   },
   "products": [
-    { "key": "wallet", "name": "YNX Wallet", "route": "/dapp/wallet", "state": "testnet-preview", "commit": "3ab8c24cac04", "centralAccepted": false, "publicWeb": null, "downloadHosted": true, "productRelease": "/releases/wallet/3ab8c24c/product-release.json", "publicProductMetadata": "/releases/wallet/3ab8c24c/public-product-metadata.json" },
+    {"key": "wallet", "name": "YNX Wallet", "route": "/dapp/wallet", "state": "testnet-preview", "commit": "3ab8c24cac04", "centralAccepted": false, "publicWeb": "https://wallet.ynxweb4.com/", "downloadHosted": true, "productRelease": "/releases/wallet/3ab8c24c/product-release.json", "publicProductMetadata": "/releases/wallet/3ab8c24c/public-product-metadata.json", "publicWebRelease": "/releases/wallet-web/f0512a73/public-runtime.json", "publicWebSourceCommit": "f0512a73d3891dc75beabbf66d1ed7e9c9522ea0"},
     { "key": "social", "name": "YNX Social", "route": "/social", "state": "candidate", "commit": "8c08bc3fff53", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
     { "key": "pay", "name": "YNX Pay", "route": "/pay", "state": "candidate", "commit": "ffb528b4971b", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
     { "key": "merchantConsole", "name": "Merchant Console", "route": "/merchant", "state": "candidate", "commit": "ffb528b4971b", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
@@ -24,7 +24,7 @@
     { "key": "trust", "name": "YNX Trust Center", "route": "/trust", "state": "candidate", "commit": "c7e4445598a7", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
     { "key": "resource", "name": "YNX Resource Market", "route": "/resource", "state": "candidate", "commit": "c7e4445598a7", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
     { "key": "music", "name": "YNX Music", "route": "/music", "state": "candidate", "commit": "3cf997b16664", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
-    { "key": "video", "name": "YNX Video", "route": "/video", "state": "candidate", "commit": "0d13f8f86932", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
+    {"key": "video", "name": "YNX Video", "route": "/video", "state": "candidate", "commit": "0d13f8f86932", "centralAccepted": false, "publicWeb": "https://web4.ynxweb4.com/video/", "downloadHosted": false, "publicWebRelease": "/releases/video/d75ad9704/public-runtime.json", "publicWebSourceCommit": "d75ad97040041b6febbf4e9ebdb338fdb4c1eff5"},
     { "key": "creatorStudio", "name": "Creator Studio", "route": "/creator", "state": "candidate-incomplete", "commit": "0d13f8f86932", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
     { "key": "cloud", "name": "YNX Cloud", "route": "/cloud", "state": "candidate", "commit": "7b3c5f427c17", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
     { "key": "docs", "name": "YNX Docs", "route": "/docs-app", "state": "candidate", "commit": "7b3c5f427c17", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },

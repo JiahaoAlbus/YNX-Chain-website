@@ -860,7 +860,10 @@ if (
   exchangeRegistry?.productRelease !== "/releases/exchange/fc2276e1ce4c/product-release.json" ||
   exchangeRegistry?.publicProductMetadata !== "/releases/exchange/fc2276e1ce4c/public-product-metadata.json" ||
   registryByKey.get("wallet")?.centralAccepted !== false ||
-  registryByKey.get("wallet")?.publicWeb !== null ||
+  registryByKey.get("wallet")?.publicWeb !== "https://wallet.ynxweb4.com/" ||
+  registryByKey.get("wallet")?.publicWebRelease !== "/releases/wallet-web/f0512a73/public-runtime.json" ||
+  videoRegistry?.publicWeb !== "https://web4.ynxweb4.com/video/" ||
+  videoRegistry?.centralAccepted !== false ||
   cardRegistry?.state !== "candidate-incomplete" ||
   cardRegistry?.centralAccepted !== false ||
   releaseRegistry.products.some((product) => typeof product.route !== "string" || !product.route.startsWith("/")) ||
@@ -869,6 +872,16 @@ if (
 ) {
   console.error("release registry is inconsistent with the currently published evidence snapshot or its claim boundaries");
   process.exit(1);
+}
+for (const key of ["wallet", "video"]) {
+  const record = registryByKey.get(key);
+  const runtime = JSON.parse(fs.readFileSync(`public${record.publicWebRelease}`, "utf8"));
+  if (runtime.publicUrl !== record.publicWeb || runtime.sourceCommit !== record.publicWebSourceCommit ||
+      !/^[0-9a-f]{40}$/.test(runtime.sourceCommit) || runtime.checks.publicPageRendered !== true ||
+      !Array.isArray(runtime.notVerified) || runtime.notVerified.length === 0) {
+    console.error(`Public product runtime record is incomplete: ${key}`);
+    process.exit(1);
+  }
 }
 for (const requiredText of ["downloadHosted", "Local build only", "Download Testnet Preview", "candidate incomplete", "Product status", "wallet-auth-v1.0.0-testnet-preview.5", "exchange-v1.0.0-testnet-preview.3", "shop-v0.3.0-testnet-preview.1", "developer-v0.2.0-testnet-preview.1", "trust-center-v0.1.0-testnet-preview.2"]) {
   if (!ecosystemCatalog.includes(requiredText)) {

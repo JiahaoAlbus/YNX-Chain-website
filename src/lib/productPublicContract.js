@@ -70,6 +70,7 @@ export function getProductPublicContract(product) {
     docs,
     api,
     releaseEvidence,
+    runtimeEvidence: registry?.publicWebRelease || null,
     sections: PRODUCT_PUBLIC_SECTIONS.map((section) => ({ ...section, href: productSectionRoute(product.route, section.id) })),
     boundaries: {
       chain: "YNX Testnet 6423 / EVM 0x1917 / native asset YNXT",

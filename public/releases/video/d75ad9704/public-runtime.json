@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "verifiedAt": "2026-09-06T03:38:05Z",
+  "product": "YNX Video",
+  "publicUrl": "https://web4.ynxweb4.com/video/",
+  "sourceCommit": "d75ad97040041b6febbf4e9ebdb338fdb4c1eff5",
+  "artifactSha256": "25748a1764e985a8abcd64cac53e25ecbefb7fbc20027142da555ac38fa314f5",
+  "artifactBytes": 27622,
+  "checks": {
+    "servedFilesVerified": 17,
+    "publicPageRendered": true,
+    "guestCatalogResponded": true,
+    "guestPublishedVideos": 0,
+    "viewerDeploymentVerified": true,
+    "apiRestartRecoveryVerified": true
+  },
+  "apiSourceCommit": "1883d406f77f94cb81171b79fe9518882ede0b16",
+  "notVerified": [
+    "authenticated creator upload and publishing",
+    "anonymous media playback",
+    "native installation",
+    "production signing or store release"
+  ]
+}
