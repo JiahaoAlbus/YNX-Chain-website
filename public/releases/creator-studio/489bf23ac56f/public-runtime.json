@@ -1,0 +1,151 @@
+{
+  "schemaVersion": 1,
+  "product": "YNX Creator Studio",
+  "verifiedAt": "2026-09-06T09:53:42.923Z",
+  "publicUrl": "https://creator.ynxweb4.com/",
+  "sourceCommit": "489bf23ac56fb11c5b2ed869fb2a93c2465d2b24",
+  "sdkSourceCommit": "529471f3822d2bac43ea47a1ab8004fa2ae79885",
+  "sdkSha256": "723a2740aca03411580d1cb394d1d99fde8e3a021bae1135ee1890751f2aae5f",
+  "artifactSha256": "fb73102c29e50a7542d5a09197603c15594b0969aa26f91019c2c9208e269a44",
+  "artifactBytes": 77138,
+  "checks": {
+    "sourceBoundPublicFilesMatched": 17,
+    "callbackRouteSha256": "aa808a77e703333feba726dd1a51c839331e1bb557b6878f602a4113b78d8fb2",
+    "noStoreVerified": true,
+    "publicPageRendered": true
+  },
+  "publicFiles": [
+    {
+      "path": "app.js",
+      "bytes": 41327,
+      "sha256": "1364a79a637738b6f7e963e3f56afc127377ef872d616fdf34f773504d900f5a",
+      "status": 200
+    },
+    {
+      "path": "assets/metamask.svg",
+      "bytes": 455,
+      "sha256": "559c46c171bd6c7a3341c7d84a475173b4f23eb4dd71f875c4470d09468f00fe",
+      "status": 200
+    },
+    {
+      "path": "assets/ynx-wallet.svg",
+      "bytes": 320,
+      "sha256": "3c7018405558413ed354ebd8b680d0f7d0e89d7402b59847f7955b8ee6463098",
+      "status": 200
+    },
+    {
+      "path": "callback.css",
+      "bytes": 549,
+      "sha256": "59ce64d111f79750457e5194a4e0a90c66d5521d296a3e1078dd2b85b9b63e9b",
+      "status": 200
+    },
+    {
+      "path": "enhancements.css",
+      "bytes": 1731,
+      "sha256": "a940d84e115c563e9ad365365432561797f38ec83b6b3ef7885f4b297fabb1ba",
+      "status": 200
+    },
+    {
+      "path": "i18n.js",
+      "bytes": 10781,
+      "sha256": "73a8a412da0f12f3f7a5d7d8fc7e178f067ef848670092f34fc59b6e2b3bdc1f",
+      "status": 200
+    },
+    {
+      "path": "i18n/catalog.json",
+      "bytes": 14237,
+      "sha256": "4c86e3e1cdeac6d9c4570891d70bab4c3486c6a4429dd33fd1029f046ca9ecff",
+      "status": 200
+    },
+    {
+      "path": "index.html",
+      "bytes": 15010,
+      "sha256": "0a07158041d8858cf25d3ebc8f881fd09d3628b4320bf01b0df14d13d4557e73",
+      "status": 200
+    },
+    {
+      "path": "product-session-registry.json",
+      "bytes": 838,
+      "sha256": "dd257ae89960cb69fdb093a78d1a51f82f9648d52a4cc267128af71f5721a7db",
+      "status": 200
+    },
+    {
+      "path": "product-session-sdk-source.json",
+      "bytes": 1006,
+      "sha256": "0696f7013843875e229800bb40337c1d05a1bbc55c1699443fc2de6a75541950",
+      "status": 200
+    },
+    {
+      "path": "product-session-sdk.js",
+      "bytes": 119091,
+      "sha256": "723a2740aca03411580d1cb394d1d99fde8e3a021bae1135ee1890751f2aae5f",
+      "status": 200
+    },
+    {
+      "path": "product-session.js",
+      "bytes": 3020,
+      "sha256": "ba8f31fc3f0696844e18dc3baeaac6b38d6dbde6f2f38bd22645cc7652392bf8",
+      "status": 200
+    },
+    {
+      "path": "standard-wallet-connect-state.js",
+      "bytes": 4800,
+      "sha256": "b15941911ebae07071a8ca5cc79b14616e24c43e8ba650389362ecf5333e397d",
+      "status": 200
+    },
+    {
+      "path": "styles.css",
+      "bytes": 9893,
+      "sha256": "9ac8cf37f4d7a69a5009c5509825156fc551107e68bb72a9d1ab4d3b8e291ac7",
+      "status": 200
+    },
+    {
+      "path": "wallet-auth.js",
+      "bytes": 19641,
+      "sha256": "2b650cec0e6394f25543b9c434f8049b1617b466b6ce5a4e0fb8026f73f478fe",
+      "status": 200
+    },
+    {
+      "path": "wallet-callback.html",
+      "bytes": 636,
+      "sha256": "aa808a77e703333feba726dd1a51c839331e1bb557b6878f602a4113b78d8fb2",
+      "status": 200
+    },
+    {
+      "path": "wallet-callback.js",
+      "bytes": 1172,
+      "sha256": "757e917d75eb2bde1bfe47608097a882f9ffb964f3cba8fd1b75eae7dfcfe396",
+      "status": 200
+    }
+  ],
+  "centralAccepted": false,
+  "fullProductAccepted": false,
+  "downloadHosted": false,
+  "productionSigned": false,
+  "storeReleased": false,
+  "notVerified": [
+    "489 SDK529 approval/return/refresh and actual signout network-failure recovery are verified on Android emulator-5580 b0; Viewer, other platforms, native-owner revoke and deliberate lost-ACK remain outside this evidence.",
+    "Public service is a single-host Testnet preview, not an HA production deployment",
+    "No live provider AI, Trust delegated appeal or Pay settlement",
+    "Analytics and revenue require authoritative persisted events; no organic activity or revenue is fabricated",
+    "New UI copy is not fully localized; editing, rights appeals, revenue and native platform packages remain incomplete"
+  ],
+  "latestReadbackNetwork": "Primary normal public DNS and trusted HTTPS; browser/device acceptance recorded separately.",
+  "walletVerification": {
+    "evidenceType": "Wallet owner direct Android UI/network capture; coordinator read the source-bound acceptance record, did not repeat the browser actions.",
+    "platform": "Android emulator-5580, existing QA Wallet and Chrome data",
+    "walletSourceCommit": "b0c631843295f396449500b1bdc03a796cb3d836",
+    "authSourceCommit": "8dad0bab8f6f711e6ca6037201eec5725f9a6a02",
+    "nativeApproveBiometricAndReturn": true,
+    "refreshRetainsAccountAndLoadsBusinessRecords": true,
+    "signOutClearsPrivateData": true,
+    "networkFailurePendingReloadExplicitRetryBeforeExpiry": true,
+    "refreshAfterSignOutDisconnected": true,
+    "currentNativeOwnerRevokeVerified": false,
+    "deliberateLostAckVerified": false,
+    "allDAppsAllPlatformsVerified": false,
+    "standardEVMProviderSigningVerified": false,
+    "pixelHardwareVerified": false,
+    "sourceRecordSHA256": "da1c5aafdfc22887d2de4f5cbc8a715bcb1bb89e3ec551ea1a2170d4f71e525b"
+  }
+}

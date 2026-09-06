@@ -341,10 +341,10 @@ const evidence = {
     }
   },
   video: {
-    commit: "91bad5347d4fa8ef17ca7ce962ad7d0d1d6cb810",
+    commit: "489bf23ac56fb11c5b2ed869fb2a93c2465d2b24",
     centralAccepted: false,
-    productRelease: { href: "/releases/video/91bad5347d4f/public-runtime.json", release: "video-testnet-web-20260906-91bad5347d4f" },
-    statusNote: "Browse published test videos, open shared links and play media in the public Web preview. Guest navigation, language switching and a mobile RTL layout have been checked in the browser. The signed-in library and Wallet approval still need installed-client verification for this version. Native downloads, complete translations and production streaming remain unfinished.",
+    productRelease: { href: "/releases/video/489bf23ac56f/public-runtime.json", release: "video-testnet-web-20260906-489bf23ac56f" },
+    statusNote: "Browse published test videos and shared links in the public Web preview. The latest Wallet session update is live; current-version browser playback, signed-in library and installed Wallet acceptance are being verified. Native downloads, complete translations and production streaming remain unfinished.",
     downloads: {
       android: artifactDownload(PRODUCT_STATUS.LOCAL, "apps/video/android/app/build/outputs/apk/debug/app-debug.apk", "Video Android debug APK."),
       ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS project exists; simulator/signing evidence pending." },
@@ -354,12 +354,12 @@ const evidence = {
     }
   },
   creatorStudio: {
-    commit: "b6af671d04a4230bb7a4052cee1ff21d2f5c9c51",
+    commit: "489bf23ac56fb11c5b2ed869fb2a93c2465d2b24",
     centralAccepted: false,
-    productRelease: { href: "/releases/creator-studio/b6af671d04a4/public-runtime.json", release: "creator-testnet-web-20260906-b6af671d04a4" },
-    statusNote: "The public Web preview supports YNX Wallet approval and return, restoring access after refresh, sign-out and Wallet-side session revocation. These flows were verified with one Android emulator and Chrome. Other platforms, account switching, the full publishing workflow and complete translations still need acceptance. AI services, payouts and production creator revenue are unavailable.",
+    productRelease: { href: "/releases/creator-studio/489bf23ac56f/public-runtime.json", release: "creator-testnet-web-20260906-489bf23ac56f" },
+    statusNote: "The public Web preview supports YNX Wallet approval and return, access after refresh, and sign-out recovery after a network failure and browser reload. These current-version flows were verified with one Android emulator and Chrome. Wallet-side revocation, other platforms, account switching and the full publishing workflow still need acceptance. AI services, payouts and production creator revenue are unavailable.",
     downloads: {
-      web: { status: PRODUCT_STATUS.LIVE, href: "https://creator.ynxweb4.com/", external: true, note: "Public Creator Studio Web preview; Android Wallet approval, refresh, sign-out and session revocation verified on one emulator." }
+      web: { status: PRODUCT_STATUS.LIVE, href: "https://creator.ynxweb4.com/", external: true, note: "Public Creator Studio Web preview; Android Wallet approval, refresh and sign-out retry after a network failure verified on one emulator." }
     }
   },
   cloud: {

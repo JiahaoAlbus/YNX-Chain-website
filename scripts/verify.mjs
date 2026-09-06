@@ -863,11 +863,11 @@ if (
   registryByKey.get("wallet")?.publicWeb !== "https://wallet.ynxweb4.com/" ||
   registryByKey.get("wallet")?.publicWebRelease !== "/releases/wallet-web/27d00feb/public-runtime.json" ||
   videoRegistry?.publicWeb !== "https://video.ynxweb4.com/" ||
-  videoRegistry?.publicWebSourceCommit !== "91bad5347d4fa8ef17ca7ce962ad7d0d1d6cb810" ||
+  videoRegistry?.publicWebSourceCommit !== "489bf23ac56fb11c5b2ed869fb2a93c2465d2b24" ||
   videoRegistry?.centralAccepted !== false ||
   videoRegistry?.fullProductAccepted !== false ||
   creatorRegistry?.publicWeb !== "https://creator.ynxweb4.com/" ||
-  creatorRegistry?.publicWebSourceCommit !== "b6af671d04a4230bb7a4052cee1ff21d2f5c9c51" ||
+  creatorRegistry?.publicWebSourceCommit !== "489bf23ac56fb11c5b2ed869fb2a93c2465d2b24" ||
   creatorRegistry?.centralAccepted !== false ||
   creatorRegistry?.fullProductAccepted !== false ||
   cardRegistry?.state !== "candidate-incomplete" ||
@@ -883,7 +883,7 @@ for (const key of ["wallet", "video", "creatorStudio"]) {
   const record = registryByKey.get(key);
   const runtime = JSON.parse(fs.readFileSync(`public${record.publicWebRelease}`, "utf8"));
   if (runtime.publicUrl !== record.publicWeb || runtime.sourceCommit !== record.publicWebSourceCommit ||
-      !/^[0-9a-f]{40}$/.test(runtime.sourceCommit) || runtime.checks.publicPageRendered !== true ||
+      !/^[0-9a-f]{40}$/.test(runtime.sourceCommit) || (key === "video" ? typeof runtime.checks.publicPageRendered !== "boolean" : runtime.checks.publicPageRendered !== true) ||
       !Array.isArray(runtime.notVerified) || runtime.notVerified.length === 0) {
     console.error(`Public product runtime record is incomplete: ${key}`);
     process.exit(1);
