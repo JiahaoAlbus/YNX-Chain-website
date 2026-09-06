@@ -13,7 +13,7 @@ import docsLocales from "virtual:ynx-docs-locales";
 import { useLocale } from "../lib/i18n.jsx";
 import { selectLocalizedDocs } from "../lib/docsLocale.js";
 
-const platformOrder = ["web", "pwa", "chromeEdge", "firefox", "android", "ios", "macos", "windows", "linux"];
+const platformOrder = ["web", "pwa", "chromeEdge", "firefox", "android", "ios", "macos", "windows", "windowsX64", "windowsArm64", "linux"];
 
 function EvidenceState({ label, value, detail }) {
   return <li className={value ? "confirmed" : "pending"}>{value ? <CheckCircle2 size={17} /> : <CircleDashed size={17} />}<span><strong>{label}</strong><small>{detail}</small></span></li>;
