@@ -862,8 +862,14 @@ if (
   registryByKey.get("wallet")?.centralAccepted !== false ||
   registryByKey.get("wallet")?.publicWeb !== "https://wallet.ynxweb4.com/" ||
   registryByKey.get("wallet")?.publicWebRelease !== "/releases/wallet-web/27d00feb/public-runtime.json" ||
-  videoRegistry?.publicWeb !== "https://web4.ynxweb4.com/video/" ||
+  videoRegistry?.publicWeb !== "https://video.ynxweb4.com/" ||
+  videoRegistry?.publicWebSourceCommit !== "91bad5347d4fa8ef17ca7ce962ad7d0d1d6cb810" ||
   videoRegistry?.centralAccepted !== false ||
+  videoRegistry?.fullProductAccepted !== false ||
+  creatorRegistry?.publicWeb !== "https://creator.ynxweb4.com/" ||
+  creatorRegistry?.publicWebSourceCommit !== "b6af671d04a4230bb7a4052cee1ff21d2f5c9c51" ||
+  creatorRegistry?.centralAccepted !== false ||
+  creatorRegistry?.fullProductAccepted !== false ||
   cardRegistry?.state !== "candidate-incomplete" ||
   cardRegistry?.centralAccepted !== false ||
   releaseRegistry.products.some((product) => typeof product.route !== "string" || !product.route.startsWith("/")) ||
@@ -873,13 +879,25 @@ if (
   console.error("release registry is inconsistent with the currently published evidence snapshot or its claim boundaries");
   process.exit(1);
 }
-for (const key of ["wallet", "video"]) {
+for (const key of ["wallet", "video", "creatorStudio"]) {
   const record = registryByKey.get(key);
   const runtime = JSON.parse(fs.readFileSync(`public${record.publicWebRelease}`, "utf8"));
   if (runtime.publicUrl !== record.publicWeb || runtime.sourceCommit !== record.publicWebSourceCommit ||
       !/^[0-9a-f]{40}$/.test(runtime.sourceCommit) || runtime.checks.publicPageRendered !== true ||
       !Array.isArray(runtime.notVerified) || runtime.notVerified.length === 0) {
     console.error(`Public product runtime record is incomplete: ${key}`);
+    process.exit(1);
+  }
+  if (key !== "wallet" && (
+    runtime.fullProductAccepted !== false || runtime.centralAccepted !== false ||
+    runtime.downloadHosted !== false || runtime.productionSigned !== false || runtime.storeReleased !== false ||
+    !/^[0-9a-f]{64}$/.test(runtime.artifactSha256) || !Number.isSafeInteger(runtime.artifactBytes) || runtime.artifactBytes <= 0 ||
+    runtime.checks.sourceBoundPublicFilesMatched !== runtime.publicFiles?.filter((file) => file.status === 200).length ||
+    runtime.publicFiles?.some((file) => !/^[0-9a-f]{64}$/.test(file.sha256) || !Number.isSafeInteger(file.bytes) || file.bytes < 0) ||
+    (key === "video" && (runtime.browserVerification?.installedWalletApprovalVerified !== false || runtime.browserVerification?.privateLibraryVerified !== false)) ||
+    (key === "creatorStudio" && (runtime.walletVerification?.allDAppsAllPlatformsVerified !== false || runtime.walletVerification?.standardEVMProviderSigningVerified !== false))
+  )) {
+    console.error(`Public preview evidence crosses its scoped acceptance boundary: ${key}`);
     process.exit(1);
   }
 }

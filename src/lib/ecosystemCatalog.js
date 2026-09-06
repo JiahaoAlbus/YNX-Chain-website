@@ -341,25 +341,25 @@ const evidence = {
     }
   },
   video: {
-    commit: "f3a20484",
-    centralAccepted: true,
-    productRelease: { href: "/releases/ecosystem-release-registry.json", release: "video-v0.2.0-testnet-preview.1" },
-    statusNote: "The public Video Testnet Preview is live with an empty-by-default catalog, real ClamAV scanning and FFmpeg processing readiness, twelve locales, fail-closed private APIs and 100/100 Viewer plus API concurrency evidence. Central Wallet registration, production HA/object storage, licensed content, live AI/Pay/Trust integrations and native production signing remain pending.",
+    commit: "91bad5347d4fa8ef17ca7ce962ad7d0d1d6cb810",
+    centralAccepted: false,
+    productRelease: { href: "/releases/video/91bad5347d4f/public-runtime.json", release: "video-testnet-web-20260906-91bad5347d4f" },
+    statusNote: "Browse published test videos, open shared links and play media in the public Web preview. Guest navigation, language switching and a mobile RTL layout have been checked in the browser. The signed-in library and Wallet approval still need installed-client verification for this version. Native downloads, complete translations and production streaming remain unfinished.",
     downloads: {
       android: artifactDownload(PRODUCT_STATUS.LOCAL, "apps/video/android/app/build/outputs/apk/debug/app-debug.apk", "Video Android debug APK."),
       ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS project exists; simulator/signing evidence pending." },
-      web: { status: PRODUCT_STATUS.LIVE, href: "https://web4.ynxweb4.com/video/", external: true, note: "Public Video Web Testnet Preview; private actions require central Wallet registration." },
+      web: { status: PRODUCT_STATUS.LIVE, href: "https://video.ynxweb4.com/", external: true, note: "Public Video Web preview; guest browsing and test-media playback verified. Signed-in workflows remain under testing." },
       macos: { status: PRODUCT_STATUS.NOT_READY, note: "No published Video macOS package in this candidate." },
       windows: { status: PRODUCT_STATUS.NOT_READY, note: "No published Video Windows package in this candidate." }
     }
   },
   creatorStudio: {
-    commit: "3353bdfa",
-    centralAccepted: true,
-    productRelease: { href: "/releases/ecosystem-release-registry.json", release: "creator-studio-v0.3.0-testnet-preview.1" },
-    statusNote: "Creator Studio is publicly hosted beside Video with team RBAC, immediate revocation, source-bound rights declarations, authoritative analytics coverage, independent publication review, scheduling, unpublish and immutable version history. Its API, Viewer and Studio each passed 100/100 concurrent requests. Private operations require central Wallet registration and fail closed today; no live AI provider, Pay settlement or production creator revenue is claimed.",
+    commit: "b6af671d04a4230bb7a4052cee1ff21d2f5c9c51",
+    centralAccepted: false,
+    productRelease: { href: "/releases/creator-studio/b6af671d04a4/public-runtime.json", release: "creator-testnet-web-20260906-b6af671d04a4" },
+    statusNote: "The public Web preview supports YNX Wallet approval and return, restoring access after refresh, sign-out and Wallet-side session revocation. These flows were verified with one Android emulator and Chrome. Other platforms, account switching, the full publishing workflow and complete translations still need acceptance. AI services, payouts and production creator revenue are unavailable.",
     downloads: {
-      web: { status: PRODUCT_STATUS.LIVE, href: "https://web4.ynxweb4.com/video/studio/", external: true, note: "Public Creator Studio Testnet Preview; private operations remain Wallet-gated." }
+      web: { status: PRODUCT_STATUS.LIVE, href: "https://creator.ynxweb4.com/", external: true, note: "Public Creator Studio Web preview; Android Wallet approval, refresh, sign-out and session revocation verified on one emulator." }
     }
   },
   cloud: {
@@ -674,22 +674,22 @@ export const getCatalog = () => [
     name: "YNX Video",
     icon: PlaySquare,
     status: PRODUCT_STATUS.LIVE,
-    detail: "A public empty-by-default Testnet video workspace with discovery, playback, comments, history, subscriptions, playlists and reports. Uploads are scanned by ClamAV and processed by FFmpeg; authenticated actions stay closed until central Wallet registration is accepted.",
-    entry: { label: "Open YNX Video", href: "https://web4.ynxweb4.com/video/", external: true },
+    detail: "Discover published test videos, open shared links, browse channels and play media in the Web preview. Signed-in history, subscriptions, playlists and comments are still undergoing Wallet acceptance testing.",
+    entry: { label: "Open YNX Video", href: "https://video.ynxweb4.com/", external: true },
     docs: { ...docsAnchor("video"), label: "Video docs" },
-    downloads: web(PRODUCT_STATUS.LIVE, "https://web4.ynxweb4.com/video/", "Public Video Testnet Preview"),
-    metrics: [["Closure", "Viewer + rights-aware creator pipeline"], ["Risk", "No central Wallet, licensed catalog or production settlement"], ["Readiness", "Public HTTPS + real scanner/transcoder + 100/100 concurrency"]]
+    downloads: web(PRODUCT_STATUS.LIVE, "https://video.ynxweb4.com/", "Public Video Testnet Preview"),
+    metrics: [["Verified", "Guest browsing, shared links and test-media playback"], ["Pending", "Signed-in library, native installers and complete translations"], ["Readiness", "Web preview; full product acceptance remains open"]]
   },
   {
     key: "creatorStudio",
     name: "Creator Studio",
     icon: Brush,
     status: PRODUCT_STATUS.LIVE,
-    detail: "A public Creator Studio Testnet workspace for channel teams, role revocation, source-bound rights, uploads, captions, independent review, scheduling, unpublish, immutable versions, reports, appeals, disputes and review-required AI/payout intents. Private operations fail closed until Wallet registration is accepted.",
-    entry: { label: "Open Creator Studio", href: "https://web4.ynxweb4.com/video/studio/", external: true },
+    detail: "A Web workspace for creators to manage test channels and publishing. Android Wallet sign-in, refresh, sign-out and session revocation have passed a scoped emulator check; the full editing and publishing workflow is still being completed.",
+    entry: { label: "Open Creator Studio", href: "https://creator.ynxweb4.com/", external: true },
     docs: { ...docsAnchor("creator"), label: "Creator docs" },
-    downloads: web(PRODUCT_STATUS.LIVE, "https://web4.ynxweb4.com/video/studio/", "Public Creator Studio Testnet Preview"),
-    metrics: [["Closure", "Team → upload → rights → independent review → scheduled publish"], ["Risk", "No live AI, Pay settlement or authoritative revenue"], ["Readiness", "API + Viewer + Studio each 100/100 concurrency"]]
+    downloads: web(PRODUCT_STATUS.LIVE, "https://creator.ynxweb4.com/", "Public Creator Studio Testnet Preview"),
+    metrics: [["Verified", "Android Wallet approval, refresh, sign-out and revocation"], ["Pending", "Other platforms, account switching and complete publishing"], ["Readiness", "Web preview; no production payouts or revenue"]]
   },
   {
     key: "cloud",
