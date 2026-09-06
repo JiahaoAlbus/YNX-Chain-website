@@ -1,4 +1,4 @@
-const CACHE_NAME = "ynx-web-shell-v7-website-redesign";
+const CACHE_NAME = "ynx-web-shell-v8-static-performance";
 const CACHEABLE_DESTINATIONS = new Set(["font", "image", "script", "style"]);
 
 self.addEventListener("install", () => self.skipWaiting());
@@ -21,9 +21,15 @@ self.addEventListener("fetch", (event) => {
     return;
   }
   if (CACHEABLE_DESTINATIONS.has(request.destination)) {
-    event.respondWith(networkFirst(request));
+    // Vite names are content-hashed. Their URL changes whenever bytes change.
+    event.respondWith(/^\/assets\/.+-[A-Za-z0-9_-]{8,}\.(?:js|css|woff2?)$/.test(url.pathname) ? immutableAsset(request) : networkFirst(request));
   }
 });
+
+async function immutableAsset(request) {
+  const cached = await caches.match(request);
+  return cached || networkFirst(request);
+}
 
 async function networkFirst(request) {
   try {

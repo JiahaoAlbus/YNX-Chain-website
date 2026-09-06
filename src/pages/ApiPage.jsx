@@ -1,106 +1,24 @@
-import React, { useState } from "react";
-import { Check, Code2, Copy, ExternalLink, Server, ShieldCheck, Terminal } from "lucide-react";
-import { apiConfig } from "../lib/api/ynxApi.js";
-
-const endpoints = [
-  ["Chain status", "GET", `${apiConfig.apiBase}/status`, "Network identity, current height, native asset, and build identity."],
-  ["Validator roles", "GET", `${apiConfig.apiBase}/validators`, "Public role reachability and reported heights. Reachability alone is not BFT proof."],
-  ["EVM JSON-RPC", "POST", apiConfig.evmRpc, "EVM-compatible reads, transactions, receipts, logs, balances, and chain identity."],
-  ["Explorer", "GET", apiConfig.explorerUrl, "Human-readable canonical blocks, transactions, accounts, validators, contracts, events, fees, indexed coverage, and read-only deep links."],
-  ["Network Monitor", "GET", apiConfig.monitorUrl, "Signed, redacted service identity, dependency, four-validator, finality, lag, throughput, peer, and recovery status."],
-  ["Faucet", "GET", apiConfig.faucetUrl, "Rate-limited Testnet YNXT entry. Test assets have no represented monetary value."],
-];
-
-const statusExample = `curl --fail --silent --show-error \\
-  ${apiConfig.apiBase}/status`;
-
-const evmExample = `curl --fail --silent --show-error \\
-  -H "content-type: application/json" \\
-  --data '{"jsonrpc":"2.0","id":1,"method":"eth_chainId","params":[]}' \\
-  ${apiConfig.evmRpc}`;
-
+import React from "react";
+import { ArrowRight } from "lucide-react";
+import { useLocale } from "../lib/i18n.jsx";
+import { LEARNING_COMMANDS, guideUi } from "../content/learningContent.js";
+import { useLearningCopy } from "../lib/useLearningCopy.js";
+import { getDocumentLibraryCopy } from "../content/documentLibraryCopy.js";
+import { GuideCode } from "../components/GuideCode.jsx";
+import "./learning-guides.css";
+const python = `import sys\nsys.path.insert(0, "sdk/python")\nfrom ynx_client import YNXClient, assert_ynx_testnet_snapshot\n\nclient = YNXClient(rest_url="https://rpc.ynxweb4.com", evm_url="https://evm.ynxweb4.com")\nsnapshot = assert_ynx_testnet_snapshot(client.get_chain_snapshot())\nprint(snapshot["status"]["height"], snapshot["evmChainId"])`;
 export function ApiPage() {
-  return (
-    <main className="apiPage">
-      <header className="guideHero apiHero">
-        <p className="sectionEyebrow">API reference</p>
-        <h1>Public interfaces with explicit evidence boundaries.</h1>
-        <p>YNX APIs expose Testnet state and integration surfaces. Clients must render loading, empty, stale, unavailable, and error states without inventing fallback metrics.</p>
-        <div className="apiIdentity">
-          <div><span>Network</span><strong>YNX Testnet</strong></div>
-          <div><span>EVM Chain ID</span><strong>6423 / 0x1917</strong></div>
-          <div><span>Native asset</span><strong>YNXT</strong></div>
-          <div><span>Production Mainnet</span><strong>Not claimed</strong></div>
-        </div>
-      </header>
-
-      <section className="endpointReference" aria-labelledby="endpoint-title">
-        <div className="guideSectionHeader">
-          <p className="sectionEyebrow">Endpoints</p>
-          <h2 id="endpoint-title">Start from the narrowest public surface</h2>
-        </div>
-        <div className="endpointTable" role="table" aria-label="YNX public API endpoints">
-          <div className="endpointReferenceHead" role="row"><span>Surface</span><span>Method</span><span>URL</span><span>Purpose</span></div>
-          {endpoints.map(([name, method, url, purpose]) => (
-            <div className="endpointReferenceRow" role="row" key={name}>
-              <strong>{name}</strong>
-              <code className={`method ${method.toLowerCase()}`}>{method}</code>
-              <a href={url}>{url}{url.startsWith("http") && <ExternalLink aria-hidden="true" />}</a>
-              <p>{purpose}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="apiExamples" aria-labelledby="examples-title">
-        <div className="guideSectionHeader">
-          <p className="sectionEyebrow">Examples</p>
-          <h2 id="examples-title">Verify identity before application logic</h2>
-        </div>
-        <div className="apiExampleGrid">
-          <CodeExample icon={Server} title="Read chain status" code={statusExample} />
-          <CodeExample icon={Terminal} title="Confirm EVM chain ID" code={evmExample} />
-        </div>
-      </section>
-
-      <section className="apiContract" aria-labelledby="contract-title">
-        <ShieldCheck aria-hidden="true" />
-        <div>
-          <p className="sectionEyebrow">Client contract</p>
-          <h2 id="contract-title">Fail visibly and recover deliberately.</h2>
-        </div>
-        <ul>
-          <li>Set a bounded timeout and show an unavailable state.</li>
-          <li>Do not replace missing values with zero or a sample metric.</li>
-          <li>After a write timeout, query by transaction hash before retrying.</li>
-          <li>Compare validator heights; do not infer convergence from HTTP success.</li>
-          <li>Use Monitor identity and dependency fields together; a healthy probe is narrower than network health.</li>
-          <li>Do not expose loopback URLs, private topology, internal paths, or raw upstream errors to browser clients.</li>
-          <li>Keep secrets and signing keys out of browser logs and support messages.</li>
-        </ul>
-      </section>
-    </main>
-  );
-}
-
-function CodeExample({ icon: Icon, title, code }) {
-  const [copied, setCopied] = useState(false);
-  const copy = async () => {
-    try {
-      await navigator.clipboard.writeText(code);
-      setCopied(true);
-      window.setTimeout(() => setCopied(false), 1400);
-    } catch {
-      setCopied(false);
-    }
-  };
-  return (
-    <article>
-      <header><Icon aria-hidden="true" /><h3>{title}</h3></header>
-      <pre><code>{code}</code></pre>
-      <button type="button" onClick={copy} aria-label={`Copy ${title} command`}>
-        {copied ? <Check /> : <Copy />}{copied ? "Copied" : "Copy"}
-      </button>
-    </article>
-  );
+  const { locale, t } = useLocale(), copy = useLearningCopy(locale);
+  if (!copy) return <main className="learningPage" aria-busy="true"><p role="status">{t("checking")}</p></main>;
+  if (copy.loadFailed) { const errorCopy=getDocumentLibraryCopy(locale); return <main className="learningPage" lang={locale}><p role="alert">{errorCopy.loadError}</p><button type="button" onClick={()=>window.location.reload()}>{errorCopy.retry}</button></main>; }
+  const ui = guideUi(copy);
+  const endpoints = [["GET","https://rpc.ynxweb4.com/status",ui.status],["POST","https://evm.ynxweb4.com",ui.identity],["GET","https://explorer.ynxweb4.com",ui.inspect],["GET","https://faucet.ynxweb4.com",ui.assets],["GET","/status",ui.serviceStatus]];
+  return <main className="learningPage apiLearningPage" lang={copy.bodyLocale || locale} dir={(copy.bodyLocale || locale) === "ar" ? "rtl" : "ltr"}>
+    {copy.bodyLocale !== locale && <aside className="learningNetworkNote" lang={locale}><strong>{getDocumentLibraryCopy(locale).translationPending}</strong><p>{getDocumentLibraryCopy(locale).originalBodyNotice}</p></aside>}
+    <header className="learningHero"><p className="sectionEyebrow">{ui.api}</p><h1>{ui.apiTitle}</h1><p>{ui.apiLead}</p><div className="learningLinks"><a href="/manual?path=develop">{ui.build}<ArrowRight size={16} /></a><a href="/docs?doc=api-api-reference">{ui.fullReference}</a></div></header>
+    <section className="apiInterfaces" aria-labelledby="api-interfaces"><h2 id="api-interfaces">{ui.interfaces}</h2><p>{ui.readOnly}</p><div className="apiEndpointList">{endpoints.map(([method,address,purpose]) => <article key={address}><span className="apiMethod" dir="ltr">{method}</span><div><h3>{purpose}</h3><code dir="ltr">{address}</code></div></article>)}</div></section>
+    <section className="apiExamples" aria-labelledby="api-read"><h2 id="api-read">{ui.identity}</h2><GuideCode ui={ui} code={LEARNING_COMMANDS.chainId} title={ui.identity} /><div className="learningExpected"><strong>{ui.expected}</strong><code dir="ltr">{"{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0x1917\"}"}</code></div><GuideCode ui={ui} code={LEARNING_COMMANDS.publicStatus} title={ui.status} /></section>
+    <section className="apiExamples" aria-labelledby="api-sdk"><h2 id="api-sdk">{ui.jsSdk}</h2><p>{ui.sdkNotice}</p><GuideCode ui={ui} code={LEARNING_COMMANDS.sdk} title="Node.js ≥ 18 · ./" /><h2>{ui.pySdk}</h2><GuideCode ui={ui} code={python} title="Python ≥ 3.9 · ./" /><a className="learningTextLink" href="/docs?doc=developers-sdk-release-integrity">{ui.fullReference}<ArrowRight size={16} /></a></section>
+    <section className="apiClientRules" aria-labelledby="api-client-rules"><h2 id="api-client-rules">{ui.clientRules}</h2><ol>{[ui.timeoutRule,ui.identityRule,ui.retryRule,ui.evmRule,ui.secretsRule].map(text => <li key={text}>{text}</li>)}</ol></section><aside className="learningNetworkNote"><strong>{ui.current}</strong><p>{ui.networkNotice}</p></aside>
+  </main>;
 }

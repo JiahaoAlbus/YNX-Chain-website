@@ -19,6 +19,10 @@ import { getRuntimeCopy, loadRuntimeCopy } from "./content/runtimeLocaleContent.
 import { PageErrorBoundary } from "./components/PageErrorBoundary.jsx";
 import { getHomeCopy } from "./content/homeLocaleContent.js";
 import { getHomeRedesignCopy } from "./content/homeRedesignContent.js";
+import { getHomeEntryCopy } from "./content/homeEntryContent.js";
+import { HomeCommunity } from "./components/HomeCommunity.jsx";
+import { getContactCopy } from "./content/contactLocaleContent.js";
+import "./pages/ContactPage.css";
 import "./styles.css";
 import "./redesign.css";
 
@@ -34,7 +38,8 @@ function App() {
   const [services, setServices] = useState({});
   const [connectionState, setConnectionState] = useState("loading");
   const [heightMoved, setHeightMoved] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0);
+  const [networkExpanded, setNetworkExpanded] = useState(false);
+  const [ecosystemExpanded, setEcosystemExpanded] = useState(false);
   const [networkRequest, setNetworkRequest] = useState(0);
 
   useEffect(() => {
@@ -49,12 +54,14 @@ function App() {
   }, [locale]);
 
   useEffect(() => {
+    if (route !== "/") return;
     let active = true;
+    let inFlight = false;
     let previousHeight = 0;
     let networkTimer = 0;
     let lastServiceCheck = 0;
     const refresh = async () => {
-      const next = await loadNetworkSnapshot();
+      const next = await loadNetworkSnapshot({ detailed: networkExpanded });
       if (!active) return;
       const nextHeight = Number(next.status?.height || 0);
       setHeightMoved(previousHeight > 0 && nextHeight > previousHeight);
@@ -69,22 +76,28 @@ function App() {
       lastServiceCheck = Date.now();
     };
     const cycle = async () => {
+      if (!active || document.hidden || inFlight) return;
+      inFlight = true;
+      try {
       await refresh();
-      if (active && Date.now() - lastServiceCheck >= 120000) await refreshServices();
-      if (active) networkTimer = window.setTimeout(cycle, 5000);
+      if (active && ecosystemExpanded && Date.now() - lastServiceCheck >= 120000) await refreshServices();
+      } finally { inFlight = false; }
+      if (active && !document.hidden) networkTimer = window.setTimeout(cycle, networkExpanded ? 15000 : 60000);
     };
-    cycle();
+    const onVisibility = () => {
+      window.clearTimeout(networkTimer);
+      if (!document.hidden) networkTimer = window.setTimeout(cycle, 1000);
+    };
+    networkTimer = window.setTimeout(cycle, 1200);
+    document.addEventListener("visibilitychange", onVisibility);
     return () => {
       active = false;
       window.clearTimeout(networkTimer);
+      document.removeEventListener("visibilitychange", onVisibility);
     };
-  }, []);
+  }, [networkExpanded, ecosystemExpanded]);
 
   useEffect(() => {
-    const updateProgress = () => {
-      const available = document.documentElement.scrollHeight - window.innerHeight;
-      setScrollProgress(available > 0 ? Math.min(window.scrollY / available, 1) : 0);
-    };
     const observer = new IntersectionObserver((entries) => {
       for (const entry of entries) {
         if (entry.isIntersecting) entry.target.classList.add("isVisible");
@@ -92,12 +105,9 @@ function App() {
     }, { threshold: 0.12, rootMargin: "0px 0px -36px" });
     const reveal = () => document.querySelectorAll("[data-reveal]").forEach((element) => observer.observe(element));
     const frame = window.requestAnimationFrame(reveal);
-    updateProgress();
-    window.addEventListener("scroll", updateProgress, { passive: true });
     return () => {
       observer.disconnect();
       window.cancelAnimationFrame(frame);
-      window.removeEventListener("scroll", updateProgress);
     };
   }, [copy]);
 
@@ -129,7 +139,7 @@ function App() {
 
   if (route !== "/") {
     const page = <RoutedContent route={route} copy={copy} />;
-    return <><SiteHeader scrollProgress={scrollProgress} /><div id="main-content" tabIndex={-1}><Suspense fallback={<RouteLoading copy={copy.utility.loading} />}>{page}</Suspense></div><SiteFooter /></>;
+    return <><SiteHeader /><div id="main-content" tabIndex={-1}><Suspense fallback={<RouteLoading copy={copy.utility.loading} />}>{page}</Suspense></div><SiteFooter /></>;
   }
 
   const design = getHomeRedesignCopy(locale);
@@ -140,7 +150,7 @@ function App() {
 
   return (
     <>
-      <SiteHeader scrollProgress={scrollProgress} networkRequest={networkRequest} />
+      <SiteHeader networkRequest={networkRequest} />
       <main id="main-content" tabIndex={-1}>
       <HeroPortal snapshot={snapshot} connectionState={connectionState} onAddNetwork={() => setNetworkRequest((request) => request + 1)} />
 
@@ -156,7 +166,7 @@ function App() {
             <span className="ecosystemNumber">0{index + 1}</span><Icon className="ecosystemIcon" strokeWidth={1.5}/><h3>{item.title}</h3><p>{item.description}</p><span className="ecosystemRowAction">{item.action}<ArrowUpRight size={20} /></span>
           </a>;
         })}</div>
-        <details className="homeDisclosure ecosystemDirectory"><summary>{copy.ecosystem.title}<ChevronDown size={20}/></summary>
+        <details className="homeDisclosure ecosystemDirectory" onToggle={event => setEcosystemExpanded(event.currentTarget.open)}><summary>{copy.ecosystem.title}<ChevronDown size={20}/></summary>
         <div className="productGrid">
           {[Layers3, Coins, Search, Bot, CircleDollarSign, ShieldCheck, Gauge, Braces, WalletCards, Landmark].map((Icon, index) => <ProductPanel key={copy.ecosystem.products[index].title} icon={<Icon />} {...copy.ecosystem.products[index]} status={index === 3 ? serviceState("ai") : index === 4 ? serviceState("pay") : index === 5 ? serviceState("trust") : index === 6 ? serviceState("resource") : index < 3 ? (snapshot.ok === true ? "live" : connectionState === "loading" ? "checking" : "status unavailable") : "reference"} href={[`${apiConfig.apiBase}/status`, "/testnet", apiConfig.explorerUrl, "/dapp/ai", "/dapp/pay", "/dapp/trust", "/dapp/resource", "/docs", "/#address", apiConfig.exchangeUrl][index]} />)}
         </div>
@@ -168,7 +178,7 @@ function App() {
       <section className="developerSection editorialDeveloper" id="developers" aria-labelledby="developers-title" data-reveal>
         <div className="developerCopy">
           <p className="sectionEyebrow">{design.developerEyebrow}</p><h2 id="developers-title">{design.developerTitle}</h2>
-          <p>{design.developerLead}</p>
+          <p>{getHomeEntryCopy(locale).developerLead}</p>
           <a className="textLink" href="/docs">{design.developerAction} <Code2 size={17} /></a>
         </div>
         <div className="endpointList">
@@ -180,7 +190,7 @@ function App() {
       </section>
 
       <div className="homeDetailGroup">
-      <details className="homeDisclosure networkDisclosure" id="network"><summary><span>{design.networkDetails}<small>{design.networkLead}</small></span><ChevronDown size={22}/></summary>
+      <details className="homeDisclosure networkDisclosure" id="network" onToggle={event => setNetworkExpanded(event.currentTarget.open)}><summary><span>{design.networkDetails}<small>{design.networkLead}</small></span><ChevronDown size={22}/></summary>
       <section className="networkBand" aria-labelledby="network-title">
         <div className="sectionHeader compact">
           <div><p className="sectionEyebrow">{copy.network.eyebrow}</p><h2 id="network-title">{copy.network.title}</h2></div>
@@ -238,8 +248,10 @@ function App() {
       </div>
       <section className="resourceSection" aria-labelledby="resources-title" data-reveal>
         <div className="sectionHeader"><div><p className="sectionEyebrow">{design.developerAction}</p><h2 id="resources-title">{design.resourcesTitle}</h2></div></div>
+        <nav className="homeManualLinks" aria-label={getContactCopy(locale).docs}>{["manual", "api", "docs", "whitepaper"].map(key => <a key={key} href={`/${key}?lang=${encodeURIComponent(locale)}`}>{getContactCopy(locale)[key]}<ArrowUpRight size={18}/></a>)}</nav>
         <LinkGrid />
       </section>
+      <HomeCommunity />
       </main>
       <SiteFooter />
     </>

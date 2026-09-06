@@ -5,6 +5,7 @@ import {
   LEGACY_LOCAL_SIGNER_KEYS,
   YNX_EVM_CHAIN_ID,
   canonicalProviderEntry,
+  collectCanonicalInjectedProviders,
   clearLegacyLocalSignerData,
   connectCanonicalProvider,
   hasLegacyLocalSignerData,
@@ -42,11 +43,12 @@ test("provider events update accounts and chain, reject malformed chain events, 
   assert.equal(provider.listenerCount("disconnect"), 0);
 });
 
-test("wallet identity accepts only mutually exclusive canonical providers", () => {
+test("wallet identity distinguishes YNX and external wallets without ambiguous identities", () => {
   assert.deepEqual(walletIdentity({ isYNXWallet: true, isMetaMask: false }, { rdns: "com.ynx.wallet" }), {
     accepted: true, kind: "ynx", label: "YNX Wallet", rdns: "com.ynx.wallet",
   });
   assert.equal(walletKind({ isMetaMask: true, isYNXWallet: false }, { rdns: "io.metamask" }), "MetaMask");
+  assert.equal(walletIdentity({ isMetaMask: true }).kind, "metamask");
   assert.equal(walletIdentity({ isYNXWallet: true, isMetaMask: true }).accepted, false);
   assert.equal(walletIdentity({ isYNXWallet: true }, { rdns: "io.metamask" }).accepted, false);
   assert.equal(canonicalProviderEntry({ request() {} }, { name: "Another Wallet" }), null);
@@ -74,8 +76,8 @@ test("canonical connection requests an account only through the selected provide
 test("network switch is exact-bound and requires 0x1917 readback", async () => {
   const calls = [];
   const provider = {
-    isMetaMask: true,
-    isYNXWallet: false,
+    isMetaMask: false,
+    isYNXWallet: true,
     async request(request) {
       calls.push(request);
       if (request.method === "wallet_switchEthereumChain" && calls.length === 1) throw Object.assign(new Error("missing"), { code: 4902 });
@@ -83,10 +85,38 @@ test("network switch is exact-bound and requires 0x1917 readback", async () => {
       return null;
     },
   };
-  const entry = canonicalProviderEntry(provider, { rdns: "io.metamask", name: "MetaMask" });
+  const entry = canonicalProviderEntry(provider, { rdns: "com.ynx.wallet", name: "YNX Wallet" });
   const chainId = await switchCanonicalProviderToYNX(entry, { chainId: "0x1917", chainName: "YNX" });
   assert.equal(chainId, "0x1917");
   assert.deepEqual(calls.map(({ method }) => method), ["wallet_switchEthereumChain", "wallet_addEthereumChain", "wallet_switchEthereumChain", "eth_chainId"]);
+});
+
+test("MetaMask-only and mixed injection never fall back to external account authority", async () => {
+  const calls = [];
+  const external = { isMetaMask: true, request: request => { calls.push(request); return [account]; } };
+  const ynx = { isYNXWallet: true, request() {} };
+  assert.deepEqual(collectCanonicalInjectedProviders({ ethereum: external }), []);
+  assert.deepEqual(collectCanonicalInjectedProviders({ ethereum: { providers: [external, ynx] } }).map(e => e.provider), [ynx]);
+  const basicEntry = canonicalProviderEntry(external, { rdns: "io.metamask" });
+  await assert.rejects(() => connectCanonicalProvider(basicEntry), /YNX Wallet is required/);
+  const forged = { provider: external, identity: { accepted: true, kind: "ynx" } };
+  await assert.rejects(() => connectCanonicalProvider(forged), /YNX Wallet is required/);
+  await assert.rejects(() => switchCanonicalProviderToYNX(forged, { chainId: "0x1917" }), /YNX Wallet is required/);
+  await assert.rejects(() => requestCanonicalPersonalSignature(forged, { account, messageHex: "0x74657374" }), /YNX Wallet is required/);
+  await assert.rejects(() => sendCanonicalTransaction(forged, { from: account }), /YNX Wallet is required/);
+  assert.deepEqual(calls, []);
+});
+
+test("explicit external basic connection does not grant full YNX account actions", async () => {
+  const calls = [];
+  const provider = { isMetaMask: true, async request(request) { calls.push(request.method); return request.method === "eth_chainId" ? "0x1917" : [account]; } };
+  const entry = collectCanonicalInjectedProviders({ ethereum: provider }, { includeExternal: true })[0];
+  const result = await connectCanonicalProvider(entry, { basicConnection: true });
+  assert.equal(result.identity.kind, "metamask");
+  assert.equal(result.account, account);
+  await assert.rejects(() => requestCanonicalPersonalSignature(entry, { account, messageHex: "0x74657374" }), /YNX Wallet is required/);
+  await assert.rejects(() => sendCanonicalTransaction(entry, { from: account }), /YNX Wallet is required/);
+  assert.deepEqual(calls, ["eth_requestAccounts", "eth_chainId"]);
 });
 
 test("signature and send helpers delegate exact requests without receiving key material", async () => {

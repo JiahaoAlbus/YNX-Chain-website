@@ -36,3 +36,15 @@ test('cache quota failure never replaces fresh network HTML with a stale fallbac
  w.stored.set('https://ynxweb4.com/',new Response('stale cached HTML'));
  assert.equal(await (await w.dispatch('/')).text(),'fresh network HTML');
 });
+
+test('content-hashed assets reuse immutable cache while new URLs and navigation fetch fresh bytes',async()=>{
+ let reads=0;
+ const w=worker(async()=>new Response(`response-${++reads}`));
+ const asset={mode:'cors',destination:'script'};
+ assert.equal(await (await w.dispatch('/assets/app-Abc12345.js',asset)).text(),'response-1');
+ assert.equal(await (await w.dispatch('/assets/app-Abc12345.js',asset)).text(),'response-1');
+ assert.equal(reads,1);
+ assert.equal(await (await w.dispatch('/assets/app-New12345.js',asset)).text(),'response-2');
+ assert.equal(await (await w.dispatch('/')).text(),'response-3');
+ assert.equal(await (await w.dispatch('/')).text(),'response-4');
+});

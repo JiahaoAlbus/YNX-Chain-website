@@ -125,3 +125,17 @@ test("header renders the canonical twelve-locale selector", () => {
   assert.match(headerSource, /SUPPORTED_LOCALES\.map\(\(value\) => <option value=\{value\} key=\{value\}>/u);
   assert.equal(expectedLocales.length, 12);
 });
+
+test("language switches preserve the selected guide, document, other parameters and exact step", () => {
+  const updateUrl = Function(`${exportedFunction("localeUrl")} return localeUrl;`)();
+  for (const route of ["/manual?path=node&lang=zh-CN#step-node-inspect", "/docs?doc=whitepaper-streambft-specification&lang=en#safety"]) {
+    const original = new URL(route, "https://ynxweb4.com");
+    for (const locale of expectedLocales) {
+      const changed = new URL(updateUrl(original.href, locale));
+      assert.equal(changed.searchParams.get("lang"), locale);
+      assert.equal(changed.pathname, original.pathname);
+      assert.equal(changed.hash, original.hash);
+      for (const [key,value] of original.searchParams) if (key !== "lang") assert.equal(changed.searchParams.get(key), value);
+    }
+  }
+});

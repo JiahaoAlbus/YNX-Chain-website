@@ -14,20 +14,59 @@ const endpoints = Object.freeze({
   resource: YNX_SERVICE_DIRECTORY.resource.healthEndpoint
 });
 
-export async function collectNetworkStatus() {
+const inFlight = new Map();
+let activeUpstream = 0;
+const upstreamQueue = [];
+
+async function acquireUpstream() {
+  if (activeUpstream < 2) { activeUpstream++; return; }
+  await new Promise(resolve => upstreamQueue.push(resolve));
+}
+
+function releaseUpstream() {
+  const next = upstreamQueue.shift();
+  // Transfer the reserved slot directly, so a new arrival cannot overtake it.
+  if (next) next();
+  else activeUpstream--;
+}
+
+function singleFlight(key, collect) {
+  if (!inFlight.has(key)) {
+    const promise = Promise.resolve().then(collect).finally(() => inFlight.delete(key));
+    inFlight.set(key, promise);
+  }
+  return inFlight.get(key);
+}
+
+async function limited(tasks, concurrency = 2) {
+  const results = [], queue = tasks.map((task, index) => ({ task, index }));
+  const worker = async () => { while (queue.length) { const { task, index } = queue.shift(); results[index] = await task(); } };
+  await Promise.all(Array.from({ length: Math.min(concurrency, tasks.length) }, worker));
+  return results;
+}
+
+export function collectNetworkStatus({ detailed = true } = {}) {
+  return singleFlight(detailed ? "network-detail" : "network-summary", () => collectNetwork(detailed));
+}
+
+async function collectNetwork(detailed) {
   const checkedAt = new Date().toISOString();
-  // Fetch the identity-bearing endpoints in sequence. The public ingress can
-  // throttle concurrent requests from one deployment worker.
-  const status = await getJson(endpoints.status);
-  const explorer = await getJson(endpoints.explorer);
-  const latestBlocks = await getJson(endpoints.latestBlocks);
-  const latestTransactions = await getJson(endpoints.latestTransactions);
-  const validators = await getJson(endpoints.validators);
-  const evm = await getJson(endpoints.evm, {
+  // Concurrent visitors share only the in-flight collection, never a completed
+  // result. The process-wide semaphore also bounds different variants together.
+  const [status, explorer, evm] = await limited([
+    () => getJson(endpoints.status),
+    () => getJson(endpoints.explorer),
+    () => getJson(endpoints.evm, {
     method: "POST",
     headers: { "content-type": "application/json" },
     body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: "eth_chainId", params: [] })
-  });
+    })
+  ]);
+  const [latestBlocks, latestTransactions, validators] = detailed ? await limited([
+    () => getJson(endpoints.latestBlocks),
+    () => getJson(endpoints.latestTransactions),
+    () => getJson(endpoints.validators)
+  ]) : [{}, {}, {}];
   const rpcHeight = Number(status.height);
   const explorerHeight = Number(explorer.rpcHeight);
   // The two public requests are made separately, so a one-block difference can
@@ -71,23 +110,28 @@ export async function collectNetworkStatus() {
   };
 }
 
-export async function collectServiceHealth() {
+export function collectServiceHealth() {
+  return singleFlight("services", collectServices);
+}
+async function collectServices() {
   const checkedAt = new Date().toISOString();
   const services = {};
-  // Keep these sequential as several public hostnames share ingress capacity.
-  for (const name of ["faucet", "ai", "pay", "trust", "resource"]) {
-    services[name] = await getJson(endpoints[name], {}, 3000);
-  }
+  const names = ["faucet", "ai", "pay", "trust", "resource"];
+  const values = await limited(names.map(name => () => getJson(endpoints[name], {}, 2500)));
+  names.forEach((name, index) => { services[name] = values[index]; });
   return { checkedAt, services };
 }
 
-async function getJson(url, init = {}, timeoutMs = 7000) {
+async function getJson(url, init = {}, timeoutMs = 3500) {
+  await acquireUpstream();
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), timeoutMs);
   try {
     const response = await fetch(url, { ...init, cache: "no-store", signal: controller.signal });
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    return await response.json();
+    const body = await response.json();
+    if (!body || typeof body !== "object" || Array.isArray(body)) throw new Error("Invalid JSON object");
+    return body;
   } catch (error) {
     return {
       error: error?.name === "AbortError" ? `Timed out after ${timeoutMs / 1000}s` : error.message,
@@ -95,5 +139,6 @@ async function getJson(url, init = {}, timeoutMs = 7000) {
     };
   } finally {
     clearTimeout(timeout);
+    releaseUpstream();
   }
 }

@@ -13,6 +13,8 @@ const AuthorityArticlePage = lazyNamed(() => import("../pages/AuthorityArticlePa
 const ProductStatusPage = lazyNamed(() => import("../pages/ProductStatusPage.jsx"), "ProductStatusPage");
 const SquarePage = lazyNamed(() => import("../pages/SquarePage.jsx"), "SquarePage");
 const ManualPage = lazyNamed(() => import("../pages/ManualPage.jsx"), "ManualPage");
+const ContactPage = lazyNamed(() => import("../pages/ContactPage.jsx"), "ContactPage");
+const WhitepaperPage = lazyNamed(() => import("../pages/WhitepaperPage.jsx"), "WhitepaperPage");
 const ApiPage = lazyNamed(() => import("../pages/ApiPage.jsx"), "ApiPage");
 const FaucetPage = lazyNamed(() => import("../pages/FaucetPage.jsx"), "FaucetPage");
 const WalletAuthCallbackPage = lazyNamed(() => import("../pages/WalletAuthCallbackPage.jsx"), "WalletAuthCallbackPage");
@@ -34,6 +36,8 @@ export function RoutedContent({ route, copy }) {
     if (route === "/docs") page = <DocsPage />;
     if (route === "/manual") page = <ManualPage />;
     if (route === "/api") page = <ApiPage />;
+    if (route === "/whitepaper") page = <WhitepaperPage />;
+    if (route === "/contact") page = <ContactPage />;
     if (route === "/dapp/faucet") page = <FaucetPage />;
     if (route === "/dapp/square" || route.startsWith("/dapp/square/")) page = <SquarePage path={route} />;
     return page;

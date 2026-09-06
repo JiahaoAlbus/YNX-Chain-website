@@ -1,0 +1,226 @@
+{
+  "title": "Hier beginnt dein erster Schritt.",
+  "lead": "Wähle einen Weg und lerne in deinem Tempo. Jeder Schritt nennt die Handlung, das erwartete Ergebnis und Hilfe bei Problemen.",
+  "ui": [
+    "Einsteigerhandbuch",
+    "Lernweg wählen",
+    "Etwa",
+    "Minuten",
+    "So gehst du vor",
+    "Das solltest du sehen",
+    "Wenn es nicht klappt",
+    "Als erledigt markieren",
+    "Erledigt",
+    "Fortschritt zurücksetzen",
+    "Der Fortschritt ist eine persönliche Notiz in diesem Browser, kein Nachweis für den Netzwerkbetrieb.",
+    "Nächster Schritt",
+    "Vorheriger Schritt",
+    "Befehl kopieren",
+    "Kopiert",
+    "Kopieren fehlgeschlagen. Markiere und kopiere den Text.",
+    "Ressource öffnen",
+    "Netzwerkeinstellungen",
+    "Netzwerkname",
+    "Netzwerk-ID",
+    "RPC-Adresse",
+    "Symbol",
+    "Dezimalstellen",
+    "Block-Explorer",
+    "Nur auf deinem Rechner · Devnet 6425",
+    "Öffentliches Testnet · 6423",
+    "Quellversion des Tutorials",
+    "Dokumentation lesen",
+    "API-Referenz",
+    "Technische Entwürfe",
+    "Bibliothek öffnen",
+    "Dokumentation durchsuchen",
+    "Keine passenden Dokumente",
+    "Versuche einen anderen Begriff oder lösche die Suche.",
+    "Alle Dokumente",
+    "Originalquelle",
+    "Lesen",
+    "Aktuelles Netzwerk",
+    "Das öffentliche Testnet nutzt einen maßgeblichen Blockproduzenten und authentifizierte, nur lesende Folgeknoten. Freier Validator-Beitritt, Staking und Blockbelohnungen sind nicht geöffnet.",
+    "Tutorial-Quellcode und öffentliches Netzwerk können unterschiedliche Versionen verwenden.",
+    "Die Beispiele lesen nur öffentliche Daten. Konto, Schlüssel und Signatur sind nicht nötig.",
+    "Methode",
+    "Adresse",
+    "Zweck",
+    "REST-Status",
+    "EVM-Netzwerkidentität",
+    "Blöcke und Transaktionen prüfen",
+    "Testvermögen",
+    "Dienststatus",
+    "Prüfliste für Clients",
+    "Setze ein Zeitlimit, zeige Verbindungsfehler und ermögliche einen bewussten neuen Versuch.",
+    "Prüfe vor dem Fortfahren 6423 / 0x1917. Eine antwortende URL beweist nicht das richtige Netzwerk.",
+    "Unterscheide ausstehend, bestätigt, fehlgeschlagen und unbekannt. Suche vor erneutem Senden nach dem Hash.",
+    "Lesezugriffe und native Transfers belegen keine beliebige öffentliche EVM-Vertragsbereitstellung.",
+    "Anbieterschlüssel gehören weder in Quellcode noch Vorschauen oder Screenshots. Wallet-Geheimnisse bleiben in der Wallet.",
+    "Erst lesen, dann entwickeln.",
+    "Beginne mit Netzwerkidentität und Status. Die Beispiele senden keine Transaktionen und belegen nicht alle Ethereum-Methoden.",
+    "Öffentliche Schnittstellen",
+    "JavaScript-SDK aus dem Quellcode",
+    "Python-SDK aus dem Quellcode",
+    "Die SDKs werden aus dem Repository gebaut. Eine Veröffentlichung bei npm oder PyPI ist nicht nachgewiesen.",
+    "Vollständige Originalreferenz lesen",
+    "Plattform",
+    "API-Antwort nicht verfügbar",
+    "Lokal ausführen",
+    "Netzwerk",
+    "Lernen",
+    "YNX nutzen",
+    "Knoten ausführen",
+    "Blockproduktion",
+    "App entwickeln",
+    "Quellcode-ZIP herunterladen",
+    "Download prüfen",
+    "Alternativ zu Git kannst du das ZIP laden. Prüfe es im Downloadordner und vergleiche vor dem Entpacken den vollständigen SHA-256 unten. Öffne den entpackten Projektordner im Terminal für die folgenden Knotenbefehle."
+  ],
+  "paths": [
+    [
+      "YNX zum ersten Mal nutzen",
+      "Installiere eine Wallet, richte ein Testkonto ein und prüfe jedes Ergebnis.",
+      [
+        [
+          "YNX Wallet installieren",
+          "Öffne die Anleitung, wähle dein tatsächliches System oder deinen Browser und prüfe Version und Signaturstatus. Installiere das Paket und öffne die Wallet.",
+          "YNX Wallet öffnet sich auf dem Gerät. Ein Download allein ist keine Installation.",
+          "Fehlt deine Plattform, prüfe die verfügbaren Optionen. Installiere keine andere Wallet unter dem Namen YNX Wallet."
+        ],
+        [
+          "Eigene Wallet erstellen oder wiederherstellen",
+          "Nutze die eigenen Abläufe von YNX Wallet zum Erstellen, Importieren oder Entsperren. Bewahre Wiederherstellungsdaten offline auf und lerne mit einem separaten Testkonto.",
+          "Das Konto erscheint in YNX Wallet. Erstellen, Importieren und Entsperren benötigen keine MetaMask-Anmeldung.",
+          "Gib Wiederherstellungswörter und private Schlüssel niemals auf dieser Website, im Support oder bei einer KI ein. Nutze nur die dokumentierte Wiederherstellungsmaske der Wallet."
+        ],
+        [
+          "Öffentliches Testnet hinzufügen",
+          "Füge YNX Testnet mit den folgenden Angaben in den Wallet-Einstellungen hinzu oder wähle es aus. Prüfe Konto und Netzwerk vor einer App-Verbindung.",
+          "Das Netzwerk ist 6423, das Symbol YNXT. Entsprechende ynx1- und 0x-Adressen bezeichnen dieselbe 20-Byte-Identität.",
+          "Bei einer anderen ID stoppst du und korrigierst die Einstellungen. Das Hinzufügen darf nicht heimlich eine Transaktion anfordern."
+        ],
+        [
+          "Test-YNXT anfordern",
+          "Öffne den offiziellen Faucet, gib deine Testnet-Adresse ein und beachte die aktuellen Hinweise. YNXT ist ein Testvermögen ohne Geldwert.",
+          "Eine erfolgreiche Anfrage liefert ein prüfbares Ergebnis. Kontrolliere Transaktion und Guthaben; eine Anfrage-ID beweist keinen Eingang.",
+          "Bei Wartung oder Begrenzung sichere nicht sensible Angaben und warte. Wiederhole keine Anfrage mit unbekanntem Ergebnis."
+        ],
+        [
+          "Eine Transaktion prüfen",
+          "Suche im Explorer nach Adresse oder Hash und prüfe Netzwerk, Empfänger, Betrag und Ergebnis. Lies vor einem späteren Transfer die genaue Wallet-Bestätigung.",
+          "Du erkennst ausstehende, bestätigte und fehlgeschlagene Ergebnisse und findest den Hash.",
+          "Bei unbekanntem Ergebnis oder verzögerter Anzeige prüfe den Status und suche später erneut. Sende keinen zweiten Transfer, um den ersten sichtbar zu machen."
+        ],
+        [
+          "App verbinden und trennen",
+          "Prüfe das angeforderte Konto und die Rechte; genehmige nur Gewolltes. Trenne nach der Nutzung die App und prüfe verbundene Websites in der Wallet.",
+          "Die gewählte Wallet ist klar benannt. YNX Wallet bietet den vollständigen Zugang; andere Wallets einen je Dienst gekennzeichneten Basismodus.",
+          "Fehlt die Wallet oder ist sie gesperrt, kehre dorthin zurück. Ohne deine Wahl dürfen weder Identität noch Konto ersetzt werden."
+        ]
+      ]
+    ],
+    [
+      "Einen Lernknoten betreiben",
+      "Starte ein isoliertes Devnet auf deinem Rechner. Seine Blöcke gehören zu 6425, nicht zum öffentlichen Testnet.",
+      [
+        [
+          "Werkzeuge vorbereiten",
+          "Installiere Git und Go ab 1.25. Nutze unter Windows für dieses Tutorial eine Linux-Umgebung wie WSL. Prüfe beide Versionen im Terminal.",
+          "Go meldet mindestens 1.25; git und go funktionieren im Linux- oder macOS-Terminal.",
+          "Fehlt ein Befehl, schließe die Installation ab und öffne das Terminal neu. Füge Befehle nicht in die Wallet oder die Browser-Adressleiste ein."
+        ],
+        [
+          "Neue Quellcode-Kopie holen",
+          "Klone das Repository in einen neuen Ordner und wähle die angegebene Version. Halte bestehende Projekte und Wallet-Daten getrennt.",
+          "Das Terminal befindet sich in ynx-learning und die Revision stimmt mit der angezeigten Version überein.",
+          "Ist die Revision nicht abrufbar, stoppe und prüfe den Quelllink. Ersetze sie nicht durch beliebige Binärdateien oder andere Befehlsnamen."
+        ],
+        [
+          "Lokalen Knoten starten",
+          "Führe den Befehl im Projektverzeichnis aus und lasse das Terminal offen. Der Knoten lauscht nur lokal und speichert unter .local/learning-node.",
+          "Der Prozess läuft weiter: YNX Devnet 6425 auf 127.0.0.1:16420, nicht öffentliches Testnet 6423.",
+          "Ist der Port belegt, ändere beide Befehle auf denselben freien lokalen Port. Beende keine unbekannten Prozesse; lies bei Kompilierungsfehlern die erste Fehlermeldung."
+        ],
+        [
+          "Wachsende Blöcke beobachten",
+          "Lies den lokalen Status in einem zweiten Terminal, warte einige Sekunden und wiederhole die Abfrage. Vergleiche network, chainId und height.",
+          "Du siehst YNX Devnet, chainId 6425 und steigende height. Der Quellstand wurde mit neuen lokalen Daten geprüft.",
+          "Wird die Verbindung abgelehnt, prüfe das erste Terminal und den Port. Lokales Wachstum beweist weder öffentliche Synchronisierung noch Validator-Zulassung."
+        ],
+        [
+          "Stoppen und fortsetzen",
+          "Drücke im Knotenterminal Ctrl+C und warte auf das Ende. Bewahre den Datenordner auf und starte mit demselben Befehl erneut.",
+          "Der Knoten endet sauber und öffnet die bestehenden Lerndaten wieder. Wallet-Wiederherstellungsdaten sind nicht beteiligt.",
+          "Nutze denselben Ordner nicht mit zwei Prozessen. Sichere bei Neustartfehlern die Daten und lies die Meldung, bevor du einen neuen Ordner ausprobierst."
+        ]
+      ]
+    ],
+    [
+      "Öffentliche Blockproduktion verstehen",
+      "Prüfe, was derzeit offen ist und welche Rechte ein lokales Experiment nicht verleiht.",
+      [
+        [
+          "Knotenrollen unterscheiden",
+          "Der Produzent schreibt maßgebliche Blöcke; authentifizierte Folgeknoten kopieren den Zustand und bedienen Lesezugriffe. Dein Lernknoten erzeugt nur eigene Devnet-Blöcke.",
+          "Du unterscheidest öffentliche Daten lesen, einem Netzwerk folgen und dort Blöcke produzieren dürfen.",
+          "Antworten, offene Ports oder vier lokale Prozesse beweisen weder vier öffentliche Validatoren noch freien Beitritt."
+        ],
+        [
+          "Aktuellen Zugang prüfen",
+          "Freier Validator-Beitritt, Staking und Belohnungen sind nicht offen. Vor öffentlichem Folgen muss der Betreiber echte Konfiguration, Anforderungen und authentifizierten Zugang liefern.",
+          "Du kennst die nötigen Angaben: Rechner, Quelle und Konfiguration, Endpunkte, Synchronisierung, Wiederherstellung und Ausstieg.",
+          "Erfinde keine Genesis oder Peers und sende keine Signaturschlüssel an den Support. Kaufe weder Mining-Hardware noch einen garantierten Validator-Platz."
+        ],
+        [
+          "Lokales Konsenslabor ansehen",
+          "Dieser Dry-Run zeigt den Einstieg der Konsensprüfung. Das eigentliche Labor erzeugt temporäre Lernschlüssel, getrennt vom öffentlichen Netzwerk.",
+          "Die Ausgabe verweist auf scripts/verify/consensus-quorum-check.sh. Sie startet kein Experiment und beweist keine öffentliche Bereitstellung.",
+          "Lies vor Ausführung Skript und Anforderungen. Verwende temporäre Schlüssel nicht öffentlich und leite daraus keine Mining-Erträge ab."
+        ]
+      ]
+    ],
+    [
+      "Erste Integration entwickeln",
+      "Lies echte Daten und ergänze jeweils eine Funktion mit ausdrücklicher Wallet-Zustimmung.",
+      [
+        [
+          "Arbeitsumgebung wählen",
+          "Öffne Code oder einen lokalen Editor mit neuer Repository-Kopie. Wähle Sprache, erstelle eine Datei, führe sie aus und lies die Ausgabe. Code bietet Server-Standard-KI oder einen eigenen Anbieter in den Einstellungen.",
+          "Du kannst bearbeiten, ausführen und Fehler finden. Vorschau, Export und Veröffentlichung sind getrennte Aktionen.",
+          "Ist Code oder das Modell nicht verfügbar, nutze den lokalen Editor. Schlüssel bleiben in privaten Einstellungen, nie im Quellcode oder einer öffentlichen Vorschau."
+        ],
+        [
+          "Netzwerk-ID lesen",
+          "Führe die öffentliche Leseanfrage im Terminal aus. Sie fragt die Identität ohne Wallet, Konto oder privaten Schlüssel ab.",
+          "Das JSON enthält 0x1917, also dezimal 6423. Es wurde keine Transaktion gesendet.",
+          "Prüfe bei Fehlern oder Abweichungen Endpunkt und Status. Fahre nicht mit einer geratenen ID fort."
+        ],
+        [
+          "SDK aus dem Repository verwenden",
+          "Führe mit Node.js ab 18 im Stammverzeichnis den lokalen SDK-Aufruf aus und prüfe einen öffentlichen Snapshot. Der Quellcode enthält auch ein SDK für Python ab 3.9.",
+          "Der Client zeigt beobachtete Höhe und EVM-ID oder einen echten Fehler. Unbestätigte npm/PyPI-Veröffentlichungen werden nicht benötigt.",
+          "Prüfe bei Importfehlern sdk/js/index.js. Ersetze Endpunktfehler nicht durch Beispielhöhen."
+        ],
+        [
+          "Bewusste Wallet-Interaktion ergänzen",
+          "Verbinde Konten nur durch Nutzeraktion. Zeige Anbieter, Netzwerk und Rechte; bestätige Signieren und Senden getrennt und prüfe das Ergebnis.",
+          "Ablehnen, Kontowechsel und Trennen funktionieren. Der Basismodus anderer Wallets ist von YNX Wallet unterschieden.",
+          "Frage keine Wiederherstellungswörter oder Schlüssel ab. Behandle Ablehnung, Sperre, falsches Netzwerk und fehlenden Anbieter getrennt und behebbar."
+        ],
+        [
+          "Vor dem Teilen testen",
+          "Führe SDK-Prüfungen in der dokumentierten Umgebung aus. Teste Zeitlimits, falsches Netzwerk, fehlende Daten und Ablehnung. Kompiliere Verträge lokal nur im unterstützten Werkzeugumfang.",
+          "Du erhältst wiederholbare lokale Ergebnisse. Pakete, native Transfers und Kompilierung beweisen keine beliebige öffentliche Vertragsbereitstellung.",
+          "Lies zunächst den Fehler. Umgehe keine Netzwerk- oder Signaturprüfung, nur damit ein Test besteht."
+        ],
+        [
+          "Exportieren, prüfen, veröffentlichen",
+          "Exportiere oder packe das Projekt, suche nach Geheimnissen und teste die vollständige Vorschau. Prüfe Zielhost, Variablen und Rechte vor einer getrennten Veröffentlichung.",
+          "Der Export ist prüfbar. Eine öffentliche URL gilt erst nach Kontrolle ihres tatsächlichen Verhaltens als nutzbar.",
+          "Belasse nicht unterstützte öffentliche Fähigkeiten lokal oder lesend. Vorschau und erfolgreicher Build beweisen keine funktionierende öffentliche Integration."
+        ]
+      ]
+    ]
+  ]
+}

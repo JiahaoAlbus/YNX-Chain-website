@@ -25,10 +25,10 @@ test("SVG favicon embeds the unchanged brand image and has no external resource 
   assert.doesNotMatch(svg, /<(?:script|foreignObject|use|style)\b|url\(/i);
 });
 
-test("default ICO is a valid 48px container around the unchanged approved PNG", () => {
+test("default ICO is a valid 48px container around the approved white-background PNG", () => {
   const ico = read("public/favicon.ico");
   const png = read("public/ynx-favicon-48.png");
-  assert.equal(sha256(png), "6ff8630b42cd280ca116a5273ae852d8d27a068a07c8a77df0598f4e95b4352a");
+  assert.equal(sha256(png), "bf382c1cb986b92ede3a658a4190f843aee949c6e14ab5aa20d6f7c1f502e962");
   assert.equal(ico.readUInt16LE(0), 0);
   assert.equal(ico.readUInt16LE(2), 1);
   assert.equal(ico.readUInt16LE(4), 1);
@@ -43,11 +43,11 @@ test("default ICO is a valid 48px container around the unchanged approved PNG", 
 
 test("all prerendered routes and the static 404 preserve one versioned same-origin icon set", () => {
   const expected = iconLinks(sourceHtml);
-  assert.equal(expected.length, 7);
+  assert.equal(expected.length, 8);
   assert.equal(new Set(expected.map((link) => link.match(/href="([^"]+)"/)[1])).size, expected.length);
   for (const link of expected) {
     const href = link.match(/href="([^"]+)"/)[1];
-    assert.match(href, /^\/[^?]+\?v=brand-20260906$/);
+    assert.match(href, /^\/[^?]+\?v=brand-20260906-v2$/);
     assert.ok(fs.existsSync(path.join(root, "public", href.split("?")[0])));
   }
   assert.ok(expected.some((link) => link.includes("/ynx-favicon-48.png?") && link.includes('sizes="48x48"')));
@@ -71,6 +71,7 @@ test("icon endpoints are real static files with image MIME and revalidation head
   const config = JSON.parse(read("vercel.json"));
   const paths = [
     ["/favicon.ico", "image/vnd.microsoft.icon"],
+    ["/ynx-tab-icon.png", "image/png"],
     ["/ynx-favicon.svg", "image/svg+xml"],
     ...["ynx-favicon-48", "ynx-icon-96", "ynx-icon-192", "ynx-icon-512", "ynx-icon-maskable-512"].map((file) => [`/${file}.png`, "image/png"]),
     ["/manifest.webmanifest", "application/manifest+json"],

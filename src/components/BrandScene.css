@@ -1,19 +1,55 @@
-.brandScene { position: relative; width: 100%; aspect-ratio: 1.08; margin: 0; isolation: isolate; color: #002fa7; }
-.brandSceneViewport { position: absolute; inset: 0 0 42px; z-index: 1; touch-action: pan-y; outline-offset: -6px; border-radius: 12px; }
+.brandScene { position: relative; width: 100%; min-width: 0; margin: 0; isolation: isolate; color: #002fa7; }
+.brandSceneHeading { display: grid; gap: 6px; padding-inline: 8px; }
+.brandSceneHeading > span:first-child { font-size: clamp(15px, 1.4vw, 19px); line-height: 1.35; font-weight: 570; letter-spacing: -.02em; }
+.brandSceneModelBadge { color: #617089; font-size: 10px; line-height: 1.5; }
+.brandSceneStage { position: relative; width: 100%; height: clamp(265px, 29vw, 355px); margin-block: 2px 0; }
+.brandSceneViewport { position: absolute; inset: 0 0 46px; z-index: 1; touch-action: pan-y; outline-offset: -6px; border-radius: 12px; }
 .brandScene.isReady .brandSceneViewport { cursor: grab; }
 .brandScene.isReady .brandSceneViewport.isDragging { cursor: grabbing; }
 .brandSceneViewport canvas { display: block; width: 100%; height: 100%; }
-.brandScene .brandSceneFallback { position: absolute; inset: 0; display: block; width: 100%; height: 100%; max-width: none; margin: 0; object-fit: contain; mix-blend-mode: multiply; opacity: 1; }
-.brandScene.isReady .brandSceneFallback { visibility: hidden; opacity: 0; }
-.brandSceneCaption { position: absolute; inset-inline: 12px; bottom: 0; display: flex; align-items: center; justify-content: center; gap: 14px; min-height: 44px; color: #596b8f; font-size: 11px; line-height: 1.5; }
-.brandSceneControls { display: flex; flex: 0 0 auto; align-items: center; direction: ltr; }
-.brandSceneControls button { display: inline-flex; justify-content: center; align-items: center; width: 44px; min-height: 44px; padding: 0; border: 0; border-radius: 50%; background: transparent; color: #002fa7; cursor: pointer; }
-.brandSceneControls button:hover { background: #f0f4fd; }
-.brandSceneControls button:focus-visible, .brandSceneViewport:focus-visible { outline: 2px solid #002fa7; outline-offset: 2px; box-shadow: 0 0 0 5px #fff; }
+.brandScene .brandSceneFallback { position: absolute; inset: 0 0 46px; display: block; width: 100%; height: calc(100% - 46px); visibility: visible; }
+.brandScene.isReady .brandSceneFallback { visibility: hidden; }
+.brandSceneStaticBus, .brandSceneStaticWires { fill: none; stroke: #002fa7; stroke-width: 1; opacity: .4; }
+.brandSceneStaticSide { fill: #002fa7; fill-opacity: .14; stroke: #002fa7; stroke-width: .7; }
+.brandSceneStaticDeck { fill: #fff; stroke: #002fa7; stroke-opacity: .3; stroke-width: 1; }
+.brandSceneFallback .isSelected .brandSceneStaticDeck { stroke-opacity: 1; stroke-width: 2; }
+.brandSceneStaticInk { fill: #002fa7; }
+.brandSceneStaticWhite { fill: #fff; }
+.brandSceneStaticMark { fill: #fff; text-anchor: middle; font-size: 8px; font-weight: 700; letter-spacing: 1px; }
+.brandSceneStageFooter { position: absolute; inset-inline: 8px; bottom: 0; min-height: 44px; display: flex; align-items: center; justify-content: space-between; gap: 6px; color: #617089; font-size: 10px; line-height: 1.4; }
+.brandSceneStageFooter > span { max-width: 52%; overflow-wrap: anywhere; }
+.brandSceneViewControls { display: flex; flex: 0 0 auto; align-items: center; direction: ltr; }
+.brandScene button { font: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.brandSceneViewControls button { display: inline-flex; justify-content: center; align-items: center; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 50%; background: transparent; color: #002fa7; }
+.brandSceneViewControls button:disabled { color: #9ba6b9; cursor: default; }
+.brandSceneViewControls button:hover:enabled { background: #f0f4fd; }
+.brandScene button:focus-visible, .brandSceneViewport:focus-visible { outline: 2px solid #002fa7; outline-offset: 2px; box-shadow: 0 0 0 5px #fff; }
+.brandSceneCaption { display: grid; min-width: 0; gap: 0; }
+.brandSceneModules { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; border-block: 1px solid #dce3f0; }
+.brandSceneModules button { position: relative; display: flex; gap: 7px; justify-content: center; align-items: center; min-width: 0; min-height: 48px; padding: 10px 4px; border: 0; background: #fff; color: #617089; font-size: 11px; line-height: 1.4; overflow-wrap: anywhere; }
+.brandSceneModules button + button { border-inline-start: 1px solid #e5eaf4; }
+.brandSceneModules button[aria-pressed="true"] { color: #002fa7; background: #f4f6fc; }
+.brandSceneModules button[aria-pressed="true"]::after { content: ""; position: absolute; inset-inline: 12px; bottom: -1px; height: 2px; background: #002fa7; }
+.brandSceneModuleIndex { color: #8391aa; font-size: 9px; font-variant-numeric: tabular-nums; }
+.brandSceneModules button[aria-pressed="true"] .brandSceneModuleIndex { color: #002fa7; }
+.brandSceneExplanation { display: flex; align-items: flex-start; gap: 12px; min-height: 76px; padding: 15px 8px 12px; }
+.brandSceneStep { flex: 0 0 auto; padding-block-start: 1px; color: #002fa7; font-size: 10px; line-height: 1.6; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.brandSceneExplanation p { min-width: 0; margin: 0; font-size: 12px; line-height: 1.6; color: #52637f; overflow-wrap: anywhere; }
+.brandSceneActions { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 8px; }
+.brandSceneActions button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-width: 0; min-height: 46px; padding: 10px 11px; border: 1px solid #002fa7; border-radius: 4px; color: #002fa7; background: #fff; font-size: 11px; line-height: 1.4; text-align: center; }
+.brandSceneActions button > span { min-width: 0; overflow-wrap: anywhere; }
+.brandSceneActions button > svg { flex: 0 0 auto; }
+.brandSceneActions .brandSceneWalk { background: #002fa7; color: #fff; }
+.brandSceneActions button:hover { box-shadow: inset 0 0 0 1px currentColor; }
 .brandSceneSR { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
-@media (max-width: 640px) { .brandScene { aspect-ratio: 1.12; } .brandSceneCaption { inset-inline: 0; gap: 6px; font-size: 10px; } }
 @media (max-width: 960px) {
-  .brandSceneViewport { bottom: 80px; }
-  .brandSceneCaption { flex-direction: column; gap: 0; min-height: 76px; text-align: center; }
+  .brandSceneHeading { padding-inline: 0; }
+  .brandSceneStage { height: 282px; }
+  .brandSceneStageFooter { inset-inline: 0; font-size: 9px; }
+  .brandSceneStageFooter > span { max-width: calc(100% - 176px); }
+  .brandSceneModules button { flex-direction: column; gap: 2px; font-size: 10px; }
+  .brandSceneExplanation { padding-inline: 0; min-height: 82px; gap: 8px; }
+  .brandSceneExplanation p { font-size: 11px; }
+  .brandSceneActions button { font-size: 10px; padding-inline: 7px; gap: 5px; }
 }
-@media (prefers-reduced-motion: no-preference) { .brandScene .brandSceneFallback { transition: opacity 180ms ease; } }
+@media (max-width: 350px) { .brandSceneActions { grid-template-columns: minmax(0, 1fr); } .brandSceneStage { height: 258px; } }

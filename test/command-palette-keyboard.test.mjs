@@ -51,7 +51,7 @@ function mountPalette() {
   const imports = {
     react: React,
     "lucide-react": Object.fromEntries(["AppWindow", "BookOpen", "Braces", "CircleHelp", "FileText", "Search", "ShieldCheck", "X"].map(name => [name, name])),
-    "virtual:ynx-docs-authority": { articles: Array.from({ length: 4 }, (_, index) => ({ h1: `Article ${index}`, description: "Reference", route: `/article-${index}` })) },
+    "../lib/documentSearch.js": { loadDocumentSearch: () => ({ then(callback) { callback(Array.from({length:4}, (_,index) => ({title:`Article ${index}`,description:"Reference",href:`/article-${index}`}))); return {catch() {}}; } }) },
     "../lib/ecosystemCatalog.js": { getCatalog: () => [] },
     "../lib/productPublicContract.js": { PRODUCT_PUBLIC_SECTIONS: [] },
     "../lib/api/ynxApi.js": { apiConfig: { explorerUrl: "https://explorer.ynxweb4.com" } },

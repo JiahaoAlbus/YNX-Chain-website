@@ -1,0 +1,226 @@
+{
+  "title": "Empieza aquí, paso a paso.",
+  "lead": "Elige una ruta y avanza a tu ritmo. Cada paso explica qué hacer, qué resultado comprobar y cómo resolver los problemas.",
+  "ui": [
+    "Manual para principiantes",
+    "Elige tu ruta",
+    "Aprox.",
+    "minutos",
+    "Qué hacer",
+    "Qué deberías ver",
+    "Si no funciona",
+    "Marcar como completado",
+    "Completado",
+    "Reiniciar progreso",
+    "El progreso es una nota personal guardada en este navegador, no una prueba del funcionamiento de la red.",
+    "Siguiente paso",
+    "Paso anterior",
+    "Copiar comando",
+    "Copiado",
+    "No se pudo copiar. Selecciona y copia el texto.",
+    "Abrir recurso",
+    "Configuración de red",
+    "Nombre de red",
+    "ID de red",
+    "Dirección RPC",
+    "Símbolo",
+    "Decimales",
+    "Explorador de bloques",
+    "Solo en tu equipo · Devnet 6425",
+    "Testnet pública · 6423",
+    "Versión del código del tutorial",
+    "Leer documentación",
+    "Referencia API",
+    "Borradores técnicos",
+    "Explorar biblioteca",
+    "Buscar documentación",
+    "No hay documentos coincidentes",
+    "Prueba otra palabra o borra la búsqueda.",
+    "Todos los documentos",
+    "Fuente original",
+    "Leer",
+    "Red actual",
+    "La Testnet pública utiliza un productor de bloques autoritativo y seguidores autenticados de solo lectura. No están abiertas la incorporación libre de validadores, el staking ni las recompensas por bloques.",
+    "El código del tutorial y la red pública pueden utilizar versiones diferentes.",
+    "Los ejemplos solo leen datos públicos. No requieren cuenta, clave ni firma.",
+    "Método",
+    "Dirección",
+    "Propósito",
+    "Estado REST",
+    "Identidad de red EVM",
+    "Consultar bloques y transacciones",
+    "Activos de prueba",
+    "Estado del servicio",
+    "Comprobaciones del cliente",
+    "Establece un tiempo límite, muestra los errores de conexión y permite un reintento deliberado.",
+    "Comprueba 6423 / 0x1917 antes de continuar. Una URL que responde no demuestra que sea la red correcta.",
+    "Distingue pendiente, confirmado, fallido y desconocido. Busca el hash antes de reenviar.",
+    "Las lecturas y transferencias nativas compatibles no demuestran que puedan desplegarse contratos EVM arbitrarios.",
+    "No incluyas claves del proveedor en código, vistas previas ni capturas. Los secretos de la cartera pertenecen a la cartera.",
+    "Primero lee; después construye.",
+    "Empieza por la identidad y el estado. Estos ejemplos no envían transacciones ni implican compatibilidad con todos los métodos Ethereum.",
+    "Interfaces públicas",
+    "JavaScript SDK desde el código fuente",
+    "Python SDK desde el código fuente",
+    "Los SDK se construyen desde el repositorio; no se ha acreditado su publicación en npm o PyPI.",
+    "Leer la referencia original completa",
+    "Plataforma",
+    "Respuesta API no disponible",
+    "Ejecutar localmente",
+    "Red",
+    "Aprender",
+    "Usar YNX",
+    "Ejecutar un nodo",
+    "Producción de bloques",
+    "Crear una aplicación",
+    "Descargar ZIP del código",
+    "Verificar el archivo descargado",
+    "Como alternativa a Git, descarga el ZIP y ejecuta la comprobación en su carpeta. Compara el SHA-256 completo antes de extraerlo. Abre la carpeta del proyecto extraído en el terminal y continúa allí con los comandos del nodo."
+  ],
+  "paths": [
+    [
+      "Usa YNX por primera vez",
+      "Instala una cartera, prepara una cuenta Testnet y comprueba el resultado de cada acción.",
+      [
+        [
+          "Instala YNX Wallet",
+          "Abre la guía, elige tu sistema o navegador y revisa la versión y el estado de firma. Instala el paquete y abre la cartera.",
+          "YNX Wallet se abre en tu equipo. Descargar el archivo no equivale a instalarlo.",
+          "Si tu plataforma no está disponible, revisa las opciones admitidas. No instales otra cartera presentándola como YNX Wallet."
+        ],
+        [
+          "Crea o restaura tu cartera",
+          "Utiliza la creación, importación o desbloqueo propios de YNX Wallet. Guarda la recuperación sin conexión y aprende con una cuenta Testnet separada.",
+          "La cuenta aparece dentro de YNX Wallet. Crear, importar o desbloquear no requiere iniciar sesión con MetaMask.",
+          "Nunca introduzcas frases de recuperación o claves privadas en la web, soporte o IA. Utiliza únicamente la pantalla de recuperación documentada de la cartera."
+        ],
+        [
+          "Añade la Testnet pública",
+          "Añade o selecciona YNX Testnet en la configuración usando los campos siguientes. Comprueba cuenta y red antes de conectar una aplicación.",
+          "La red es 6423 y el símbolo YNXT. Las direcciones equivalentes ynx1 y 0x representan la misma identidad de 20 bytes.",
+          "Si el ID difiere, detente y corrige la configuración. Añadir una red no debe solicitar una transacción de forma silenciosa."
+        ],
+        [
+          "Solicita YNXT de prueba",
+          "Abre el Faucet oficial, introduce tu dirección Testnet y sigue sus indicaciones actuales. YNXT es un activo de prueba sin valor monetario.",
+          "Una solicitud correcta ofrece un resultado consultable. Verifica transacción y saldo; un ID de solicitud no acredita el abono.",
+          "Si hay mantenimiento o límite de solicitudes, conserva los datos no sensibles y espera. No repitas una solicitud con resultado desconocido."
+        ],
+        [
+          "Consulta una transacción",
+          "Busca la dirección o el hash en Explorer. Revisa red, destinatario, importe y resultado. Antes de transferir posteriormente, lee la confirmación exacta de la cartera.",
+          "Puedes distinguir pendiente, confirmado y fallido, y localizar el hash.",
+          "Ante un resultado desconocido o un Explorer retrasado, comprueba el estado y consulta después. No envíes otra transferencia para hacer aparecer la primera."
+        ],
+        [
+          "Conecta y desconecta una aplicación",
+          "Revisa la cuenta y los permisos solicitados y aprueba solo lo necesario. Al terminar, desconecta la aplicación y revisa los sitios conectados en la cartera.",
+          "La cartera elegida se identifica claramente. YNX Wallet ofrece el acceso completo; otras carteras tienen un modo básico según el servicio.",
+          "Si falta o está bloqueada, vuelve a esa cartera. No se debe cambiar de identidad o reutilizar otra cuenta sin tu elección."
+        ]
+      ]
+    ],
+    [
+      "Ejecuta un nodo de aprendizaje",
+      "Inicia una Devnet aislada en tu equipo. Sus bloques pertenecen a 6425, no a la Testnet pública.",
+      [
+        [
+          "Prepara las herramientas",
+          "Instala Git y Go 1.25 o posterior. En Windows utiliza un entorno Linux, como WSL, para este tutorial. Comprueba las versiones en un terminal.",
+          "Go indica al menos 1.25 y el terminal Linux o macOS puede ejecutar git y go.",
+          "Si no existe un comando, completa la instalación y abre otra vez el terminal. No pegues comandos en la cartera ni en la barra del navegador."
+        ],
+        [
+          "Obtén una copia nueva del código",
+          "Clona el repositorio en una carpeta nueva y selecciona la versión indicada. Mantén separados tus proyectos y los datos de la cartera.",
+          "El terminal está en ynx-learning y la revisión coincide con la versión mostrada.",
+          "Si no puedes obtenerla, detente y revisa el enlace del código. No la sustituyas por un ejecutable arbitrario ni otro nombre de comando."
+        ],
+        [
+          "Inicia el nodo local",
+          "Ejecuta el comando desde la raíz del proyecto y deja abierto el terminal. Solo escucha en tu equipo y guarda datos en .local/learning-node.",
+          "El proceso sigue activo: YNX Devnet 6425 en 127.0.0.1:16420, no la Testnet pública 6423.",
+          "Si el puerto está ocupado, cambia ambos comandos al mismo puerto local libre. No cierres procesos desconocidos; ante un fallo de compilación, lee el primer error."
+        ],
+        [
+          "Observa crecer los bloques",
+          "En otro terminal consulta el estado local, espera unos segundos y repite. Compara network, chainId y height.",
+          "Aparecen YNX Devnet y chainId 6425; height aumenta. El código se comprobó con datos locales nuevos.",
+          "Si se rechaza la conexión, revisa el primer terminal y el puerto. El crecimiento local no demuestra sincronización pública ni admisión como validador."
+        ],
+        [
+          "Detén y reanuda",
+          "Pulsa Ctrl+C en el terminal del nodo y espera su salida. Conserva el directorio de datos y vuelve a iniciar con el mismo comando.",
+          "El nodo sale correctamente y vuelve a abrir los datos de práctica. No necesita información de recuperación de la cartera.",
+          "No ejecutes dos procesos sobre el mismo directorio. Si falla el reinicio, conserva los datos y lee el error antes de probar otra carpeta nueva."
+        ]
+      ]
+    ],
+    [
+      "Entiende la producción pública",
+      "Comprueba qué está disponible y qué permisos no concede un experimento local.",
+      [
+        [
+          "Distingue los roles",
+          "El productor escribe bloques autoritativos; los seguidores autenticados copian el estado y sirven lecturas. Tu nodo de práctica solo produce bloques de su Devnet.",
+          "Distingues leer datos públicos, seguir una red y tener permiso para producir sus bloques.",
+          "Una respuesta, un puerto abierto o cuatro procesos locales no demuestran cuatro validadores públicos ni participación libre."
+        ],
+        [
+          "Comprueba el acceso actual",
+          "La incorporación libre de validadores, el staking y las recompensas no están abiertos. El operador debe facilitar configuración real, requisitos y conexión autenticada antes de seguir la red pública.",
+          "Sabes que faltan requisitos de equipo, código y configuración, endpoints, comprobaciones de sincronización, recuperación y salida.",
+          "No inventes genesis o peers ni envíes claves de firma a soporte. No compres equipos de minería ni una plaza de validador garantizada."
+        ],
+        [
+          "Inspecciona el laboratorio local",
+          "Este dry-run muestra la entrada al chequeo de consenso del código. El experimento real genera claves temporales de enseñanza, separadas de la red pública.",
+          "La salida apunta a scripts/verify/consensus-quorum-check.sh. No inicia el experimento ni acredita un despliegue público.",
+          "Lee el script y los requisitos antes de ejecutarlo. No reutilices sus claves públicamente ni prometas ingresos mineros por su resultado."
+        ]
+      ]
+    ],
+    [
+      "Crea tu primera integración",
+      "Empieza leyendo datos reales y añade una capacidad cada vez con aprobación explícita de la cartera.",
+      [
+        [
+          "Elige tu espacio de trabajo",
+          "Usa Code o un editor local con una copia nueva del repositorio. Elige lenguaje, crea un archivo, ejecútalo y lee la salida. En Code puedes usar la IA predeterminada o configurar tu proveedor en ajustes.",
+          "Puedes editar, ejecutar y localizar errores. Vista previa, exportación y publicación son acciones separadas.",
+          "Si Code o el modelo no funcionan, usa el editor local. Guarda las claves en ajustes privados, nunca en el código o una vista pública."
+        ],
+        [
+          "Lee el ID de red",
+          "Ejecuta esta solicitud pública de lectura en el terminal. Consulta identidad sin cartera, cuenta ni clave privada.",
+          "El resultado JSON contiene 0x1917, decimal 6423. No se ha enviado una transacción.",
+          "Si falla o difiere, comprueba endpoint y estado. No continúes suponiendo un ID."
+        ],
+        [
+          "Usa el SDK del repositorio",
+          "Con Node.js 18 o posterior, ejecuta desde la raíz para importar el SDK local y comprobar una instantánea Testnet. También hay código para Python 3.9 o posterior.",
+          "El cliente imprime altura e ID EVM observados o un error real. No exige paquetes npm/PyPI cuya publicación no está demostrada.",
+          "Si falla la importación, confirma sdk/js/index.js. No sustituyas errores del endpoint por alturas de ejemplo."
+        ],
+        [
+          "Añade una interacción explícita",
+          "Conecta la cuenta por una acción del usuario. Muestra proveedor, red y permisos; pide confirmación separada para firmar y enviar y consulta el resultado.",
+          "El usuario puede rechazar, cambiar de cuenta y desconectar. El modo básico de otras carteras se distingue de YNX Wallet.",
+          "No solicites frases ni claves. Separa rechazo, bloqueo, red equivocada y proveedor ausente como estados recuperables."
+        ],
+        [
+          "Prueba antes de compartir",
+          "Ejecuta los controles SDK en el entorno documentado. Prueba tiempos límite, red equivocada, datos ausentes y rechazo. Compila contratos localmente dentro de las herramientas admitidas.",
+          "Obtienes pruebas locales repetibles. Empaquetado, transferencias nativas y compilación no prueban despliegue público de contratos arbitrarios.",
+          "Lee el fallo antes de cambiar código. No evites controles de red o firma para hacer pasar la prueba."
+        ],
+        [
+          "Exporta, revisa y publica",
+          "Exporta o empaqueta, busca secretos y prueba la vista previa de toda la aplicación. Revisa destino, variables y permisos antes de publicar por separado.",
+          "El proyecto exportado es revisable. Una URL pública se considera usable después de comprobar su comportamiento real.",
+          "Mantén local o de solo lectura lo que no esté soportado públicamente. Una vista previa o compilación exitosa no acredita una integración pública funcional."
+        ]
+      ]
+    ]
+  ]
+}

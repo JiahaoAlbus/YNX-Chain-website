@@ -1,18 +1,18 @@
 import React from "react";
-import { ArrowUpRight, ArrowDown, Plus } from "lucide-react";
+import { ArrowUpRight, ArrowDown, Plus, BookOpen } from "lucide-react";
 import { YNX_6423 } from "../lib/api/ynxApi.js";
 import { useLocale } from "../lib/i18n.jsx";
 import { getHomeCopy } from "../content/homeLocaleContent.js";
 import { getHomeRedesignCopy } from "../content/homeRedesignContent.js";
+import { getHomeEntryCopy } from "../content/homeEntryContent.js";
 import { BrandScene } from "../components/BrandScene.jsx";
 import { WalletDownload } from "../components/WalletDownload.jsx";
-
-const HERO_ACTION_AUDIT_CONTRACT = "Open Explorer";
 
 export function HeroPortal({ snapshot, connectionState, onAddNetwork }) {
   const { locale } = useLocale();
   const copy = getHomeCopy(locale);
   const design = getHomeRedesignCopy(locale);
+  const entry = getHomeEntryCopy(locale);
   const titleParts = design.heroTitle.split(/(?<=[.，、,])\s*/u).filter(Boolean);
   const verified = snapshot.ok === true && connectionState === "live";
   const state = verified ? copy.labels.verified : connectionState === "loading" ? copy.labels.checking : copy.labels.unavailable;
@@ -21,9 +21,13 @@ export function HeroPortal({ snapshot, connectionState, onAddNetwork }) {
       <div className="heroCopy">
         <p className="heroEyebrow">YNX · WEB4 LAYER 1</p>
         <h1 id="hero-title">{titleParts.map((part, index) => <span className="heroTitleLine" key={index}>{part}{index < titleParts.length - 1 ? " " : ""}</span>)}</h1>
-        <p className="heroLead">{design.heroLead}</p>
+        <p className="heroLead">{entry.heroLead}</p>
         <div className="heroActions">
-          <WalletDownload className="button primary" label={design.download} />
+          <a className="button primary" href={`/manual?lang=${encodeURIComponent(locale)}`}><BookOpen size={18}/>{entry.manual}</a>
+          <a className="button heroExplorer" href={YNX_6423.services.explorer}>{entry.explorer}<ArrowUpRight size={18}/></a>
+        </div>
+        <div className="heroQuickLinks">
+          <WalletDownload className="heroExplore" label={design.download} />
           <a className="heroExplore" href="#ecosystem">{design.explore}<ArrowUpRight size={18} /></a>
         </div>
         <p className="heroBoundary">{design.testnetNote}</p>

@@ -1,11 +1,12 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
-import { CORE_LOCALES, MANUAL_COPY, PORTAL_COPY, getManualCopy, getPortalCopy } from "../src/content/coreLocaleContent.js";
+import { CORE_LOCALES, PORTAL_COPY, getPortalCopy } from "../src/content/coreLocaleContent.js";
+import { GUIDE_UI_KEYS, LEARNING_PATHS } from "../src/content/learningContent.js";
 import { HOME_COPY, getHomeCopy } from "../src/content/homeLocaleContent.js";
 
 const routes = ["home", "/blockchain", "/tokens", "/data", "/governance", "/ecosystem", "/developers", "/downloads", "/more"];
-const chapters = ["network", "wallet", "ynxt", "explorer", "observer", "validator", "backup", "recovery", "mining", "bridge"];
+
 const retired = /9102|0x238e|NYXT/iu;
 const nonEmpty = (value, label) => {
   assert.equal(typeof value, "string", `${label} must be text`);
@@ -44,27 +45,27 @@ test("lightweight homepage copy is complete for every locale", () => {
   assert.equal(getHomeCopy("xx"), null, "unsupported locale must fail closed");
 });
 
-test("manual has complete localized user, wallet, 6423, YNXT, Explorer, operator and recovery contracts", () => {
-  assert.deepEqual(Object.keys(MANUAL_COPY), CORE_LOCALES);
-  for (const locale of CORE_LOCALES) {
-    const manual = getManualCopy(locale);
-    assert.equal(manual.hero.length, 3);
-    assert.ok(manual.actions.length >= 2);
-    assert.ok(manual.facts.includes("6423") && manual.facts.includes("0x1917") && manual.facts.includes("YNXT"));
-    assert.ok(manual.platform.length >= 6);
-    assert.deepEqual(Object.keys(manual.chapters), chapters, `${locale} manual chapters differ`);
-    [...manual.hero, ...manual.actions, ...manual.facts, ...manual.platform, ...manual.recovery, manual.warning].forEach((value, index) => nonEmpty(value, `${locale}.manual[${index}]`));
-    for (const id of chapters) {
-      const chapter = manual.chapters[id];
-      nonEmpty(chapter.title, `${locale}.${id}.title`);
-      nonEmpty(chapter.lead, `${locale}.${id}.lead`);
-      nonEmpty(chapter.warning, `${locale}.${id}.warning`);
-      assert.ok(chapter.steps.length >= 2, `${locale}.${id}.steps incomplete`);
-      chapter.steps.forEach((value, index) => nonEmpty(value, `${locale}.${id}.steps[${index}]`));
-      if (locale !== "en") assert.notEqual(chapter.title, MANUAL_COPY.en.chapters[id].title, `${locale}.${id} silently falls back to English`);
-    }
+test("learning guides contain full 12-locale actions, expected outcomes and recovery instructions", async () => {
+  const copies = await Promise.all(CORE_LOCALES.map(async locale => [locale, JSON.parse(await readFile(new URL(`../src/content/learning-locales/${locale}.json`, import.meta.url), "utf8"))]));
+  const english = copies[0][1];
+  for (const [locale, copy] of copies) {
+    nonEmpty(copy.title, locale + ".title"); nonEmpty(copy.lead, locale + ".lead");
+    assert.equal(copy.ui.length, GUIDE_UI_KEYS.length);
+    copy.ui.forEach((text, index) => nonEmpty(text, locale + ".ui." + GUIDE_UI_KEYS[index]));
+    assert.equal(copy.paths.length, LEARNING_PATHS.length);
+    copy.paths.forEach((path, index) => {
+      nonEmpty(path[0], locale + ".pathTitle"); nonEmpty(path[1], locale + ".pathLead");
+      assert.equal(path[2].length, LEARNING_PATHS[index].steps.length);
+      path[2].forEach((step, stepIndex) => {
+        assert.equal(step.length, 4);
+        step.forEach((text, field) => {
+          nonEmpty(text, locale + ".step." + field);
+          if (locale !== "en") assert.notEqual(text, english.paths[index][2][stepIndex][field], "English body substituted for " + locale);
+        });
+      });
+      assert.equal(new Set(path[2].map(step=>step[3])).size, path[2].length, "Recovery instructions must be specific to each step");
+    });
   }
-  assert.equal(getManualCopy("xx"), null, "unsupported locale must fail closed");
 });
 
 test("core pages consume the structured locale contract instead of binary English/Chinese branches", async () => {
@@ -75,7 +76,7 @@ test("core pages consume the structured locale contract instead of binary Englis
   ]);
   assert.match(portal, /getPortalCopy\(locale, path\)/u);
     assert.match(hero, /getHomeCopy\(locale\)/u);
-  assert.match(manual, /getManualCopy\(locale\)/u);
+  assert.match(manual, /useLearningCopy\(locale\)/u);
   for (const source of [portal, hero, manual]) {
     assert.doesNotMatch(source, /locale === "zh-CN"/u);
     assert.doesNotMatch(source, retired);

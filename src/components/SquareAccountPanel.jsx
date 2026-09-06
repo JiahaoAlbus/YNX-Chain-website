@@ -95,7 +95,7 @@ export function SquareAccountPanel() {
   return (
     <section className="squareWorkspace canonicalWalletWorkspace" aria-label="YNX Square canonical wallet workspace">
       <div className="squareAccountPane">
-        <div className="workspaceTitle"><WalletCards /><span><small>Canonical wallet provider</small><strong>{connection.entry ? connection.entry.identity.label : "Choose YNX Wallet or MetaMask"}</strong></span></div>
+        <div className="workspaceTitle"><WalletCards /><span><small>Canonical wallet provider</small><strong>{connection.entry ? connection.entry.identity.label : "Choose YNX Wallet"}</strong></span></div>
 
         {connection.state !== "connected" ? <div className="providerChooser">
           <p>The website never creates, imports, stores, decrypts, or signs with a private key. Account access stays inside the selected wallet.</p>
@@ -103,7 +103,7 @@ export function SquareAccountPanel() {
             <button type="button" className="button primary" key={`${entry.info.uuid || entry.identity.rdns}-${index}`} onClick={() => connect(entry)} disabled={Boolean(busy)}>
               <WalletCards />{busy === "connecting" ? "Waiting for wallet" : `Connect ${entry.identity.label}`}
             </button>
-          )) : <div className="providerUnavailable"><AlertTriangle /><span><strong>No canonical provider detected</strong><small>Install or enable YNX Wallet or MetaMask, then retry discovery.</small></span></div>}
+          )) : <div className="providerUnavailable"><AlertTriangle /><span><strong>No canonical provider detected</strong><small>Install or enable YNX Wallet, then retry discovery.</small></span></div>}
           <button type="button" className="button quiet providerRetry" onClick={() => window.dispatchEvent(new Event("eip6963:requestProvider"))}><RefreshCw />Retry discovery</button>
         </div> : <div className="canonicalAccountStatus">
           <code>{connection.account}</code>

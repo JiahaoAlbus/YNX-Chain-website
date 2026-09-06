@@ -3,7 +3,7 @@ import {
   AppWindow, BookOpen, Braces, CircleHelp, FileText, Search, ShieldCheck,
   X
 } from "lucide-react";
-import docsAuthority from "virtual:ynx-docs-authority";
+import { loadDocumentSearch } from "../lib/documentSearch.js";
 import { getCatalog } from "../lib/ecosystemCatalog.js";
 import { PRODUCT_PUBLIC_SECTIONS, productSectionRoute } from "../lib/productPublicContract.js";
 import { apiConfig } from "../lib/api/ynxApi.js";
@@ -11,33 +11,34 @@ import { useLocale } from "../lib/i18n.jsx";
 import { ECONOMIC_COMMANDS } from "../lib/economicsEvidence.js";
 
 const coreCommands = (t) => [
-  { title: "DApps", description: "Browse every evidence-backed YNX software product", href: "/dapp", icon: AppWindow, keywords: "dapp apps software ecosystem product" },
-  { title: "User manual", description: "Connect, inspect, build, and recover safely", href: "/manual", icon: BookOpen, keywords: "guide help onboarding wallet testnet" },
-  { title: "Developer documentation", description: "SDK, integration, and technical references", href: "/docs", icon: Braces, keywords: "developer sdk code docs" },
-  { title: "API reference", description: "REST, EVM JSON-RPC, status, and service endpoints", href: "/api", icon: FileText, keywords: "rpc endpoint api reference" },
-  { title: "FAQ", description: "Answers with evidence and claim boundaries", href: "/faq", icon: CircleHelp, keywords: "questions support help" },
-  { title: "Security", description: "Controls, limitations, and responsible reporting", href: "/security", icon: ShieldCheck, keywords: "security audit risk report vulnerability" },
-  { title: "Status", description: "Public testnet state and release boundaries", href: "/status", icon: Search, keywords: "network live health recovery" },
-  { title: "Support", description: "Safe support paths and self-service checks", href: "/support", icon: CircleHelp, keywords: "support issue recovery contact" },
+  { title: t("dapps"), description: t("ecosystem"), href: "/dapp", icon: AppWindow, keywords: "dapp apps software ecosystem product" },
+  { title: t("userManual"), description: t("manual"), href: "/manual", icon: BookOpen, keywords: "guide help onboarding wallet testnet" },
+  { title: t("developerDocs"), description: t("developers"), href: "/docs", icon: Braces, keywords: "developer sdk code docs" },
+  { title: t("api"), description: "REST · EVM JSON-RPC · SDK", href: "/api", icon: FileText, keywords: "rpc endpoint api reference" },
+  { title: t("faq"), description: t("support"), href: "/faq", icon: CircleHelp, keywords: "questions support help" },
+  { title: t("security"), description: t("risk"), href: "/security", icon: ShieldCheck, keywords: "security audit risk report vulnerability" },
+  { title: t("status"), description: t("readiness"), href: "/status", icon: Search, keywords: "network live health recovery" },
+  { title: t("support"), description: t("faq"), href: "/support", icon: CircleHelp, keywords: "support issue recovery contact" },
 ];
 
 export function CommandPalette({ open, onClose, returnFocusRef: preferredReturnFocusRef }) {
-  const { t } = useLocale();
+  const { t, locale = "en" } = useLocale();
   const [query, setQuery] = useState("");
   const [activeIndex, setActiveIndex] = useState(0);
   const [searchError, setSearchError] = useState("");
   const inputRef = useRef(null);
   const dialogRef = useRef(null);
   const returnFocusRef = useRef(null);
+  const [guideIndex, setGuideIndex] = useState({ locale: "", entries: [] });
+  useEffect(() => {
+    if (!open) return undefined;
+    let active = true;
+    loadDocumentSearch(locale).then(entries => { if (active) setGuideIndex({locale,entries}); }).catch(() => {});
+    return () => { active = false; };
+  }, [open, locale]);
 
   const commands = useMemo(() => {
-    const articleCommands = docsAuthority.articles.map((article) => ({
-      title: article.h1,
-      description: article.description,
-      href: article.route,
-      icon: FileText,
-      keywords: `authority ${article.route}`,
-    }));
+    const articleCommands = (guideIndex.locale === locale ? guideIndex.entries : []).map(entry => ({ ...entry, icon: FileText }));
     const productCommands = getCatalog().flatMap((product) => PRODUCT_PUBLIC_SECTIONS.map((section) => ({
       title: section.id === "overview" ? product.name : `${product.name} · ${section.label}`,
       description: section.id === "overview" ? product.detail : section.description,
@@ -52,7 +53,7 @@ export function CommandPalette({ open, onClose, returnFocusRef: preferredReturnF
       seen.add(command.href);
       return true;
     });
-  }, [t]);
+  }, [t, locale, guideIndex]);
 
   const results = useMemo(() => {
     const needle = query.trim().toLocaleLowerCase();

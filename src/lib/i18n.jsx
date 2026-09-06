@@ -31,7 +31,7 @@ export const messages = {
     "data": "Data",
     "governance": "Governance",
     "developers": "Developers",
-    "downloads": "Downloads",
+    "downloads": "Ecosystem downloads",
     "more": "More",
     "search": "Search",
     "searchOpen": "Search and open command palette",
@@ -119,7 +119,7 @@ export const messages = {
     "data": "数据",
     "governance": "治理",
     "developers": "开发者",
-    "downloads": "下载中心",
+    "downloads": "生态下载",
     "more": "更多",
     "search": "搜索",
     "searchOpen": "搜索并打开命令面板",
@@ -207,7 +207,7 @@ export const messages = {
     "data": "資料",
     "governance": "治理",
     "developers": "開發者",
-    "downloads": "下載中心",
+    "downloads": "生態下載",
     "more": "更多",
     "search": "搜尋",
     "searchOpen": "搜尋並開啟命令面板",
@@ -295,7 +295,7 @@ export const messages = {
     "data": "データ",
     "governance": "ガバナンス",
     "developers": "開発者",
-    "downloads": "ダウンロード",
+    "downloads": "エコシステムのダウンロード",
     "more": "その他",
     "search": "検索",
     "searchOpen": "検索パレットを開く",
@@ -383,7 +383,7 @@ export const messages = {
     "data": "데이터",
     "governance": "거버넌스",
     "developers": "개발자",
-    "downloads": "다운로드",
+    "downloads": "생태계 다운로드",
     "more": "더보기",
     "search": "검색",
     "searchOpen": "검색 팔레트 열기",
@@ -471,7 +471,7 @@ export const messages = {
     "data": "Datos",
     "governance": "Gobernanza",
     "developers": "Desarrolladores",
-    "downloads": "Descargas",
+    "downloads": "Descargas del ecosistema",
     "more": "Más",
     "search": "Buscar",
     "searchOpen": "Buscar y abrir la paleta de comandos",
@@ -559,7 +559,7 @@ export const messages = {
     "data": "Données",
     "governance": "Gouvernance",
     "developers": "Développeurs",
-    "downloads": "Téléchargements",
+    "downloads": "Téléchargements de l’écosystème",
     "more": "Plus",
     "search": "Rechercher",
     "searchOpen": "Rechercher et ouvrir la palette de commandes",
@@ -647,7 +647,7 @@ export const messages = {
     "data": "Daten",
     "governance": "Governance",
     "developers": "Entwickler",
-    "downloads": "Downloads",
+    "downloads": "Ökosystem-Downloads",
     "more": "Mehr",
     "search": "Suchen",
     "searchOpen": "Suchen und Befehlspalette öffnen",
@@ -735,7 +735,7 @@ export const messages = {
     "data": "Dados",
     "governance": "Governança",
     "developers": "Desenvolvedores",
-    "downloads": "Downloads",
+    "downloads": "Downloads do ecossistema",
     "more": "Mais",
     "search": "Pesquisar",
     "searchOpen": "Pesquisar e abrir a paleta de comandos",
@@ -823,7 +823,7 @@ export const messages = {
     "data": "Данные",
     "governance": "Управление",
     "developers": "Разработчикам",
-    "downloads": "Загрузки",
+    "downloads": "Загрузки экосистемы",
     "more": "Ещё",
     "search": "Поиск",
     "searchOpen": "Поиск и открытие палитры команд",
@@ -911,7 +911,7 @@ export const messages = {
     "data": "البيانات",
     "governance": "الحوكمة",
     "developers": "المطورون",
-    "downloads": "التنزيلات",
+    "downloads": "تنزيلات المنظومة",
     "more": "المزيد",
     "search": "بحث",
     "searchOpen": "البحث وفتح لوحة الأوامر",
@@ -999,7 +999,7 @@ export const messages = {
     "data": "Data",
     "governance": "Tata kelola",
     "developers": "Pengembang",
-    "downloads": "Unduhan",
+    "downloads": "Unduhan ekosistem",
     "more": "Lainnya",
     "search": "Cari",
     "searchOpen": "Cari dan buka palet perintah",
@@ -1105,6 +1105,12 @@ function enforceNativeLtr(locale) {
   return applyDocumentLocale(locale);
 }
 
+export function localeUrl(currentUrl, locale) {
+  const url = new URL(currentUrl);
+  url.searchParams.set("lang", locale);
+  return url.href;
+}
+
 export function LocaleProvider({ children }) {
   const [locale, setLocaleState] = useState(() => {
     const queryLocale = new URLSearchParams(window.location.search).get("lang");
@@ -1113,7 +1119,20 @@ export function LocaleProvider({ children }) {
     return normalizeLocale(queryLocale || saved || "en");
   });
 
-  const setLocale = (next) => setLocaleState(normalizeLocale(next));
+  const setLocale = (next) => {
+    const normalized = normalizeLocale(next);
+    window.history.replaceState(window.history.state, "", localeUrl(window.location.href, normalized));
+    setLocaleState(normalized);
+  };
+
+  useEffect(() => {
+    const sync = () => {
+      const requested = new URLSearchParams(window.location.search).get("lang");
+      if (requested) setLocaleState(normalizeLocale(requested));
+    };
+    window.addEventListener("popstate", sync);
+    return () => window.removeEventListener("popstate", sync);
+  }, []);
 
   useEffect(() => {
     applyDocumentLocale(locale);

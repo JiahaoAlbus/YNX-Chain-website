@@ -1,324 +1,50 @@
-import React, { useState } from "react";
-import {
-  Activity, ArrowUpRight, Blocks, CheckCircle2, CircleAlert, ExternalLink, KeyRound, LifeBuoy,
-  Network, Pickaxe, RefreshCw, Search, Server, ShieldCheck, WalletCards
-} from "lucide-react";
-import { apiConfig } from "../lib/api/ynxApi.js";
+import React, { useEffect, useState } from "react";
+import { ArrowRight, BookOpen, Check, Code2, Cpu, Layers3, Wallet } from "lucide-react";
 import { useLocale } from "../lib/i18n.jsx";
-import { getManualCopy } from "../content/coreLocaleContent.js";
-
-// Static audit vocabulary retained for source-level release gates. The rendered
-// labels themselves come from the complete locale contract.
-const QUICKSTART_AUDIT_CONTRACT = "Windows / macOS / Linux · Step-by-step + one-command · wallet installation · Open 6423 network setup · Request Testnet YNXT · Verify in Explorer · Copy read-only command";
-const MANUAL_SAFETY_AUDIT_CONTRACT = "The command does not install a wallet and cannot start an observer or join the validator set automatically. Validator admission requires explicit human candidate review. No page or support operator should request or generate your private key, mnemonic, or signer secret.";
-const MANUAL_CAPABILITY_AUDIT_CONTRACT = "From zero to a verified testnet action · Recovery · A timeout is not proof · Security boundary · Node join manual · Validator manual · Mining manual · no active automatic one-YNXT-per-block issuance · external submission is disabled · historical block cannot receive a new transaction";
-
-const steps = [
-  { number: "01", title: "Verify the network", text: "Confirm YNX Testnet, native chain ID 6423, EVM chain ID 0x1917, and a current block before connecting a wallet.", href: "/status", label: "Check status", icon: Network },
-  { number: "02", title: "Protect an account", text: "Use ynx1 as the first-party address. Keep the matching 0x form inside EVM-compatible tools, and never paste a mnemonic or private key into a website.", href: "/#address", label: "Convert an address", icon: WalletCards },
-  { number: "03", title: "Get test YNXT", text: "Use the Faucet for Testnet only. YNXT on this network has no represented monetary value or guaranteed liquidity.", href: apiConfig.faucetUrl, label: "Open Faucet", icon: CheckCircle2 },
-  { number: "04", title: "Verify every result", text: "After a write, preserve the transaction hash and confirm the receipt in Explorer. A timeout is not proof that a transaction failed.", href: apiConfig.explorerUrl, label: "Open Explorer", icon: Search },
-];
-
-const platformGuides = [
-  {
-    id: "windows",
-    name: "Windows",
-    verifyCommand: "Get-FileHash .\\downloaded-file -Algorithm SHA256",
-    quickCommand: "$ErrorActionPreference='Stop'; $body='{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"eth_chainId\",\"params\":[]}'; $r=Invoke-RestMethod -TimeoutSec 12 -Method Post -Uri 'https://evm.ynxweb4.com' -ContentType 'application/json' -Body $body; if ($r.result -ne '0x1917') { throw \"Wrong network: $($r.result)\" }; Write-Output 'YNX Testnet reachable: 6423 / 0x1917 / YNXT'",
-    steps: [
-      "Open Verified downloads. Install only an artifact that shows its exact byte size, SHA-256, source identity, signing class, and install evidence; unavailable means stop, not sideload.",
-      "In PowerShell, run the SHA-256 command below and compare every character with the checksum shown on the download record before opening the file.",
-      "Open the website network setup, choose Add 6423 to wallet, and review YNX Testnet, 0x1917, YNXT, RPC, and Explorer before approving the wallet prompt.",
-      "Request Testnet YNXT from Faucet only after the wallet shows 6423 / 0x1917. Preserve the returned hash and verify it in Explorer.",
-      "Use Windows for wallet and read-only network checks. The documented observer and validator-candidate host is supported 64-bit Linux; do not turn a personal Windows wallet device into a validator.",
-      "Back up the wallet recovery material offline, test recovery with the wallet's own documented flow, then remove the temporary recovery copy. Never upload it to support or this website.",
-    ],
-  },
-  {
-    id: "macos",
-    name: "macOS",
-    verifyCommand: "shasum -a 256 ./downloaded-file",
-    quickCommand: "result=$(/usr/bin/curl --connect-timeout 5 --max-time 12 -fsS -X POST https://evm.ynxweb4.com -H 'content-type: application/json' --data '{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"eth_chainId\",\"params\":[]}'); printf '%s' \"$result\" | grep -Eq '\"result\"[[:space:]]*:[[:space:]]*\"0x1917\"' && printf 'YNX Testnet reachable: 6423 / 0x1917 / YNXT\\n'",
-    steps: [
-      "Open Verified downloads. Use only an artifact with exact checksum and install evidence; Gatekeeper, notarization, and signing state must be shown truthfully before installation.",
-      "Run the SHA-256 command below in Terminal and compare the full output with the official record. A matching filename is not enough.",
-      "Open the website network setup, choose Add 6423 to wallet, and inspect YNX Testnet, 0x1917, YNXT, RPC, and Explorer before approving the wallet prompt.",
-      "Request Testnet YNXT from Faucet, save the transaction hash, and open that exact hash in Explorer. A wallet balance alone is not a receipt.",
-      "Use macOS for wallet and read-only preflight. A local development observer is not validator admission; production observer and validator-candidate guidance targets supported 64-bit Linux.",
-      "Create an offline recovery backup using the wallet's own flow, verify it without sharing it, and keep it separate from the Mac. Never paste it into Terminal, chat, a website, or a ticket.",
-    ],
-  },
-  {
-    id: "linux",
-    name: "Linux",
-    verifyCommand: "sha256sum ./downloaded-file",
-    quickCommand: "result=$(curl --connect-timeout 5 --max-time 12 -fsS -X POST https://evm.ynxweb4.com -H 'content-type: application/json' --data '{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"eth_chainId\",\"params\":[]}'); printf '%s' \"$result\" | grep -Eq '\"result\"[[:space:]]*:[[:space:]]*\"0x1917\"' && printf 'YNX Testnet reachable: 6423 / 0x1917 / YNXT\\n'",
-    steps: [
-      "Open Verified downloads and select only a published Linux artifact whose size, SHA-256, source identity, signing class, and install evidence are all present.",
-      "Run the SHA-256 command below and compare the complete checksum before executing any downloaded file. Do not pipe a download into a shell.",
-      "For a browser wallet, use the explicit Add 6423 to wallet action and verify YNX Testnet, 0x1917, YNXT, RPC, and Explorer in the wallet confirmation.",
-      "Request Testnet YNXT only from Faucet and verify the exact transaction hash in Explorer before relying on the balance.",
-      "For an observer, create a dedicated unprivileged service identity and persistent volume, bind admin/metrics locally, start without validator signing, then compare synchronized height and hash with public RPC.",
-      "A validator remains a reviewed candidate: document custody, monitoring, restore rehearsal, endpoint, and incident contact; wait for explicit admission before enabling signing.",
-      "Back up configuration and public key metadata separately from chain data. Keep signer and wallet secrets offline, test restore on an isolated host, and verify signer state before any restart.",
-    ],
-  },
-];
-
-const platformGuidesZh = {
-  windows: {
-    steps: [
-      "打开“已验证下载”。只安装明确显示字节数、SHA-256、源码身份、签名类别和安装证据的工件；显示不可用时应停止，不要侧载未知文件。",
-      "在 PowerShell 运行下方 SHA-256 命令；打开文件前，逐字符比对官网记录中的校验值。",
-      "打开官网网络设置，选择“将 6423 添加到钱包”；批准前在钱包提示中核对 YNX Testnet、0x1917、YNXT、RPC 与 Explorer。",
-      "钱包显示 6423 / 0x1917 后再从 Faucet 领取测试 YNXT；保存返回的哈希，并在 Explorer 核对。",
-      "Windows 只用于钱包与只读网络检查。文档中的观察节点和验证者候选主机要求受支持的 64 位 Linux；不要把个人 Windows 钱包设备变成验证者。",
-      "离线备份钱包恢复材料，使用钱包自身文档完成恢复演练，再删除临时恢复副本。绝不要把它上传给客服或本网站。",
-    ],
-  },
-  macos: {
-    steps: [
-      "打开“已验证下载”。只使用带精确校验值和安装证据的工件；安装前必须如实显示 Gatekeeper、公证与签名状态。",
-      "在终端运行下方 SHA-256 命令，并与官网记录完整比对；文件名相同不能证明文件相同。",
-      "打开官网网络设置，选择“将 6423 添加到钱包”；批准前核对 YNX Testnet、0x1917、YNXT、RPC 与 Explorer。",
-      "从 Faucet 领取测试 YNXT，保存交易哈希并在 Explorer 打开该精确哈希；钱包余额本身不是收据。",
-      "macOS 只用于钱包与只读预检。本地开发观察进程不等于验证者准入；生产观察节点与验证者候选指南面向受支持的 64 位 Linux。",
-      "使用钱包自身流程创建离线恢复备份，在不分享材料的前提下验证备份，并与 Mac 分开保存。绝不要把材料粘贴到终端、聊天、网站或工单。",
-    ],
-  },
-  linux: {
-    steps: [
-      "打开“已验证下载”，只选择字节数、SHA-256、源码身份、签名类别和安装证据均完整的 Linux 工件。",
-      "运行下方 SHA-256 命令，执行下载文件前完整比对校验值；不要把网络下载直接通过管道交给 shell。",
-      "浏览器钱包应使用明确的“将 6423 添加到钱包”操作，并在钱包确认中核对 YNX Testnet、0x1917、YNXT、RPC 与 Explorer。",
-      "只从 Faucet 领取测试 YNXT，并在依赖余额前用 Explorer 验证精确交易哈希。",
-      "观察节点使用专用非特权服务账户和持久卷，管理/指标端口只绑定本机；不启用验证者签名，同步后与公共 RPC 比较高度和哈希。",
-      "验证者仍需候选审核：提交保管、监控、恢复演练、端点与事故联系人证据；收到明确准入前不得开启签名。",
-      "配置和公钥元数据应与链数据分开备份。签名器与钱包秘密保持离线，在隔离主机演练恢复，并在重启前核对签名器状态。",
-    ],
-  },
-};
-
-function CopyCommandButton({ command, label, copiedLabel, manualLabel }) {
-  const [state, setState] = useState("idle");
-  async function copy() {
-    if (typeof navigator === "undefined" || !navigator.clipboard?.writeText) {
-      setState("unavailable");
-      return;
-    }
-    try {
-      await navigator.clipboard.writeText(command);
-      setState("copied");
-    } catch {
-      setState("unavailable");
-    }
-  }
-  const text = state === "copied" ? copiedLabel : state === "unavailable" ? manualLabel : label;
-  return <button className="button secondary" type="button" onClick={copy} aria-live="polite">{text}</button>;
-}
-
-const chapters = [
-  {
-    id: "network-facts", eyebrow: "Network facts / 网络事实", title: "Know what the Testnet actually guarantees", icon: Network,
-    intro: "Use these values as the pre-flight checklist. Stop if a wallet, RPC, guide, or support message gives different network identity.",
-    facts: [["Network", "YNX Testnet"], ["Native chain ID", "6423"], ["EVM chain ID", "0x1917"], ["Native asset", "YNXT"], ["Native transfer fee", "Current Testnet rule: 1 integer YNXT per transaction"], ["Finality", "A finalized block is immutable; block 1 or any historical block cannot receive a new transaction"]],
-    checklist: ["Open Status and confirm the RPC and indexer are current.", "Check the destination character by character and confirm ynx1/0x equivalence when needed.", "Treat Mainnet, listing, liquidity, custody, and third-party support as unavailable unless separately evidenced."],
-    code: `curl -fsS https://rpc.ynxweb4.com/status\n\ncurl -fsS -X POST https://evm.ynxweb4.com \\\n  -H 'content-type: application/json' \\\n  --data '{"jsonrpc":"2.0","id":1,"method":"eth_chainId","params":[]}'`,
-  },
-  {
-    id: "wallet-security", eyebrow: "Wallet manual / 钱包手册", title: "Create, back up, and use an account safely", icon: KeyRound,
-    intro: "The address is public; signing material is not. A screenshot, chat message, support ticket, web form, or log is never an acceptable place for a mnemonic or private key.",
-    checklist: ["Create or import the account only in the intended wallet or local signer.", "Record the recovery phrase offline, verify the backup, and keep it separate from the device.", "Unlock only for the intended action; inspect network, recipient, amount, fee, and nonce before signing.", "For shared operations, give each person a separate account and permission boundary; never circulate one private key.", "After use, lock the wallet and verify the resulting hash independently in Explorer."],
-    warning: "YNX support never needs your mnemonic, private key, wallet password, one-time code, or signer-vault contents.",
-  },
-  {
-    id: "transfer", eyebrow: "Transfer manual / 转账手册", title: "Send YNXT and prove the receipt", icon: WalletCards,
-    intro: "A transfer is accepted into a future block, never inserted into an old block. One block can contain zero, one, or multiple transactions, and one transfer may send any valid balance amount—not one YNXT per block.",
-    checklist: ["Confirm the sender balance covers amount plus the current 1 YNXT native fee.", "Read the account nonce immediately before signing; repeated nonces are rejected.", "Sign once and preserve the returned transaction hash.", "If the client times out, search the hash and sender before resubmitting.", "Verify From, To, amount, fee, status, block height, and confirmations in Explorer."],
-    facts: [["Block", "An immutable ordered container of transactions"], ["YNXT", "The native Testnet asset used for value and current native fees"], ["Empty block", "Contains no transaction and creates no 1 YNXT reward"], ["Multiple payments", "Supported when valid transactions enter the same future block"]],
-  },
-  {
-    id: "explorer", eyebrow: "Explorer manual / 浏览器手册", title: "Find a transaction, address, or block quickly", icon: Search,
-    intro: "Search a block height, transaction hash, ynx1 address, compatible 0x address, YNXT, or registered contract. Exact results open read-only deep links that can be copied and refreshed.",
-    checklist: ["Transaction view: confirm From → To, amount, gas or fee, finalized status, block, time, nonce, and events.", "Address view: review current balance, native holdings, indexed history, contract activity, coverage time, and observed inbound/outbound flow; Rich list is a balance ranking, not ownership identity.", "Block view: prioritize transaction-bearing blocks; compact empty blocks carry no transfer content, and a historical view cannot accept a new transaction.", "Use pagination and Quick find rather than assuming the first page is complete.", "If Explorer is catching up, compare latest indexed height with canonical height and wait for alignment before concluding data is absent.", "If live updates disconnect, wait for automatic reconnect or use Refresh. An unavailable source must remain visibly unavailable.", "Choose any supported locale in the Explorer header; Arabic uses right-to-left layout and the preference is retained locally."],
-    warning: "Explorer never needs a mnemonic, private key, password, or one-time code. A block is not a fixed one-YNXT reward; current fees and rewards follow the chain's actual economic parameters.",
-  },
-  {
-    id: "monitor", eyebrow: "Monitor manual / 网络监控手册", title: "Read network health without exposing infrastructure", icon: Activity,
-    intro: "YNX Monitor accepts a signed, fresh, redacted status projection. It reports failure when a required dependency is missing instead of substituting sample values or raw upstream errors.",
-    checklist: ["Confirm snapshot checked time, publisher signature state, source commit, release, and process start time.", "Review RPC, Indexer, Explorer, Faucet, and Gateway rows together with dependency status.", "Compare the observed four-validator set, canonical and indexed heights, lag, finality, block interval, TPS, peers, and synchronization.", "Treat process-scoped trend history as accepted snapshots, not a historical uptime claim.", "During an incident, distinguish initial failure, continuing failure, and recovery; do not infer convergence from one HTTP 200 response.", "Treat StreamBFT as shadow/candidate until an independently accepted cutover identifies it as active."],
-    warning: "Browser-visible status must not contain server addresses, internal paths, credentials, topology, or raw upstream errors. If identity or a dependency cannot be verified, the correct state is unavailable.",
-  },
-  {
-    id: "node", eyebrow: "Node join manual / 节点加入手册", title: "Prepare a node without exposing validator keys", icon: Server,
-    intro: "Public source and an operator-reviewed configuration are prerequisites. A node should run as a dedicated unprivileged service account with persistent storage, bounded ports, monitoring, and backups.",
-    checklist: ["Provision a supported 64-bit Linux host with stable time synchronization, SSD persistence, memory headroom, and a fixed public endpoint if peer connectivity is required.", "Verify the source/build identity and configuration before starting; never copy another operator's data directory or signing key.", "Bind administrative and metrics interfaces to localhost or an authenticated private network. Publish only explicitly required peer/RPC routes.", "Start as a non-validator observer, allow initial synchronization, then compare local height/hash with the public RPC.", "Back up configuration and key metadata separately from chain data; rehearse restore on an isolated host.", "Add health, disk, memory, peer, block-lag, and restart-loop alerts before requesting candidate admission."],
-    code: `# Public read-only checks; these do not enroll a validator\ncurl -fsS https://rpc.ynxweb4.com/status\ncurl -fsS https://explorer.ynxweb4.com/api/health\n\n# Expected before candidate review\n# - dedicated service identity\n# - persistent data volume\n# - time synchronization\n# - least-privilege firewall\n# - monitored backup and restore rehearsal`,
-    warning: "There is currently no one-command permissionless public validator enrollment. Do not send a validator private key to a website or operator.",
-  },
-  {
-    id: "validator", eyebrow: "Validator manual / 验证者手册", title: "Apply, stage, and operate a validator candidate", icon: ShieldCheck,
-    intro: "Current public Testnet validators are operator-controlled. Candidate admission requires capacity, identity/contact, key-custody, monitoring, recovery, and governance review; documentation is not automatic approval.",
-    checklist: ["Run a healthy observer node first and provide a stable candidate endpoint plus operator contact and incident path.", "Generate the validator key on the target secure host or approved signing boundary; retain offline recovery material and document who can authorize rotation.", "Demonstrate sustained synchronization, peer health, clock accuracy, disk headroom, restart recovery, and alert delivery.", "Stage admission in a maintenance window. Verify the expected validator identity before enabling signing.", "Monitor missed blocks, double-sign risk, lag, peer loss, disk, memory, and service restarts. Fail closed when signer state is uncertain.", "For exit or rotation, coordinate the validator-set change first, stop signing, preserve audit evidence, then archive or destroy old key material under policy."],
-    facts: [["Admission", "Reviewed Testnet candidate process; not permissionless today"], ["Key custody", "Operator responsibility; never submitted through the website"], ["Availability", "Multiple users may read public services concurrently; validator signing remains single-authority and serialized"], ["Recovery", "Restore configuration/data first and verify signer state before resuming"]],
-  },
-  {
-    id: "mining", eyebrow: "Mining manual / 挖矿手册", title: "Do not use GPU or ASIC mining on YNX Testnet", icon: Pickaxe,
-    intro: "YNX Testnet uses rotating validators/block producers, not proof-of-work mining. There is no supported GPU/ASIC miner and no active automatic one-YNXT-per-block issuance.",
-    checklist: ["To participate in block production, follow the validator candidate process—not mining-pool software.", "A block is not one YNXT. It is a container that can be empty or contain multiple transfers.", "An empty block earns no current issuance reward. Under the present rule, a native transaction pays a 1 YNXT fee credited to the validator.", "Do not buy hardware, pay a pool, or install binaries that claim guaranteed YNX mining income."],
-    warning: "Any future issuance or incentive change needs an explicit network upgrade and public documentation; this manual does not promise rewards.",
-  },
-  {
-    id: "bridge", eyebrow: "Bridge manual / 跨链桥手册", title: "Separate source-chain proof from external execution", icon: Blocks,
-    intro: "The current bridge path can record and co-sign a local coordinator lifecycle from YNX Testnet, but external mint/submission is disabled. Finalized-local is not the same as bridged on an external chain.",
-    checklist: ["Verify the YNX source transaction and required confirmations.", "Record the route, asset, source hash, destination, amount, and coordinator transfer ID.", "Verify independent relayer signatures and the local finalization audit trail.", "Check provider and contract capability before claiming external completion.", "When external submission is disabled, report finalized locally / no external submission and do not represent wrapped assets as minted."],
-    facts: [["Live route", "YNX Testnet YNXT → external-testnet-unavailable wrapped-YNXT"], ["Confirmations", "Current coordinator route requires 12 source confirmations"], ["External submission", "Disabled"], ["Truthful result", "Local coordinator finality only"]],
-  },
-];
-
-const recovery = [
-  ["Loading takes too long", "Wait once, then refresh Status. Do not submit a state-changing request repeatedly."],
-  ["The API is unavailable", "Preserve the request or hash, check Status and Explorer, then retry only when the outcome is known."],
-  ["A transaction is not visible", "Search the hash plus both ynx1 and equivalent 0x forms. Confirm chain ID 6423 / 0x1917."],
-  ["Nonce conflict", "Refresh account state, confirm whether the earlier hash finalized, then rebuild and sign once with the current nonce."],
-  ["Node falls behind", "Keep RPC read-only, inspect peer/time/disk health, and do not enable validator signing until height and hash align."],
-  ["A support message asks for secrets", "Stop. Preserve the message as evidence and report it without sharing custody material."],
-];
-
-const stepsZh = [
-  { title: "核对网络", text: "连接钱包前，确认网络为 YNX Testnet、原生链 ID 为 6423、EVM 链 ID 为 0x1917，并确认当前区块仍在增长。", label: "检查状态" },
-  { title: "保护账户", text: "第一方地址使用 ynx1；匹配的 0x 地址仅用于 EVM 兼容工具。绝不要向网站粘贴助记词或私钥。", label: "转换地址" },
-  { title: "领取测试 YNXT", text: "水龙头仅供测试网使用；本网络中的 YNXT 不代表货币价值，也不保证流动性。", label: "打开水龙头" },
-  { title: "验证每项结果", text: "写入操作后保存交易哈希，并在浏览器核对收据。客户端超时不能证明交易失败。", label: "打开浏览器" },
-];
-
-const chaptersZh = {
-  "network-facts": {
-    title: "了解测试网真正保证的内容",
-    intro: "把以下参数作为操作前检查表。如果钱包、RPC、指南或支持消息显示了不同的网络身份，请立即停止。",
-    facts: [["网络", "YNX 测试网"], ["原生链 ID", "6423"], ["EVM 链 ID", "0x1917"], ["原生资产", "YNXT"], ["原生转账费用", "当前测试网规则：每笔交易收取 1 个整数 YNXT"], ["最终性", "已最终确认的区块不可更改；区块 1 或任何历史区块都不能接收新交易"]],
-    checklist: ["打开状态页，确认 RPC 与索引器均为最新高度。", "逐字符核对目标地址，必要时确认 ynx1 与 0x 地址的等价关系。", "除非另有直接证据，否则主网、上币、流动性、托管和第三方支持均视为不可用。"],
-  },
-  "wallet-security": {
-    title: "安全创建、备份和使用账户",
-    intro: "地址可以公开，签名材料不能公开。截图、聊天、支持工单、网页表单和日志都不应包含助记词或私钥。",
-    checklist: ["只在目标钱包或本地签名器中创建或导入账户。", "离线记录恢复短语，验证备份，并与设备分开保存。", "只为预期操作解锁；签名前检查网络、收款人、金额、费用与 nonce。", "多人协作时给每个人独立账户和权限边界，绝不共用同一私钥。", "使用后锁定钱包，并在浏览器中独立验证结果哈希。"],
-    warning: "YNX 支持人员永远不需要你的助记词、私钥、钱包密码、一次性验证码或签名保管库内容。",
-  },
-  transfer: {
-    title: "发送 YNXT 并证明收据",
-    intro: "转账只能进入未来区块，不能插入历史区块。一个区块可以包含零笔、一笔或多笔交易；一笔转账也可以发送余额允许的任意有效数量，并非每个区块只能转 1 YNXT。",
-    facts: [["区块", "按顺序保存交易且不可更改的容器"], ["YNXT", "用于价值转移和当前原生手续费的测试网资产"], ["空区块", "不含交易，也不会自动产生 1 YNXT 奖励"], ["多笔支付", "多笔有效交易可以进入同一个未来区块"]],
-    checklist: ["确认发送方余额足以覆盖金额和当前 1 YNXT 原生手续费。", "签名前立即读取账户 nonce；重复 nonce 会被拒绝。", "只签名一次并保存返回的交易哈希。", "客户端超时时，先搜索哈希和发送方，再决定是否重试。", "在浏览器核对 From、To、金额、费用、状态、区块高度与确认数。"],
-  },
-  explorer: {
-    title: "快速找到交易、地址或区块",
-    intro: "可搜索区块高度、交易哈希、ynx1 地址、兼容 0x 地址、YNXT 或已登记合约；精确结果会打开可复制、可刷新的只读深链接。",
-    checklist: ["交易页：核对 From → To、金额、Gas 或费用、最终状态、区块、时间、nonce 与事件。", "地址页：查看当前余额、原生资产、已索引历史、合约活动、覆盖时间及转入/转出资金流；富豪榜仅按余额排名，并不代表地址所有者身份。", "区块页：优先展示含交易区块；空区块紧凑显示，历史区块不能接收新交易。", "使用分页和快速筛选，不要把第一页误当作全部记录。", "浏览器追赶高度时，对比最新索引高度与链上规范高度；两者对齐前不要断言数据缺失。", "实时连接断开后等待自动重连或使用刷新；依赖不可用时必须明确显示不可用。", "可在顶部选择任一受支持语言；阿拉伯语使用真正的从右到左布局，选择保存在本机。"],
-    warning: "Explorer 永远不需要助记词、私钥、密码或一次性验证码。区块不等于固定 1 YNXT 奖励；费用与奖励以链上真实经济参数为准。",
-  },
-  monitor: {
-    title: "在不泄露基础设施的前提下读取网络健康状态",
-    intro: "YNX Monitor 只接受经过签名、仍新鲜且已脱敏的状态投影。必需依赖缺失时显示失败，不会替换成样例数值或原始上游错误。",
-    checklist: ["确认快照检查时间、发布者签名状态、源码提交、发布版本与进程启动时间。", "同时检查 RPC、Indexer、Explorer、Faucet 与 Gateway 及其依赖状态。", "比较观测到的四验证者集合、规范/索引高度、滞后、最终性、出块间隔、TPS、peer 与同步状态。", "进程范围内的趋势仅代表已接受快照，不能当作历史可用率。", "故障时区分首次失败、持续失败与恢复；单个 HTTP 200 不能证明网络收敛。", "在独立验收的切换发生前，StreamBFT 始终是 shadow/candidate。"],
-    warning: "浏览器状态不得包含服务器地址、内部路径、凭证、拓扑或原始上游错误。无法验证身份或依赖时，正确状态是不可用。",
-  },
-  node: {
-    title: "在不暴露验证者密钥的前提下准备节点",
-    intro: "公开源码和经运营方审核的配置是前提。节点应使用专用的非特权系统账户、持久存储、有限端口、监控与备份。",
-    checklist: ["准备受支持的 64 位 Linux 主机，确保时间同步、SSD 持久化、内存余量；需要 P2P 时提供固定公网端点。", "启动前核对源码/构建身份与配置；绝不要复制其他运营方的数据目录或签名密钥。", "管理与指标接口仅绑定 localhost 或经认证的私网，只公开确实需要的 P2P/RPC 路由。", "先作为非验证观察节点启动，完成同步后与公共 RPC 比较高度和哈希。", "配置和密钥元数据应与链数据分开备份，并在隔离主机演练恢复。", "申请候选资格前配置健康、磁盘、内存、对等节点、区块滞后和重启循环告警。"],
-    warning: "目前没有一条命令即可无许可加入验证者集合的公开流程。不要把验证者私钥发送给网站或运营人员。",
-  },
-  validator: {
-    title: "申请、暂存并运行验证者候选节点",
-    intro: "当前公开测试网验证者由运营方控制。候选准入需要容量、身份/联系信息、密钥保管、监控、恢复与治理审核；阅读文档并不等于自动获批。",
-    facts: [["准入", "经审核的测试网候选流程；当前不是无许可加入"], ["密钥保管", "由运营方负责；绝不通过网站提交"], ["可用性", "公共服务可供多人并发读取；验证者签名仍由单一授权边界串行执行"], ["恢复", "先恢复配置/数据，核对签名器状态后再继续"]],
-    checklist: ["先运行健康的观察节点，并提供稳定候选端点、运营联系人和事件处理路径。", "在安全目标主机或批准的签名边界生成验证者密钥；保留离线恢复材料并记录轮换授权人。", "证明持续同步、对等节点健康、时钟准确、磁盘余量、重启恢复与告警送达。", "在维护窗口安排准入，启用签名前核对预期验证者身份。", "监控漏块、双签风险、滞后、失联、磁盘、内存与服务重启；签名器状态不确定时必须失败关闭。", "退出或轮换时先协调验证者集合变更，再停止签名、保存审计证据，并按政策归档或销毁旧密钥。"],
-  },
-  mining: {
-    title: "不要在 YNX 测试网使用 GPU 或 ASIC 挖矿",
-    intro: "YNX 测试网由轮换验证者/出块者运行，不是工作量证明挖矿。没有受支持的 GPU/ASIC 矿工，也没有自动每区块发行 1 YNXT 的机制。",
-    checklist: ["参与出块应遵循验证者候选流程，而不是使用矿池软件。", "一个区块不等于 1 YNXT；区块可以为空，也可以包含多笔转账。", "空区块没有当前发行奖励；现行规则下，原生交易支付 1 YNXT 手续费并记给验证者。", "不要购买宣称保证获得 YNX 挖矿收益的硬件、矿池服务或软件。"],
-    warning: "未来任何发行或激励调整都必须经过明确网络升级并公开文档；本手册不承诺奖励。",
-  },
-  bridge: {
-    title: "区分源链证明与外部执行",
-    intro: "当前跨链桥路径可以记录并共同签署 YNX 测试网的本地协调器生命周期，但外部铸造/提交已禁用。本地最终完成不等于已在外部链跨链完成。",
-    facts: [["当前路由", "YNX 测试网 YNXT → 外部测试网不可用的 wrapped-YNXT"], ["确认数", "当前协调器路由要求 12 个源链确认"], ["外部提交", "已禁用"], ["真实结果", "仅本地协调器最终完成"]],
-    checklist: ["核对 YNX 源交易和所需确认数。", "记录路由、资产、源哈希、目标、金额与协调器 transfer ID。", "核对独立中继签名与本地最终完成审计轨迹。", "宣称外部完成前检查 Provider 与合约能力。", "外部提交禁用时必须报告“本地完成 / 未外部提交”，不得表示 wrapped 资产已经铸造。"],
-  },
-};
-
-const recoveryZh = [
-  ["加载时间过长", "等待一次后刷新状态页，不要反复提交会改变状态的请求。"],
-  ["API 不可用", "保存请求或哈希，检查状态页和浏览器；只有在结果明确后才重试。"],
-  ["看不到交易", "搜索哈希，并分别搜索 ynx1 与等价 0x 地址；确认链 ID 为 6423 / 0x1917。"],
-  ["Nonce 冲突", "刷新账户状态，确认上一笔哈希是否已最终完成，再使用当前 nonce 重新构建并只签名一次。"],
-  ["节点落后", "保持 RPC 只读，检查对等节点、时间和磁盘；高度与哈希对齐前不要启用验证者签名。"],
-  ["支持消息索要秘密", "立即停止，保存消息作为证据并报告，绝不分享保管材料。"],
-];
-
+import { LEARNING_PATHS, LEARNING_COMMANDS, LEARNING_WINDOWS_COMMANDS, LEARNING_SOURCE, LEARNING_SOURCE_DOWNLOAD, LEARNING_HASH_COMMANDS, learningCommandFor, guideUi } from "../content/learningContent.js";
+import { useLearningCopy } from "../lib/useLearningCopy.js";
+import { getDocumentLibraryCopy } from "../content/documentLibraryCopy.js";
+import { GuideCode } from "../components/GuideCode.jsx";
+import "./learning-guides.css";
+const icons = [Wallet, Cpu, Layers3, Code2];
+const validPath = () => Math.max(0, LEARNING_PATHS.findIndex(path => path.id === new URLSearchParams(window.location.search).get("path")));
+const progressKey = `ynx-learning-progress-${LEARNING_SOURCE.slice(0, 12)}`;
+function readProgress() { try { const value = JSON.parse(localStorage.getItem(progressKey) || "[]"); return Array.isArray(value) ? value.filter(item => typeof item === "string") : []; } catch { return []; } }
 export function ManualPage() {
-  const { locale } = useLocale();
-  const copy = getManualCopy(locale);
-  const chapterIcons = { network: Network, wallet: KeyRound, ynxt: WalletCards, explorer: Search, observer: Server, validator: ShieldCheck, backup: Server, recovery: RefreshCw, mining: Pickaxe, bridge: Blocks };
-  const localizedChapters = Object.entries(copy.chapters).map(([id, chapter]) => ({ id, ...chapter, icon: chapterIcons[id] }));
-  return <main className="guidePage">
-    <header className="guideHero">
-      <p className="sectionEyebrow">{copy.hero[0]}</p>
-      <h1>{copy.hero[1]}</h1>
-      <p>{copy.hero[2]}</p>
-      <div className="guideActions"><a className="button primary" href="/status">{copy.actions[0]} <ArrowUpRight /></a><a className="button secondary" href="/docs">{copy.actions[1]}</a></div>
-      <nav className="manualToc" aria-label={copy.hero[0]}><a href="#platform-quickstart">Windows / macOS / Linux</a>{localizedChapters.map((chapter) => <a key={chapter.id} href={`#${chapter.id}`}>{chapter.title}</a>)}</nav>
-    </header>
-
-    <section className="guideSteps" aria-labelledby="manual-start">
-      <div className="guideSectionHeader"><p className="sectionEyebrow">6423 / 0x1917 / YNXT</p><h2 id="manual-start">{copy.hero[1]}</h2></div>
-      <ol>{Object.entries(copy.chapters).slice(0, 4).map(([id, chapter], index) => { const Icon = chapterIcons[id]; return <li key={id}><span className="guideNumber">{String(index + 1).padStart(2, "0")}</span><Icon aria-hidden="true" /><div><h3>{chapter.title}</h3><p>{chapter.lead}</p></div><a href={`#${id}`}>{copy.actions[index % copy.actions.length]} <ArrowUpRight /></a></li>; })}</ol>
-    </section>
-
-    <section className="manualChapter" id="platform-quickstart" aria-labelledby="platform-quickstart-title">
-      <header><span className="manualChapterIcon"><Server aria-hidden="true" /></span><div>
-        <p className="sectionEyebrow">{copy.platform[0]}</p>
-        <h2 id="platform-quickstart-title">{copy.platform[1]}</h2>
-        <p>{copy.platform.slice(2).join(" ")}</p>
-      </div></header>
-      <div className="guideActions">
-        <a className="button primary" href="/downloads">{copy.actions[0]} <ArrowUpRight /></a>
-        <a className="button secondary" href="/">6423 / 0x1917 / YNXT</a>
-        <a className="button secondary" href={apiConfig.faucetUrl}>Faucet <ExternalLink /></a>
-        <a className="button secondary" href={apiConfig.explorerUrl}>Explorer <ExternalLink /></a>
+  const { locale, t } = useLocale();
+  const copy = useLearningCopy(locale);
+  const [selected, setSelected] = useState(validPath);
+  const [platform, setPlatform] = useState("macos");
+  const [progress, setProgress] = useState(readProgress);
+  useEffect(() => { const sync = () => setSelected(validPath()); window.addEventListener("popstate", sync); return () => window.removeEventListener("popstate", sync); }, []);
+  useEffect(() => { try { localStorage.setItem(progressKey, JSON.stringify(progress)); } catch { /* The guide remains usable without browser storage. */ } }, [progress]);
+  useEffect(() => { if (copy && window.location.hash) window.requestAnimationFrame(() => document.getElementById(window.location.hash.slice(1))?.scrollIntoView({ block: "start" })); }, [copy]);
+  if (!copy) return <main className="learningPage" aria-busy="true"><p role="status">{t("checking")}</p></main>;
+  if (copy.loadFailed) { const errorCopy=getDocumentLibraryCopy(locale); return <main className="learningPage" lang={locale}><p role="alert">{errorCopy.loadError}</p><button type="button" onClick={()=>window.location.reload()}>{errorCopy.retry}</button></main>; }
+  const ui = guideUi(copy), path = LEARNING_PATHS[selected], content = copy.paths[selected];
+  const completed = path.steps.filter(step => progress.includes(`${path.id}-${step.id}`)).length;
+  function choose(index) { const url = new URL(window.location.href); url.searchParams.set("path", LEARNING_PATHS[index].id); url.hash = "learning-route"; window.history.pushState({}, "", url); setSelected(index); window.requestAnimationFrame(() => document.getElementById("learning-route")?.scrollIntoView({ block: "start" })); }
+  function toggle(id) { setProgress(current => current.includes(id) ? current.filter(value => value !== id) : [...current, id]); }
+  const command = key => learningCommandFor(platform, key);
+  return <main className="learningPage" lang={copy.bodyLocale || locale} dir={(copy.bodyLocale || locale) === "ar" ? "rtl" : "ltr"}>
+    {copy.bodyLocale !== locale && <aside className="learningNetworkNote" lang={locale}><strong>{getDocumentLibraryCopy(locale).translationPending}</strong><p>{getDocumentLibraryCopy(locale).originalBodyNotice}</p></aside>}
+    <header className="learningHero"><p className="sectionEyebrow">{ui.eyebrow}</p><h1>{copy.title}</h1><p>{copy.lead}</p><div className="learningLinks"><a href="/docs"><BookOpen size={17} />{ui.docs}</a><a href="/api">{ui.api}</a><a href="/whitepaper">{ui.whitepapers}</a></div></header>
+    <nav className="learningChoices" aria-label={ui.choose}>{copy.paths.map((item, index) => { const Icon = icons[index]; return <button type="button" key={LEARNING_PATHS[index].id} onClick={() => choose(index)} aria-current={selected === index ? "step" : undefined}><Icon aria-hidden="true" /><span><strong>{item[0]}</strong><small>{ui.about} {LEARNING_PATHS[index].minutes} {ui.minutes}</small></span><ArrowRight size={18} aria-hidden="true" /></button>; })}</nav>
+    <section className="learningRoute" id="learning-route" aria-labelledby="learning-route-title">
+      <header className="learningRouteHeader"><div><p className="sectionEyebrow">{selected === 1 ? ui.localOnly : ui.publicNetwork}</p><h2 id="learning-route-title">{content[0]}</h2><p>{content[1]}</p></div><label className="learningPlatform">{ui.platform}<select value={platform} onChange={event => setPlatform(event.target.value)}><option value="macos">macOS</option><option value="windows">Windows / WSL</option><option value="linux">Linux</option></select></label></header>
+      <div className="learningProgress"><span>{completed} / {path.steps.length} · {ui.complete}</span><progress value={completed} max={path.steps.length} aria-label={ui.complete} /><button type="button" onClick={() => setProgress(current => current.filter(id => !id.startsWith(`${path.id}-`)))}>{ui.reset}</button><small>{ui.progressNote}</small></div>
+      <div className="learningColumns"><nav className="learningStepNav" aria-label={content[0]}>{path.steps.map((step, index) => <a key={step.id} href={`#step-${path.id}-${step.id}`}><span>{progress.includes(`${path.id}-${step.id}`) ? <Check size={14} /> : String(index + 1).padStart(2, "0")}</span>{content[2][index][0]}</a>)}</nav>
+        <div className="learningSteps">{path.steps.map((step, index) => { const text = content[2][index], id = `${path.id}-${step.id}`; return <article className="learningStep" id={`step-${id}`} key={id}>
+          <div className="learningStepTitle"><span>{String(index + 1).padStart(2, "0")}</span><h3>{text[0]}</h3></div><p>{text[1]}</p>
+          {step.network && <NetworkSettings ui={ui} />}
+          {step.command && <GuideCode ui={ui} code={command(step.command)} title={selected === 1 ? ui.localOnly : step.command === "consensus" ? "make · dry-run" : ui.readOnly} />}
+          {path.id === "node" && step.id === "source" && <details className="learningHelp learningSourcePackage"><summary>{ui.sourceZip} · 107.2 MB</summary><p>{ui.zipHelp}</p><a className="learningTextLink" href={LEARNING_SOURCE_DOWNLOAD.url} download>{ui.sourceZip}<ArrowRight size={16}/></a><GuideCode ui={ui} code={LEARNING_HASH_COMMANDS[platform]} title={ui.verifyPackage}/><p><strong>SHA-256</strong><br/><code dir="ltr">{LEARNING_SOURCE_DOWNLOAD.sha256}</code></p></details>}
+          <div className="learningExpected"><strong>{ui.expected}</strong><p>{text[2]}</p></div><details className="learningHelp"><summary>{ui.help}</summary><p>{text[3]}</p></details>
+          <div className="learningStepActions">{step.href && <a href={step.href} target={step.href.startsWith("https:") ? "_blank" : undefined} rel={step.href.startsWith("https:") ? "noopener noreferrer" : undefined}>{ui.open}<ArrowRight size={16} aria-hidden="true" /></a>}<label><input type="checkbox" checked={progress.includes(id)} onChange={() => toggle(id)} />{ui.mark}</label></div>
+          <nav className="learningNext" aria-label={text[0]}>{index > 0 && <a href={`#step-${path.id}-${path.steps[index - 1].id}`}>{ui.previous}</a>}{index < path.steps.length - 1 && <a href={`#step-${path.id}-${path.steps[index + 1].id}`}>{ui.next}<ArrowRight size={15} aria-hidden="true" /></a>}</nav>
+        </article>; })}</div>
       </div>
-    </section>
-
-    <div className="manualChapters" aria-label="Windows, macOS, Linux">
-      {platformGuides.map((guide) => <section className="manualChapter" id={`quickstart-${guide.id}`} key={guide.id}>
-        <header><span className="manualChapterIcon"><Server aria-hidden="true" /></span><div>
-          <p className="sectionEyebrow">{guide.name} · {copy.platform[0]}</p>
-          <h2>{guide.name} · {copy.platform[1]}</h2>
-          <p>{copy.platform[2]}</p>
-        </div></header>
-        <ol className="manualChecklist">{copy.platform.slice(2).map((item, index) => <li key={item}><span>{String(index + 1).padStart(2, "0")}</span><p>{item}</p></li>)}</ol>
-        <dl className="manualFacts">
-          <div><dt>SHA-256</dt><dd><code>{guide.verifyCommand}</code></dd></div>
-          <div><dt>6423 / 0x1917 / YNXT</dt><dd>{copy.platform[3]}</dd></div>
-        </dl>
-        <pre className="manualCode"><code>{guide.quickCommand}</code></pre>
-        <div className="guideActions"><CopyCommandButton command={guide.quickCommand} label="Copy" copiedLabel="✓" manualLabel="Select" /></div>
-        <aside className="manualWarning"><CircleAlert /><p>{copy.warning}</p></aside>
-      </section>)}
-    </div>
-
-    <div className="manualChapters">{localizedChapters.map((chapter) => { const Icon = chapter.icon; return <section className="manualChapter" id={chapter.id} key={chapter.id}>
-      <header><span className="manualChapterIcon"><Icon aria-hidden="true" /></span><div><p className="sectionEyebrow">{chapter.id}</p><h2>{chapter.title}</h2><p>{chapter.lead}</p></div></header>
-      <dl className="manualFacts">{copy.facts.map((value) => <div key={value}><dt>YNX</dt><dd>{value}</dd></div>)}</dl>
-      <ol className="manualChecklist">{chapter.steps.map((item, index) => <li key={item}><span>{String(index + 1).padStart(2, "0")}</span><p>{item}</p></li>)}</ol>
-      <aside className="manualWarning"><CircleAlert /><p>{chapter.warning}</p></aside>
-    </section>; })}</div>
-
-    <section className="recoverySection" aria-labelledby="recovery-title"><div className="recoveryIntro"><RefreshCw aria-hidden="true" /><p className="sectionEyebrow">Recovery</p><h2 id="recovery-title">{copy.chapters.recovery.title}</h2><p>{copy.chapters.recovery.lead}</p></div><div className="recoveryList">{copy.recovery.map((text, index) => <article key={text}><h3>{String(index + 1).padStart(2, "0")}</h3><p>{text}</p></article>)}</div></section>
-
-    <section className="supportCallout" aria-labelledby="manual-support"><ShieldCheck aria-hidden="true" /><div><p className="sectionEyebrow">Security</p><h2 id="manual-support">{copy.hero[0]}</h2><p>{copy.warning}</p></div><div><a href="/security"><CircleAlert /> Security</a><a href="/support"><LifeBuoy /> Support</a></div></section>
+    </section><aside className="learningNetworkNote"><strong>{ui.current}</strong><p>{ui.networkNotice}</p><p>{ui.sourceNotice}</p><small>{ui.source}: <code dir="ltr">{LEARNING_SOURCE}</code></small></aside>
   </main>;
 }
+export function NetworkSettings({ ui }) { return <dl className="learningNetworkSettings">{[[ui.networkName,"YNX Testnet"],[ui.networkId,"6423 / 0x1917"],[ui.rpc,"https://evm.ynxweb4.com"],[ui.symbol,"YNXT"],[ui.decimals,"18"],[ui.explorer,"https://explorer.ynxweb4.com"]].map(([label,value]) => <div key={label}><dt>{label}</dt><dd><code dir="ltr">{value}</code></dd></div>)}</dl>; }

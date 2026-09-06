@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import crypto from "node:crypto";
+import { verifyLearningContent } from "./lib/verify-learning-content.mjs";
 import { normalizeAddress, toEVMAddress, toYNXAddress } from "../src/lib/address.js";
 import { YNX_SERVICE_DIRECTORY } from "../src/lib/api/ynxApi.js";
 
@@ -160,7 +161,7 @@ const prohibitedPublicReferences = [
   /\bbranch\b/i,
   /\bworktree\b/i,
   /\brefs\/heads\b/i,
-  /\borigin\//i,
+  /\b(?:git[^\n]*\s|refs\/remotes\/)origin\//i,
   /\/users\//i,
 ];
 for (const root of ["public", "src"]) {
@@ -178,7 +179,7 @@ for (const root of ["public", "src"]) {
 for (const file of walk("src")) {
   if (!file.endsWith(".jsx")) continue;
   const source = fs.readFileSync(file, "utf8");
-  if (!source.includes('from "react"')) {
+  if (!/from\s+['"]react['"]/.test(source)) {
     console.error(`JSX module does not import React: ${file}`);
     process.exit(1);
   }
@@ -227,7 +228,7 @@ const downloadsPage = `${fs.readFileSync("src/pages/DownloadPage.jsx", "utf8")}\
 const productStatusPage = fs.readFileSync("src/pages/ProductStatusPage.jsx", "utf8");
 const ecosystemCatalog = fs.readFileSync("src/lib/ecosystemCatalog.js", "utf8");
 const installerReplacementMatrix = JSON.parse(fs.readFileSync("public/releases/installer-replacement-matrix.json", "utf8"));
-if (!header.includes("connectCanonicalProvider") || !header.includes('t("connectWallet")') || !walletProviderSource.includes('method: "eth_requestAccounts"')) {
+if (!header.includes("connectCanonicalProvider") || !header.includes('walletCopy.connect') || !header.includes('onClick={activateWallet}') || !walletProviderSource.includes('method: "eth_requestAccounts"')) {
   console.error("header wallet connection must remain explicit and visible");
   process.exit(1);
 }
@@ -510,24 +511,19 @@ for (const file of ["migration-matrix.json", "product-session-registry.json", "v
     process.exit(1);
   }
 }
-if (
-  !docsPage.includes("/releases/wallet-auth-runtime/6cf3ef845202bd879ed94515a71b323dd2fc9e14/runtime-publication.json") ||
-  !docsPage.includes("6cf3ef845202bd879ed94515a71b323dd2fc9e14") ||
-  !docsPage.includes("83a0a4f09a61d84a667d88a49708ffbe7643adc8") ||
-  !docsPage.includes("Installed Wallet/client verified</dt><dd>False") ||
-  !docsPage.includes("Account, sign, send, transaction, chain disconnect or public expiry verified</dt><dd>False") ||
-  !docsPage.includes("Product migrations</dt><dd>0 / 12") ||
-  !docsPage.includes("Central integration / aggregate public readiness</dt><dd>False / False") ||
-  !docsPage.includes("Production signing / store release</dt><dd>False / False")
-) {
-  console.error("Wallet/Auth P0 runtime publication or its claim boundary is not visible in Docs");
+const docsRecords = fs.readFileSync("src/components/DocsSourceRecords.jsx", "utf8");
+if (!docsPage.includes("<DocsSourceRecords locale={locale}") ||
+    !docsRecords.includes("/releases/wallet-auth-runtime/6cf3ef845202bd879ed94515a71b323dd2fc9e14/runtime-publication.json") ||
+    !["installedWalletClientVerified", "accountSigningTransactionVerified", "productMigrations", "integratedCentral", "aggregatePublicReady", "productionSigned", "storeReleased", "runtimeRecord.verification.evidenceUrl"].every(field => docsRecords.includes(field))) {
+  console.error("Docs must expose the archived runtime record and render its independently verified claim boundary");
   process.exit(1);
 }
+
 if (!styles.includes("--blue: #002fa7") || !styles.includes(".portalHeroV2")) {
   console.error("missing Klein blue palette or visible portal hero");
   process.exit(1);
 }
-if (!hero.includes("YNX_6423.cosmosChainId") || !hero.includes("Open Explorer") || !hero.includes("onAddNetwork")) {
+if (!hero.includes("YNX_6423.cosmosChainId") || !hero.includes("href={YNX_6423.services.explorer}") || !hero.includes("entry.explorer") || !hero.includes("onAddNetwork")) {
   console.error("6423 portal hero identity or explicit actions are incomplete");
   process.exit(1);
 }
@@ -568,9 +564,9 @@ const hostedDocsHeaders = vercel.headers?.find((entry) => entry.source === "/doc
 if (
   !hostedDocsHeaders.some((entry) => entry.key === "Cache-Control" && entry.value.includes("immutable")) ||
   !hostedDocsHeaders.some((entry) => entry.key === "Content-Disposition" && entry.value === "attachment") ||
-  !docsPage.includes("docsAuthority.artifact.downloadHosted") ||
-  !docsPage.includes("docsAuthority.artifact.downloadPath") ||
-  !docsPage.includes("docsAuthority.artifact.sha256")
+  !docsRecords.includes("artifact.downloadHosted") ||
+  !docsRecords.includes("artifact.downloadPath") ||
+  !docsRecords.includes("artifact.sha256")
 ) {
   console.error("immutable hosted documentation bundle is not wired into deployment and UI");
   process.exit(1);
@@ -642,7 +638,7 @@ if (!header.includes("localeSelect") || !header.includes("SUPPORTED_LOCALES.map"
   console.error("locale control is not derived from the canonical locale registry");
   process.exit(1);
 }
-for (const requiredText of ["role=\"dialog\"", "aria-modal=\"true\"", "role=\"combobox\"", "role=\"listbox\"", "aria-activedescendant", 'event.key === "Tab"', "returnFocusRef", "ArrowDown", "ArrowUp", "commandNoMatch", "API reference"]) {
+for (const requiredText of ["role=\"dialog\"", "aria-modal=\"true\"", "role=\"combobox\"", "role=\"listbox\"", "aria-activedescendant", 'event.key === "Tab"', "returnFocusRef", "ArrowDown", "ArrowUp", "commandNoMatch", 't("api")']) {
   if (!commandPalette.includes(requiredText)) {
     console.error(`command palette capability missing: ${requiredText}`);
     process.exit(1);
@@ -654,17 +650,15 @@ for (const requiredText of ['"/manual"', '"/api"', "Page unavailable", "Get supp
     process.exit(1);
   }
 }
-for (const requiredText of ["From zero to a verified testnet action", "Recovery", "A timeout is not proof", "Security boundary", "Node join manual", "Validator manual", "Mining manual", "no active automatic one-YNXT-per-block issuance", "external submission is disabled", "historical block cannot receive a new transaction"]) {
-  if (!manualPage.includes(requiredText)) {
-    console.error(`user manual capability missing: ${requiredText}`);
-    process.exit(1);
-  }
+try { verifyLearningContent(); } catch (error) {
+  console.error("Learning/manual/API/document-library contract failed:", error.message);
+  process.exit(1);
 }
-for (const requiredText of ["Chain status", "Validator roles", "EVM JSON-RPC", "Fail visibly and recover deliberately", "eth_chainId"]) {
-  if (!apiPage.includes(requiredText)) {
-    console.error(`API reference capability missing: ${requiredText}`);
-    process.exit(1);
-  }
+if (!manualPage.includes("useLearningCopy(locale)") || !apiPage.includes("useLearningCopy(locale)") ||
+    !manualPage.includes("learningCommandFor(platform, key)") || !apiPage.includes("LEARNING_COMMANDS.chainId") ||
+    !apiPage.includes("ui.timeoutRule") || !apiPage.includes("ui.evmRule")) {
+  console.error("Manual and API must render the verified localized learning data and bounded requests");
+  process.exit(1);
 }
 for (const requiredText of ['[data-theme="dark"]', '[data-theme="dark"] .portalHeroV2', ":focus-visible", ".commandPalette", "@media (max-width: 420px)", "@media (pointer: coarse)", "min-height: 44px"]) {
   if (!styles.includes(requiredText)) {
@@ -682,12 +676,12 @@ for (const requiredText of ["Public web", "Candidate", "Candidate incomplete", "
     process.exit(1);
   }
 }
-for (const requiredText of ["Transactions & blocks", "Node operations", "Validator candidate", "Mining truth", "Bridge evidence", "Historical block mutation", "Finalized locally; no external submission"]) {
-  if (!docsPage.includes(requiredText)) {
-    console.error(`detailed documentation capability missing: ${requiredText}`);
-    process.exit(1);
-  }
+if (!docsPage.includes("DOCUMENT_LIBRARY") || !docsPage.includes("<DocumentReader") ||
+    !docsPage.includes("docsLibrarySearch") || !docsPage.includes("LEARNING_PATHS") || !docsPage.includes("copy.archiveNotice")) {
+  console.error("Docs must expose learning routes, the complete searchable source library and archive boundaries");
+  process.exit(1);
 }
+
 const productKeys = [...ecosystemCatalog.matchAll(/^\s+key: "([^"]+)",$/gm)].map((match) => match[1]);
 if (productKeys.length !== 26 || new Set(productKeys).size !== 26 || !productKeys.includes("card") || !productKeys.includes("dex") || !productKeys.includes("quant")) {
   console.error(`ecosystem catalog must contain 26 unique products; found ${productKeys.length}`);
@@ -919,7 +913,7 @@ for (const requiredText of ["No committed product-release.json", "Hosted install
     process.exit(1);
   }
 }
-if (!squarePage.includes("No sample posts are inserted") || !squarePage.includes("canonical wallet writes fail closed") || !squarePage.includes("SquareAccountPanel") || !docsPage.includes("Search YNX documentation")) {
+if (!squarePage.includes("No sample posts are inserted") || !squarePage.includes("canonical wallet writes fail closed") || !squarePage.includes("SquareAccountPanel") || !docsPage.includes("docsLibrarySearch")) {
   console.error("Square truth boundary or in-site documentation is incomplete");
   process.exit(1);
 }

@@ -38,18 +38,18 @@ export function canonicalProviderEntry(provider, info = {}) {
   return identity.accepted ? Object.freeze({ provider, info: Object.freeze({ ...info }), identity }) : null;
 }
 
-export function collectCanonicalInjectedProviders(target = globalThis.window) {
+export function collectCanonicalInjectedProviders(target = globalThis.window, { includeExternal = false } = {}) {
   const injected = target?.ethereum;
   if (!injected) return [];
   const candidates = Array.isArray(injected.providers) && injected.providers.length ? injected.providers : [injected];
-  return uniqueProviders(candidates.map((provider) => canonicalProviderEntry(provider)).filter(Boolean));
+  return uniqueProviders(candidates.map((provider) => canonicalProviderEntry(provider)).filter(entry => entry && (includeExternal || entry.identity.kind === "ynx")));
 }
 
-export function discoverCanonicalProviders({ target = globalThis.window, onChange = () => {}, fallbackDelay = 160 } = {}) {
+export function discoverCanonicalProviders({ target = globalThis.window, onChange = () => {}, fallbackDelay = 160, includeExternal = false } = {}) {
   if (!target?.addEventListener || !target?.dispatchEvent) return () => {};
   let providers = [];
   const publish = (entry) => {
-    if (!entry || providers.some((candidate) => candidate.provider === entry.provider)) return;
+    if (!entry || (!includeExternal && entry.identity.kind !== "ynx") || providers.some((candidate) => candidate.provider === entry.provider)) return;
     providers = [...providers, entry];
     onChange([...providers]);
   };
@@ -57,7 +57,7 @@ export function discoverCanonicalProviders({ target = globalThis.window, onChang
   target.addEventListener("eip6963:announceProvider", onAnnounce);
   target.dispatchEvent(new Event("eip6963:requestProvider"));
   const timer = target.setTimeout?.(() => {
-    for (const entry of collectCanonicalInjectedProviders(target)) publish(entry);
+    for (const entry of collectCanonicalInjectedProviders(target, { includeExternal })) publish(entry);
     onChange([...providers]);
   }, fallbackDelay);
   return () => {
@@ -66,8 +66,8 @@ export function discoverCanonicalProviders({ target = globalThis.window, onChang
   };
 }
 
-export async function connectCanonicalProvider(entry) {
-  const provider = requireCanonicalProvider(entry);
+export async function connectCanonicalProvider(entry, { basicConnection = false } = {}) {
+  const provider = requireCanonicalProvider(entry, basicConnection);
   const accounts = await provider.request({ method: "eth_requestAccounts" });
   const account = Array.isArray(accounts) ? accounts[0] : undefined;
   if (!isEVMAccount(account)) throw new Error("The selected wallet did not return a canonical EVM account.");
@@ -75,8 +75,8 @@ export async function connectCanonicalProvider(entry) {
   return Object.freeze({ account: account.toLowerCase(), chainId, identity: entry.identity, provider });
 }
 
-export async function switchCanonicalProviderToYNX(entry, networkParams) {
-  const provider = requireCanonicalProvider(entry);
+export async function switchCanonicalProviderToYNX(entry, networkParams, { basicConnection = false } = {}) {
+  const provider = requireCanonicalProvider(entry, basicConnection);
   try {
     await provider.request({ method: "wallet_switchEthereumChain", params: [{ chainId: YNX_EVM_CHAIN_ID }] });
   } catch (error) {
@@ -89,8 +89,8 @@ export async function switchCanonicalProviderToYNX(entry, networkParams) {
   return chainId;
 }
 
-export function subscribeCanonicalProvider(entry, onState) {
-  const provider = requireCanonicalProvider(entry);
+export function subscribeCanonicalProvider(entry, onState, { basicConnection = false } = {}) {
+  const provider = requireCanonicalProvider(entry, basicConnection);
   if (typeof provider.on !== "function") return () => {};
   const onAccountsChanged = (accounts) => onState({ type: "accountsChanged", accounts: Array.isArray(accounts) ? accounts.filter(isEVMAccount).map((account) => account.toLowerCase()) : [] });
   const onChainChanged = (chainId) => {
@@ -151,9 +151,10 @@ export function clearLegacyLocalSignerData({ storage = globalThis.localStorage, 
   return detail;
 }
 
-function requireCanonicalProvider(entry) {
-  if (!entry?.identity?.accepted || !entry.provider || typeof entry.provider.request !== "function") {
-    throw new Error("A canonical YNX Wallet or MetaMask provider is required.");
+function requireCanonicalProvider(entry, basicConnection = false) {
+  const actual = walletIdentity(entry?.provider, entry?.info);
+  if (!entry?.identity?.accepted || !actual.accepted || entry.identity.kind !== actual.kind || !entry.provider || typeof entry.provider.request !== "function" || (!basicConnection && actual.kind !== "ynx")) {
+    throw new Error("YNX Wallet is required to connect this account.");
   }
   return entry.provider;
 }

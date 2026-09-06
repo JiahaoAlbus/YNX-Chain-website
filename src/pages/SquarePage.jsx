@@ -44,14 +44,14 @@ export function SquarePage({ path }) {
         </div>
       </header>
 
-      <div className="squareBoundary"><ShieldCheck /><span><strong>Public reads live · canonical wallet writes fail closed</strong>The website never creates or unlocks signing keys. Account access, chain changes, signatures, and transactions belong to the selected YNX Wallet or MetaMask provider.</span>{updatedAt && <time dateTime={updatedAt}>Updated {formatTime(updatedAt)}</time>}</div>
+      <div className="squareBoundary"><ShieldCheck /><span><strong>Public reads live · canonical wallet writes fail closed</strong>The website never creates or unlocks signing keys. Account access, chain changes, signatures, and transactions belong to the selected YNX Wallet provider.</span>{updatedAt && <time dateTime={updatedAt}>Updated {formatTime(updatedAt)}</time>}</div>
 
       {!postId && <SquareAccountPanel />}
 
       {state === "loading" && <section className="squareLoading" aria-live="polite"><span /><span /><span /></section>}
       {state === "error" && <section className="squareEmpty error" aria-live="polite"><AlertCircle /><h2>Square is unavailable</h2><p>{data?.error || "The live feed could not be reached."}</p><button className="button primary" onClick={refresh}>Try again</button></section>}
       {state === "ready" && postId && <PostDetail data={data} />}
-      {state === "ready" && !postId && posts.length === 0 && <section className="squareEmpty"><MessageCircle /><h2>The public feed is empty.</h2><p>No sample posts are inserted. Publishing remains unavailable until Square accepts an explicit canonical YNX Wallet or MetaMask provider session.</p></section>}
+      {state === "ready" && !postId && posts.length === 0 && <section className="squareEmpty"><MessageCircle /><h2>The public feed is empty.</h2><p>No sample posts are inserted. Publishing remains unavailable until Square accepts an explicit canonical YNX Wallet provider session.</p></section>}
       {state === "ready" && !postId && posts.length > 0 && <section className="squareFeed" aria-label="Square public feed">{posts.map((post) => <Post key={post.id} post={post} />)}</section>}
     </main>
   );

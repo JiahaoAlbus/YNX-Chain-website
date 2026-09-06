@@ -1,16 +1,20 @@
 import React from "react";
 import { ExternalLink, Menu, Search, WalletCards, X } from "lucide-react";
-import { lazy, Suspense, useEffect, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { apiConfig, networkParams, YNX_6423 } from "../lib/api/ynxApi.js";
 import { SUPPORTED_LOCALES, useLocale } from "../lib/i18n.jsx";
 import { connectCanonicalProvider, discoverCanonicalProviders, subscribeCanonicalProvider, switchCanonicalProviderToYNX } from "../lib/walletProvider.js";
+import { getWalletEntryCopy } from "../content/walletEntryContent.js";
+import { getContactCopy } from "../content/contactLocaleContent.js";
+import { normalizeYNXAddress } from "../lib/addressCodec.js";
+import { getAddressCopy } from "../content/addressCopy.js";
 
 const CommandPalette = lazy(() => import("./CommandPalette.jsx").then((module) => ({ default: module.CommandPalette })));
 
 const navigation = [
   ["blockchain", "/blockchain"], ["tokens", "/tokens"], ["data", "/data"],
   ["governance", "/governance"], ["ecosystem", "/ecosystem"], ["developers", "/developers"],
-  ["downloads", "/downloads"], ["docs", "/docs"], ["more", "/more"]
+  ["downloads", "/downloads"], ["docs", "/docs"], ["manual", "/manual"], ["api", "/api"], ["contact", "/contact"], ["more", "/more"]
 ];
 
 const localeLabels = {
@@ -19,12 +23,17 @@ const localeLabels = {
   ar: "العربية", id: "Bahasa Indonesia"
 };
 
-export function SiteHeader({ scrollProgress = 0, networkRequest = 0 }) {
+export function SiteHeader({ networkRequest = 0 }) {
   const { locale, setLocale, t } = useLocale();
+  const walletCopy = getWalletEntryCopy(locale);
+  const contactCopy = getContactCopy(locale);
+  const addressCopy = getAddressCopy(locale);
   const [open, setOpen] = useState(false);
   const [commandOpen, setCommandOpen] = useState(false);
   const [wallet, setWallet] = useState({ state: "idle" });
   const [providers, setProviders] = useState([]);
+  const ynxProviders = providers.filter(entry => entry.identity.kind === "ynx");
+  const externalProviders = providers.filter(entry => entry.identity.kind !== "ynx");
   const [walletMenuOpen, setWalletMenuOpen] = useState(false);
   const [walletIntent, setWalletIntent] = useState("connect");
   const connectionAttempt = useRef(0);
@@ -34,7 +43,23 @@ export function SiteHeader({ scrollProgress = 0, networkRequest = 0 }) {
   const commandReturnFocusRef = useRef(null);
   const walletButtonRef = useRef(null);
   const walletMenuRef = useRef(null);
+  const progressRef = useRef(null);
   const theme = "light";
+
+  useEffect(() => {
+    let frame = 0;
+    const paint = () => {
+      frame = 0;
+      const available = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = available > 0 ? Math.min(1, Math.max(0, window.scrollY / available)) : 0;
+      if (progressRef.current) progressRef.current.style.transform = `scaleX(${progress})`;
+    };
+    const schedule = () => { if (!frame) frame = requestAnimationFrame(paint); };
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule, { passive: true });
+    paint();
+    return () => { cancelAnimationFrame(frame); window.removeEventListener("scroll", schedule); window.removeEventListener("resize", schedule); };
+  }, []);
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
@@ -76,7 +101,7 @@ export function SiteHeader({ scrollProgress = 0, networkRequest = 0 }) {
     };
   }, [walletMenuOpen]);
 
-  useEffect(() => discoverCanonicalProviders({ onChange: setProviders }), []);
+  useEffect(() => discoverCanonicalProviders({ onChange: setProviders, includeExternal: true }), []);
 
   useEffect(() => {
     if (!networkRequest) return;
@@ -98,7 +123,7 @@ export function SiteHeader({ scrollProgress = 0, networkRequest = 0 }) {
         if (event.type === "chainChanged") return { ...current, chainId: event.chainId };
         return current;
       });
-    });
+    }, { basicConnection: entry.identity.kind !== "ynx" });
   }, [wallet.walletProvider]);
 
   const connectWallet = async (entry) => {
@@ -110,7 +135,7 @@ export function SiteHeader({ scrollProgress = 0, networkRequest = 0 }) {
     setWallet({ state: "connecting" });
     try {
       // Account access is requested only after the visitor explicitly presses this button.
-      const { account, chainId } = await connectCanonicalProvider(entry);
+      const { account, chainId } = await connectCanonicalProvider(entry, { basicConnection: entry.identity.kind !== "ynx" });
       if (attempt !== connectionAttempt.current) return;
       setWallet({
         state: "connected",
@@ -132,11 +157,11 @@ export function SiteHeader({ scrollProgress = 0, networkRequest = 0 }) {
       setWalletMenuOpen((openState) => !openState);
       return;
     }
-    if (providers.length === 1) {
-      connectWallet(providers[0]);
+    if (ynxProviders.length === 1) {
+      connectWallet(ynxProviders[0]);
       return;
     }
-    if (providers.length > 1) {
+    if (ynxProviders.length > 1) {
       setWalletMenuOpen((openState) => !openState);
       return;
     }
@@ -158,7 +183,7 @@ export function SiteHeader({ scrollProgress = 0, networkRequest = 0 }) {
   const switchToYNX = async (entry = wallet.walletProvider) => {
     if (!entry?.provider?.request) return;
     try {
-      await switchCanonicalProviderToYNX(entry, networkParams());
+      await switchCanonicalProviderToYNX(entry, networkParams(), { basicConnection: entry.identity.kind !== "ynx" });
     } catch {
       setWallet((current) => ({ ...current, state: "error", message: t("walletNetworkFailed") }));
       return;
@@ -168,11 +193,19 @@ export function SiteHeader({ scrollProgress = 0, networkRequest = 0 }) {
     closeWalletMenu(true);
   };
 
+  const walletAddress = useMemo(() => {
+    if (wallet.state !== "connected") return null;
+    try { return normalizeYNXAddress(wallet.account); } catch { return null; }
+  }, [wallet.state, wallet.account]);
+  const shortAddress = walletAddress ? `${walletAddress.ynxAddress.slice(0, 8)}…${walletAddress.ynxAddress.slice(-6)}` : addressCopy.unavailable;
+  const connectedProviderLabel = `${wallet.provider}${wallet.walletProvider?.identity.kind !== "ynx" ? ` · ${walletCopy.basic}` : ""}`;
   const walletLabel = wallet.state === "connected"
-    ? `${wallet.provider} · ${wallet.account.slice(0, 6)}…${wallet.account.slice(-4)}`
+    ? `${shortAddress} · ${connectedProviderLabel}`
     : wallet.state === "connecting" ? t("connectingWallet")
-      : wallet.state === "unavailable" ? t("walletUnavailable")
-        : wallet.state === "error" ? wallet.message : t("connectWallet");
+      : wallet.state === "unavailable" ? walletCopy.unavailable
+        : wallet.state === "error" ? wallet.message : walletCopy.connect;
+  const walletAccessibleLabel = wallet.state === "connected" && walletAddress
+    ? `${connectedProviderLabel} · ${addressCopy.native}: ${walletAddress.ynxAddress}` : walletLabel;
 
   useEffect(() => {
     const onKeyDown = (event) => {
@@ -192,28 +225,36 @@ export function SiteHeader({ scrollProgress = 0, networkRequest = 0 }) {
     <>
       <a className="skipLink" href="#main-content">{t("skip")}</a>
       <header className="siteHeader">
-        <span className="scrollProgress" style={{ transform: `scaleX(${scrollProgress})` }} aria-hidden="true" />
+        <span ref={progressRef} className="scrollProgress" aria-hidden="true" />
         <a className="brand" href="/" aria-label={t("home")}><img src="/ynx-logo.png" alt="" /><small>CHAIN</small></a>
         <nav ref={navRef} id="primary-navigation" className={open ? "open" : ""} aria-label={t("primaryNav")}>
-          {navigation.map(([key, href]) => <a className={["ecosystem", "developers", "docs", "downloads"].includes(key) ? "primaryNavItem" : "secondaryNavItem"} key={key} href={href} onClick={() => setOpen(false)}>{t(key)}</a>)}
+          {navigation.map(([key, href]) => <a className={["ecosystem", "manual", "api", "docs", "downloads"].includes(key) ? "primaryNavItem" : "secondaryNavItem"} key={key} href={href} onClick={() => setOpen(false)}>{key === "contact" ? contactCopy.nav : key === "manual" ? contactCopy.manual : key === "api" ? contactCopy.api : t(key)}</a>)}
           <a className="navExplorer secondaryNavItem" href={apiConfig.explorerUrl} aria-label={`${t("explorer")} — external site`}>{t("openExplorer")} <ExternalLink size={14} /></a>
         </nav>
         <div className="headerTools">
           <button ref={searchButtonRef} type="button" className="toolButton searchButton" onClick={() => { commandReturnFocusRef.current = searchButtonRef.current; setCommandOpen(true); }} aria-label={t("searchOpen")} aria-haspopup="dialog" aria-expanded={commandOpen} aria-controls="command-palette">
             <Search /><span>{t("search")}</span><kbd>⌘K</kbd>
           </button>
-          <button ref={walletButtonRef} type="button" className={`walletConnect ${wallet.state}`} onClick={activateWallet} aria-haspopup="dialog" aria-expanded={walletMenuOpen} aria-controls="wallet-connection-dialog" aria-label={walletLabel} title={walletLabel}>
-            <WalletCards /><span>{walletLabel}</span>
+          <button ref={walletButtonRef} type="button" className={`walletConnect ${wallet.state}`} onClick={activateWallet} aria-haspopup="dialog" aria-expanded={walletMenuOpen} aria-controls="wallet-connection-dialog" aria-label={walletAccessibleLabel} title={walletAccessibleLabel}>
+            <WalletCards /><span>{wallet.state === "connected" && walletAddress ? <><bdi dir="ltr">{shortAddress}</bdi> · {connectedProviderLabel}</> : walletLabel}</span>
           </button>
-          <span className="visuallyHidden" role="status" aria-live="polite">{walletLabel}</span>
+          <span className="visuallyHidden" role="status" aria-live="polite">{walletAccessibleLabel}</span>
           {walletMenuOpen ? <div ref={walletMenuRef} id="wallet-connection-dialog" className="walletMenu" role="dialog" aria-label={t("walletMenu")} onKeyDown={onWalletMenuKeyDown}>
             <div className="walletMenuHeader"><strong>{t("walletMenu")}</strong><button type="button" className="walletMenuClose" onClick={() => closeWalletMenu(true)} aria-label={t("commandClose")}><X /></button></div>
-            {!providers.length ? <><p>{t("walletUnavailable")}</p><a href="/dapp/wallet/open-download">YNX Wallet</a></> : walletIntent === "network" ? <><p>{t("switchTo6423")}</p>{providers.map((entry, index) => <button type="button" key={index} onClick={() => switchToYNX(entry)}>{entry.identity.label}</button>)}</> : wallet.state === "connected" ? <>
-              <p><strong>{wallet.provider}</strong><span>{wallet.account}</span></p>
+            {wallet.state === "connected" && walletIntent !== "network" ? <>
+              <p><strong>{wallet.provider}</strong></p>
+              {walletAddress ? <>
+                <p><strong>{addressCopy.native}</strong><span><bdi dir="ltr">{walletAddress.ynxAddress}</bdi></span></p>
+                <details className="otherWallets"><summary>{addressCopy.details}</summary><p><strong>{addressCopy.evm}</strong><span><bdi dir="ltr">{walletAddress.evmAddress}</bdi></span></p><p>{addressCopy.sameAccount}</p></details>
+              </> : <p role="status">{addressCopy.unavailable}</p>}
+              {wallet.walletProvider.identity.kind !== "ynx" && <p>{walletCopy.limits}<a href={`/dapp/wallet/open-download?lang=${encodeURIComponent(locale)}`}>{walletCopy.download}</a></p>}
               <p className={wallet.chainId === YNX_6423.evmChainId ? "walletNetwork ready" : "walletNetwork"}>{t("walletNetwork")}: {wallet.chainId || t("unavailable")}</p>
               {wallet.chainId !== YNX_6423.evmChainId ? <button type="button" onClick={() => switchToYNX()}>{t("switchTo6423")}</button> : null}
               <button type="button" className="quiet" onClick={() => { connectionAttempt.current += 1; setWallet({ state: "idle" }); closeWalletMenu(true); }}>{t("disconnectWallet")}</button>
-            </> : providers.map((entry, index) => <button type="button" key={`${entry.info.uuid || entry.identity.rdns}-${index}`} onClick={() => connectWallet(entry)}>{entry.identity.label}</button>)}
+            </> : <>
+              {!ynxProviders.length ? <><p>{walletCopy.help}</p><a href={`/dapp/wallet/open-download?lang=${encodeURIComponent(locale)}`}>{walletCopy.download}</a></> : ynxProviders.map((entry, index) => <button type="button" key={index} onClick={() => walletIntent === "network" ? switchToYNX(entry) : connectWallet(entry)}>{walletIntent === "network" ? t("switchTo6423") : walletCopy.connect}</button>)}
+              {externalProviders.length > 0 && <details className="otherWallets"><summary>{walletCopy.other}</summary><p>{walletCopy.limits}</p>{externalProviders.map((entry, index) => <button type="button" className="quiet" key={index} onClick={() => walletIntent === "network" ? switchToYNX(entry) : connectWallet(entry)}>{entry.identity.label} · {walletCopy.basic}</button>)}</details>}
+            </>}
           </div> : null}
           <label className="localeSelect" aria-label={t("language")}>
             <span className="visuallyHidden">{t("language")}</span>

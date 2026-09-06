@@ -13,7 +13,7 @@ export const PORTAL_COPY = {
     "/governance": portal("Governance", "Governance data is never inferred.", "There is no verified public governance index for 6423 yet, so proposals, votes and parameters remain unavailable.", ["No verified proposal endpoint is configured.", "Sample votes are never shown as current facts.", "Documentation and source remain available."], ["Open governance source", "Read Docs"]),
     "/ecosystem": portal("YNX Ecosystem", "Choose a product by the job you need to do.", "Wallet, DeFi, Payments, Developer, AI, Social, Data, Media, Commerce and Infrastructure keep independent status labels.", ["Source code does not prove public deployment.", "Testnet, Preview and Unavailable stay visible.", "YNX Wallet and MetaMask compatibility remain distinct."], ["Open ecosystem directory", "Check product status"]),
     "/developers": portal("Developer portal", "Build against one canonical Testnet identity.", "RPC, EVM, Explorer and Faucet are separate verified services; wallet connection, signing and sending never start automatically.", ["Cosmos: ynx_6423-1", "EVM: 6423 / 0x1917", "Native asset: YNXT"], ["Read Developer Docs", "Open Chain GitHub"]),
-    "/downloads": portal("Download center", "Install only verified releases.", "Platform, version, checksum and signing state must be explicit; candidates and unsigned builds are never presented as production.", ["Wallet and tools are separate products.", "Every enabled link must resolve to a real artifact.", "Read installation notes before replacement or import."], ["Open verified downloads", "Read installation manual"]),
+    "/downloads": portal("Ecosystem downloads", "Install only verified releases.", "Platform, version, checksum and signing state must be explicit; candidates and unsigned builds are never presented as production.", ["Wallet and tools are separate products.", "Every enabled link must resolve to a real artifact.", "Read installation notes before replacement or import."], ["Open verified downloads", "Read installation manual"]),
     "/more": portal("Project resources", "Every resource has a clear destination.", "Whitepaper, documentation, source, monitoring and official community channels are gathered here with external destinations marked.", ["Official website: ynxweb4.com", "Testnet only; no Mainnet claim", "Never share a recovery phrase, private key or password."], ["Read whitepaper", "Open GitHub", "Join Discord"]),
   },
   "zh-CN": {
@@ -24,7 +24,7 @@ export const PORTAL_COPY = {
     "/governance": portal("治理", "治理数据不会凭空推断。", "6423 暂无已核验公开治理索引，因此提案、投票和参数会保持不可用。", ["尚未配置已核验提案接口。", "不会把样例投票当作当前事实。", "文档与源码仍可查阅。"], ["打开治理源码", "阅读文档"]),
     "/ecosystem": portal("YNX 生态", "按要完成的任务选择产品。", "钱包、DeFi、支付、开发者、AI、社交、数据、媒体、商业和基础设施都独立标注状态。", ["有源码不代表已公网部署。", "Testnet、Preview 与 Unavailable 标签始终可见。", "YNX Wallet 与 MetaMask 兼容性明确区分。"], ["打开生态目录", "检查产品状态"]),
     "/developers": portal("开发者中心", "围绕唯一的测试网身份构建。", "RPC、EVM、Explorer 与 Faucet 分别核验；连接钱包、签名和发送绝不会自动触发。", ["Cosmos：ynx_6423-1", "EVM：6423 / 0x1917", "原生资产：YNXT"], ["阅读开发者文档", "打开 Chain GitHub"]),
-    "/downloads": portal("下载中心", "只安装能够核验的发布。", "平台、版本、校验和与签名状态必须明确；候选和未签名构建不得冒充正式版。", ["钱包与工具是独立产品。", "每个启用链接都必须指向真实工件。", "替换或导入前先阅读安装说明。"], ["打开已核验下载", "阅读安装手册"]),
+    "/downloads": portal("生态下载", "只安装能够核验的发布。", "平台、版本、校验和与签名状态必须明确；候选和未签名构建不得冒充正式版。", ["钱包与工具是独立产品。", "每个启用链接都必须指向真实工件。", "替换或导入前先阅读安装说明。"], ["打开已核验下载", "阅读安装手册"]),
     "/more": portal("项目资源", "每一项资源都有明确去向。", "白皮书、文档、源码、监控与官方社区集中展示，外部目的地会明确标注。", ["官方网站：ynxweb4.com", "仅为测试网，不宣称主网", "绝不分享助记词、私钥或密码。"], ["阅读白皮书", "打开 GitHub", "加入 Discord"]),
   },
   "zh-TW": {
@@ -35,7 +35,7 @@ export const PORTAL_COPY = {
     "/governance": portal("治理", "治理資料不會憑空推斷。", "6423 尚無已核驗公開治理索引，因此提案、投票與參數保持不可用。", ["尚未配置已核驗提案端點。", "不把範例投票當成目前事實。", "文件與原始碼仍可查閱。"], ["開啟治理原始碼", "閱讀文件"]),
     "/ecosystem": portal("YNX 生態", "依照要完成的工作選擇產品。", "錢包、DeFi、支付、開發者、AI、社交、資料、媒體、商業與基礎設施皆獨立標示狀態。", ["有原始碼不等於已公開部署。", "Testnet、Preview 與 Unavailable 標籤保持可見。", "YNX Wallet 與 MetaMask 相容性分開說明。"], ["開啟生態目錄", "檢查產品狀態"]),
     "/developers": portal("開發者中心", "針對唯一測試網身分建置。", "RPC、EVM、Explorer 與 Faucet 分別核驗；連接錢包、簽名與傳送不會自動觸發。", ["Cosmos：ynx_6423-1", "EVM：6423 / 0x1917", "原生資產：YNXT"], ["閱讀開發者文件", "開啟 Chain GitHub"]),
-    "/downloads": portal("下載中心", "只安裝可核驗的發布。", "平台、版本、校驗碼與簽署狀態必須明確；候選與未簽署構建不得冒充正式版。", ["錢包與工具是獨立產品。", "每個啟用連結都必須指向真實工件。", "替換或匯入前先閱讀安裝說明。"], ["開啟已核驗下載", "閱讀安裝手冊"]),
+    "/downloads": portal("生態下載", "只安裝可核驗的發布。", "平台、版本、校驗碼與簽署狀態必須明確；候選與未簽署構建不得冒充正式版。", ["錢包與工具是獨立產品。", "每個啟用連結都必須指向真實工件。", "替換或匯入前先閱讀安裝說明。"], ["開啟已核驗下載", "閱讀安裝手冊"]),
     "/more": portal("專案資源", "每項資源都有清楚去向。", "白皮書、文件、原始碼、監控與官方社群集中呈現，外部目的地會明確標示。", ["官方網站：ynxweb4.com", "僅為測試網，不宣稱主網", "絕不分享助記詞、私鑰或密碼。"], ["閱讀白皮書", "開啟 GitHub", "加入 Discord"]),
   },
 };
@@ -72,6 +72,12 @@ for (const [locale, copy] of Object.entries(commonLocalized)) {
   routeOrder.forEach((route, index) => {
     PORTAL_COPY[locale][route] = portal(routeNames[locale][index], copy.titles[index], copy.lead, [...copy.facts], [...copy.actions]);
   });
+}
+
+const ecosystemDownloadLabels = {"en":"Ecosystem downloads","zh-CN":"生态下载","zh-TW":"生態下載","ja":"エコシステムのダウンロード","ko":"생태계 다운로드","es":"Descargas del ecosistema","fr":"Téléchargements de l’écosystème","de":"Ökosystem-Downloads","pt":"Downloads do ecossistema","ru":"Загрузки экосистемы","ar":"تنزيلات المنظومة","id":"Unduhan ekosistem"};
+for (const [locale, label] of Object.entries(ecosystemDownloadLabels)) {
+  PORTAL_COPY[locale]["/downloads"].eyebrow = label;
+  PORTAL_COPY[locale]["/downloads"].title = label;
 }
 
 const chapterIds = ["network", "wallet", "ynxt", "explorer", "observer", "validator", "backup", "recovery", "mining", "bridge"];
