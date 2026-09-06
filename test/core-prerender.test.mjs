@@ -5,6 +5,7 @@ import test from "node:test";
 import { fileURLToPath } from "node:url";
 import {
   canonicalNetworkFacts,
+  canonicalProductRoute,
   coreRouteJsonLd,
   createCoreRouteEntries,
   renderCoreRouteBody,
@@ -17,7 +18,7 @@ const entries = createCoreRouteEntries(registry);
 
 test("core prerender definition covers every requested route and release-registry product", () => {
   assert.equal(verifyCoreRouteEntries(entries, registry), true);
-  for (const route of ["/", "/blockchain", "/tokens", "/data", "/governance", "/ecosystem", "/developers", "/downloads", "/more", "/manual", "/api", "/status", "/dapp", ...registry.products.map((product) => product.route)]) {
+  for (const route of ["/", "/blockchain", "/tokens", "/data", "/governance", "/ecosystem", "/developers", "/downloads", "/more", "/manual", "/api", "/status", "/dapp", ...registry.products.map(canonicalProductRoute)]) {
     assert.ok(entries.some((entry) => entry.route === route), route);
   }
 });
@@ -42,7 +43,7 @@ test("every static route has unique metadata, canonical JSON-LD, network truth, 
 
 test("product static routes preserve evidence boundaries from the release registry", () => {
   for (const product of registry.products) {
-    const entry = entries.find((candidate) => candidate.route === product.route);
+    const entry = entries.find((candidate) => candidate.route === canonicalProductRoute(product));
     const body = renderCoreRouteBody(entry);
     assert.ok(entry.product);
     assert.match(body, new RegExp(product.centralAccepted === true ? "Central accepted</dt><dd>Yes" : "Central accepted</dt><dd>No"));

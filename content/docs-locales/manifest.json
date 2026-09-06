@@ -1,21 +1,72 @@
 {
   "schema": "ynx-docs-locales/v1",
   "sourceLocale": "en",
-  "requestedLocales": ["en", "zh-CN", "zh-TW", "ja", "ko", "es", "fr", "de", "pt", "ru", "ar", "id"],
-  "publishedLocales": ["en", "zh-CN", "zh-TW", "ja", "ko"],
+  "requestedLocales": [
+    "en",
+    "zh-CN",
+    "zh-TW",
+    "ja",
+    "ko",
+    "es",
+    "fr",
+    "de",
+    "pt",
+    "ru",
+    "ar",
+    "id"
+  ],
+  "publishedLocales": [
+    "en",
+    "zh-CN",
+    "zh-TW",
+    "ja",
+    "ko",
+    "es",
+    "fr",
+    "de",
+    "pt",
+    "ru",
+    "ar",
+    "id"
+  ],
   "direction": {
-    "en": "ltr", "zh-CN": "ltr", "zh-TW": "ltr", "ja": "ltr", "ko": "ltr", "es": "ltr",
-    "fr": "ltr", "de": "ltr", "pt": "ltr", "ru": "ltr", "ar": "rtl", "id": "ltr"
+    "en": "ltr",
+    "zh-CN": "ltr",
+    "zh-TW": "ltr",
+    "ja": "ltr",
+    "ko": "ltr",
+    "es": "ltr",
+    "fr": "ltr",
+    "de": "ltr",
+    "pt": "ltr",
+    "ru": "ltr",
+    "ar": "rtl",
+    "id": "ltr"
   },
   "changeLogHeading": {
-    "zh-CN": "变更记录", "zh-TW": "變更記錄", "ja": "変更履歴", "ko": "변경 기록",
-    "es": "Historial de cambios", "fr": "Historique des modifications", "de": "Änderungsprotokoll",
-    "pt": "Histórico de alterações", "ru": "Журнал изменений", "ar": "سجل التغييرات", "id": "Riwayat perubahan"
+    "zh-CN": "变更记录",
+    "zh-TW": "變更記錄",
+    "ja": "変更履歴",
+    "ko": "변경 기록",
+    "es": "Historial de cambios",
+    "fr": "Historique des modifications",
+    "de": "Änderungsprotokoll",
+    "pt": "Histórico de alterações",
+    "ru": "Журнал изменений",
+    "ar": "سجل التغييرات",
+    "id": "Riwayat perubahan"
   },
   "artifacts": {
     "zh-CN": "zh-CN.json",
     "zh-TW": "zh-TW.json",
     "ja": "ja.json",
-    "ko": "ko.json"
+    "ko": "ko.json",
+    "es": "es.json",
+    "fr": "fr.json",
+    "de": "de.json",
+    "pt": "pt.json",
+    "ru": "ru.json",
+    "ar": "ar.json",
+    "id": "id.json"
   }
 }

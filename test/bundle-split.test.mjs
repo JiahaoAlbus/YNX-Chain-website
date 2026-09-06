@@ -4,6 +4,9 @@ import test from "node:test";
 
 test("secondary routes and command search are loaded on demand", () => {
   const main = fs.readFileSync("src/main.jsx", "utf8");
+  const router = fs.readFileSync("src/pages/RoutedContent.jsx", "utf8");
+  assert.match(main, /import\("\.\/pages\/RoutedContent\.jsx"\)/);
+  assert.doesNotMatch(main, /virtual:ynx-docs-authority/);
   const header = fs.readFileSync("src/components/SiteHeader.jsx", "utf8");
   const packageJson = JSON.parse(fs.readFileSync("package.json", "utf8"));
 
@@ -11,7 +14,7 @@ test("secondary routes and command search are loaded on demand", () => {
     "AppsPage", "DownloadPage", "DocsPage", "AuthorityArticlePage", "ProductStatusPage",
     "SquarePage", "ManualPage", "ApiPage", "FaucetPage", "WalletAuthCallbackPage", "PortalPage",
   ]) {
-    assert.match(main, new RegExp(`lazyNamed\\(\\(\\) => import\\(\\"[^\\"]*${routeModule}\\.jsx\\"\\)`));
+    assert.match(router, new RegExp(`lazyNamed\\(\\(\\) => import\\(\\"[^\\"]*${routeModule}\\.jsx\\"\\)`));
     assert.doesNotMatch(main, new RegExp(`import \\{ ${routeModule}[^\\n]+from`));
   }
 

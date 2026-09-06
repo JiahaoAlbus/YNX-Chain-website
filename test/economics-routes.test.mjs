@@ -10,7 +10,7 @@ const contractFields = ["source", "asOf", "version", "coverage", "state", "error
 test("all required public economic routes are registered and searchable", () => {
   assert.deepEqual(Object.keys(ECONOMIC_PAGES), expectedRoutes);
   assert.deepEqual(ECONOMIC_COMMANDS.map(({ href }) => href), expectedRoutes);
-  const main = fs.readFileSync("src/main.jsx", "utf8");
+  const main = fs.readFileSync("src/pages/RoutedContent.jsx", "utf8");
   const palette = fs.readFileSync("src/components/CommandPalette.jsx", "utf8");
   assert.match(main, /ECONOMIC_ROUTES\.has\(route\)/);
   assert.match(palette, /ECONOMIC_COMMANDS/);

@@ -127,9 +127,7 @@
     "SPDXRef-Package-113",
     "SPDXRef-Package-114",
     "SPDXRef-Package-115",
-    "SPDXRef-Package-116",
-    "SPDXRef-Package-117",
-    "SPDXRef-Package-118"
+    "SPDXRef-Package-116"
   ],
   "packages": [
     {
@@ -1384,56 +1382,6 @@
     },
     {
       "SPDXID": "SPDXRef-Package-51",
-      "name": "@noble/curves",
-      "versionInfo": "2.2.0",
-      "downloadLocation": "NOASSERTION",
-      "filesAnalyzed": false,
-      "licenseConcluded": "NOASSERTION",
-      "licenseDeclared": "MIT",
-      "copyrightText": "NOASSERTION",
-      "externalRefs": [
-        {
-          "referenceCategory": "PACKAGE-MANAGER",
-          "referenceType": "purl",
-          "referenceLocator": "pkg:npm/%40noble%2Fcurves@2.2.0"
-        }
-      ],
-      "annotations": [
-        {
-          "annotationType": "OTHER",
-          "annotator": "Tool: package-lock-to-spdx",
-          "annotationDate": "2026-09-01T00:00:00Z",
-          "comment": "{\"location\":\"node_modules/@noble/curves\",\"integrity\":\"sha512-T/BoHgFXirb0ENSPBquzX0rcjXeM6Lo892a2jlYJkqk83LqZx0l1Of7DzlKJ6jkpvMrkHSnAcgb5JegL8SeIkQ==\",\"optional\":false}"
-        }
-      ]
-    },
-    {
-      "SPDXID": "SPDXRef-Package-52",
-      "name": "@noble/hashes",
-      "versionInfo": "2.2.0",
-      "downloadLocation": "NOASSERTION",
-      "filesAnalyzed": false,
-      "licenseConcluded": "NOASSERTION",
-      "licenseDeclared": "MIT",
-      "copyrightText": "NOASSERTION",
-      "externalRefs": [
-        {
-          "referenceCategory": "PACKAGE-MANAGER",
-          "referenceType": "purl",
-          "referenceLocator": "pkg:npm/%40noble%2Fhashes@2.2.0"
-        }
-      ],
-      "annotations": [
-        {
-          "annotationType": "OTHER",
-          "annotator": "Tool: package-lock-to-spdx",
-          "annotationDate": "2026-09-01T00:00:00Z",
-          "comment": "{\"location\":\"node_modules/@noble/hashes\",\"integrity\":\"sha512-IYqDGiTXab6FniAgnSdZwgWbomxpy9FtYvLKs7wCUs2a8RkITG+DFGO1DM9cr+E3/RgADRpFjrKVaJ1z6sjtEg==\",\"optional\":false}"
-        }
-      ]
-    },
-    {
-      "SPDXID": "SPDXRef-Package-53",
       "name": "@rolldown/pluginutils",
       "versionInfo": "1.0.0-rc.3",
       "downloadLocation": "NOASSERTION",
@@ -1458,7 +1406,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-54",
+      "SPDXID": "SPDXRef-Package-52",
       "name": "@rollup/rollup-android-arm-eabi",
       "versionInfo": "4.62.2",
       "downloadLocation": "NOASSERTION",
@@ -1483,7 +1431,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-55",
+      "SPDXID": "SPDXRef-Package-53",
       "name": "@rollup/rollup-android-arm64",
       "versionInfo": "4.62.2",
       "downloadLocation": "NOASSERTION",
@@ -1508,7 +1456,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-56",
+      "SPDXID": "SPDXRef-Package-54",
       "name": "@rollup/rollup-darwin-arm64",
       "versionInfo": "4.62.2",
       "downloadLocation": "NOASSERTION",
@@ -1533,7 +1481,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-57",
+      "SPDXID": "SPDXRef-Package-55",
       "name": "@rollup/rollup-darwin-x64",
       "versionInfo": "4.62.2",
       "downloadLocation": "NOASSERTION",
@@ -1558,7 +1506,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-58",
+      "SPDXID": "SPDXRef-Package-56",
       "name": "@rollup/rollup-freebsd-arm64",
       "versionInfo": "4.62.2",
       "downloadLocation": "NOASSERTION",
@@ -1583,7 +1531,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-59",
+      "SPDXID": "SPDXRef-Package-57",
       "name": "@rollup/rollup-freebsd-x64",
       "versionInfo": "4.62.2",
       "downloadLocation": "NOASSERTION",
@@ -1608,7 +1556,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-60",
+      "SPDXID": "SPDXRef-Package-58",
       "name": "@rollup/rollup-linux-arm-gnueabihf",
       "versionInfo": "4.62.2",
       "downloadLocation": "NOASSERTION",
@@ -1633,7 +1581,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-61",
+      "SPDXID": "SPDXRef-Package-59",
       "name": "@rollup/rollup-linux-arm-musleabihf",
       "versionInfo": "4.62.2",
       "downloadLocation": "NOASSERTION",
@@ -1658,7 +1606,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-62",
+      "SPDXID": "SPDXRef-Package-60",
       "name": "@rollup/rollup-linux-arm64-gnu",
       "versionInfo": "4.62.2",
       "downloadLocation": "NOASSERTION",
@@ -1683,7 +1631,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-63",
+      "SPDXID": "SPDXRef-Package-61",
       "name": "@rollup/rollup-linux-arm64-musl",
       "versionInfo": "4.62.2",
       "downloadLocation": "NOASSERTION",
@@ -1708,7 +1656,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-64",
+      "SPDXID": "SPDXRef-Package-62",
       "name": "@rollup/rollup-linux-loong64-gnu",
       "versionInfo": "4.62.2",
       "downloadLocation": "NOASSERTION",
@@ -1733,7 +1681,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-65",
+      "SPDXID": "SPDXRef-Package-63",
       "name": "@rollup/rollup-linux-loong64-musl",
       "versionInfo": "4.62.2",
       "downloadLocation": "NOASSERTION",
@@ -1758,7 +1706,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-66",
+      "SPDXID": "SPDXRef-Package-64",
       "name": "@rollup/rollup-linux-ppc64-gnu",
       "versionInfo": "4.62.2",
       "downloadLocation": "NOASSERTION",
@@ -1783,7 +1731,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-67",
+      "SPDXID": "SPDXRef-Package-65",
       "name": "@rollup/rollup-linux-ppc64-musl",
       "versionInfo": "4.62.2",
       "downloadLocation": "NOASSERTION",
@@ -1808,7 +1756,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-68",
+      "SPDXID": "SPDXRef-Package-66",
       "name": "@rollup/rollup-linux-riscv64-gnu",
       "versionInfo": "4.62.2",
       "downloadLocation": "NOASSERTION",
@@ -1833,7 +1781,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-69",
+      "SPDXID": "SPDXRef-Package-67",
       "name": "@rollup/rollup-linux-riscv64-musl",
       "versionInfo": "4.62.2",
       "downloadLocation": "NOASSERTION",
@@ -1858,7 +1806,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-70",
+      "SPDXID": "SPDXRef-Package-68",
       "name": "@rollup/rollup-linux-s390x-gnu",
       "versionInfo": "4.62.2",
       "downloadLocation": "NOASSERTION",
@@ -1883,7 +1831,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-71",
+      "SPDXID": "SPDXRef-Package-69",
       "name": "@rollup/rollup-linux-x64-gnu",
       "versionInfo": "4.62.2",
       "downloadLocation": "NOASSERTION",
@@ -1908,7 +1856,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-72",
+      "SPDXID": "SPDXRef-Package-70",
       "name": "@rollup/rollup-linux-x64-musl",
       "versionInfo": "4.62.2",
       "downloadLocation": "NOASSERTION",
@@ -1933,7 +1881,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-73",
+      "SPDXID": "SPDXRef-Package-71",
       "name": "@rollup/rollup-openbsd-x64",
       "versionInfo": "4.62.2",
       "downloadLocation": "NOASSERTION",
@@ -1958,7 +1906,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-74",
+      "SPDXID": "SPDXRef-Package-72",
       "name": "@rollup/rollup-openharmony-arm64",
       "versionInfo": "4.62.2",
       "downloadLocation": "NOASSERTION",
@@ -1983,7 +1931,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-75",
+      "SPDXID": "SPDXRef-Package-73",
       "name": "@rollup/rollup-win32-arm64-msvc",
       "versionInfo": "4.62.2",
       "downloadLocation": "NOASSERTION",
@@ -2008,7 +1956,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-76",
+      "SPDXID": "SPDXRef-Package-74",
       "name": "@rollup/rollup-win32-ia32-msvc",
       "versionInfo": "4.62.2",
       "downloadLocation": "NOASSERTION",
@@ -2033,7 +1981,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-77",
+      "SPDXID": "SPDXRef-Package-75",
       "name": "@rollup/rollup-win32-x64-gnu",
       "versionInfo": "4.62.2",
       "downloadLocation": "NOASSERTION",
@@ -2058,7 +2006,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-78",
+      "SPDXID": "SPDXRef-Package-76",
       "name": "@rollup/rollup-win32-x64-msvc",
       "versionInfo": "4.62.2",
       "downloadLocation": "NOASSERTION",
@@ -2083,7 +2031,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-79",
+      "SPDXID": "SPDXRef-Package-77",
       "name": "@types/babel__core",
       "versionInfo": "7.20.5",
       "downloadLocation": "NOASSERTION",
@@ -2108,7 +2056,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-80",
+      "SPDXID": "SPDXRef-Package-78",
       "name": "@types/babel__generator",
       "versionInfo": "7.27.0",
       "downloadLocation": "NOASSERTION",
@@ -2133,7 +2081,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-81",
+      "SPDXID": "SPDXRef-Package-79",
       "name": "@types/babel__template",
       "versionInfo": "7.4.4",
       "downloadLocation": "NOASSERTION",
@@ -2158,7 +2106,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-82",
+      "SPDXID": "SPDXRef-Package-80",
       "name": "@types/babel__traverse",
       "versionInfo": "7.28.0",
       "downloadLocation": "NOASSERTION",
@@ -2183,7 +2131,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-83",
+      "SPDXID": "SPDXRef-Package-81",
       "name": "@types/estree",
       "versionInfo": "1.0.9",
       "downloadLocation": "NOASSERTION",
@@ -2208,7 +2156,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-84",
+      "SPDXID": "SPDXRef-Package-82",
       "name": "@vitejs/plugin-react",
       "versionInfo": "5.2.0",
       "downloadLocation": "NOASSERTION",
@@ -2233,7 +2181,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-85",
+      "SPDXID": "SPDXRef-Package-83",
       "name": "baseline-browser-mapping",
       "versionInfo": "2.10.40",
       "downloadLocation": "NOASSERTION",
@@ -2258,7 +2206,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-86",
+      "SPDXID": "SPDXRef-Package-84",
       "name": "browserslist",
       "versionInfo": "4.28.4",
       "downloadLocation": "NOASSERTION",
@@ -2283,7 +2231,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-87",
+      "SPDXID": "SPDXRef-Package-85",
       "name": "caniuse-lite",
       "versionInfo": "1.0.30001800",
       "downloadLocation": "NOASSERTION",
@@ -2308,7 +2256,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-88",
+      "SPDXID": "SPDXRef-Package-86",
       "name": "convert-source-map",
       "versionInfo": "2.0.0",
       "downloadLocation": "NOASSERTION",
@@ -2333,7 +2281,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-89",
+      "SPDXID": "SPDXRef-Package-87",
       "name": "debug",
       "versionInfo": "4.4.3",
       "downloadLocation": "NOASSERTION",
@@ -2358,7 +2306,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-90",
+      "SPDXID": "SPDXRef-Package-88",
       "name": "electron-to-chromium",
       "versionInfo": "1.5.383",
       "downloadLocation": "NOASSERTION",
@@ -2383,7 +2331,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-91",
+      "SPDXID": "SPDXRef-Package-89",
       "name": "esbuild",
       "versionInfo": "0.28.1",
       "downloadLocation": "NOASSERTION",
@@ -2408,7 +2356,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-92",
+      "SPDXID": "SPDXRef-Package-90",
       "name": "escalade",
       "versionInfo": "3.2.0",
       "downloadLocation": "NOASSERTION",
@@ -2433,7 +2381,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-93",
+      "SPDXID": "SPDXRef-Package-91",
       "name": "fdir",
       "versionInfo": "6.5.0",
       "downloadLocation": "NOASSERTION",
@@ -2458,7 +2406,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-94",
+      "SPDXID": "SPDXRef-Package-92",
       "name": "fsevents",
       "versionInfo": "2.3.3",
       "downloadLocation": "NOASSERTION",
@@ -2483,7 +2431,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-95",
+      "SPDXID": "SPDXRef-Package-93",
       "name": "gensync",
       "versionInfo": "1.0.0-beta.2",
       "downloadLocation": "NOASSERTION",
@@ -2508,7 +2456,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-96",
+      "SPDXID": "SPDXRef-Package-94",
       "name": "js-tokens",
       "versionInfo": "4.0.0",
       "downloadLocation": "NOASSERTION",
@@ -2533,7 +2481,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-97",
+      "SPDXID": "SPDXRef-Package-95",
       "name": "jsesc",
       "versionInfo": "3.1.0",
       "downloadLocation": "NOASSERTION",
@@ -2558,7 +2506,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-98",
+      "SPDXID": "SPDXRef-Package-96",
       "name": "json5",
       "versionInfo": "2.2.3",
       "downloadLocation": "NOASSERTION",
@@ -2583,7 +2531,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-99",
+      "SPDXID": "SPDXRef-Package-97",
       "name": "lru-cache",
       "versionInfo": "5.1.1",
       "downloadLocation": "NOASSERTION",
@@ -2608,7 +2556,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-100",
+      "SPDXID": "SPDXRef-Package-98",
       "name": "lucide-react",
       "versionInfo": "0.468.0",
       "downloadLocation": "NOASSERTION",
@@ -2633,7 +2581,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-101",
+      "SPDXID": "SPDXRef-Package-99",
       "name": "ms",
       "versionInfo": "2.1.3",
       "downloadLocation": "NOASSERTION",
@@ -2658,7 +2606,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-102",
+      "SPDXID": "SPDXRef-Package-100",
       "name": "nanoid",
       "versionInfo": "3.3.18",
       "downloadLocation": "NOASSERTION",
@@ -2683,7 +2631,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-103",
+      "SPDXID": "SPDXRef-Package-101",
       "name": "node-releases",
       "versionInfo": "2.0.50",
       "downloadLocation": "NOASSERTION",
@@ -2708,7 +2656,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-104",
+      "SPDXID": "SPDXRef-Package-102",
       "name": "picocolors",
       "versionInfo": "1.1.1",
       "downloadLocation": "NOASSERTION",
@@ -2733,7 +2681,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-105",
+      "SPDXID": "SPDXRef-Package-103",
       "name": "picomatch",
       "versionInfo": "4.0.4",
       "downloadLocation": "NOASSERTION",
@@ -2758,7 +2706,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-106",
+      "SPDXID": "SPDXRef-Package-104",
       "name": "postcss",
       "versionInfo": "8.5.23",
       "downloadLocation": "NOASSERTION",
@@ -2783,7 +2731,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-107",
+      "SPDXID": "SPDXRef-Package-105",
       "name": "react",
       "versionInfo": "19.2.7",
       "downloadLocation": "NOASSERTION",
@@ -2808,7 +2756,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-108",
+      "SPDXID": "SPDXRef-Package-106",
       "name": "react-dom",
       "versionInfo": "19.2.7",
       "downloadLocation": "NOASSERTION",
@@ -2833,7 +2781,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-109",
+      "SPDXID": "SPDXRef-Package-107",
       "name": "react-refresh",
       "versionInfo": "0.18.0",
       "downloadLocation": "NOASSERTION",
@@ -2858,7 +2806,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-110",
+      "SPDXID": "SPDXRef-Package-108",
       "name": "rollup",
       "versionInfo": "4.62.2",
       "downloadLocation": "NOASSERTION",
@@ -2883,7 +2831,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-111",
+      "SPDXID": "SPDXRef-Package-109",
       "name": "scheduler",
       "versionInfo": "0.27.0",
       "downloadLocation": "NOASSERTION",
@@ -2908,7 +2856,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-112",
+      "SPDXID": "SPDXRef-Package-110",
       "name": "semver",
       "versionInfo": "6.3.1",
       "downloadLocation": "NOASSERTION",
@@ -2933,7 +2881,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-113",
+      "SPDXID": "SPDXRef-Package-111",
       "name": "source-map-js",
       "versionInfo": "1.2.1",
       "downloadLocation": "NOASSERTION",
@@ -2958,7 +2906,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-114",
+      "SPDXID": "SPDXRef-Package-112",
       "name": "tinyglobby",
       "versionInfo": "0.2.17",
       "downloadLocation": "NOASSERTION",
@@ -2983,7 +2931,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-115",
+      "SPDXID": "SPDXRef-Package-113",
       "name": "typescript",
       "versionInfo": "5.9.3",
       "downloadLocation": "NOASSERTION",
@@ -3008,7 +2956,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-116",
+      "SPDXID": "SPDXRef-Package-114",
       "name": "update-browserslist-db",
       "versionInfo": "1.2.3",
       "downloadLocation": "NOASSERTION",
@@ -3033,7 +2981,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-117",
+      "SPDXID": "SPDXRef-Package-115",
       "name": "vite",
       "versionInfo": "7.3.6",
       "downloadLocation": "NOASSERTION",
@@ -3058,7 +3006,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-118",
+      "SPDXID": "SPDXRef-Package-116",
       "name": "yallist",
       "versionInfo": "3.1.1",
       "downloadLocation": "NOASSERTION",
@@ -3088,7 +3036,7 @@
       "annotationType": "OTHER",
       "annotator": "Organization: YNX Website",
       "annotationDate": "2026-09-01T00:00:00Z",
-      "comment": "{\"sourceBaseline\":\"5de72fcc7f472c98733146d0bbfd47ce39cc4bf0\",\"lockfileVersion\":3,\"packageCount\":118,\"dependencyReviewAccepted\":false,\"vulnerabilityScanPassed\":false}"
+      "comment": "{\"sourceBaseline\":\"5de72fcc7f472c98733146d0bbfd47ce39cc4bf0\",\"lockfileVersion\":3,\"packageCount\":116,\"dependencyReviewAccepted\":false,\"vulnerabilityScanPassed\":false}"
     }
   ]
 }

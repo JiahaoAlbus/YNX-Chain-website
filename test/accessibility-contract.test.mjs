@@ -11,7 +11,7 @@ const [main, header, palette, styles] = await Promise.all([
 
 test("landmarks expose one focusable skip destination after the global header", () => {
   assert.match(main, /<SiteHeader[\s\S]*?<main id="main-content" tabIndex=\{-1\}>/);
-  assert.match(main, /<div id="main-content" tabIndex=\{-1\}>\{page\}<\/div>/);
+  assert.match(main, /<div id="main-content" tabIndex=\{-1\}><Suspense\b[^\n]*>\{page\}<\/Suspense><\/div>/);
   assert.match(header, /className="skipLink" href="#main-content"/);
   assert.match(styles, /#main-content\[tabindex="-1"\]:focus \{ outline: 0; \}/);
 });

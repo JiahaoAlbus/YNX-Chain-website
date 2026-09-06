@@ -84,7 +84,7 @@ function writeDiscoveryFiles() {
 }
 
 function discoveryGroups() {
-  const pages = [
+  const pages = [...new Set([...coreRouteEntries.filter((entry) => !entry.product).map((entry) => entry.route),
     "/",
     "/dapp",
     "/dapp/download",
@@ -102,13 +102,13 @@ function discoveryGroups() {
     "/developers",
     "/downloads",
     "/more",
-  ];
+  ])];
   const configuredRedirects = new Map(
     (JSON.parse(fs.readFileSync(path.join(root, "vercel.json"), "utf8")).redirects || [])
       .filter((redirect) => !redirect.source.includes(":"))
       .map((redirect) => [normalizeRoute(redirect.source), normalizeRoute(redirect.destination)]),
   );
-  const registeredProductRoutes = releaseRegistry.products.map((product) => product.route);
+  const registeredProductRoutes = coreRouteEntries.filter((entry) => entry.product).map((entry) => entry.route);
   const products = registeredProductRoutes.map((route) => configuredRedirects.get(normalizeRoute(route)) || normalizeRoute(route));
   const docs = ["/docs", ...authority.articles.map((article) => article.route)];
   const releases = [
@@ -167,7 +167,7 @@ function verifyOutput() {
   for (const entry of coreRouteEntries) {
     const output = routeOutputPath(entry.route);
     const html = fs.readFileSync(output, "utf8");
-    const canonical = `${siteUrl}${entry.route === "/" ? "" : entry.route}`;
+    const canonical = `${siteUrl}${entry.route}`;
     const body = html.match(/<div id="root">([\s\S]*?)<\/div>/)?.[1] || "";
     for (const required of [entry.h1, entry.description, `href="${canonical}"`, "application/ld+json", "ynx_6423-1", "0x1917", "YNXT", "Live chain and product data load after hydration"]) {
       if (!html.includes(required)) throw new Error(`prerendered core route ${entry.route} is missing ${required}`);

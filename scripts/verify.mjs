@@ -191,7 +191,7 @@ for (const key of ["VITE_YNX_API_BASE_URL", "VITE_YNX_EVM_RPC_URL", "VITE_YNX_EX
 const styles = fs.readFileSync("src/styles.css", "utf8");
 const hero = fs.readFileSync("src/sections/HeroPortal.jsx", "utf8");
 const addressConverter = fs.readFileSync("src/components/AddressConverter.jsx", "utf8");
-const main = `${fs.readFileSync("src/main.jsx", "utf8")}\n${fs.readFileSync("src/content/runtimeLocaleContent.js", "utf8")}`;
+const main = `${fs.readFileSync("src/main.jsx", "utf8")}\n${fs.readFileSync("src/pages/RoutedContent.jsx", "utf8")}\n${fs.readFileSync("src/content/runtimeLocaleContent.js", "utf8")}`;
 const indexHtml = fs.readFileSync("index.html", "utf8");
 const serviceWorker = fs.readFileSync("public/sw.js", "utf8");
 const manifest = JSON.parse(fs.readFileSync("public/manifest.webmanifest", "utf8"));
@@ -217,7 +217,7 @@ const i18n = fs.readFileSync("src/lib/i18n.jsx", "utf8");
 const portalPage = fs.readFileSync("src/pages/PortalPage.jsx", "utf8");
 const footer = fs.readFileSync("src/components/SiteFooter.jsx", "utf8");
 const commandPalette = fs.readFileSync("src/components/CommandPalette.jsx", "utf8");
-const routePage = fs.readFileSync("src/components/RoutePage.jsx", "utf8");
+const routePage = fs.readFileSync("src/components/RoutePage.jsx", "utf8") + fs.readFileSync("src/content/basicRouteContent.js", "utf8");
 const manualPage = fs.readFileSync("src/pages/ManualPage.jsx", "utf8");
 const apiPage = fs.readFileSync("src/pages/ApiPage.jsx", "utf8");
 const appsPage = `${fs.readFileSync("src/pages/AppsPage.jsx", "utf8")}\n${fs.readFileSync("src/content/businessLocaleContent.js", "utf8")}`;
@@ -996,7 +996,7 @@ if (
   configuredRedirects.get("/square/:path*")?.destination !== "/dapp/square/:path*" ||
   !Array.isArray(siteMap.dappRoutes) || siteMap.dappRoutes.length !== 30 ||
   siteMap.dappRoutes.some((route) => !route.startsWith("dapp")) ||
-  !prerender.includes("releaseRegistry.products.map((product) => product.route)")
+  !prerender.includes("coreRouteEntries.filter((entry) => entry.product).map((entry) => entry.route)")
 ) {
   console.error("DApp route hierarchy, permanent compatibility redirects, or discovery routes are incomplete");
   process.exit(1);

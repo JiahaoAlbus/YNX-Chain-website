@@ -1,3 +1,13 @@
+import { BASIC_ROUTES } from "../../src/content/basicRouteContent.js";
+import { getCatalog } from "../../src/lib/ecosystemCatalog.js";
+import { PRODUCT_PUBLIC_SECTIONS } from "../../src/lib/productPublicContract.js";
+import { ECONOMIC_PAGES } from "../../src/lib/economicsEvidence.js";
+
+const catalog = getCatalog();
+export function canonicalProductRoute(product) {
+  return catalog.find((item) => item.key === product.key)?.route || product.route;
+}
+
 const NETWORK_FACTS = Object.freeze({
   nativeChainId: "ynx_6423-1",
   evmChainId: "6423 / 0x1917",
@@ -7,7 +17,7 @@ const NETWORK_FACTS = Object.freeze({
 const coreRoutes = [
   ["/", "YNX 6423 Testnet Portal", "Understand YNX Chain, inspect the 6423 Testnet, find YNXT, open verified tools, and follow evidence-backed product links.", "Understand YNX 6423 before you act.", "Start with the network identity, then choose Explorer, documentation, downloads, or an independently status-labelled ecosystem product.", [["Explore the network", "/blockchain"], ["Browse the ecosystem", "/ecosystem"], ["Read the manual", "/manual"]]],
   ["/blockchain", "YNX 6423 Blockchain", "Inspect the canonical YNX 6423 Testnet identity and continue to the independent Explorer for live blocks, transactions, accounts, and contracts.", "Explore the YNX 6423 blockchain.", "This first response explains the canonical network. Current height and records load from verified public services only after the interactive application starts.", [["Open Explorer", "https://explorer.ynxweb4.com"], ["Check network status", "/status"], ["Read API boundaries", "/api"]]],
-  ["/tokens", "YNXT Native Testnet Asset", "Learn how YNXT is used for gas, fees, and resources on YNX 6423 without inventing unverified price, market-cap, or supply data.", "Use YNXT on YNX 6423.", "YNXT is the native Testnet asset. Market and supply figures stay unavailable until an authoritative public source exists.", [["Open Testnet Faucet", "https://faucet.ynxweb4.com"], ["Verify in Explorer", "https://explorer.ynxweb4.com/tokens/YNXT"], ["Read the manual", "/manual"]]],
+  ["/tokens", "YNXT Native Testnet Asset", "Learn how YNXT is used for gas, fees, and resources on YNX 6423 without inventing unverified price, market-cap, or supply data.", "Use YNXT on YNX 6423.", "YNXT is the native Testnet asset. Market and supply figures stay unavailable until an authoritative public source exists.", [["Open Testnet Faucet", "https://faucet.ynxweb4.com"], ["Verify in Explorer", "https://explorer.ynxweb4.com/token/YNXT"], ["Read the manual", "/manual"]]],
   ["/data", "YNX 6423 Data Center", "Find current YNX 6423 data sources and understand why historical charts remain unavailable without an authoritative public history service.", "Use YNX data with its source attached.", "RPC, Explorer, Faucet, and Monitor are separate sources. Live values appear only after identity and freshness checks run in the browser.", [["Open Explorer", "https://explorer.ynxweb4.com"], ["Open Monitor", "https://monitor.ynxweb4.com"], ["Review API sources", "/api"]]],
   ["/governance", "YNX Governance Boundaries", "Review the current YNX 6423 governance boundary without fabricated proposals, votes, parameters, or authority claims.", "Governance data is not inferred.", "No verified public governance index is configured. Source material and documentation remain available while live proposal data stays explicitly unavailable.", [["Read documentation", "/docs"], ["Open source", "https://github.com/JiahaoAlbus/YNX-Chain"], ["Review readiness", "/readiness"]]],
   ["/ecosystem", "YNX Ecosystem Directory", "Choose among evidence-labelled YNX Wallet, payments, finance, commerce, social, developer, AI, data, and infrastructure products.", "Choose a YNX product by the job it does.", "Every product keeps separate source, candidate, public web, hosted download, signing, and store-release states.", [["Browse every product", "/dapp"], ["Check product status", "/status"], ["Open downloads", "/downloads"]]],
@@ -30,8 +40,13 @@ export function createCoreRouteEntries(releaseRegistry) {
     links: links.map(([label, href]) => ({ label, href })),
     type: route === "/" ? "WebSite" : "WebPage",
   }));
-  const products = releaseRegistry.products.map((product) => ({
-    route: product.route,
+  const registeredKeys = new Set(releaseRegistry.products.map((product) => product.key));
+  const productRecords = [
+    ...releaseRegistry.products,
+    ...catalog.filter((product) => !registeredKeys.has(product.key)).map(({ key, route, name }) => ({ key, route, name, state: "not-registered", centralAccepted: false, publicWeb: null, downloadHosted: false })),
+  ];
+  const products = productRecords.map((product) => ({
+    route: canonicalProductRoute(product),
     title: `${product.name} | YNX Ecosystem`,
     description: `${product.name} is listed in the YNX 6423 ecosystem with an evidence-backed ${humanState(product.state)} release state.`,
     h1: `${product.name}: ${humanState(product.state)}`,
@@ -47,7 +62,25 @@ export function createCoreRouteEntries(releaseRegistry) {
     type: "SoftwareApplication",
     product,
   }));
-  return dedupeByRoute([...entries, ...products]);
+  const sections = products.flatMap((entry) => PRODUCT_PUBLIC_SECTIONS.map((section) => ({
+    ...entry,
+    route: `${entry.route}/${section.id}`,
+    title: `${entry.product.name} ${section.label} | YNX Ecosystem`,
+    h1: `${entry.product.name}: ${section.label}`,
+    description: `${entry.product.name} ${section.label.toLowerCase()}. ${section.description}`,
+    lead: `${section.description} ${entry.lead}`,
+    links: [{ label: "Product overview", href: entry.route }, ...entry.links],
+  })));
+  const economics = Object.entries(ECONOMIC_PAGES).map(([route, page]) => ({
+    route, title: `${page.eyebrow} | YNX`, h1: page.title, description: page.lead,
+    lead: page.lead, type: "WebPage",
+    links: [...page.actions.map(([label, href]) => ({label, href})), {label: "Read documentation", href: "/docs"}],
+  }));
+  const basic = Object.entries(BASIC_ROUTES).filter(([route]) => route !== "/docs").map(([route, [eyebrow, h1, lead, links]]) => ({
+    route, title: `${eyebrow}: ${h1} | YNX`, h1, description: lead, lead, type: "WebPage",
+    links: [...links.map(([label, href]) => ({ label, href })), { label: "Read documentation", href: "/docs" }],
+  }));
+  return dedupeByRoute([...entries, ...products, ...sections, ...economics, ...basic]);
 }
 
 export function renderCoreRouteBody(entry) {
@@ -101,7 +134,7 @@ export function coreRouteJsonLd(entry, siteUrl) {
 }
 
 export function verifyCoreRouteEntries(entries, releaseRegistry) {
-  const expected = new Set([...coreRoutes.map(([route]) => route), ...releaseRegistry.products.map((product) => product.route)]);
+  const expected = new Set([...coreRoutes.map(([route]) => route), ...releaseRegistry.products.map(canonicalProductRoute)]);
   const routes = new Set(entries.map((entry) => entry.route));
   if (routes.size !== entries.length) throw new Error("core prerender routes must be unique");
   for (const route of expected) {

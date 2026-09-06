@@ -122,5 +122,6 @@ test("locale normalization and document lang/dir switch Arabic to RTL only", () 
 test("header renders the canonical twelve-locale selector", () => {
   assert.match(headerSource, /value=\{locale\}/u);
   assert.match(headerSource, /setLocale\(event\.target\.value\)/u);
-  for (const locale of expectedLocales) assert.match(headerSource, new RegExp(`value="${locale}"`, "u"));
+  assert.match(headerSource, /SUPPORTED_LOCALES\.map\(\(value\) => <option value=\{value\} key=\{value\}>/u);
+  assert.equal(expectedLocales.length, 12);
 });
