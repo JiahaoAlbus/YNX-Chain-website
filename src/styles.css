@@ -717,7 +717,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .docsSessionRelease dl { display: grid; gap: 1px; margin: 0; background: var(--line); border: 1px solid var(--line); }
 .docsSessionRelease dl div { padding: 13px 15px; background: white; }
 .docsSessionRelease dt { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; }
-.docsSessionRelease dd { margin: 5px 0 0; font-weight: 720; line-height: 1.35; }
+.docsSessionRelease > * { min-width: 0; }
+.docsSessionRelease dd { margin: 5px 0 0; font-weight: 720; line-height: 1.35; overflow-wrap: anywhere; }
 .docsSafetyNote p { margin: 6px 0 0; color: rgba(255,255,255,.72); line-height: 1.55; }
 .docsBundleExport { margin-top: 18px; border: 1px solid var(--line); }
 .docsBundleExport summary { min-height: 54px; display: flex; align-items: center; gap: 9px; padding: 13px 16px; color: var(--muted); cursor: pointer; font-size: 13px; }
@@ -976,6 +977,15 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .economicBoundaries li svg { width:18px; color:var(--primary); }
 .economicActions { display:flex; flex-wrap:wrap; gap:12px; margin-top:34px; }
 
+@media (min-width: 761px) and (max-width: 1700px) {
+  .siteHeader .menuButton { display: inline-flex; }
+  .siteHeader nav { display: none; position: absolute; top: 66px; left: 0; right: 0; padding: 18px; background: var(--surface-raised); border-bottom: 1px solid var(--line); flex-direction: column; align-items: stretch; gap: 0; max-height: calc(100svh - 66px); overflow-y: auto; }
+  .siteHeader nav.open { display: flex; }
+  .siteHeader nav a { padding: 13px 4px; }
+  .siteHeader nav > a::after { display: none; }
+  .siteHeader .navExplorer { margin-top: 8px; justify-content: center; }
+}
+
 @media (max-width: 1000px) {
   .economicHero { grid-template-columns:1fr; gap:28px; }
   .economicState { max-width:320px; }
@@ -1198,7 +1208,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   .docsManualHeader { align-items: start; gap: 24px; }
   .docsProductGuides summary { grid-template-columns: 1fr; gap: 7px; }
   .docsProductGuides details > div { gap: 24px; padding: 24px 18px; }
-  .docsSessionRelease { grid-template-columns: 1fr; padding: 22px 18px; }
+  .docsSessionRelease { grid-template-columns: minmax(0,1fr); padding: 22px 18px; }
   .docSection { margin-bottom: 50px; padding-bottom: 54px; }
   .docRows div { grid-template-columns: 1fr; gap: 6px; padding: 13px 0; }
   .codeBlock pre { padding-left: 16px; padding-right: 16px; }

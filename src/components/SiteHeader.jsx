@@ -3,7 +3,7 @@ import { ExternalLink, Menu, Moon, Search, Sun, WalletCards, X } from "lucide-re
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { apiConfig, networkParams, YNX_6423 } from "../lib/api/ynxApi.js";
 import { SUPPORTED_LOCALES, useLocale } from "../lib/i18n.jsx";
-import { connectCanonicalProvider, discoverCanonicalProviders, switchCanonicalProviderToYNX } from "../lib/walletProvider.js";
+import { connectCanonicalProvider, discoverCanonicalProviders, subscribeCanonicalProvider, switchCanonicalProviderToYNX } from "../lib/walletProvider.js";
 
 const CommandPalette = lazy(() => import("./CommandPalette.jsx").then((module) => ({ default: module.CommandPalette })));
 
@@ -19,13 +19,15 @@ const localeLabels = {
   ar: "العربية", id: "Bahasa Indonesia"
 };
 
-export function SiteHeader({ scrollProgress = 0 }) {
+export function SiteHeader({ scrollProgress = 0, networkRequest = 0 }) {
   const { locale, setLocale, t } = useLocale();
   const [open, setOpen] = useState(false);
   const [commandOpen, setCommandOpen] = useState(false);
   const [wallet, setWallet] = useState({ state: "idle" });
   const [providers, setProviders] = useState([]);
   const [walletMenuOpen, setWalletMenuOpen] = useState(false);
+  const [walletIntent, setWalletIntent] = useState("connect");
+  const connectionAttempt = useRef(0);
   const navRef = useRef(null);
   const menuButtonRef = useRef(null);
   const searchButtonRef = useRef(null);
@@ -81,7 +83,31 @@ export function SiteHeader({ scrollProgress = 0 }) {
 
   useEffect(() => discoverCanonicalProviders({ onChange: setProviders }), []);
 
+  useEffect(() => {
+    if (!networkRequest) return;
+    setWalletIntent("network");
+    setWalletMenuOpen(true);
+  }, [networkRequest]);
+
+  useEffect(() => {
+    const entry = wallet.walletProvider;
+    if (!entry) return;
+    return subscribeCanonicalProvider(entry, (event) => {
+      setWallet((current) => {
+        if (current.walletProvider !== entry) return current;
+        if (event.type === "disconnect" || (event.type === "accountsChanged" && !event.accounts.length)) {
+          connectionAttempt.current += 1;
+          return { state: "idle" };
+        }
+        if (event.type === "accountsChanged") return { ...current, account: event.accounts[0] };
+        if (event.type === "chainChanged") return { ...current, chainId: event.chainId };
+        return current;
+      });
+    });
+  }, [wallet.walletProvider]);
+
   const connectWallet = async (entry) => {
+    const attempt = ++connectionAttempt.current;
     if (!entry?.provider?.request || !entry?.identity?.accepted) {
       setWallet({ state: "unavailable" });
       return;
@@ -90,6 +116,7 @@ export function SiteHeader({ scrollProgress = 0 }) {
     try {
       // Account access is requested only after the visitor explicitly presses this button.
       const { account, chainId } = await connectCanonicalProvider(entry);
+      if (attempt !== connectionAttempt.current) return;
       setWallet({
         state: "connected",
         account,
@@ -99,11 +126,13 @@ export function SiteHeader({ scrollProgress = 0 }) {
       });
       setWalletMenuOpen(true);
     } catch (error) {
+      if (attempt !== connectionAttempt.current) return;
       setWallet({ state: "error", message: error?.code === 4001 ? t("walletRequestRejected") : t("walletConnectionFailed") });
     }
   };
 
   const activateWallet = () => {
+    setWalletIntent("connect");
     if (wallet.state === "connected") {
       setWalletMenuOpen((openState) => !openState);
       return;
@@ -117,6 +146,7 @@ export function SiteHeader({ scrollProgress = 0 }) {
       return;
     }
     setWallet({ state: "unavailable" });
+    setWalletMenuOpen(true);
   };
 
   const closeWalletMenu = (returnFocus = false) => {
@@ -130,8 +160,7 @@ export function SiteHeader({ scrollProgress = 0 }) {
     closeWalletMenu(true);
   };
 
-  const switchToYNX = async () => {
-    const entry = wallet.walletProvider;
+  const switchToYNX = async (entry = wallet.walletProvider) => {
     if (!entry?.provider?.request) return;
     try {
       await switchCanonicalProviderToYNX(entry, networkParams());
@@ -139,7 +168,9 @@ export function SiteHeader({ scrollProgress = 0 }) {
       setWallet((current) => ({ ...current, state: "error", message: t("walletNetworkFailed") }));
       return;
     }
-    setWallet((current) => ({ ...current, chainId: YNX_6423.evmChainId, state: "connected" }));
+    setWallet((current) => current.walletProvider === entry ? { ...current, chainId: YNX_6423.evmChainId, state: "connected" } : { state: "idle" });
+    setWalletIntent("connect");
+    closeWalletMenu(true);
   };
 
   const walletLabel = wallet.state === "connected"
@@ -182,11 +213,11 @@ export function SiteHeader({ scrollProgress = 0 }) {
           <span className="visuallyHidden" role="status" aria-live="polite">{walletLabel}</span>
           {walletMenuOpen ? <div ref={walletMenuRef} id="wallet-connection-dialog" className="walletMenu" role="dialog" aria-label={t("walletMenu")} onKeyDown={onWalletMenuKeyDown}>
             <div className="walletMenuHeader"><strong>{t("walletMenu")}</strong><button type="button" className="walletMenuClose" onClick={() => closeWalletMenu(true)} aria-label={t("commandClose")}><X /></button></div>
-            {wallet.state === "connected" ? <>
+            {!providers.length ? <><p>{t("walletUnavailable")}</p><a href="/dapp/wallet/open-download">YNX Wallet</a></> : walletIntent === "network" ? <><p>{t("switchTo6423")}</p>{providers.map((entry, index) => <button type="button" key={index} onClick={() => switchToYNX(entry)}>{entry.identity.label}</button>)}</> : wallet.state === "connected" ? <>
               <p><strong>{wallet.provider}</strong><span>{wallet.account}</span></p>
               <p className={wallet.chainId === YNX_6423.evmChainId ? "walletNetwork ready" : "walletNetwork"}>{t("walletNetwork")}: {wallet.chainId || t("unavailable")}</p>
-              {wallet.chainId !== YNX_6423.evmChainId ? <button type="button" onClick={switchToYNX}>{t("switchTo6423")}</button> : null}
-              <button type="button" className="quiet" onClick={() => { setWallet({ state: "idle" }); closeWalletMenu(true); }}>{t("disconnectWallet")}</button>
+              {wallet.chainId !== YNX_6423.evmChainId ? <button type="button" onClick={() => switchToYNX()}>{t("switchTo6423")}</button> : null}
+              <button type="button" className="quiet" onClick={() => { connectionAttempt.current += 1; setWallet({ state: "idle" }); closeWalletMenu(true); }}>{t("disconnectWallet")}</button>
             </> : providers.map((entry, index) => <button type="button" key={`${entry.info.uuid || entry.identity.rdns}-${index}`} onClick={() => connectWallet(entry)}>{entry.identity.label}</button>)}
           </div> : null}
           <label className="localeSelect" aria-label={t("language")}>

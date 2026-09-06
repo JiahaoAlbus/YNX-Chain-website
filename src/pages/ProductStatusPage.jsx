@@ -9,9 +9,8 @@ import {
 } from "../lib/productPublicContract.js";
 import { ECOSYSTEM_GUIDES } from "../content/ecosystemGuides.js";
 import docsAuthority from "virtual:ynx-docs-authority";
-import docsLocales from "virtual:ynx-docs-locales";
 import { useLocale } from "../lib/i18n.jsx";
-import { selectLocalizedDocs } from "../lib/docsLocale.js";
+import { useLocalizedDocs } from "../lib/useLocalizedDocs.js";
 
 const platformOrder = ["web", "pwa", "chromeEdge", "firefox", "android", "ios", "macos", "windows", "windowsX64", "windowsArm64", "linux"];
 
@@ -85,7 +84,7 @@ function SectionPage({ product, contract, sectionId, guide }) {
 
 export function ProductStatusPage({ product, sectionId = "overview", article, artifact }) {
   const { locale } = useLocale();
-  const localeState = selectLocalizedDocs({ ...docsAuthority, ...docsLocales }, locale);
+  const localeState = useLocalizedDocs(locale);
   const localizedArticle = article ? localeState.articles.find((candidate) => candidate.route === article.route) : null;
   const contract = getProductPublicContract(product);
   assertProductPublicContract(contract);

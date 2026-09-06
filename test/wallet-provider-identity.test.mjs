@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { EventEmitter } from "node:events";
 import {
   LEGACY_LOCAL_SIGNER_KEYS,
   YNX_EVM_CHAIN_ID,
@@ -10,11 +11,36 @@ import {
   requestCanonicalPersonalSignature,
   sendCanonicalTransaction,
   switchCanonicalProviderToYNX,
+  subscribeCanonicalProvider,
   walletIdentity,
   walletKind,
 } from "../src/lib/walletProvider.js";
 
 const account = "0x1111111111111111111111111111111111111111";
+
+test("provider events update accounts and chain, reject malformed chain events, and detach on disconnect", () => {
+  const provider = Object.assign(new EventEmitter(), { isYNXWallet: true, request() { throw new Error("Events must not request wallet authority"); } });
+  const updates = [];
+  const stop = subscribeCanonicalProvider(canonicalProviderEntry(provider), (state) => updates.push(state));
+  provider.emit("accountsChanged", [account, "invalid"]);
+  provider.emit("chainChanged", "0x01917");
+  provider.emit("accountsChanged", []);
+  assert.doesNotThrow(() => provider.emit("chainChanged", "malformed"));
+  provider.emit("disconnect");
+  assert.deepEqual(updates, [
+    { type: "accountsChanged", accounts: [account] },
+    { type: "chainChanged", chainId: "0x1917" },
+    { type: "accountsChanged", accounts: [] },
+    { type: "disconnect" },
+    { type: "disconnect" },
+  ]);
+  stop();
+  provider.emit("accountsChanged", [account]);
+  assert.equal(updates.length, 5);
+  assert.equal(provider.listenerCount("accountsChanged"), 0);
+  assert.equal(provider.listenerCount("chainChanged"), 0);
+  assert.equal(provider.listenerCount("disconnect"), 0);
+});
 
 test("wallet identity accepts only mutually exclusive canonical providers", () => {
   assert.deepEqual(walletIdentity({ isYNXWallet: true, isMetaMask: false }, { rdns: "com.ynx.wallet" }), {

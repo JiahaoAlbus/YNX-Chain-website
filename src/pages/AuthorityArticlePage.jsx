@@ -1,13 +1,12 @@
 import React from "react";
 import { BookOpen, CalendarDays, GitCommitHorizontal } from "lucide-react";
 import docsAuthority from "virtual:ynx-docs-authority";
-import docsLocales from "virtual:ynx-docs-locales";
 import { useLocale } from "../lib/i18n.jsx";
-import { selectLocalizedDocs } from "../lib/docsLocale.js";
+import { useLocalizedDocs } from "../lib/useLocalizedDocs.js";
 
 export function AuthorityArticlePage({ artifact, sourceArticle }) {
   const { locale } = useLocale();
-  const localeState = selectLocalizedDocs({ ...docsAuthority, ...docsLocales }, locale);
+  const localeState = useLocalizedDocs(locale);
   const article = localeState.articles.find((candidate) => candidate.route === sourceArticle.route);
   if (!article) {
     return (

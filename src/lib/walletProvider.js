@@ -93,7 +93,12 @@ export function subscribeCanonicalProvider(entry, onState) {
   const provider = requireCanonicalProvider(entry);
   if (typeof provider.on !== "function") return () => {};
   const onAccountsChanged = (accounts) => onState({ type: "accountsChanged", accounts: Array.isArray(accounts) ? accounts.filter(isEVMAccount).map((account) => account.toLowerCase()) : [] });
-  const onChainChanged = (chainId) => onState({ type: "chainChanged", chainId: normalizeChainId(chainId) });
+  const onChainChanged = (chainId) => {
+    let normalized;
+    try { normalized = normalizeChainId(chainId); }
+    catch { onState({ type: "disconnect" }); return; }
+    onState({ type: "chainChanged", chainId: normalized });
+  };
   const onDisconnect = () => onState({ type: "disconnect" });
   provider.on("accountsChanged", onAccountsChanged);
   provider.on("chainChanged", onChainChanged);

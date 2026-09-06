@@ -4,7 +4,7 @@ import {
   Activity, Bot, Box, Braces, CheckCircle2, CircleDollarSign, Clock3, Code2, Coins,
   Database, Gauge, Landmark, Layers3, Network, Scale, Search, ShieldCheck, WalletCards
 } from "lucide-react";
-import { apiConfig, loadNetworkSnapshot, loadServiceHealth, networkParams } from "./lib/api/ynxApi.js";
+import { apiConfig, loadNetworkSnapshot, loadServiceHealth } from "./lib/api/ynxApi.js";
 import { HeroPortal } from "./sections/HeroPortal.jsx";
 import { StatusCard } from "./components/StatusCard.jsx";
 import { ProductPanel } from "./components/ProductPanel.jsx";
@@ -15,6 +15,7 @@ import { AddressConverter } from "./components/AddressConverter.jsx";
 import { LatestRecords } from "./components/LatestRecords.jsx";
 import { LocaleProvider, useLocale } from "./lib/i18n.jsx";
 import { getRuntimeCopy, loadRuntimeCopy } from "./content/runtimeLocaleContent.js";
+import { PageErrorBoundary } from "./components/PageErrorBoundary.jsx";
 import "./styles.css";
 
 const route = window.location.pathname.replace(/\/$/, "") || "/";
@@ -28,6 +29,7 @@ function App() {
   const [connectionState, setConnectionState] = useState("loading");
   const [heightMoved, setHeightMoved] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [networkRequest, setNetworkRequest] = useState(0);
 
   useEffect(() => {
     let active = true;
@@ -107,9 +109,9 @@ function App() {
 
   return (
     <>
-      <SiteHeader scrollProgress={scrollProgress} />
+      <SiteHeader scrollProgress={scrollProgress} networkRequest={networkRequest} />
       <main id="main-content" tabIndex={-1}>
-      <HeroPortal snapshot={snapshot} connectionState={connectionState} onAddNetwork={() => addNetwork(copy.utility.noWallet)} />
+      <HeroPortal snapshot={snapshot} connectionState={connectionState} onAddNetwork={() => setNetworkRequest((request) => request + 1)} />
 
       <section className="networkBand" id="network" aria-labelledby="network-title" data-reveal>
         <div className="sectionHeader compact">
@@ -220,16 +222,11 @@ function Endpoint({ label, value, copy: copyLabels }) {
 }
 
 
-async function addNetwork(noWallet) {
-  if (!window.ethereum) return window.alert(noWallet);
-  await window.ethereum.request({ method: "wallet_addEthereumChain", params: [networkParams()] });
-}
-
 function formatNumber(value, locale = "en") { return Number.isFinite(Number(value)) ? new Intl.NumberFormat(locale).format(Number(value)) : undefined; }
 function formatTime(value, locale = "en", now = "now") { return value ? new Intl.DateTimeFormat(locale, { hour: "2-digit", minute: "2-digit", second: "2-digit" }).format(new Date(value)) : now; }
 function shortRelease(value) { return value.startsWith("ynx-chain-") ? value.replace("ynx-chain-", "") : value; }
 
-createRoot(document.getElementById("root")).render(<LocaleProvider><App /></LocaleProvider>);
+createRoot(document.getElementById("root")).render(<PageErrorBoundary><LocaleProvider><App /></LocaleProvider></PageErrorBoundary>);
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {

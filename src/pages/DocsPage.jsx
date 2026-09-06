@@ -4,10 +4,10 @@ import { apiConfig } from "../lib/api/ynxApi.js";
 import { getCatalog } from "../lib/ecosystemCatalog.js";
 import { guideFor } from "../content/ecosystemGuides.js";
 import { DOCS_UI_CJK } from "../content/docsUiCjk.js";
+import { DOCS_UI_GLOBAL } from "../content/docsUiGlobal.js";
 import docsAuthority from "virtual:ynx-docs-authority";
-import docsLocales from "virtual:ynx-docs-locales";
 import { useLocale } from "../lib/i18n.jsx";
-import { selectLocalizedDocs } from "../lib/docsLocale.js";
+import { useLocalizedDocs } from "../lib/useLocalizedDocs.js";
 
 const START_STEPS_EN = [
   ["1", "Get a Wallet address", "Create or restore an address locally. YNX products never need your recovery phrase."],
@@ -72,13 +72,13 @@ const DOCS_UI = {
   },
 };
 
-Object.assign(DOCS_UI, DOCS_UI_CJK);
+Object.assign(DOCS_UI, DOCS_UI_CJK, DOCS_UI_GLOBAL);
 
 const textFromHtml = (html) => html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
 
 export function DocsPage() {
   const { locale } = useLocale();
-  const localizedDocs = selectLocalizedDocs({ ...docsAuthority, ...docsLocales }, locale);
+  const localizedDocs = useLocalizedDocs(locale);
   const ui = DOCS_UI[locale];
   const articles = localizedDocs.articles;
   const catalog = useMemo(() => getCatalog(), []);

@@ -47,17 +47,19 @@ function docsAuthorityPlugin() {
     direction: locales.direction,
     missingMatrix: locales.missingMatrix,
   };
-  const publicLocales = { byLocale: locales.byLocale };
+  const localeModulePrefix = "virtual:ynx-docs-locale/";
   return {
     name: "ynx-docs-authority",
     resolveId(id) {
       if (id === moduleId) return resolvedId;
       if (id === localesModuleId) return localesResolvedId;
+      if (id.startsWith(localeModulePrefix) && locales.byLocale[id.slice(localeModulePrefix.length)]) return `\0${id}`;
       return null;
     },
     load(id) {
       if (id === resolvedId) return `export default ${JSON.stringify(publicAuthority)};`;
-      if (id === localesResolvedId) return `export default ${JSON.stringify(publicLocales)};`;
+      if (id === localesResolvedId) return `export default {${Object.keys(locales.byLocale).map((locale) => `${JSON.stringify(locale)}: () => import(${JSON.stringify(localeModulePrefix + locale)})`).join(",")}};`;
+      if (id.startsWith(`\0${localeModulePrefix}`)) return `export default ${JSON.stringify(locales.byLocale[id.slice(localeModulePrefix.length + 1)])};`;
       return null;
     },
   };
