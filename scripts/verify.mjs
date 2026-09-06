@@ -861,7 +861,7 @@ if (
   exchangeRegistry?.publicProductMetadata !== "/releases/exchange/fc2276e1ce4c/public-product-metadata.json" ||
   registryByKey.get("wallet")?.centralAccepted !== false ||
   registryByKey.get("wallet")?.publicWeb !== "https://wallet.ynxweb4.com/" ||
-  registryByKey.get("wallet")?.publicWebRelease !== "/releases/wallet-web/f0512a73/public-runtime.json" ||
+  registryByKey.get("wallet")?.publicWebRelease !== "/releases/wallet-web/27d00feb/public-runtime.json" ||
   videoRegistry?.publicWeb !== "https://web4.ynxweb4.com/video/" ||
   videoRegistry?.centralAccepted !== false ||
   cardRegistry?.state !== "candidate-incomplete" ||
