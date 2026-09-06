@@ -16,7 +16,7 @@ export default defineConfig({
           response.statusCode = 200;
           response.setHeader("content-type", "application/json; charset=utf-8");
           response.setHeader("cache-control", "no-store");
-          response.end(JSON.stringify(await collectNetworkStatus()));
+          response.end(JSON.stringify(await collectNetworkStatus({ detailed: new URL(request.url, "http://localhost").searchParams.get("view") !== "summary" })));
         });
         server.middlewares.use("/api/services/health", async (request, response, next) => {
           if (request.method !== "GET") return next();
@@ -39,7 +39,9 @@ function docsAuthorityPlugin() {
   const localesResolvedId = `\0${localesModuleId}`;
   const publicAuthority = {
     artifact: createHostedArtifactManifest(authority),
-    articles: authority.articles,
+    // Route matching and search need metadata; full bodies remain in the
+    // existing dynamic locale modules, including the English source locale.
+    articles: authority.articles.map(({ markdown, html, ...metadata }) => metadata),
     productMetadata: authority.productMetadata,
     sourceLocale: locales.sourceLocale,
     requestedLocales: locales.requestedLocales,
