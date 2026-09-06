@@ -5,8 +5,8 @@ import { walletDownloadState } from '../src/lib/walletDownloads.js';
 
 const clone = () => structuredClone(currentWalletDownloads);
 
-test('eight current packages are bound to six exact public manifests and keep installed acceptance separate', () => {
-  assert.deepEqual(verifyWalletDownloadMetadata(), { files: 8, manifests: 6 });
+test('nine current packages are bound to eight exact public manifests and keep installed acceptance separate', () => {
+  assert.deepEqual(verifyWalletDownloadMetadata(), { files: 9, manifests: 8 });
   for (const [platform, item] of Object.entries(currentWalletDownloads)) {
     const state = walletDownloadState(platform, { ...item, href: item.publicUrl, downloadHosted: true });
     assert.equal(state.available, true, platform);
@@ -26,7 +26,11 @@ test('manifest verification rejects substituted bytes, architecture, evidence, r
     ['pwa', 'launchURL', 'https://wallet.ynxweb4.com/'], ['pwa', 'sdkManifest', currentWalletDownloads.chromeEdge.sdkManifest],
     ['android', 'versionCode', 7], ['android', 'productionSigned', true],
     ['android', 'publicUrl', currentWalletDownloads.android.publicUrl.replace('arm64', 'universal') + '?file=universal'],
-    ['android', 'publicationEvidence', '/releases/historical.json']
+    ['android', 'publicationEvidence', '/releases/historical.json'],
+    ['macos', 'notarized', true], ['macos', 'developerIdSigned', true],
+    ['macos', 'spctlAccepted', true], ['macos', 'fullInstalledE2E', true],
+    ['macos', 'sourceCommit', '5a6b033897a1295d35fc325a92c6bb81c8b04a19'],
+    ['macos', 'architecture', 'arm64']
   ]) {
     const changed = clone(); changed[platform][field] = value;
     assert.throws(() => verifyWalletDownloadMetadata(changed), undefined, `${platform}.${field}`);

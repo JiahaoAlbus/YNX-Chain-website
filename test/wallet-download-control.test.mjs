@@ -27,7 +27,7 @@ test("download actions cannot become product-page or untrusted URL navigation", 
 });
 
 test("known blocked macOS package and incomplete platform evidence remain unavailable", () => {
-  const [macHref, macMetadata] = Object.entries(publishedDownloadMetadata).find(([href]) => href.endsWith(".dmg"));
+  const [macHref, macMetadata] = Object.entries(publishedDownloadMetadata).find(([, item]) => item.sourceCommit === "5a6b033897a1295d35fc325a92c6bb81c8b04a19");
   const state = walletDownloadState("macos", { ...macMetadata, href: macHref, downloadHosted: true });
   assert.equal(state.available, false);
   assert.equal(state.legacyBlocked, true);

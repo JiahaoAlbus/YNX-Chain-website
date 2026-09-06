@@ -1,12 +1,13 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import crypto from 'node:crypto';
+import { WALLET_MACOS_DOWNLOADS, WALLET_MACOS_MANIFESTS } from '../../src/content/walletMacosDownloads.js';
 import { WALLET_DESKTOP_DOWNLOADS, WALLET_DESKTOP_MANIFESTS } from '../../src/content/walletDesktopDownloads.js';
 import { WALLET_BROWSER_DOWNLOADS, WALLET_BROWSER_MANIFESTS } from '../../src/content/walletBrowserDownloads.js';
 import { WALLET_ANDROID_DOWNLOADS, WALLET_ANDROID_MANIFESTS } from '../../src/content/walletAndroidDownloads.js';
 
-export const currentWalletDownloads = { ...WALLET_DESKTOP_DOWNLOADS, ...WALLET_BROWSER_DOWNLOADS, ...WALLET_ANDROID_DOWNLOADS };
-const manifests = [...WALLET_DESKTOP_MANIFESTS, ...WALLET_BROWSER_MANIFESTS, ...WALLET_ANDROID_MANIFESTS];
+export const currentWalletDownloads = { ...WALLET_DESKTOP_DOWNLOADS, ...WALLET_BROWSER_DOWNLOADS, ...WALLET_ANDROID_DOWNLOADS, ...WALLET_MACOS_DOWNLOADS };
+const manifests = [...WALLET_DESKTOP_MANIFESTS, ...WALLET_BROWSER_MANIFESTS, ...WALLET_ANDROID_MANIFESTS, ...WALLET_MACOS_MANIFESTS];
 // Pins are the exact small public GETs authorized by Central, independent of consumer metadata.
 const pins = [
   ['c510fcd2b72eb2a6f7c07188e32161e9bcd4d6b4f79a131f5f7a213c46c9bfd3', 2926],
@@ -14,7 +15,9 @@ const pins = [
   ['7b5a3ecfec00501cbd0ab387c1e14e1cc6f6cc77689bad0c74cbe8fd316f0399', 644],
   ['814574df0d3e8e689d10446ee7358938a1ce407afcee249be1b5ba7d0a964887', 5256],
   ['dd2932d9e67867e167d6a586cad101ead825d7f9e17b7152dcf2cbc0c6825bac', 685],
-  ['f14af90c79caac046ee5e283e96c4ebce9d50d323dcaeef9df774594da781cd2', 3324]
+  ['f14af90c79caac046ee5e283e96c4ebce9d50d323dcaeef9df774594da781cd2', 3324],
+  ['8269fe58132125d810c86d6f93de2ba84ad3a98984393db2bb3f4fc2f6050c62', 654],
+  ['162dce80ecf62238c718b6bd0ecbe3773102ec303a0de289e929327e8955e855', 3145]
 ];
 
 export function verifyWalletDownloadMetadata(downloads = currentWalletDownloads, registry = JSON.parse(fs.readFileSync('public/releases/ecosystem-release-registry.json')).products.find(p => p.key === 'wallet')) {
@@ -37,9 +40,9 @@ export function verifyWalletDownloadMetadata(downloads = currentWalletDownloads,
     assert.equal(d.accessContract.integratedAllProducts, false);
     return d.artifacts.map(a => ({ ...a, releaseBatch: d.releaseId }));
   });
-  assert.equal(sources.length, 8);
-  assert.equal(Object.keys(downloads).length, 8);
-  assert.equal(new Set(Object.values(downloads).map(a => a.id)).size, 8);
+  assert.equal(sources.length, 9);
+  assert.equal(Object.keys(downloads).length, 9);
+  assert.equal(new Set(Object.values(downloads).map(a => a.id)).size, 9);
   for (const item of Object.values(downloads)) {
     const source = sources.find(a => a.id === item.id);
     assert.ok(source, item.id);
@@ -68,5 +71,7 @@ export function verifyWalletDownloadMetadata(downloads = currentWalletDownloads,
   assert.deepEqual(downloads.android.limitedInstalledEvidence, sources.find(a => a.platform === 'android').limitedInstalledEvidence);
   assert.equal(downloads.android.limitedInstalledEvidence.latestProductLoginRerun, false);
   assert.equal(downloads.android.limitedInstalledEvidence.realHardwareVerified, false);
+  assert.equal(downloads.macos.version, '0.6.4');
+  for (const field of ['notarized', 'developerIdSigned', 'spctlAccepted']) assert.equal(downloads.macos[field], false, field);
   return { files: sources.length, manifests: documents.length };
 }

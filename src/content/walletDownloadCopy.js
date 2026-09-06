@@ -20,7 +20,10 @@ export const WALLET_DOWNLOAD_COPY = {
     "pwaArchiveOnly": "仅提供 PWA 静态 ZIP；没有已部署入口、启动网址、已安装 PWA 或 Auth 回调验证。",
     "androidPreviewBoundary": "最新产品登录、Pixel 等真机、公开 code4/code5 升级及完整转账流程尚未验证。",
     "androidLimitedProof": "独立模拟器已验证 code7→8 保留账户数据升级、受保护密钥的系统指纹解锁及只读 Auth 账户清单。",
-    "qaSignedPreview": "Android Debug QA 签名；不是生产签名或商店版本。"
+    "qaSignedPreview": "Android Debug QA 签名；不是生产签名或商店版本。",
+    "macosPreviewBoundary": "密码解锁、剪贴板及完整账户／转账流程尚未验证；金额单位能力未验证时，发送保持禁用。",
+    "macosLimitedProof": "已检查 DMG 安装及有限的锁定启动，并保留原有加密钱包。",
+    "macosAdHocSignature": "临时 ad-hoc 签名；Gatekeeper 检查未通过，尚无 Developer ID 签名或公证。"
   },
   "zh-TW": {
     "downloadWallet": "下載 Wallet",
@@ -43,7 +46,10 @@ export const WALLET_DOWNLOAD_COPY = {
     "pwaArchiveOnly": "僅提供 PWA 靜態 ZIP；沒有已部署入口、啟動網址、已安裝 PWA 或 Auth 回呼驗證。",
     "androidPreviewBoundary": "最新產品登入、Pixel 等實機、公開 code4/code5 升級及完整轉帳流程尚未驗證。",
     "androidLimitedProof": "獨立模擬器已驗證 code7→8 保留帳戶資料升級、受保護金鑰的系統指紋解鎖及唯讀 Auth 帳戶清單。",
-    "qaSignedPreview": "Android Debug QA 簽章；不是正式簽章或商店版本。"
+    "qaSignedPreview": "Android Debug QA 簽章；不是正式簽章或商店版本。",
+    "macosPreviewBoundary": "密碼解鎖、剪貼簿及完整帳戶／轉帳流程尚未驗證；金額單位能力未驗證時，傳送保持停用。",
+    "macosLimitedProof": "已檢查 DMG 安裝及有限的鎖定啟動，並保留原有加密錢包。",
+    "macosAdHocSignature": "臨時 ad-hoc 簽章；Gatekeeper 檢查未通過，尚無 Developer ID 簽章或公證。"
   },
   "en": {
     "downloadWallet": "Download Wallet",
@@ -66,7 +72,10 @@ export const WALLET_DOWNLOAD_COPY = {
     "pwaArchiveOnly": "Static PWA ZIP only. No deployed PWA, launch URL, installed-PWA or Auth callback proof.",
     "androidPreviewBoundary": "Latest product login, Pixel/real hardware, upgrades from public code4/code5 and complete transfer flows remain unverified.",
     "androidLimitedProof": "Independent emulator: code7→8 preserved account data; protected-key OS fingerprint unlock and read-only Auth inventory verified.",
-    "qaSignedPreview": "Android Debug QA signature; no production signature or store release."
+    "qaSignedPreview": "Android Debug QA signature; no production signature or store release.",
+    "macosPreviewBoundary": "Password unlock, clipboard and complete account/transfer flows remain unverified. Sending stays disabled while amount-unit capability is unverified.",
+    "macosLimitedProof": "DMG installation and a limited locked launch were checked while preserving the existing encrypted wallet.",
+    "macosAdHocSignature": "Ad-hoc signature; Gatekeeper rejected this build. No Developer ID signature or notarization."
   },
   "ja": {
     "downloadWallet": "Wallet をダウンロード",
@@ -89,7 +98,10 @@ export const WALLET_DOWNLOAD_COPY = {
     "pwaArchiveOnly": "静的 PWA ZIP のみ。公開 PWA、起動 URL、PWA のインストール、Auth コールバックの検証はありません。",
     "androidPreviewBoundary": "最新の製品ログイン、Pixel などの実機、公開 code4/code5 からの更新、送金の全工程は未検証です。",
     "androidLimitedProof": "独立したエミュレーターで code7→8 のアカウントデータ保持更新、保護鍵の OS 指紋解除、読み取り専用 Auth 一覧を検証済みです。",
-    "qaSignedPreview": "Android Debug QA 署名。製品版署名やストア公開はありません。"
+    "qaSignedPreview": "Android Debug QA 署名。製品版署名やストア公開はありません。",
+    "macosPreviewBoundary": "パスワード解除、クリップボード、アカウントと送金の全工程は未検証です。金額単位の対応が未確認の間は送信を無効にします。",
+    "macosLimitedProof": "既存の暗号化ウォレットを保持した状態で、DMG のインストールとロック画面までの限定的な起動を確認しました。",
+    "macosAdHocSignature": "ad-hoc 署名。Gatekeeper の評価は不合格です。Developer ID 署名と公証はありません。"
   },
   "ko": {
     "downloadWallet": "Wallet 다운로드",
@@ -112,7 +124,10 @@ export const WALLET_DOWNLOAD_COPY = {
     "pwaArchiveOnly": "정적 PWA ZIP만 제공합니다. 배포된 PWA, 실행 URL, PWA 설치 또는 Auth 콜백 검증은 없습니다.",
     "androidPreviewBoundary": "최신 제품 로그인, Pixel 등 실기기, 공개 code4/code5에서의 업그레이드와 전체 전송 흐름은 미검증 상태입니다.",
     "androidLimitedProof": "독립 에뮬레이터에서 code7→8 계정 데이터 보존 업그레이드, 보호 키의 OS 지문 잠금 해제, 읽기 전용 Auth 계정 목록을 검증했습니다.",
-    "qaSignedPreview": "Android Debug QA 서명이며, 정식 서명이나 스토어 출시는 아닙니다."
+    "qaSignedPreview": "Android Debug QA 서명이며, 정식 서명이나 스토어 출시는 아닙니다.",
+    "macosPreviewBoundary": "비밀번호 잠금 해제, 클립보드, 전체 계정 및 전송 흐름은 미검증 상태입니다. 금액 단위 지원이 확인될 때까지 전송은 비활성화됩니다.",
+    "macosLimitedProof": "기존 암호화 지갑을 보존한 상태에서 DMG 설치와 잠금 화면까지의 제한된 실행을 확인했습니다.",
+    "macosAdHocSignature": "ad-hoc 서명입니다. Gatekeeper 검사를 통과하지 못했으며 Developer ID 서명이나 공증은 없습니다."
   },
   "es": {
     "downloadWallet": "Descargar Wallet",
@@ -135,7 +150,10 @@ export const WALLET_DOWNLOAD_COPY = {
     "pwaArchiveOnly": "Solo un ZIP estático de PWA. Sin PWA desplegada, URL de inicio ni verificación de instalación o retorno de Auth.",
     "androidPreviewBoundary": "Sin verificar: inicio de sesión actual, Pixel u otros dispositivos físicos, actualización desde code4/code5 públicos y transferencias completas.",
     "androidLimitedProof": "En un emulador independiente se verificaron la actualización code7→8 conservando la cuenta, el desbloqueo de claves protegidas con huella del SO y el inventario Auth de solo lectura.",
-    "qaSignedPreview": "Firma Android Debug QA; sin firma de producción ni publicación en tiendas."
+    "qaSignedPreview": "Firma Android Debug QA; sin firma de producción ni publicación en tiendas.",
+    "macosPreviewBoundary": "El desbloqueo por contraseña, el portapapeles y los flujos completos de cuenta y transferencia siguen sin verificarse. El envío permanece desactivado mientras no se verifiquen las unidades de importe.",
+    "macosLimitedProof": "Se comprobaron la instalación del DMG y un arranque limitado hasta el bloqueo, conservando la cartera cifrada existente.",
+    "macosAdHocSignature": "Firma ad-hoc; Gatekeeper rechazó esta versión. Sin firma Developer ID ni notarización."
   },
   "fr": {
     "downloadWallet": "Télécharger Wallet",
@@ -158,7 +176,10 @@ export const WALLET_DOWNLOAD_COPY = {
     "pwaArchiveOnly": "ZIP statique de PWA uniquement. Aucune PWA déployée, URL de lancement ni preuve d’installation ou de retour Auth.",
     "androidPreviewBoundary": "Non vérifiés : connexion actuelle au produit, Pixel ou autres appareils physiques, mise à niveau depuis les versions publiques code4/code5 et transferts complets.",
     "androidLimitedProof": "Émulateur indépendant : mise à niveau code7→8 conservant le compte, déverrouillage des clés protégées par empreinte du système et inventaire Auth en lecture seule vérifiés.",
-    "qaSignedPreview": "Signature Android Debug QA ; aucune signature de production ni publication en boutique."
+    "qaSignedPreview": "Signature Android Debug QA ; aucune signature de production ni publication en boutique.",
+    "macosPreviewBoundary": "Le déverrouillage par mot de passe, le presse-papiers et les parcours complets de compte et transfert restent non vérifiés. L’envoi reste désactivé tant que les unités de montant ne sont pas validées.",
+    "macosLimitedProof": "Installation du DMG et démarrage limité jusqu’au verrouillage vérifiés, avec conservation du portefeuille chiffré existant.",
+    "macosAdHocSignature": "Signature ad-hoc ; Gatekeeper a rejeté cette version. Aucune signature Developer ID ni notarisation."
   },
   "de": {
     "downloadWallet": "Wallet herunterladen",
@@ -181,7 +202,10 @@ export const WALLET_DOWNLOAD_COPY = {
     "pwaArchiveOnly": "Nur ein statisches PWA-ZIP. Keine bereitgestellte PWA, Start-URL oder geprüfte PWA-Installation bzw. Auth-Rückkehr.",
     "androidPreviewBoundary": "Ungeprüft bleiben die aktuelle Produktanmeldung, Pixel und andere echte Geräte, Updates von öffentlichem code4/code5 und vollständige Überweisungen.",
     "androidLimitedProof": "Auf einem unabhängigen Emulator geprüft: code7→8 mit Erhalt der Kontodaten, OS-Fingerabdruckentsperrung geschützter Schlüssel und schreibgeschützte Auth-Kontoliste.",
-    "qaSignedPreview": "Android-Debug-QA-Signatur; keine Produktionssignatur oder Store-Veröffentlichung."
+    "qaSignedPreview": "Android-Debug-QA-Signatur; keine Produktionssignatur oder Store-Veröffentlichung.",
+    "macosPreviewBoundary": "Passwortentsperrung, Zwischenablage und vollständige Konto- und Überweisungsabläufe sind ungeprüft. Das Senden bleibt gesperrt, solange die Betragseinheiten nicht verifiziert sind.",
+    "macosLimitedProof": "DMG-Installation und begrenzter Start bis zur Sperransicht wurden unter Erhalt der vorhandenen verschlüsselten Wallet geprüft.",
+    "macosAdHocSignature": "Ad-hoc-Signatur; Gatekeeper hat diese Version abgelehnt. Keine Developer-ID-Signatur oder Notarisierung."
   },
   "pt": {
     "downloadWallet": "Baixar Wallet",
@@ -204,7 +228,10 @@ export const WALLET_DOWNLOAD_COPY = {
     "pwaArchiveOnly": "Apenas ZIP estático de PWA. Sem PWA publicada, URL de abertura ou prova de instalação e retorno Auth.",
     "androidPreviewBoundary": "Ainda não verificados: login atual no produto, Pixel ou outros aparelhos físicos, atualização do code4/code5 público e transferências completas.",
     "androidLimitedProof": "Em emulador independente: atualização code7→8 preservando a conta, desbloqueio de chaves protegidas por impressão digital do sistema e inventário Auth somente leitura verificados.",
-    "qaSignedPreview": "Assinatura Android Debug QA; sem assinatura de produção ou publicação em loja."
+    "qaSignedPreview": "Assinatura Android Debug QA; sem assinatura de produção ou publicação em loja.",
+    "macosPreviewBoundary": "O desbloqueio por senha, a área de transferência e os fluxos completos de conta e transferência continuam sem verificação. O envio permanece desativado enquanto as unidades de valor não forem verificadas.",
+    "macosLimitedProof": "Instalação do DMG e inicialização limitada até a tela bloqueada verificadas, preservando a carteira criptografada existente.",
+    "macosAdHocSignature": "Assinatura ad-hoc; Gatekeeper rejeitou esta versão. Sem assinatura Developer ID ou notarização."
   },
   "ru": {
     "downloadWallet": "Скачать Wallet",
@@ -227,7 +254,10 @@ export const WALLET_DOWNLOAD_COPY = {
     "pwaArchiveOnly": "Только статический ZIP PWA. Нет развёрнутой PWA, URL запуска или проверки установки PWA и возврата Auth.",
     "androidPreviewBoundary": "Не проверены: актуальный вход в продукт, Pixel и другие реальные устройства, обновление с публичных code4/code5 и полный цикл перевода.",
     "androidLimitedProof": "На независимом эмуляторе проверены обновление code7→8 с сохранением аккаунта, разблокировка защищённых ключей отпечатком через ОС и список Auth только для чтения.",
-    "qaSignedPreview": "Подпись Android Debug QA; производственной подписи и публикации в магазине нет."
+    "qaSignedPreview": "Подпись Android Debug QA; производственной подписи и публикации в магазине нет.",
+    "macosPreviewBoundary": "Разблокировка паролем, буфер обмена и полные операции с аккаунтом и переводами не проверены. Отправка отключена, пока поддержка единиц суммы не подтверждена.",
+    "macosLimitedProof": "Проверены установка DMG и ограниченный запуск до экрана блокировки с сохранением существующего зашифрованного кошелька.",
+    "macosAdHocSignature": "Подпись ad-hoc; Gatekeeper отклонил эту сборку. Подписи Developer ID и нотариального заверения Apple нет."
   },
   "ar": {
     "downloadWallet": "تنزيل Wallet",
@@ -250,7 +280,10 @@ export const WALLET_DOWNLOAD_COPY = {
     "pwaArchiveOnly": "ملف ZIP ثابت لـ PWA فقط. لا توجد PWA منشورة أو رابط تشغيل أو إثبات لتثبيت PWA وعودة Auth.",
     "androidPreviewBoundary": "لم تُتحقق أحدث عملية دخول للمنتج، وأجهزة Pixel والأجهزة الفعلية، والترقية من code4/code5 العامّين، ومسار التحويل الكامل.",
     "androidLimitedProof": "تم التحقق على محاكي مستقل من ترقية code7→8 مع حفظ الحساب، وفتح المفاتيح المحمية ببصمة النظام، وقائمة حسابات Auth للقراءة فقط.",
-    "qaSignedPreview": "توقيع Android Debug QA؛ لا توقيع إنتاج أو إصدار في متجر."
+    "qaSignedPreview": "توقيع Android Debug QA؛ لا توقيع إنتاج أو إصدار في متجر.",
+    "macosPreviewBoundary": "لم تُتحقق إزالة القفل بكلمة المرور والحافظة ومسارات الحساب والتحويل الكاملة. يبقى الإرسال معطلاً ما دامت وحدات المبلغ غير متحقق منها.",
+    "macosLimitedProof": "تم فحص تثبيت DMG وتشغيل محدود حتى شاشة القفل، مع الاحتفاظ بالمحفظة المشفرة الموجودة.",
+    "macosAdHocSignature": "توقيع ad-hoc؛ رفض Gatekeeper هذا الإصدار. لا توقيع Developer ID أو توثيق من Apple."
   },
   "id": {
     "downloadWallet": "Unduh Wallet",
@@ -273,6 +306,9 @@ export const WALLET_DOWNLOAD_COPY = {
     "pwaArchiveOnly": "Hanya ZIP PWA statis. Tanpa PWA yang dihosting, URL peluncuran, atau bukti pemasangan PWA dan callback Auth.",
     "androidPreviewBoundary": "Login produk terbaru, Pixel/perangkat fisik, pembaruan dari code4/code5 publik, dan alur transfer lengkap belum diverifikasi.",
     "androidLimitedProof": "Emulator independen memverifikasi pembaruan code7→8 dengan data akun tetap tersimpan, pembukaan kunci terlindungi melalui sidik jari OS, dan daftar akun Auth hanya baca.",
-    "qaSignedPreview": "Tanda tangan Android Debug QA; tanpa tanda tangan produksi atau rilis toko."
+    "qaSignedPreview": "Tanda tangan Android Debug QA; tanpa tanda tangan produksi atau rilis toko.",
+    "macosPreviewBoundary": "Pembukaan kunci dengan kata sandi, papan klip, serta alur akun dan transfer lengkap belum diverifikasi. Pengiriman tetap dinonaktifkan selama dukungan satuan nominal belum diverifikasi.",
+    "macosLimitedProof": "Pemasangan DMG dan peluncuran terbatas hingga layar terkunci telah diperiksa, dengan dompet terenkripsi yang ada tetap tersimpan.",
+    "macosAdHocSignature": "Tanda tangan ad-hoc; Gatekeeper menolak build ini. Tanpa tanda tangan Developer ID atau notarisasi."
   }
 };

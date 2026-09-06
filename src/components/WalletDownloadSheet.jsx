@@ -45,10 +45,10 @@ export function WalletDownloadSheet({ locale = "en", noticeId }) {
   return <>
     <p className="walletDownloadNotice" id={noticeId}>{copy.choosePlatform}. {copy.installNotice}</p>
     <a className="walletDownloadGuide" href={`/manual?path=wallet&lang=${encodeURIComponent(locale)}`}>{copy.installation}<ArrowUpRight size={16} aria-hidden="true" /></a>
-    <ul className="walletDownloadOptions">{options.slice(0, 8).map(renderOption)}</ul>
+    <ul className="walletDownloadOptions">{options.slice(0, 9).map(renderOption)}</ul>
     <details className="walletDownloadOtherPlatforms">
       <summary>{copy.otherPlatforms}</summary>
-      <ul className="walletDownloadOptions">{options.slice(8).map(renderOption)}</ul>
+      <ul className="walletDownloadOptions">{options.slice(9).map(renderOption)}</ul>
     </details>
     <footer className="walletDownloadFooter">
       <span>{copy.testnetPreview}</span>

@@ -77,6 +77,10 @@ function routeMatcher(source) {
   return (pathname) => pathname === source ? "" : null;
 }
 
+// Match the approved Vercel SPA fallback exactly; arbitrary rewrite patterns remain rejected.
+const SPA_FALLBACK_SOURCE = "/((?!api/|downloads/|(?:assets|releases|docs-authority|document-library|learning-search|third-party)(?:/|$)|.*[.]).*)";
+const SPA_FALLBACK_PATH = new RegExp('^' + SPA_FALLBACK_SOURCE + '$');
+
 function compileRouting(configuration) {
   const headers = (configuration.headers || []).map((entry) => ({ ...entry, match: routeMatcher(entry.source) }));
   const redirects = (configuration.redirects || []).map((entry) => {
@@ -85,7 +89,7 @@ function compileRouting(configuration) {
   });
   const rewrites = new Map();
   for (const entry of configuration.rewrites || []) {
-    if (entry.source === "/(.*)" && entry.destination === "/") continue;
+    if ((entry.source === "/(.*)" || entry.source === SPA_FALLBACK_SOURCE) && entry.destination === "/") continue;
     if (/[:*()]/.test(entry.source) || !entry.source.startsWith("/")) throw new Error("Rewrite sources must be exact paths");
     if (entry.destination.startsWith("https://")) {
       const target = new URL(entry.destination);
@@ -314,7 +318,7 @@ export async function createStandaloneServer(options = {}) {
       const file = await fileAt(relative);
       if (file) return serveFile(request, response, file);
     }
-    if (!path.extname(pathname) && !/^\/(downloads|releases|docs-authority|assets)(\/|$)/.test(pathname)) return serveFile(request, response, await fileAt("/index.html"));
+    if (SPA_FALLBACK_PATH.test(pathname)) return serveFile(request, response, await fileAt("/index.html"));
     const notFound = await fileAt("/404.html");
     if (notFound) return serveFile(request, response, notFound, 404);
     return json(request, response, 404, { error: "NOT_FOUND" });

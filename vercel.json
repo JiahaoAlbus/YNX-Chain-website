@@ -518,7 +518,7 @@
       "destination": "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/ynx-social-1.0.0-testnet-preview-aa852496-test-signed-15JR16t0lzmvyKU06tyaYXcUGC0sjQ.apk"
     },
     {
-      "source": "/(.*)",
+      "source": "/((?!api/|downloads/|(?:assets|releases|docs-authority|document-library|learning-search|third-party)(?:/|$)|.*[.]).*)",
       "destination": "/"
     }
   ]

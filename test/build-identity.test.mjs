@@ -102,10 +102,12 @@ test("Vercel maps the exact public JSON path before the SPA fallback", async () 
     (rewrite) => rewrite.source === "/build-identity.json",
   );
   const fallbackIndex = configuration.rewrites.findIndex(
-    (rewrite) => rewrite.source === "/(.*)" && rewrite.destination === "/",
+    (rewrite) => rewrite.destination === "/",
   );
 
   assert.notEqual(identityIndex, -1);
   assert.equal(configuration.rewrites[identityIndex].destination, "/api/build-identity");
   assert.ok(identityIndex < fallbackIndex);
+  assert.equal(fallbackIndex, configuration.rewrites.length - 1);
+  assert.equal(new RegExp("^" + configuration.rewrites[fallbackIndex].source + "$" ).test("/build-identity.json"), false);
 });

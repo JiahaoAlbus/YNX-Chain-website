@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "product": "YNX Wallet",
+  "releaseId": "wallet-static-20260906-r6-macos",
+  "status": "published-files-verified",
+  "distribution": "testnet-preview",
+  "hosting": "static-artifact-files-only",
+  "artifacts": [
+    {
+      "id": "macos-064-e1945298",
+      "sourceCommit": "e1945298b843385f9d8d44fd1ccff99c29815ece",
+      "sha256": "f904e4d32fa949fb936fd69c6aae5e32025564fb864e8a710deb1f93d9ccceef",
+      "bytes": 257243798,
+      "platform": "macos",
+      "architecture": "universal",
+      "browser": null,
+      "installation": "dmg",
+      "mimeType": "application/x-apple-diskimage",
+      "labelZh": "macOS 0.6.4 · 测试预览（未公证）",
+      "labelEn": "macOS 0.6.4 · Test preview (not notarized)",
+      "limitations": [
+        "Ad-hoc signature; Gatekeeper spctl assessment rejected. No Developer ID production signature or notarization. This is a test preview, not an ordinary trusted macOS release.",
+        "Actual DMG installation, embedded source and limited cold locked launch were verified. Current password-unlock, clipboard and full installed account/transfer E2E remain unverified.",
+        "Amount-unit capability is unknown at the recorded validation checkpoint; sending stays disabled. No public signing/broadcast is asserted.",
+        "临时 ad-hoc 签名，Gatekeeper 检查拒绝，未完成 Developer ID 签名与公证；仅测试预览，不能标为完整可用。",
+        "已验证实际 DMG 安装及有限锁定启动；新包解锁、剪贴板和完整账户／转账流程尚未完成。金额单位能力未验证时发送保持禁用。"
+      ],
+      "filename": "ynx-wallet-macos-0.6.4-universal-testnet-preview.dmg",
+      "relativePath": "wallet/sha256-f904e4d32fa949fb936fd69c6aae5e32025564fb864e8a710deb1f93d9ccceef/ynx-wallet-macos-0.6.4-universal-testnet-preview.dmg",
+      "published": true,
+      "publicDownloadVerified": true,
+      "storeReleased": false,
+      "productionSigned": false,
+      "fullInstalledE2E": false,
+      "pwaDeployed": false,
+      "launchURL": null,
+      "url": "https://downloads.ynxweb4.com/wallet/sha256-f904e4d32fa949fb936fd69c6aae5e32025564fb864e8a710deb1f93d9ccceef/ynx-wallet-macos-0.6.4-universal-testnet-preview.dmg"
+    }
+  ],
+  "accessContract": {
+    "sha256": "49e0ceb7a72e769b3fd6e30e6fa93fa597e8cdaf886f47abc72767d59575b0ab",
+    "defaultWallet": "YNX Wallet",
+    "thirdPartyWallets": "Only explicit service-approved basic capabilities; never promoted to full YNX account access.",
+    "fullAccountAccess": "Auth V3 ProductSessionV2 with device-bound HTTP proof plus live revocation/control-intent and server-required scopes. Provider flags and personal_sign do not establish service authorization.",
+    "integratedAllProducts": false
+  },
+  "notes": [
+    "Independent macOS0.6.4 universal test-preview batch. No Android or browser dependency.",
+    "No production signature/notarization/store release claim. Public file download does not establish installed usability.",
+    "Older uploads, partials and public downloads remain unchanged; this manifest contains no Firefox or browser artifact."
+  ]
+}
