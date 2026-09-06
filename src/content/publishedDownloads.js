@@ -1,5 +1,4 @@
-// Explicit download routes retained from the published release configuration.
-// Hosting does not establish full wallet functionality or production signing.
+// Immutable published artifacts. Historical previews are not current Wallet acceptance.
 export const publishedDownloadPaths = [
   "/downloads/wallet-web/sha256-417d9b9e5babf05fdfdf8161504389eb99c636be75f94444bf4ff91a9b4536b3/ynx-wallet-firefox-0.1.0.zip",
   "/downloads/wallet-web/sha256-63d83cd20925f2d52c0f21f548fa7a857a4d056e03e5fa16244f173164a7d287/ynx-wallet-web-pwa-0.1.0.zip",
@@ -19,7 +18,12 @@ export const publishedDownloadPaths = [
   "/downloads/ynx-finance-1.2.0-testnet-preview-307273b9-test-signed.apk",
   "/downloads/ynx-social-1.0.0-testnet-preview-aa852496-test-signed.apk",
   "/downloads/ynx-trust-center-4d40557229b4-linux-amd64.tar.gz",
-  "https://downloads.ynxweb4.com/wallet/sha256-69b4fa5db7b8a9ab105af6633de44f5a5a4a9fceeaa0925a306f77b22381b044/ynx-wallet-macos-0.1.2-universal.dmg"
+  "https://downloads.ynxweb4.com/wallet/sha256-69b4fa5db7b8a9ab105af6633de44f5a5a4a9fceeaa0925a306f77b22381b044/ynx-wallet-macos-0.1.2-universal.dmg",
+  "https://www.ynxweb4.com/downloads/wallet-web/sha256-c733093dea47c6612c8a9d5ecea40be2227f62402f4b4966955c9e1accf4e2aa/ynx-wallet-chrome-edge-0.1.0.zip",
+  "https://www.ynxweb4.com/downloads/wallet-web/sha256-417d9b9e5babf05fdfdf8161504389eb99c636be75f94444bf4ff91a9b4536b3/ynx-wallet-firefox-0.1.0.zip",
+  "https://www.ynxweb4.com/downloads/wallet/sha256-856b2a260efc43c25f62508dabc6bb6b74b84da71c9b477e8a02a12d17598cd7/ynx-wallet-desktop-0.1.1-x64.exe",
+  "https://www.ynxweb4.com/downloads/wallet/sha256-929315133c68eda1cabac51cec889c4aeca5e3ee1701578916bc67e096c5dc35/ynx-wallet-desktop-0.1.1-arm64.exe",
+  "https://www.ynxweb4.com/downloads/wallet/sha256-afd686851ef07fbb07823295d07179b79e1a4a078d1b528bc149bd619c8689e0/ynx-wallet-1.0.3-testnet-preview-3ab8c24c-local-test-signed.apk"
 ];
 
 export const publishedDownloadMetadata = {
@@ -29,8 +33,19 @@ export const publishedDownloadMetadata = {
     "sha256": "69b4fa5db7b8a9ab105af6633de44f5a5a4a9fceeaa0925a306f77b22381b044",
     "sourceCommit": "5a6b033897a1295d35fc325a92c6bb81c8b04a19",
     "signingClass": "unsigned; not store released",
-    "installProof": "Launch and rejection verified; authorization approval, balance, signing and transfer not verified.",
-    "publicationEvidence": "/releases/wallet-desktop/5a6b033897a1/macos-native-callback-dmg-publication.json"
+    "installProof": "Historical native callback preview: approval blocked by CANONICAL_AUTH_BRIDGE_UNAVAILABLE; unsigned/not notarized and Gatekeeper rejection recorded. Website owner has disabled this entry.",
+    "publicationEvidence": "/releases/wallet-downloads/20260906/historical-previews.json",
+    "publicUrl": "https://downloads.ynxweb4.com/wallet/sha256-69b4fa5db7b8a9ab105af6633de44f5a5a4a9fceeaa0925a306f77b22381b044/ynx-wallet-macos-0.1.2-universal.dmg",
+    "sourceBinding": "Existing release catalog and exact Git commit resolution; full hosted artifact SHA freshly recomputed. This does not assert source embedded in the old package.",
+    "mimeType": "application/x-apple-diskimage",
+    "contentDisposition": "attachment; filename=\"ynx-wallet-macos-0.1.2-universal.dmg\"",
+    "actualDownloadFilename": "ynx-wallet-macos-0.1.2-universal.dmg",
+    "historicalPreview": true,
+    "downloadApproved": false,
+    "productionSigned": false,
+    "storeReleased": false,
+    "newWalletGoalsAccepted": false,
+    "note": "Historical native callback preview: approval blocked by CANONICAL_AUTH_BRIDGE_UNAVAILABLE; unsigned/not notarized and Gatekeeper rejection recorded. Website owner has disabled this entry. Existing release catalog and exact Git commit resolution; full hosted artifact SHA freshly recomputed. This does not assert source embedded in the old package."
   },
   "/downloads/wallet/sha256-856b2a260efc43c25f62508dabc6bb6b74b84da71c9b477e8a02a12d17598cd7/ynx-wallet-desktop-0.1.1-x64.exe": {
     "version": "0.1.1",
@@ -38,8 +53,19 @@ export const publishedDownloadMetadata = {
     "sha256": "856b2a260efc43c25f62508dabc6bb6b74b84da71c9b477e8a02a12d17598cd7",
     "sourceCommit": "a8f36e4c57234efe5f19367c87035b4435d61b76",
     "signingClass": "unsigned; not store released",
-    "installProof": "Install and launch lifecycle recorded; account, signing and transfer not verified.",
-    "publicationEvidence": "/releases/wallet-desktop/a8f36e4c5723/windows-x64-exe-publication.json"
+    "installProof": "Historical Windows x64 install/launch/upgrade lifecycle evidence. Current account/signing/transfer/owner-control experience not verified on this old source; Authenticode unsigned.",
+    "publicationEvidence": "/releases/wallet-downloads/20260906/historical-previews.json",
+    "publicUrl": "https://www.ynxweb4.com/downloads/wallet/sha256-856b2a260efc43c25f62508dabc6bb6b74b84da71c9b477e8a02a12d17598cd7/ynx-wallet-desktop-0.1.1-x64.exe",
+    "sourceBinding": "Existing release catalog and exact Git commit resolution; full hosted artifact SHA freshly recomputed. This does not assert source embedded in the old package.",
+    "mimeType": "application/vnd.microsoft.portable-executable",
+    "contentDisposition": "attachment; filename=\"ynx-wallet-desktop-0.1.1-x64.exe\"",
+    "actualDownloadFilename": "ynx-wallet-desktop-0.1.1-x64.exe",
+    "historicalPreview": true,
+    "downloadApproved": true,
+    "productionSigned": false,
+    "storeReleased": false,
+    "newWalletGoalsAccepted": false,
+    "note": "Historical Windows x64 install/launch/upgrade lifecycle evidence. Current account/signing/transfer/owner-control experience not verified on this old source; Authenticode unsigned. Existing release catalog and exact Git commit resolution; full hosted artifact SHA freshly recomputed. This does not assert source embedded in the old package."
   },
   "/downloads/wallet/sha256-929315133c68eda1cabac51cec889c4aeca5e3ee1701578916bc67e096c5dc35/ynx-wallet-desktop-0.1.1-arm64.exe": {
     "version": "0.1.1",
@@ -47,16 +73,78 @@ export const publishedDownloadMetadata = {
     "sha256": "929315133c68eda1cabac51cec889c4aeca5e3ee1701578916bc67e096c5dc35",
     "sourceCommit": "a8f36e4c57234efe5f19367c87035b4435d61b76",
     "signingClass": "unsigned; not store released",
-    "installProof": "Install and launch lifecycle recorded; account, signing and transfer not verified.",
-    "publicationEvidence": "/releases/wallet-desktop/a8f36e4c5723/windows-arm64-exe-publication.json"
+    "installProof": "Historical native Windows arm64 install/launch/upgrade lifecycle evidence. Current account/signing/transfer/owner-control experience not verified on this old source; Authenticode unsigned.",
+    "publicationEvidence": "/releases/wallet-downloads/20260906/historical-previews.json",
+    "publicUrl": "https://www.ynxweb4.com/downloads/wallet/sha256-929315133c68eda1cabac51cec889c4aeca5e3ee1701578916bc67e096c5dc35/ynx-wallet-desktop-0.1.1-arm64.exe",
+    "sourceBinding": "Existing release catalog and exact Git commit resolution; full hosted artifact SHA freshly recomputed. This does not assert source embedded in the old package.",
+    "mimeType": "application/vnd.microsoft.portable-executable",
+    "contentDisposition": "attachment; filename=\"ynx-wallet-desktop-0.1.1-arm64.exe\"",
+    "actualDownloadFilename": "ynx-wallet-desktop-0.1.1-arm64.exe",
+    "historicalPreview": true,
+    "downloadApproved": true,
+    "productionSigned": false,
+    "storeReleased": false,
+    "newWalletGoalsAccepted": false,
+    "note": "Historical native Windows arm64 install/launch/upgrade lifecycle evidence. Current account/signing/transfer/owner-control experience not verified on this old source; Authenticode unsigned. Existing release catalog and exact Git commit resolution; full hosted artifact SHA freshly recomputed. This does not assert source embedded in the old package."
   },
   "/downloads/wallet/sha256-afd686851ef07fbb07823295d07179b79e1a4a078d1b528bc149bd619c8689e0/ynx-wallet-1.0.3-testnet-preview-3ab8c24c-local-test-signed.apk": {
     "sizeBytes": 78233954,
     "sha256": "afd686851ef07fbb07823295d07179b79e1a4a078d1b528bc149bd619c8689e0",
     "signingClass": "local-test-signed",
-    "installProof": "Android API 36 arm64 emulator install, two cold launches, biometric unlock, and authoritative Testnet balance 23 YNXT / nonce 1 / 2 activities recorded against this source.",
+    "installProof": "Historical Android preview. Current installation, connection and signing have not been verified against current Wallet requirements for this exact package.",
     "version": "1.0.3-testnet-preview-3ab8c24c",
     "sourceCommit": "3ab8c24cac04b8a5a745cdf8736cf0bffbd88274",
-    "publicationEvidence": "/releases/wallet/3ab8c24c/product-release.json"
+    "publicationEvidence": "/releases/wallet-downloads/20260906/historical-previews.json",
+    "publicUrl": "https://www.ynxweb4.com/downloads/wallet/sha256-afd686851ef07fbb07823295d07179b79e1a4a078d1b528bc149bd619c8689e0/ynx-wallet-1.0.3-testnet-preview-3ab8c24c-local-test-signed.apk",
+    "sourceBinding": "Live public source manifest, matching downloaded bytes; no embedded source provenance asset",
+    "mimeType": "application/vnd.android.package-archive",
+    "contentDisposition": "attachment; filename=app-release.apk",
+    "actualDownloadFilename": "app-release.apk",
+    "historicalPreview": true,
+    "downloadApproved": true,
+    "productionSigned": false,
+    "storeReleased": false,
+    "newWalletGoalsAccepted": false,
+    "note": "Historical Android preview. Current installation, connection and signing have not been verified against current Wallet requirements for this exact package. Live public source manifest, matching downloaded bytes; no embedded source provenance asset"
+  },
+  "/downloads/wallet-web/sha256-c733093dea47c6612c8a9d5ecea40be2227f62402f4b4966955c9e1accf4e2aa/ynx-wallet-chrome-edge-0.1.0.zip": {
+    "publicUrl": "https://www.ynxweb4.com/downloads/wallet-web/sha256-c733093dea47c6612c8a9d5ecea40be2227f62402f4b4966955c9e1accf4e2aa/ynx-wallet-chrome-edge-0.1.0.zip",
+    "version": "0.1.0",
+    "sizeBytes": 188846,
+    "sha256": "c733093dea47c6612c8a9d5ecea40be2227f62402f4b4966955c9e1accf4e2aa",
+    "sourceCommit": "a1c680982b63f67ee04c49a2131ba62796d21a8b",
+    "sourceBinding": "Existing release catalog and exact Git commit resolution; full hosted artifact SHA freshly recomputed. This does not assert source embedded in the old package.",
+    "signingClass": "unsigned; not store released",
+    "installProof": "Historical unpacked package; no current actual install/connect/signing acceptance for this exact old public artifact.",
+    "publicationEvidence": "/releases/wallet-downloads/20260906/historical-previews.json",
+    "mimeType": "application/zip",
+    "contentDisposition": "attachment; filename=\"ynx-wallet-chrome-edge-0.1.0.zip\"",
+    "actualDownloadFilename": "ynx-wallet-chrome-edge-0.1.0.zip",
+    "historicalPreview": true,
+    "downloadApproved": true,
+    "productionSigned": false,
+    "storeReleased": false,
+    "newWalletGoalsAccepted": false,
+    "note": "Historical unpacked package; no current actual install/connect/signing acceptance for this exact old public artifact. Existing release catalog and exact Git commit resolution; full hosted artifact SHA freshly recomputed. This does not assert source embedded in the old package."
+  },
+  "/downloads/wallet-web/sha256-417d9b9e5babf05fdfdf8161504389eb99c636be75f94444bf4ff91a9b4536b3/ynx-wallet-firefox-0.1.0.zip": {
+    "publicUrl": "https://www.ynxweb4.com/downloads/wallet-web/sha256-417d9b9e5babf05fdfdf8161504389eb99c636be75f94444bf4ff91a9b4536b3/ynx-wallet-firefox-0.1.0.zip",
+    "version": "0.1.0",
+    "sizeBytes": 188883,
+    "sha256": "417d9b9e5babf05fdfdf8161504389eb99c636be75f94444bf4ff91a9b4536b3",
+    "sourceCommit": "a1c680982b63f67ee04c49a2131ba62796d21a8b",
+    "sourceBinding": "Existing release catalog and exact Git commit resolution; full hosted artifact SHA freshly recomputed. This does not assert source embedded in the old package.",
+    "signingClass": "unsigned; not store released",
+    "installProof": "Unsigned temporary extension; no permanent Firefox store installation or current exact-source usability claim.",
+    "publicationEvidence": "/releases/wallet-downloads/20260906/historical-previews.json",
+    "mimeType": "application/zip",
+    "contentDisposition": "attachment; filename=\"ynx-wallet-firefox-0.1.0.zip\"",
+    "actualDownloadFilename": "ynx-wallet-firefox-0.1.0.zip",
+    "historicalPreview": true,
+    "downloadApproved": true,
+    "productionSigned": false,
+    "storeReleased": false,
+    "newWalletGoalsAccepted": false,
+    "note": "Unsigned temporary extension; no permanent Firefox store installation or current exact-source usability claim. Existing release catalog and exact Git commit resolution; full hosted artifact SHA freshly recomputed. This does not assert source embedded in the old package."
   }
 };

@@ -1,0 +1,19 @@
+.brandScene { position: relative; width: 100%; aspect-ratio: 1.08; margin: 0; isolation: isolate; color: #002fa7; }
+.brandSceneViewport { position: absolute; inset: 0 0 42px; z-index: 1; touch-action: pan-y; outline-offset: -6px; border-radius: 12px; }
+.brandScene.isReady .brandSceneViewport { cursor: grab; }
+.brandScene.isReady .brandSceneViewport.isDragging { cursor: grabbing; }
+.brandSceneViewport canvas { display: block; width: 100%; height: 100%; }
+.brandScene .brandSceneFallback { position: absolute; inset: 0; display: block; width: 100%; height: 100%; max-width: none; margin: 0; object-fit: contain; mix-blend-mode: multiply; opacity: 1; }
+.brandScene.isReady .brandSceneFallback { visibility: hidden; opacity: 0; }
+.brandSceneCaption { position: absolute; inset-inline: 12px; bottom: 0; display: flex; align-items: center; justify-content: center; gap: 14px; min-height: 44px; color: #596b8f; font-size: 11px; line-height: 1.5; }
+.brandSceneControls { display: flex; flex: 0 0 auto; align-items: center; direction: ltr; }
+.brandSceneControls button { display: inline-flex; justify-content: center; align-items: center; width: 44px; min-height: 44px; padding: 0; border: 0; border-radius: 50%; background: transparent; color: #002fa7; cursor: pointer; }
+.brandSceneControls button:hover { background: #f0f4fd; }
+.brandSceneControls button:focus-visible, .brandSceneViewport:focus-visible { outline: 2px solid #002fa7; outline-offset: 2px; box-shadow: 0 0 0 5px #fff; }
+.brandSceneSR { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+@media (max-width: 640px) { .brandScene { aspect-ratio: 1.12; } .brandSceneCaption { inset-inline: 0; gap: 6px; font-size: 10px; } }
+@media (max-width: 960px) {
+  .brandSceneViewport { bottom: 80px; }
+  .brandSceneCaption { flex-direction: column; gap: 0; min-height: 76px; text-align: center; }
+}
+@media (prefers-reduced-motion: no-preference) { .brandScene .brandSceneFallback { transition: opacity 180ms ease; } }

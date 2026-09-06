@@ -127,7 +127,8 @@
     "SPDXRef-Package-113",
     "SPDXRef-Package-114",
     "SPDXRef-Package-115",
-    "SPDXRef-Package-116"
+    "SPDXRef-Package-116",
+    "SPDXRef-Package-117"
   ],
   "packages": [
     {
@@ -2907,6 +2908,31 @@
     },
     {
       "SPDXID": "SPDXRef-Package-112",
+      "name": "three",
+      "versionInfo": "0.180.0",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/three@0.180.0"
+        }
+      ],
+      "annotations": [
+        {
+          "annotationType": "OTHER",
+          "annotator": "Tool: package-lock-to-spdx",
+          "annotationDate": "2026-09-01T00:00:00Z",
+          "comment": "{\"location\":\"node_modules/three\",\"integrity\":\"sha512-o+qycAMZrh+TsE01GqWUxUIKR1AL0S8pq7zDkYOQw8GqfX8b8VoCKYUoHbhiX5j+7hr8XsuHDVU6+gkQJQKg9w==\",\"optional\":false}"
+        }
+      ]
+    },
+    {
+      "SPDXID": "SPDXRef-Package-113",
       "name": "tinyglobby",
       "versionInfo": "0.2.17",
       "downloadLocation": "NOASSERTION",
@@ -2931,7 +2957,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-113",
+      "SPDXID": "SPDXRef-Package-114",
       "name": "typescript",
       "versionInfo": "5.9.3",
       "downloadLocation": "NOASSERTION",
@@ -2956,7 +2982,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-114",
+      "SPDXID": "SPDXRef-Package-115",
       "name": "update-browserslist-db",
       "versionInfo": "1.2.3",
       "downloadLocation": "NOASSERTION",
@@ -2981,7 +3007,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-115",
+      "SPDXID": "SPDXRef-Package-116",
       "name": "vite",
       "versionInfo": "7.3.6",
       "downloadLocation": "NOASSERTION",
@@ -3006,7 +3032,7 @@
       ]
     },
     {
-      "SPDXID": "SPDXRef-Package-116",
+      "SPDXID": "SPDXRef-Package-117",
       "name": "yallist",
       "versionInfo": "3.1.1",
       "downloadLocation": "NOASSERTION",
@@ -3036,7 +3062,7 @@
       "annotationType": "OTHER",
       "annotator": "Organization: YNX Website",
       "annotationDate": "2026-09-01T00:00:00Z",
-      "comment": "{\"sourceBaseline\":\"5de72fcc7f472c98733146d0bbfd47ce39cc4bf0\",\"lockfileVersion\":3,\"packageCount\":116,\"dependencyReviewAccepted\":false,\"vulnerabilityScanPassed\":false}"
+      "comment": "{\"sourceBaseline\":\"5de72fcc7f472c98733146d0bbfd47ce39cc4bf0\",\"lockfileVersion\":3,\"packageCount\":117,\"dependencyReviewAccepted\":false,\"vulnerabilityScanPassed\":false}"
     }
   ]
 }

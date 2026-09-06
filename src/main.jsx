@@ -1,10 +1,11 @@
 import React, { Suspense, lazy, useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import {
-  Activity, Bot, Box, Braces, CheckCircle2, CircleDollarSign, Clock3, Code2, Coins,
+  Activity, ArrowUpRight, ChevronDown, Bot, Box, Braces, CheckCircle2, CircleDollarSign, Clock3, Code2, Coins,
   Database, Gauge, Landmark, Layers3, Network, Scale, Search, ShieldCheck, WalletCards
 } from "lucide-react";
 import { apiConfig, loadNetworkSnapshot, loadServiceHealth } from "./lib/api/ynxApi.js";
+import { WalletDownload } from "./components/WalletDownload.jsx";
 import { HeroPortal } from "./sections/HeroPortal.jsx";
 import { StatusCard } from "./components/StatusCard.jsx";
 import { ProductPanel } from "./components/ProductPanel.jsx";
@@ -16,13 +17,18 @@ import { LatestRecords } from "./components/LatestRecords.jsx";
 import { LocaleProvider, useLocale } from "./lib/i18n.jsx";
 import { getRuntimeCopy, loadRuntimeCopy } from "./content/runtimeLocaleContent.js";
 import { PageErrorBoundary } from "./components/PageErrorBoundary.jsx";
+import { getHomeCopy } from "./content/homeLocaleContent.js";
+import { getHomeRedesignCopy } from "./content/homeRedesignContent.js";
 import "./styles.css";
+import "./redesign.css";
+
+const HomeExperience = lazyNamed(() => import("./components/HomeExperience.jsx"), "HomeExperience");
 
 const route = window.location.pathname.replace(/\/$/, "") || "/";
 const RoutedContent = lazyNamed(() => import("./pages/RoutedContent.jsx"), "RoutedContent");
 
 function App() {
-  const { locale } = useLocale();
+  const { locale, t } = useLocale();
   const [copy, setCopy] = useState(() => getRuntimeCopy(locale));
   const [snapshot, setSnapshot] = useState({ status: {}, summary: {}, validators: {}, evm: {} });
   const [services, setServices] = useState({});
@@ -93,7 +99,31 @@ function App() {
       window.cancelAnimationFrame(frame);
       window.removeEventListener("scroll", updateProgress);
     };
-  }, []);
+  }, [copy]);
+
+  useEffect(() => {
+    const revealHashTarget = (hash = window.location.hash) => {
+      const target = document.getElementById(hash.slice(1));
+      const disclosure = target?.closest("details");
+      if (!disclosure) return;
+      disclosure.open = true;
+      window.requestAnimationFrame(() => target.scrollIntoView({ block: "start" }));
+    };
+    const onHashChange = () => revealHashTarget();
+    const onHashLink = (event) => {
+      const link = event.target.closest?.("a[href]");
+      if (!link || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      const url = new URL(link.href);
+      if (url.origin === window.location.origin && url.pathname === window.location.pathname && url.hash) revealHashTarget(url.hash);
+    };
+    revealHashTarget();
+    window.addEventListener("hashchange", onHashChange);
+    document.addEventListener("click", onHashLink);
+    return () => {
+      window.removeEventListener("hashchange", onHashChange);
+      document.removeEventListener("click", onHashLink);
+    };
+  }, [copy]);
 
   if (!copy) return <main className="routeLoading" aria-busy="true" aria-live="polite"><span className="routeLoadingMark" aria-hidden="true" /><p>…</p></main>;
 
@@ -102,9 +132,10 @@ function App() {
     return <><SiteHeader scrollProgress={scrollProgress} /><div id="main-content" tabIndex={-1}><Suspense fallback={<RouteLoading copy={copy.utility.loading} />}>{page}</Suspense></div><SiteFooter /></>;
   }
 
+  const design = getHomeRedesignCopy(locale);
   const { status = {}, summary = {}, validators = {}, evm = {} } = snapshot;
   const validatorRows = Array.isArray(validators.validators) ? validators.validators : [];
-  const buildRelease = status.build?.release || "Awaiting live identity";
+  const buildRelease = status.build?.release || t("checking");
   const serviceState = (name) => services[name]?.ok === true ? "live" : services[name]?.error ? "status unavailable" : "checking";
 
   return (
@@ -113,10 +144,47 @@ function App() {
       <main id="main-content" tabIndex={-1}>
       <HeroPortal snapshot={snapshot} connectionState={connectionState} onAddNetwork={() => setNetworkRequest((request) => request + 1)} />
 
-      <section className="networkBand" id="network" aria-labelledby="network-title" data-reveal>
+      <section className="ecosystemSection editorialEcosystem" id="ecosystem" aria-labelledby="ecosystem-title">
+        <div className="sectionHeader">
+          <div><p className="sectionEyebrow">{design.ecosystemEyebrow}</p><h2 id="ecosystem-title">{design.ecosystemTitle}</h2><p className="sectionIntro">{design.ecosystemLead}</p></div>
+          <a className="textLink" href="/dapp">{design.ecosystemAll}<ArrowUpRight size={18} /></a>
+        </div>
+        <div className="ecosystemRows">{design.ecosystemItems.map((item, index) => {
+          const Icon = [WalletCards, Search, Coins, Layers3][index];
+          if (index === 0) return <div className="ecosystemRow walletEcosystemRow" key={item.title}><span className="ecosystemNumber">01</span><Icon className="ecosystemIcon" strokeWidth={1.5}/><h3><a href="/dapp/wallet">{item.title}</a></h3><p>{item.description}</p><WalletDownload className="ecosystemRowAction" label={design.download}/></div>;
+          return <a className="ecosystemRow" href={["/dapp/wallet", apiConfig.explorerUrl, apiConfig.faucetUrl, "/dapp"][index]} key={item.title}>
+            <span className="ecosystemNumber">0{index + 1}</span><Icon className="ecosystemIcon" strokeWidth={1.5}/><h3>{item.title}</h3><p>{item.description}</p><span className="ecosystemRowAction">{item.action}<ArrowUpRight size={20} /></span>
+          </a>;
+        })}</div>
+        <details className="homeDisclosure ecosystemDirectory"><summary>{copy.ecosystem.title}<ChevronDown size={20}/></summary>
+        <div className="productGrid">
+          {[Layers3, Coins, Search, Bot, CircleDollarSign, ShieldCheck, Gauge, Braces, WalletCards, Landmark].map((Icon, index) => <ProductPanel key={copy.ecosystem.products[index].title} icon={<Icon />} {...copy.ecosystem.products[index]} status={index === 3 ? serviceState("ai") : index === 4 ? serviceState("pay") : index === 5 ? serviceState("trust") : index === 6 ? serviceState("resource") : index < 3 ? (snapshot.ok === true ? "live" : connectionState === "loading" ? "checking" : "status unavailable") : "reference"} href={[`${apiConfig.apiBase}/status`, "/testnet", apiConfig.explorerUrl, "/dapp/ai", "/dapp/pay", "/dapp/trust", "/dapp/resource", "/docs", "/#address", apiConfig.exchangeUrl][index]} />)}
+        </div>
+        </details>
+      </section>
+
+      <Suspense fallback={<div className="experienceLoading" aria-busy="true" />}><HomeExperience /></Suspense>
+
+      <section className="developerSection editorialDeveloper" id="developers" aria-labelledby="developers-title" data-reveal>
+        <div className="developerCopy">
+          <p className="sectionEyebrow">{design.developerEyebrow}</p><h2 id="developers-title">{design.developerTitle}</h2>
+          <p>{design.developerLead}</p>
+          <a className="textLink" href="/docs">{design.developerAction} <Code2 size={17} /></a>
+        </div>
+        <div className="endpointList">
+          <Endpoint label="REST RPC" value={apiConfig.apiBase} copy={design.endpointCopy} />
+          <Endpoint label="EVM JSON-RPC" value={apiConfig.evmRpc} copy={design.endpointCopy} />
+          <Endpoint label="Explorer" value={apiConfig.explorerUrl} copy={design.endpointCopy} />
+          <Endpoint label={getHomeCopy(locale).labels.chain} value="6423 / 0x1917" copy={design.endpointCopy} />
+        </div>
+      </section>
+
+      <div className="homeDetailGroup">
+      <details className="homeDisclosure networkDisclosure" id="network"><summary><span>{design.networkDetails}<small>{design.networkLead}</small></span><ChevronDown size={22}/></summary>
+      <section className="networkBand" aria-labelledby="network-title">
         <div className="sectionHeader compact">
           <div><p className="sectionEyebrow">{copy.network.eyebrow}</p><h2 id="network-title">{copy.network.title}</h2></div>
-          <div className={`connection ${connectionState}`}><span />{connectionState === "live" ? `${copy.network.updated} ${formatTime(snapshot.checkedAt, locale, copy.utility.now)}` : connectionState}</div>
+          <div className={`connection ${connectionState}`}><span />{connectionState === "live" ? `${copy.network.updated} ${formatTime(snapshot.checkedAt, locale, copy.utility.now)}` : t(connectionState === "loading" ? "checking" : "unavailable")}</div>
         </div>
         <div className="metricsGrid">
           <StatusCard icon={<Activity />} title={copy.network.metrics[0]} value={formatNumber(status.height, locale)} label={heightMoved ? copy.network.growing : copy.network.labels[0]} error={status.error} emphasis />
@@ -128,7 +196,7 @@ function App() {
         </div>
       </section>
 
-      <section className="validatorSection" aria-labelledby="validators-title" data-reveal>
+      <section className="validatorSection" aria-labelledby="validators-title">
         <div className="sectionHeader">
           <div><p className="sectionEyebrow">{copy.validators.eyebrow}</p><h2 id="validators-title">{copy.validators.title}</h2></div>
           <p>{copy.validators.lead}</p>
@@ -141,7 +209,7 @@ function App() {
             return (
               <div className="validatorRow" role="row" key={validator.address}>
                 <span><strong>{validator.moniker?.replace("ynx-", "") || validator.address}</strong><small>{validator.address}</small></span>
-                <span>{validator.role}</span><span>{formatNumber(validator.latestHeight, locale)}</span>
+                <span>{validator.role}</span><span data-label={copy.validators.headers[2]}>{formatNumber(validator.latestHeight, locale)}</span>
                 <span className={current ? "ready" : "pending"}><i />{current ? copy.validators.current : lag > 0 ? `${formatNumber(lag, locale)} ${copy.validators.behind}` : copy.validators.pending}</span>
               </div>
             );
@@ -151,45 +219,25 @@ function App() {
 
       <LatestRecords snapshot={snapshot} copy={copy.records} />
 
-      <section className="ecosystemSection" id="ecosystem" aria-labelledby="ecosystem-title" data-reveal>
-        <div className="sectionHeader">
-          <div><p className="sectionEyebrow">{copy.ecosystem.eyebrow}</p><h2 id="ecosystem-title">{copy.ecosystem.title}</h2></div>
-          <p>{copy.ecosystem.lead}</p>
-        </div>
-        <div className="productGrid">
-          {[Layers3, Coins, Search, Bot, CircleDollarSign, ShieldCheck, Gauge, Braces, WalletCards, Landmark].map((Icon, index) => <ProductPanel key={copy.ecosystem.products[index].title} icon={<Icon />} {...copy.ecosystem.products[index]} status={index === 3 ? serviceState("ai") : index === 4 ? serviceState("pay") : index === 5 ? serviceState("trust") : index === 6 ? serviceState("resource") : "live"} href={[`${apiConfig.apiBase}/status`, "/testnet", apiConfig.explorerUrl, "/dapp/ai", "/dapp/pay", "/dapp/trust", "/dapp/resource", "/docs", "/#address", apiConfig.exchangeUrl][index]} />)}
-        </div>
-      </section>
+      </details>
+      <details className="homeDisclosure" id="address-tools"><summary>{design.addressDetails}<ChevronDown size={22}/></summary><AddressConverter /></details>
+      <details className="homeDisclosure" id="readiness"><summary>{design.readinessDetails}<ChevronDown size={22}/></summary>
 
-      <section className="developerSection" id="developers" aria-labelledby="developers-title" data-reveal>
-        <div className="developerCopy">
-          <p className="sectionEyebrow">{copy.developer.eyebrow}</p><h2 id="developers-title">{copy.developer.title}</h2>
-          <p>{copy.developer.lead}</p>
-          <a className="textLink" href="/docs">{copy.developer.action} <Code2 size={17} /></a>
-        </div>
-        <div className="endpointList">
-          <Endpoint label="REST RPC" value={apiConfig.apiBase} copy={copy.developer.copy} />
-          <Endpoint label="EVM JSON-RPC" value={apiConfig.evmRpc} copy={copy.developer.copy} />
-          <Endpoint label="Explorer" value={apiConfig.explorerUrl} copy={copy.developer.copy} />
-          <Endpoint label="Chain ID" value="6423 / 0x1917" copy={copy.developer.copy} />
-        </div>
-      </section>
-
-      <AddressConverter />
-
-      <section className="readinessSection" id="readiness" aria-labelledby="readiness-title" data-reveal>
+      <section className="readinessSection" aria-labelledby="readiness-title">
         <div className="sectionHeader">
           <div><p className="sectionEyebrow">{copy.readiness.eyebrow}</p><h2 id="readiness-title">{copy.readiness.title}</h2></div>
         </div>
         <div className="readinessColumns">
-          <div><h3><CheckCircle2 /> {copy.readiness.verifiedTitle}</h3><ul>{copy.readiness.verified.map((item) => <li key={item}>{item}</li>)}</ul></div>
+          <div><h3><CheckCircle2 /> {design.readinessScopeTitle}</h3><ul>{design.readinessScope.map((item) => <li key={item}>{item}</li>)}</ul></div>
           <div><h3><Clock3 /> {copy.readiness.requiredTitle}</h3><ul>{copy.readiness.required.map((item) => <li key={item}>{item}</li>)}</ul></div>
           <div className="claimBoundary"><Scale size={28} /><h3>{copy.readiness.boundaryTitle}</h3><p>{copy.readiness.boundary}</p><a href="/readiness">{copy.readiness.action}</a></div>
         </div>
       </section>
 
+      </details>
+      </div>
       <section className="resourceSection" aria-labelledby="resources-title" data-reveal>
-        <div className="sectionHeader"><div><p className="sectionEyebrow">{copy.readiness.resourcesEyebrow}</p><h2 id="resources-title">{copy.readiness.resourcesTitle}</h2></div></div>
+        <div className="sectionHeader"><div><p className="sectionEyebrow">{design.developerAction}</p><h2 id="resources-title">{design.resourcesTitle}</h2></div></div>
         <LinkGrid />
       </section>
       </main>
@@ -226,9 +274,11 @@ function formatNumber(value, locale = "en") { return Number.isFinite(Number(valu
 function formatTime(value, locale = "en", now = "now") { return value ? new Intl.DateTimeFormat(locale, { hour: "2-digit", minute: "2-digit", second: "2-digit" }).format(new Date(value)) : now; }
 function shortRelease(value) { return value.startsWith("ynx-chain-") ? value.replace("ynx-chain-", "") : value; }
 
-createRoot(document.getElementById("root")).render(<PageErrorBoundary><LocaleProvider><App /></LocaleProvider></PageErrorBoundary>);
+const applicationRoot = import.meta.hot?.data.applicationRoot || createRoot(document.getElementById("root"));
+if (import.meta.hot) { import.meta.hot.data.applicationRoot = applicationRoot; import.meta.hot.accept(); }
+applicationRoot.render(<PageErrorBoundary><LocaleProvider><App /></LocaleProvider></PageErrorBoundary>);
 
-if ("serviceWorker" in navigator) {
+if (import.meta.env.PROD && "serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     let refreshedForControllerUpdate = false;
     navigator.serviceWorker.addEventListener("controllerchange", () => {

@@ -52,12 +52,13 @@ const makeDownloads = (items = {}) => ({
 const WEBSITE_HOSTED_ARTIFACTS = new Set(publishedDownloadPaths);
 
 const artifactDownload = (status, artifactPath, note, href = null, metadata = {}) => {
-  const hosted = WEBSITE_HOSTED_ARTIFACTS.has(href);
+  const deliveryHref = publishedDownloadMetadata[href]?.publicUrl || href;
+  const hosted = WEBSITE_HOSTED_ARTIFACTS.has(href) && WEBSITE_HOSTED_ARTIFACTS.has(deliveryHref);
   return {
     status,
     label: hosted && status === PRODUCT_STATUS.LIVE ? "Web" : undefined,
-    href: hosted ? href : null,
-    external: hosted && /^https?:\/\//.test(href || ""),
+    href: hosted ? deliveryHref : null,
+    external: hosted && /^https?:\/\//.test(deliveryHref || ""),
     downloadHosted: hosted,
     artifactPath,
     note: hosted ? note : `${note} (not hosted on this website)`,
@@ -152,7 +153,7 @@ const evidence = {
       href: "/releases/ecosystem-release-registry.json",
       release: "wallet-auth-v1.0.0-testnet-preview.5"
     },
-    statusNote: "Wallet Web, Android, macOS and Windows Testnet Preview artifacts are available from immutable official URLs. macOS is a universal DMG with the native com.ynxweb4.wallet.macos identity and ynxwallet callback review UI; Windows x64 and arm64 are direct NSIS EXE installers. APK/DMG/EXE are fixed-source release candidates with exact hashes, byte counts and signing classes. Desktop previews remain unsigned and are not store releases.",
+    statusNote: "Historical Wallet Testnet preview archives remain downloadable from immutable official URLs with exact source, SHA-256, byte count and signing information. They have not been accepted against current Wallet installation, connection or signing requirements. The historical macOS package remains disabled. Current replacement candidates are not advertised before public release verification; production signing and store release are not claimed.",
     downloads: {
       web: { status: PRODUCT_STATUS.LIVE, href: "https://wallet.ynxweb4.com/", external: true, downloadHosted: false, note: "Public Wallet Companion for provider discovery, YNX Testnet setup, signing and transaction requests. The Wallet/Auth health endpoint is not a product entry." },
       pwa: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-web-pwa-0.1.0.zip", "Unsigned PWA Testnet Preview · source a1c680982b63 · SHA-256 63d83cd2…d287 · 272,706 bytes · requires Service Worker and Web Crypto.", "/downloads/wallet-web/sha256-63d83cd20925f2d52c0f21f548fa7a857a4d056e03e5fa16244f173164a7d287/ynx-wallet-web-pwa-0.1.0.zip"),

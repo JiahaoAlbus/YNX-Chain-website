@@ -12,7 +12,10 @@ The concise list below names direct application dependencies. The complete machi
 | `lucide-react` | `^0.468.0` | `0.468.0` | ISC |
 | `react` | `^19.0.0` | `19.2.7` | MIT |
 | `react-dom` | `^19.0.0` | `19.2.7` | MIT |
+| `three` | `0.180.0` | `0.180.0` | MIT |
 | `typescript` | `^5.8.0` | `5.9.3` | Apache-2.0 |
 | `vite` | `^7.0.0` | `7.3.6` | MIT |
 
-Before public release, the release owner must independently review license texts, notices, source-offer or attribution duties, dependency provenance, and the final production bundle. That review is pending.
+The website redesign adds pinned `three@0.180.0` after the historical baseline above. It renders the homepage's source-derived YNX logo as a dynamically loaded WebGL scene. Its npm integrity is recorded in the lockfile and SBOM. The unchanged upstream copyright and MIT permission text ships at [`/third-party/three/LICENSE.txt`](../public/third-party/three/LICENSE.txt); the source also retains this text because bundlers may remove source comments from individual chunks.
+
+Before public release, the release owner must independently review license texts, notices, source-offer or attribution duties, dependency provenance, and the final production bundle. That broader review is pending.

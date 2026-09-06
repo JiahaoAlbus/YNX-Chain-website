@@ -22,7 +22,8 @@
     "typescript": "^5.8.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "lucide-react": "^0.468.0"
+    "lucide-react": "^0.468.0",
+    "three": "0.180.0"
   },
   "devDependencies": {}
 }

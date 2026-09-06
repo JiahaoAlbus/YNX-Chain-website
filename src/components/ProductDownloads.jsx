@@ -1,22 +1,21 @@
 import React from "react";
 import { ArrowUpRight, Download, Globe, Monitor, Smartphone } from "lucide-react";
 import { DOWNLOAD_LABELS } from "../lib/ecosystemCatalog.js";
+import { walletDownloadState } from "../lib/walletDownloads.js";
+import { WALLET_DOWNLOAD_COPY } from "../content/walletDownloadCopy.js";
 
 const order = ["macos", "windowsX64", "windowsArm64", "windows", "linux", "android", "ios", "chromeEdge", "firefox", "pwa"];
 
 function releasePresentation(productKey, platform, item) {
-  const knownWallet = productKey === "wallet";
-  const blocked = knownWallet && platform === "macos" && item.sourceCommit === "5a6b033897a1295d35fc325a92c6bb81c8b04a19";
-  const requirements = knownWallet && platform === "android" ? "Android 7.0+ (API 24)"
-    : blocked ? "macOS 13+ · Apple Silicon / Intel"
-    : knownWallet && platform === "windowsX64" ? "Windows · x64"
-    : knownWallet && platform === "windowsArm64" ? "Windows · ARM64"
-    : knownWallet && platform === "chromeEdge" ? "Chrome / Edge 120+"
-    : knownWallet && platform === "firefox" ? "Firefox 128+" : null;
-  return { blocked, requirements, limitationKey: blocked ? "macLegacyBlocked" : "previewUnverified" };
+  if (productKey === "wallet") {
+    const state = walletDownloadState(platform, item);
+    return { ...state, blocked: !state.available };
+  }
+  return { blocked: false, requirements: null, limitationKey: "previewUnverified" };
 }
 
 export function ProductDownloads({ product, contract, copy, locale }) {
+  const downloadCopy = { ...copy, ...(WALLET_DOWNLOAD_COPY[locale] || WALLET_DOWNLOAD_COPY.en) };
   const hosted = new Map(contract.downloads.items.map(item => [item.platform, item]));
   const platforms = order.filter(platform => product.downloads?.[platform] &&
     !(platform === "windows" && (product.downloads.windowsX64 || product.downloads.windowsArm64)));
@@ -42,21 +41,20 @@ export function ProductDownloads({ product, contract, copy, locale }) {
           <Icon className="downloadPlatformIcon" aria-hidden="true" />
           <div className="downloadPlatformInfo">
             <h3>{platformLabel}</h3>
-            <p className="downloadVersion">{[version && `${copy.version} ${version}`, size, available ? copy.testnetPreview : copy.unavailableYet].filter(Boolean).join(" · ")}</p>
+            <p className="downloadVersion">{[version && `${copy.version} ${version}`, size, item.historicalPreview ? downloadCopy.historicalPreview : available ? copy.testnetPreview : copy.unavailableYet].filter(Boolean).join(" · ")}</p>
             {presentation.requirements && <p>{presentation.requirements}</p>}
             <p className={presentation.blocked ? "downloadLimitation blocked" : "downloadLimitation"}>
-              {!available ? copy.unavailable : copy[presentation.limitationKey]}
+              {!available ? copy.unavailable : downloadCopy[presentation.limitationKey]}
             </p>
             {(item.note || item.sha256) && <details className="downloadReleaseDetails">
               <summary>{copy.releaseDetails}</summary>
               {item.note && <p lang="en">{item.note}</p>}
               {item.sha256 && <p>SHA-256 <code dir="ltr">{item.sha256}</code></p>}
               {item.publicationEvidence && <a href={item.publicationEvidence}>{copy.releases}<ArrowUpRight size={14}/></a>}
-              {available && presentation.blocked && <a href={item.href} rel={item.external ? "noopener" : undefined}>{copy.download} · {version}<Download size={14}/></a>}
             </details>}
           </div>
           {available && !presentation.blocked
-            ? <a className="button secondary downloadPlatformAction" aria-label={`${copy.download} ${platformLabel}`} href={item.href} rel={item.external ? "noopener" : undefined}>{copy.download}<Download size={16}/></a>
+            ? <a className="button secondary downloadPlatformAction" aria-label={`${copy.download} ${platformLabel}`} href={item.href} download={presentation.filename || item.artifactPath} rel={item.external ? "noopener" : undefined}>{copy.download}<Download size={16}/></a>
             : <span className="downloadUnavailable downloadPlatformAction">{copy.unavailableYet}</span>}
         </li>;
       })}

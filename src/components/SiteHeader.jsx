@@ -1,5 +1,5 @@
 import React from "react";
-import { ExternalLink, Menu, Moon, Search, Sun, WalletCards, X } from "lucide-react";
+import { ExternalLink, Menu, Search, WalletCards, X } from "lucide-react";
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { apiConfig, networkParams, YNX_6423 } from "../lib/api/ynxApi.js";
 import { SUPPORTED_LOCALES, useLocale } from "../lib/i18n.jsx";
@@ -34,12 +34,7 @@ export function SiteHeader({ scrollProgress = 0, networkRequest = 0 }) {
   const commandReturnFocusRef = useRef(null);
   const walletButtonRef = useRef(null);
   const walletMenuRef = useRef(null);
-  const [theme, setTheme] = useState(() => {
-    const saved = window.localStorage.getItem("ynx-theme");
-    return saved === "dark" || saved === "light"
-      ? saved
-      : window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-  });
+  const theme = "light";
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
@@ -200,8 +195,8 @@ export function SiteHeader({ scrollProgress = 0, networkRequest = 0 }) {
         <span className="scrollProgress" style={{ transform: `scaleX(${scrollProgress})` }} aria-hidden="true" />
         <a className="brand" href="/" aria-label={t("home")}><img src="/ynx-logo.png" alt="" /><small>CHAIN</small></a>
         <nav ref={navRef} id="primary-navigation" className={open ? "open" : ""} aria-label={t("primaryNav")}>
-          {navigation.map(([key, href]) => <a key={key} href={href} onClick={() => setOpen(false)}>{t(key)}</a>)}
-          <a className="navExplorer" href={apiConfig.explorerUrl} aria-label={`${t("explorer")} — external site`}>{t("openExplorer")} <ExternalLink size={14} /></a>
+          {navigation.map(([key, href]) => <a className={["ecosystem", "developers", "docs", "downloads"].includes(key) ? "primaryNavItem" : "secondaryNavItem"} key={key} href={href} onClick={() => setOpen(false)}>{t(key)}</a>)}
+          <a className="navExplorer secondaryNavItem" href={apiConfig.explorerUrl} aria-label={`${t("explorer")} — external site`}>{t("openExplorer")} <ExternalLink size={14} /></a>
         </nav>
         <div className="headerTools">
           <button ref={searchButtonRef} type="button" className="toolButton searchButton" onClick={() => { commandReturnFocusRef.current = searchButtonRef.current; setCommandOpen(true); }} aria-label={t("searchOpen")} aria-haspopup="dialog" aria-expanded={commandOpen} aria-controls="command-palette">
@@ -226,15 +221,12 @@ export function SiteHeader({ scrollProgress = 0, networkRequest = 0 }) {
               {SUPPORTED_LOCALES.map((value) => <option value={value} key={value}>{localeLabels[value] || value}</option>)}
             </select>
           </label>
-          <button type="button" className="toolButton" onClick={() => setTheme(theme === "dark" ? "light" : "dark")} aria-label={t(theme === "dark" ? "light" : "dark")}>
-            {theme === "dark" ? <Sun /> : <Moon />}
-          </button>
           <button ref={menuButtonRef} type="button" className="menuButton" aria-expanded={open} aria-controls="primary-navigation" aria-label={t(open ? "closeNav" : "openNav")} onClick={() => setOpen(!open)}>
             {open ? <X /> : <Menu />}
           </button>
         </div>
       </header>
-      {commandOpen && <Suspense fallback={<div className="commandLoading" role="status">Loading search…</div>}><CommandPalette open onClose={() => setCommandOpen(false)} returnFocusRef={commandReturnFocusRef} /></Suspense>}
+      {commandOpen && <Suspense fallback={<div className="commandLoading" role="status">{t("checking")}</div>}><CommandPalette open onClose={() => setCommandOpen(false)} returnFocusRef={commandReturnFocusRef} /></Suspense>}
     </>
   );
 }

@@ -531,9 +531,9 @@ if (!hero.includes("YNX_6423.cosmosChainId") || !hero.includes("Open Explorer") 
   console.error("6423 portal hero identity or explicit actions are incomplete");
   process.exit(1);
 }
-const nativeOutput = addressConverter.indexOf('label="YNX native (default)"');
-const compatibilityOutput = addressConverter.indexOf('label="EVM compatibility / MetaMask"');
-if (nativeOutput < 0 || compatibilityOutput < 0 || nativeOutput > compatibilityOutput || !addressConverter.includes("isolated to the EVM compatibility layer")) {
+const nativeOutput = addressConverter.indexOf('label={labels.nativeLabel}');
+const compatibilityOutput = addressConverter.indexOf('label={labels.compatibilityLabel}');
+if (nativeOutput < 0 || compatibilityOutput < 0 || nativeOutput > compatibilityOutput || !addressConverter.includes("labels.boundary")) {
   console.error("YNX-native address identity is not the truthful default");
   process.exit(1);
 }

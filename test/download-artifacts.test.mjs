@@ -11,7 +11,8 @@ test("only manifest-backed website artifacts are advertised as downloadable", ()
   assert.ok(hosted.length >= 7);
   const rewrites = JSON.parse(fs.readFileSync("vercel.json", "utf8")).rewrites;
   for (const artifact of hosted) {
-    assert.ok(artifact.href.startsWith("https://downloads.ynxweb4.com/") || rewrites.some((entry) => entry.source === artifact.href && entry.destination.startsWith("https://")), artifact.href);
+    const artifactUrl = new URL(artifact.href, "https://ynxweb4.com");
+    assert.ok(artifactUrl.hostname === "downloads.ynxweb4.com" || (["ynxweb4.com", "www.ynxweb4.com"].includes(artifactUrl.hostname) && rewrites.some((entry) => entry.source === artifactUrl.pathname && entry.destination.startsWith("https://"))), artifact.href);
     if (artifact.publicationEvidence) {
       assert.ok(fs.existsSync(path.join(process.cwd(), "public", artifact.publicationEvidence)));
       assert.match(artifact.sha256, /^[a-f0-9]{64}$/);
@@ -20,6 +21,24 @@ test("only manifest-backed website artifacts are advertised as downloadable", ()
       assert.match(artifact.sourceCommit, /^[a-f0-9]{40}$/);
       assert.ok(artifact.installProof);
     }
+  }
+});
+
+test("historical Wallet public record preserves exact owner bindings without private inventory data", () => {
+  const raw = fs.readFileSync("public/releases/wallet-downloads/20260906/historical-previews.json", "utf8");
+  const record = JSON.parse(raw);
+  assert.equal(record.sourceInventorySHA256, "788dd352b51c2fbb6d1d23a29b23043f498cb3626cd1a11fed87998d661bd14e");
+  assert.equal(record.artifacts.length, 6);
+  assert.doesNotMatch(raw, /\/Users\/|headerEvidence|localPaths|candidateHost|localArtifacts|nextCandidates/);
+  for (const artifact of record.artifacts) {
+    assert.match(artifact.sourceCommit, /^[a-f0-9]{40}$/);
+    assert.match(artifact.sha256, /^[a-f0-9]{64}$/);
+    assert.ok(artifact.url.includes(artifact.sha256));
+    assert.equal(artifact.historicalPreview, true);
+    assert.equal(artifact.newWalletGoalsAccepted, false);
+    assert.equal(artifact.productionSigned, false);
+    assert.equal(artifact.storeReleased, false);
+    assert.equal(artifact.httpVerification.fullGETSHA256Verified, true);
   }
 });
 

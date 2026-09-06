@@ -81,6 +81,11 @@ export function CommandPalette({ open, onClose, returnFocusRef: preferredReturnF
     setActiveIndex((index) => Math.min(index, Math.max(results.length - 1, 0)));
   }, [results.length]);
 
+  useEffect(() => {
+    if (!open) return;
+    dialogRef.current?.querySelector(`#command-option-${activeIndex}`)?.scrollIntoView({ block: "nearest", inline: "nearest" });
+  }, [open, activeIndex, results]);
+
   if (!open) return null;
 
   const openResult = async (command) => {
@@ -121,18 +126,19 @@ export function CommandPalette({ open, onClose, returnFocusRef: preferredReturnF
     } else if (event.key === "Escape") {
       event.preventDefault();
       onClose();
+    } else if (event.target !== inputRef.current || event.nativeEvent?.isComposing || event.isComposing) {
+      // Results and the close control keep their native keyboard activation.
+      return;
     } else if (event.key === "ArrowDown") {
       event.preventDefault();
-      setActiveIndex((index) => Math.min(index + 1, results.length - 1));
+      setActiveIndex((index) => Math.min(index + 1, Math.max(results.length - 1, 0)));
     } else if (event.key === "ArrowUp") {
       event.preventDefault();
       setActiveIndex((index) => Math.max(index - 1, 0));
-    } else if (event.key === "Enter" && query.trim()) {
-      event.preventDefault();
-      searchExplorer();
     } else if (event.key === "Enter") {
       event.preventDefault();
-      openResult(results[activeIndex]);
+      if (results[activeIndex]) openResult(results[activeIndex]);
+      else if (query.trim()) searchExplorer();
     }
   };
 

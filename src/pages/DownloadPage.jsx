@@ -3,6 +3,10 @@ import { ArrowUpRight, Download, FileJson2, ShieldCheck } from "lucide-react";
 import { getCatalog, DOWNLOAD_LABELS, PLATFORM_STATUS, PRODUCT_STATUS } from "../lib/ecosystemCatalog.js";
 import { useLocale } from "../lib/i18n.jsx";
 import { getDownloadCopy } from "../content/businessLocaleContent.js";
+import { getProductPublicContract } from "../lib/productPublicContract.js";
+import { walletDownloadState } from "../lib/walletDownloads.js";
+import { PRODUCT_UI_COPY } from "../content/productUiCopy.js";
+import { WALLET_DOWNLOAD_COPY } from "../content/walletDownloadCopy.js";
 
 function formatBytes(bytes, locale) {
   if (!Number.isFinite(Number(bytes))) return null;
@@ -13,23 +17,26 @@ function formatBytes(bytes, locale) {
   return `${new Intl.NumberFormat(locale, { maximumFractionDigits: 1 }).format(value)} ${units[index]}`;
 }
 
-function renderTarget(platform, item, productName, locale, copy) {
+function renderTarget(platform, item, productName, locale, copy, registryAllowsDownloads) {
   const name = DOWNLOAD_LABELS[platform] || platform;
   const status = PLATFORM_STATUS[item.status] || { text: copy.unavailable };
   const statusText = copy.statusLabels[item.status] || status.text;
-  const canOpen = item.href && (item.downloadHosted || item.status === PRODUCT_STATUS.LIVE);
+  const walletFile = productName === "wallet" && platform !== "web"
+    ? walletDownloadState(platform, item, registryAllowsDownloads) : null;
+  const walletCopy = { ...(PRODUCT_UI_COPY[locale] || PRODUCT_UI_COPY.en), ...(WALLET_DOWNLOAD_COPY[locale] || WALLET_DOWNLOAD_COPY.en) };
+  const canOpen = item.href && (item.downloadHosted || item.status === PRODUCT_STATUS.LIVE) && (!walletFile || walletFile.available);
   if (!canOpen) {
-    return <li key={`${productName}-${platform}`} className="downloadItem disabled"><span>{name}</span><em>{statusText}</em>{item.note ? <small>{item.note}</small> : null}</li>;
+    return <li key={`${productName}-${platform}`} className="downloadItem disabled"><span>{name}</span><em>{walletFile ? walletCopy.unavailableYet : statusText}</em>{walletFile ? <small>{walletCopy[walletFile.limitationKey]}</small> : item.note ? <small>{item.note}</small> : null}</li>;
   }
 
   return (
     <li key={`${productName}-${platform}`} className={`downloadItem ${item.status}`}>
       <span>{name}</span>
-      <a href={item.href} rel={item.external ? "noopener" : undefined} download={item.downloadHosted ? item.artifactPath : undefined}>
+      <a href={item.href} rel={item.external ? "noopener" : undefined} download={walletFile?.filename || (item.downloadHosted ? item.artifactPath : undefined)}>
         <span>{item.downloadHosted ? copy.download : statusText}</span>
         {item.downloadHosted ? <Download size={14} /> : <ArrowUpRight size={14} />}
       </a>
-      {item.note ? <small>{item.note}</small> : null}
+      {walletFile && item.historicalPreview ? <small>{walletCopy.historicalBoundary}</small> : item.note ? <small>{item.note}</small> : null}
       {item.downloadHosted ? <dl className="downloadEvidence" aria-label={`${productName} ${name} ${copy.evidence[5]}`}>
         <div><dt>{copy.evidence[0]}</dt><dd>{item.version || copy.unavailable}</dd></div>
         <div><dt>{copy.evidence[1]}</dt><dd>{formatBytes(item.sizeBytes, locale) || copy.unavailable}</dd></div>
@@ -62,7 +69,7 @@ export function DownloadPage() {
   const directoryProducts = products.filter((product) => !hostedProducts.includes(product));
 
   const renderProduct = (product) => (
-    <article className="downloadCard" key={product.key}>
+    <article className="downloadCard" key={product.key} data-product={product.key}>
       <div className="downloadHeader">
         <strong>{product.name}</strong>
         <span className={`appState ${product.status}`}>{copy.statusLabels[product.status]}</span>
@@ -72,7 +79,7 @@ export function DownloadPage() {
       <ul className="downloadList">
         {Object.entries(product.downloads)
           .filter(([platform]) => ["web", "pwa", "chromeEdge", "firefox", "android", "ios", "macos", "windows", "windowsX64", "windowsArm64", "linux"].includes(platform))
-          .map(([platform, item]) => renderTarget(platform, item, product.key, locale, copy))}
+          .map(([platform, item]) => renderTarget(platform, item, product.key, locale, copy, product.key !== "wallet" || getProductPublicContract(product).downloadHostedVerified))}
       </ul>
 
       <a href={product.route}>

@@ -1,0 +1,57 @@
+.walletDownloadDialog {
+  --wd-bg: #fff;
+  --wd-text: #002fa7;
+  --wd-muted: #657087;
+  --wd-line: #e4e8f1;
+  --wd-accent: #002fa7;
+  color: var(--wd-text);
+  background: var(--wd-bg);
+  border: 1px solid var(--wd-line);
+  border-radius: 24px;
+  padding: 0;
+  width: min(680px, calc(100vw - 32px));
+  max-width: none;
+  max-height: min(860px, calc(100dvh - 40px));
+  margin: auto;
+  box-shadow: 0 30px 100px #002fa71f;
+  overscroll-behavior: contain;
+  text-align: start;
+}
+.walletDownloadDialog::backdrop { background: #002fa733; backdrop-filter: blur(7px); }
+.walletDownloadSheet { padding: 32px; }
+.walletDownloadHeading { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }
+.walletDownloadHeading p { margin: 0 0 10px; color: var(--wd-accent); font-size: 13px; font-weight: 650; letter-spacing: .02em; }
+.walletDownloadHeading h2 { margin: 0; max-width: 22ch; color: var(--wd-text); font-size: clamp(24px, 4vw, 32px); line-height: 1.2; letter-spacing: -.025em; }
+.walletDownloadClose { width: 44px; height: 44px; flex: 0 0 auto; border: 1px solid var(--wd-line); border-radius: 50%; background: transparent; color: var(--wd-text); display: grid; place-items: center; cursor: pointer; }
+.walletDownloadNotice { margin: 20px 0 12px; font-size: 13px; line-height: 1.6; color: var(--wd-muted); }
+.walletDownloadGuide { display: inline-flex; align-items: center; gap: 8px; color: var(--wd-accent); text-decoration: none; font-size: 13px; min-height: 44px; margin-bottom: 16px; }
+.walletDownloadOptions { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--wd-line); }
+.walletDownloadOption { display: grid; grid-template-columns: 26px minmax(0, 1fr) auto; align-items: start; gap: 16px; margin: 0; padding: 20px 0; border-bottom: 1px solid var(--wd-line); }
+.walletDownloadPlatformIcon { margin-top: 3px; color: var(--wd-muted); }
+.walletDownloadInfo { min-width: 0; }
+.walletDownloadInfo h3 { font-size: 16px; font-weight: 600; line-height: 1.5; margin: 0 0 3px; color: var(--wd-text); }
+.walletDownloadInfo p { font-size: 12px; line-height: 1.6; color: var(--wd-muted); margin: 0; overflow-wrap: anywhere; }
+.walletDownloadInfo .walletDownloadFlowBoundary { margin-top: 8px; }
+.walletDownloadOtherPlatforms > summary { min-height: 44px; padding-block: 18px; color: var(--wd-text); font-size: 13px; cursor: pointer; }
+.walletDownloadDetails { margin-top: 8px; font-size: 12px; }
+.walletDownloadDetails summary { cursor: pointer; color: var(--wd-muted); width: fit-content; }
+.walletDownloadDetails p { margin: 10px 0; }
+.walletDownloadDetails code { display: block; overflow-wrap: anywhere; font-size: 11px; }
+.walletDownloadDetails a, .walletDownloadFooter a { color: var(--wd-accent); display: inline-flex; align-items: center; gap: 8px; text-decoration: none; }
+.walletDownloadFile { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 10px 14px; border: 1px solid var(--wd-line); border-radius: 12px; color: var(--wd-accent); text-decoration: none; font-size: 13px; font-weight: 600; line-height: 1.4; max-width: 150px; text-align: center; }
+.walletDownloadFile:hover, .walletDownloadClose:hover { border-color: var(--wd-accent); background: color-mix(in srgb, var(--wd-accent) 5%, var(--wd-bg)); }
+.walletDownloadUnavailable { display: block; max-width: 130px; padding-block: 10px; font-size: 12px; line-height: 1.5; color: var(--wd-muted); text-align: end; }
+.walletDownloadFooter { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; padding-top: 24px; font-size: 13px; color: var(--wd-muted); }
+.walletDownloadDialog :is(button, a, summary):focus-visible { outline: 3px solid var(--wd-accent); outline-offset: 4px; }
+html:has(.walletDownloadDialog[open]) { overflow: hidden; }
+@media (max-width: 480px) {
+  .walletDownloadDialog { width: calc(100vw - 20px); max-height: calc(100dvh - 20px); border-radius: 18px; }
+  .walletDownloadSheet { padding: 24px 20px; }
+  .walletDownloadOption { grid-template-columns: 23px minmax(0, 1fr); gap: 10px 12px; }
+  .walletDownloadFile, .walletDownloadUnavailable { grid-column: 2; justify-self: start; text-align: start; max-width: none; }
+  .walletDownloadUnavailable { padding: 0; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .walletDownloadDialog[open] { animation: wallet-download-appear 160ms ease-out; }
+  @keyframes wallet-download-appear { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+}
