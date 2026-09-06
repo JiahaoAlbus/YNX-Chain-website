@@ -1,10 +1,13 @@
 import fs from "node:fs";
+import { verifyWalletDownloadMetadata } from "./lib/verify-wallet-download-metadata.mjs";
 import { findRetiredNetworkIdentity } from "./lib/retired-network.mjs";
 import path from "node:path";
 import crypto from "node:crypto";
 import { verifyLearningContent } from "./lib/verify-learning-content.mjs";
 import { normalizeAddress, toEVMAddress, toYNXAddress } from "../src/lib/address.js";
 import { YNX_SERVICE_DIRECTORY } from "../src/lib/api/ynxApi.js";
+
+verifyWalletDownloadMetadata();
 
 const required = [
   "package.json",
@@ -857,7 +860,7 @@ if (
   registryByKey.get("wallet")?.publicWeb !== "https://wallet.ynxweb4.com/" ||
   registryByKey.get("wallet")?.publicWebRelease !== "/releases/wallet-web/27d00feb/public-runtime.json" ||
   videoRegistry?.publicWeb !== "https://video.ynxweb4.com/" ||
-  videoRegistry?.publicWebSourceCommit !== "489bf23ac56fb11c5b2ed869fb2a93c2465d2b24" ||
+  videoRegistry?.publicWebSourceCommit !== "77ac093356e8517e16d6280c8a01a598791d2d0d" ||
   videoRegistry?.centralAccepted !== false ||
   videoRegistry?.fullProductAccepted !== false ||
   creatorRegistry?.publicWeb !== "https://creator.ynxweb4.com/" ||
@@ -873,11 +876,11 @@ if (
   console.error("release registry is inconsistent with the currently published evidence snapshot or its claim boundaries");
   process.exit(1);
 }
-for (const key of ["wallet", "video", "creatorStudio"]) {
+for (const key of ["wallet", "creatorStudio"]) {
   const record = registryByKey.get(key);
   const runtime = JSON.parse(fs.readFileSync(`public${record.publicWebRelease}`, "utf8"));
   if (runtime.publicUrl !== record.publicWeb || runtime.sourceCommit !== record.publicWebSourceCommit ||
-      !/^[0-9a-f]{40}$/.test(runtime.sourceCommit) || (key === "video" ? typeof runtime.checks.publicPageRendered !== "boolean" : runtime.checks.publicPageRendered !== true) ||
+      !/^[0-9a-f]{40}$/.test(runtime.sourceCommit) || runtime.checks.publicPageRendered !== true ||
       !Array.isArray(runtime.notVerified) || runtime.notVerified.length === 0) {
     console.error(`Public product runtime record is incomplete: ${key}`);
     process.exit(1);
@@ -888,13 +891,102 @@ for (const key of ["wallet", "video", "creatorStudio"]) {
     !/^[0-9a-f]{64}$/.test(runtime.artifactSha256) || !Number.isSafeInteger(runtime.artifactBytes) || runtime.artifactBytes <= 0 ||
     runtime.checks.sourceBoundPublicFilesMatched !== runtime.publicFiles?.filter((file) => file.status === 200).length ||
     runtime.publicFiles?.some((file) => !/^[0-9a-f]{64}$/.test(file.sha256) || !Number.isSafeInteger(file.bytes) || file.bytes < 0) ||
-    (key === "video" && (runtime.browserVerification?.installedWalletApprovalVerified !== false || runtime.browserVerification?.privateLibraryVerified !== false)) ||
     (key === "creatorStudio" && (runtime.walletVerification?.allDAppsAllPlatformsVerified !== false || runtime.walletVerification?.standardEVMProviderSigningVerified !== false))
   )) {
     console.error(`Public preview evidence crosses its scoped acceptance boundary: ${key}`);
     process.exit(1);
   }
 }
+// Exact public Web snapshots: owner publication plus complete source-bound asset readback.
+// The list digest covers ordered { path, bytes, sha256 } records, not an inferred installer.
+const publicWebSnapshots = {
+  video: {
+    commit: "77ac093356e8517e16d6280c8a01a598791d2d0d",
+    tree: "fdd53068fbdb1d745d80784ea8c14ba184c8821f",
+    origin: "https://video.ynxweb4.com/",
+    runtimePath: "/releases/video/77ac093356e8/public-runtime.json",
+    verifiedAt: "2026-09-06T13:20:06.375019+00:00",
+    count: 22,
+    listSha256: "c8fcd45034b3cfb354e8f7825c01f2348181d320ceb4a36e94eec5fbc9fdbe32",
+    artifactSha256: "4c50d63f698157491732f366654872d7213ffa4aedc7ed7a7e97f5519154f0da",
+    artifactBytes: 74642,
+    pending: ["installedWalletApprovalVerified", "privateLibraryVerified", "privateBusinessVerified", "blueWhiteAllStatesVerified", "directWalletDownload"],
+  },
+  developer: {
+    commit: "6f1c7c57c1638e1cff4e5e3e9bb1e4431092cc30",
+    tree: "e6138c1d1880af01c4de154cab78bbcb95c73004",
+    origin: "https://developer.ynxweb4.com/",
+    runtimePath: "/releases/developer/6f1c7c57c163/public-runtime.json",
+    verifiedAt: "2026-09-06T13:22:09.277949+00:00",
+    count: 203,
+    listSha256: "a513b2aaaf7787cd23eaa046403a730a9cb97aae5c4842458b72f01d65cd17af",
+    mainScript: "assets/index-K0OYhxgg.js",
+    pending: ["existingWorkspaceEdited", "existingWorkspaceExecuted", "newWorkspaceCompileVerified", "aiWorkflowVerified", "terminalAcceptanceVerified", "fullVSCodeParityAccepted", "productionConcurrencyAccepted", "allTaskLosslessDrainAccepted", "blueWhiteAllStatesVerified"],
+  },
+  monitor: {
+    commit: "5ff75b2e5dd15928da728f17567a68b16e1801fa",
+    tree: "236afca6ed332ce9ec7644250c897ca0b3e25fb0",
+    origin: "https://monitor.ynxweb4.com/",
+    runtimePath: "/releases/monitor/5ff75b2e5dd1/public-runtime.json",
+    verifiedAt: "2026-09-06T15:03:36.657228+00:00",
+    count: 7,
+    listSha256: "40b28905526f7b0dd54e1614a1519cae10b609a4bc6bbbb6323a4a6d06c115d5",
+    artifactSha256: "f13ee5135426bdb899f1b5f7c12bbad324ba0eec0e1ebb3782af605c98bad393",
+    artifactBytes: 40089194,
+    mainScript: "assets/index-BhwUFu2c.js",
+    pending: ["oldUserProfileUpgradeVerified", "authenticatedOperatorViewsVerified", "walletConnectionSigningVerified", "concurrencyValidated", "overallUIComplete"],
+  },
+};
+for (const [key, expected] of Object.entries(publicWebSnapshots)) {
+  const record = registryByKey.get(key);
+  const runtime = JSON.parse(fs.readFileSync(`public${expected.runtimePath}`, "utf8"));
+  const files = Array.isArray(runtime.publicFiles) ? runtime.publicFiles : [];
+  const listSha256 = crypto.createHash("sha256").update(JSON.stringify(files.map(({ path, bytes, sha256 }) => ({ path, bytes, sha256 })))).digest("hex");
+  const browser = runtime.browserVerification;
+  const mainScript = files.find((file) => file.path === expected.mainScript);
+  if (
+    record?.state !== "public-web-preview-incomplete" || record.commit !== expected.commit ||
+    record.publicWeb !== expected.origin || record.publicWebRelease !== expected.runtimePath ||
+    record.productRelease !== expected.runtimePath || record.publicWebSourceCommit !== expected.commit ||
+    record.publicWebVerifiedAt !== expected.verifiedAt || record.centralAccepted !== false ||
+    record.fullProductAccepted !== false || record.downloadHosted !== false ||
+    runtime.schemaVersion !== 1 || runtime.state !== record.state ||
+    runtime.publicUrl !== expected.origin || runtime.sourceCommit !== expected.commit ||
+    runtime.sourceTree !== expected.tree || runtime.verifiedAt !== expected.verifiedAt ||
+    runtime.centralAccepted !== false || runtime.fullProductAccepted !== false ||
+    runtime.downloadHosted !== false || runtime.productionSigned !== false || runtime.storeReleased !== false ||
+    runtime.checks?.actualDeployment !== true || runtime.checks?.publicPageRendered !== true ||
+    runtime.checks?.sourceBoundPublicFilesMatched !== expected.count || files.length !== expected.count ||
+    new Set(files.map((file) => file.path)).size !== files.length ||
+    files.some((file) => typeof file.path !== "string" || !/^[a-zA-Z0-9_./-]+$/.test(file.path) ||
+      file.path.startsWith("/") || file.path.split("/").some((part) => !part || part === "." || part === "..") ||
+      !/^[0-9a-f]{64}$/.test(file.sha256) || !Number.isSafeInteger(file.bytes) || file.bytes <= 0 ||
+      (file.status !== undefined && file.status !== 200)) ||
+    runtime.publicFileListSha256 !== expected.listSha256 || listSha256 !== expected.listSha256 ||
+    runtime.artifactSha256 !== expected.artifactSha256 || runtime.artifactBytes !== expected.artifactBytes ||
+    !Array.isArray(runtime.notVerified) || runtime.notVerified.length === 0 ||
+    expected.pending.some((field) => browser?.[field] !== false) ||
+    (expected.mainScript && (!mainScript || browser?.sourceCommit !== expected.commit ||
+      browser?.mainScript?.path !== expected.mainScript || browser.mainScript.sha256 !== mainScript.sha256 ||
+      (browser.mainScript.bytes !== undefined && browser.mainScript.bytes !== mainScript.bytes))) ||
+    (key === "video" && (runtime.checks.guestOnly !== true || runtime.checks.noStoreVerified !== true ||
+      browser?.guestStateVisible !== true ||
+      runtime.sdkSourceCommit !== "529471f3822d2bac43ea47a1ab8004fa2ae79885" ||
+      runtime.sdkSha256 !== files.find((file) => file.path === "product-session-sdk.js")?.sha256 ||
+      runtime.checks.callbackRouteSha256 !== files.find((file) => file.path === "wallet-callback.html")?.sha256)) ||
+    (key === "developer" && (runtime.checks.existingWorkspaceObservedReadOnly !== true ||
+      runtime.checks.loopbackFilesMatched !== 203 || runtime.checks.statePreserved !== true ||
+      runtime.checks.stateRestoreOnRollback !== false || browser?.existingWorkspaceEditorVisible !== true)) ||
+    (key === "monitor" && (runtime.checks.publicLoginAndStatusOnly !== true ||
+      runtime.checks.opsAndAuthorizationNoStore !== true || runtime.runtimeIdentity?.commit !== expected.commit ||
+      runtime.checks.workerSha256 !== files.find((file) => file.path === "sw.js")?.sha256 ||
+      browser?.freshServiceWorkerActivated !== true || files.some((file) => file.status !== 200)))
+  ) {
+    console.error(`Public Web snapshot must match its exact published files and preserve unverified scope: ${key}`);
+    process.exit(1);
+  }
+}
+// End exact public Web snapshots.
 for (const requiredText of ["downloadHosted", "Local build only", "Download Testnet Preview", "candidate incomplete", "Product status", "wallet-auth-v1.0.0-testnet-preview.5", "exchange-v1.0.0-testnet-preview.3", "shop-v0.3.0-testnet-preview.1", "developer-v0.2.0-testnet-preview.1", "trust-center-v0.1.0-testnet-preview.2"]) {
   if (!ecosystemCatalog.includes(requiredText)) {
     console.error(`ecosystem release boundary missing: ${requiredText}`);
@@ -1021,7 +1113,6 @@ for (const requiredText of [
   'web: { status: PRODUCT_STATUS.LIVE, href: "https://wallet.ynxweb4.com/"',
   'entry: { label: "Open Wallet Companion", href: "https://wallet.ynxweb4.com/", external: true }',
   'https://downloads.ynxweb4.com/wallet/sha256-69b4fa5db7b8a9ab105af6633de44f5a5a4a9fceeaa0925a306f77b22381b044/ynx-wallet-macos-0.1.2-universal.dmg',
-  '/downloads/wallet/sha256-856b2a260efc43c25f62508dabc6bb6b74b84da71c9b477e8a02a12d17598cd7/ynx-wallet-desktop-0.1.1-x64.exe',
   '/downloads/wallet/sha256-929315133c68eda1cabac51cec889c4aeca5e3ee1701578916bc67e096c5dc35/ynx-wallet-desktop-0.1.1-arm64.exe',
   'installerReplacement("macOS", ".dmg", "ynx-developer-testnet-preview-macos-unsigned.zip", "developer")',
   'installerReplacement("Windows", ".exe or .msix", "ynx-developer-testnet-preview-windows-x64-unsigned.zip", "developer")'

@@ -4,7 +4,7 @@ import { getCatalog, DOWNLOAD_LABELS, PLATFORM_STATUS, PRODUCT_STATUS } from "..
 import { useLocale } from "../lib/i18n.jsx";
 import { getDownloadCopy } from "../content/businessLocaleContent.js";
 import { getProductPublicContract } from "../lib/productPublicContract.js";
-import { walletDownloadState } from "../lib/walletDownloads.js";
+import { WALLET_DOWNLOAD_PLATFORMS, walletDownloadLabel, walletDownloadState } from "../lib/walletDownloads.js";
 import { PRODUCT_UI_COPY } from "../content/productUiCopy.js";
 import { WALLET_DOWNLOAD_COPY } from "../content/walletDownloadCopy.js";
 
@@ -18,12 +18,12 @@ function formatBytes(bytes, locale) {
 }
 
 function renderTarget(platform, item, productName, locale, copy, registryAllowsDownloads) {
-  const name = DOWNLOAD_LABELS[platform] || platform;
+  const walletCopy = { ...(PRODUCT_UI_COPY[locale] || PRODUCT_UI_COPY.en), ...(WALLET_DOWNLOAD_COPY[locale] || WALLET_DOWNLOAD_COPY.en) };
+  const name = productName === "wallet" ? walletDownloadLabel(platform, walletCopy) : DOWNLOAD_LABELS[platform] || platform;
   const status = PLATFORM_STATUS[item.status] || { text: copy.unavailable };
   const statusText = copy.statusLabels[item.status] || status.text;
   const walletFile = productName === "wallet" && platform !== "web"
     ? walletDownloadState(platform, item, registryAllowsDownloads) : null;
-  const walletCopy = { ...(PRODUCT_UI_COPY[locale] || PRODUCT_UI_COPY.en), ...(WALLET_DOWNLOAD_COPY[locale] || WALLET_DOWNLOAD_COPY.en) };
   const canOpen = item.href && (item.downloadHosted || item.status === PRODUCT_STATUS.LIVE) && (!walletFile || walletFile.available);
   if (!canOpen) {
     return <li key={`${productName}-${platform}`} className="downloadItem disabled"><span>{name}</span><em>{walletFile ? walletCopy.unavailableYet : statusText}</em>{walletFile ? <small>{walletCopy[walletFile.limitationKey]}</small> : item.note ? <small>{item.note}</small> : null}</li>;
@@ -36,15 +36,16 @@ function renderTarget(platform, item, productName, locale, copy, registryAllowsD
         <span>{item.downloadHosted ? copy.download : statusText}</span>
         {item.downloadHosted ? <Download size={14} /> : <ArrowUpRight size={14} />}
       </a>
-      {walletFile && item.historicalPreview ? <small>{walletCopy.historicalBoundary}</small> : item.note ? <small>{item.note}</small> : null}
+      {walletFile ? <small>{walletCopy[walletFile.limitationKey]}</small> : item.note ? <small>{item.note}</small> : null}
       {item.downloadHosted ? <dl className="downloadEvidence" aria-label={`${productName} ${name} ${copy.evidence[5]}`}>
-        <div><dt>{copy.evidence[0]}</dt><dd>{item.version || copy.unavailable}</dd></div>
+        <div><dt>{!item.version && walletFile ? walletCopy.sourceCode : copy.evidence[0]}</dt><dd>{item.version || (walletFile ? item.sourceCommit?.slice(0, 12) : null) || copy.unavailable}</dd></div>
         <div><dt>{copy.evidence[1]}</dt><dd>{formatBytes(item.sizeBytes, locale) || copy.unavailable}</dd></div>
         <div><dt>SHA-256</dt><dd><code>{item.sha256 || copy.unavailable}</code></dd></div>
-        <div><dt>{copy.evidence[2]}</dt><dd>{item.signingClass || copy.unavailable}</dd></div>
+        <div><dt>{copy.evidence[2]}</dt><dd>{walletFile?.signingKey ? walletCopy[walletFile.signingKey] : item.signingClass || copy.unavailable}</dd></div>
         <div><dt>{copy.evidence[3]}</dt><dd><code>{item.sourceCommit || copy.unavailable}</code></dd></div>
-        <div><dt>{copy.evidence[4]}</dt><dd>{item.installProof || copy.unavailable}</dd></div>
+        <div><dt>{copy.evidence[4]}</dt><dd>{walletFile?.installProofKey ? walletCopy[walletFile.installProofKey] : item.installProof || copy.unavailable}</dd></div>
       </dl> : null}
+      {walletFile && item.previewManifest && <small>{item.sdkManifest && <><a href={item.sdkManifest}>{walletCopy.downloadManifest}</a> · </>}<a href={item.previewManifest}>{walletCopy.previewManifest}</a></small>}
     </li>
   );
 }
@@ -78,7 +79,7 @@ export function DownloadPage() {
       <p>{product.detail}</p>
       <ul className="downloadList">
         {Object.entries(product.downloads)
-          .filter(([platform]) => ["web", "pwa", "chromeEdge", "firefox", "android", "ios", "macos", "windows", "windowsX64", "windowsArm64", "linux"].includes(platform))
+          .filter(([platform]) => (product.key === "wallet" ? ["web", ...WALLET_DOWNLOAD_PLATFORMS] : ["web", "pwa", "chromeEdge", "firefox", "android", "ios", "macos", "windows", "windowsX64", "windowsArm64", "linux"]).includes(platform))
           .map(([platform, item]) => renderTarget(platform, item, product.key, locale, copy, product.key !== "wallet" || getProductPublicContract(product).downloadHostedVerified))}
       </ul>
 

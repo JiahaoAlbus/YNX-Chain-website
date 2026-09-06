@@ -24,6 +24,9 @@ import {
   BarChart3
 } from "lucide-react";
 import { publishedDownloadPaths, publishedDownloadMetadata } from "../content/publishedDownloads.js";
+import { WALLET_BROWSER_DOWNLOADS } from "../content/walletBrowserDownloads.js";
+import { WALLET_ANDROID_DOWNLOADS } from "../content/walletAndroidDownloads.js";
+import { WALLET_DESKTOP_DOWNLOADS } from "../content/walletDesktopDownloads.js";
 import { apiConfig } from "./api/ynxApi.js";
 import { isProductPublicSection } from "./productPublicContract.js";
 
@@ -153,17 +156,14 @@ const evidence = {
       href: "/releases/ecosystem-release-registry.json",
       release: "wallet-auth-v1.0.0-testnet-preview.5"
     },
-    statusNote: "Historical Wallet Testnet preview archives remain downloadable from immutable official URLs with exact source, SHA-256, byte count and signing information. They have not been accepted against current Wallet installation, connection or signing requirements. The historical macOS package remains disabled. Current replacement candidates are not advertised before public release verification; production signing and store release are not claimed.",
+    statusNote: "Windows x64 and Linux x64/arm64 0.6.4 files are published as unsigned Testnet previews with exact immutable URLs, byte counts and SHA-256. Limited CI cold launches do not establish complete installed account, callback, signing or transfer E2E; AppImage installation remains unverified. Chrome/Edge f90ad90 is a manual-install ZIP with installed UI, permission upgrades and public-sender E2E unverified. PWA is a static ZIP with no deployed PWA or launch URL. Android 1.0.7 is an ARM64-only QA-signed APK; limited emulator upgrade/fingerprint evidence does not establish current login, real-device or full transfer E2E. Historical archives remain separate; macOS and Firefox downloads remain disabled.",
     downloads: {
+      ...Object.fromEntries(Object.entries({ ...WALLET_DESKTOP_DOWNLOADS, ...WALLET_BROWSER_DOWNLOADS, ...WALLET_ANDROID_DOWNLOADS }).map(([platform, artifact]) => [platform, artifactDownload(PRODUCT_STATUS.PREVIEW, artifact.artifactPath, artifact.note, artifact.publicUrl)])),
       web: { status: PRODUCT_STATUS.LIVE, href: "https://wallet.ynxweb4.com/", external: true, downloadHosted: false, note: "Public Wallet Companion for provider discovery, YNX Testnet setup, signing and transaction requests. The Wallet/Auth health endpoint is not a product entry." },
-      pwa: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-web-pwa-0.1.0.zip", "Unsigned PWA Testnet Preview · source a1c680982b63 · SHA-256 63d83cd2…d287 · 272,706 bytes · requires Service Worker and Web Crypto.", "/downloads/wallet-web/sha256-63d83cd20925f2d52c0f21f548fa7a857a4d056e03e5fa16244f173164a7d287/ynx-wallet-web-pwa-0.1.0.zip"),
-      chromeEdge: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-chrome-edge-0.1.0.zip", "Unsigned unpacked Chrome/Edge Testnet Preview · source a1c680982b63 · SHA-256 c733093d…e2aa · 188,846 bytes · Chrome/Edge 120+.", "/downloads/wallet-web/sha256-c733093dea47c6612c8a9d5ecea40be2227f62402f4b4966955c9e1accf4e2aa/ynx-wallet-chrome-edge-0.1.0.zip"),
       firefox: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-firefox-0.1.0.zip", "Unsigned unpacked Firefox Testnet Preview · source a1c680982b63 · SHA-256 417d9b9e…36b3 · 188,883 bytes · Firefox 128+.", "/downloads/wallet-web/sha256-417d9b9e5babf05fdfdf8161504389eb99c636be75f94444bf4ff91a9b4536b3/ynx-wallet-firefox-0.1.0.zip"),
-      android: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-1.0.3-testnet-preview-3ab8c24c-local-test-signed.apk", "Android Testnet Preview 1.0.3 · source 3ab8c24c · SHA-256 afd68685…e0 · 78,233,954 bytes · Android API 24+ / target API 36 · direct retry after an authoritative Testnet read failure; API 36 install, two cold starts, biometric unlock and real Testnet account read verified · local test signer only, not production signed or Play Store released.", "/downloads/wallet/sha256-afd686851ef07fbb07823295d07179b79e1a4a078d1b528bc149bd619c8689e0/ynx-wallet-1.0.3-testnet-preview-3ab8c24c-local-test-signed.apk"),
       ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS project exists; simulator/launch evidence not completed on this host." },
       macos: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-macos-0.1.2-universal.dmg", "Universal macOS Testnet Preview DMG · source 5a6b033897a1 · evidence 59e9b994ff0f · SHA-256 69b4fa5db7b8a9ab105af6633de44f5a5a4a9fceeaa0925a306f77b22381b044 · 237,777,236 bytes · x86_64 + arm64 · macOS 13+ · bundle com.ynxweb4.wallet.macos · ynxwallet callback review, reject and malformed-input fail-closed behavior verified · approval remains blocked by CANONICAL_AUTH_BRIDGE_UNAVAILABLE · unsigned and not notarized; Gatekeeper rejected; no production signing or store release claimed.", "https://downloads.ynxweb4.com/wallet/sha256-69b4fa5db7b8a9ab105af6633de44f5a5a4a9fceeaa0925a306f77b22381b044/ynx-wallet-macos-0.1.2-universal.dmg"),
       linux: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-desktop-0.1.0-x86_64.rpm", "Unsigned Linux x64 RPM candidate · evidence c2622ca2e189 · SHA-256 8cf24d83…2bea · 86,926,281 bytes · Fedora 42 x64 lifecycle verified; official hosting gate pending."),
-      windowsX64: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-desktop-0.1.1-x64.exe", "Windows x64 NSIS Testnet Preview EXE · source a8f36e4c5723 · evidence 6ec336ef7fb5 · SHA-256 856b2a260efc43c25f62508dabc6bb6b74b84da71c9b477e8a02a12d17598cd7 · 104,334,744 bytes · install, upgrade, cold launch, second launch, rollback, re-upgrade and uninstall verified on Windows Server 2025 x64 · unsigned; Authenticode NotSigned; no production signing or store release claimed.", "/downloads/wallet/sha256-856b2a260efc43c25f62508dabc6bb6b74b84da71c9b477e8a02a12d17598cd7/ynx-wallet-desktop-0.1.1-x64.exe"),
       windowsArm64: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-desktop-0.1.1-arm64.exe", "Windows arm64 NSIS Testnet Preview EXE · source a8f36e4c5723 · evidence 6ec336ef7fb5 · SHA-256 929315133c68eda1cabac51cec889c4aeca5e3ee1701578916bc67e096c5dc35 · 103,487,635 bytes · native Windows 11 arm64 install, cold launch, second launch, YNX Testnet fail-closed lifecycle, upgrade and uninstall verified · unsigned; Authenticode NotSigned; no production signing or store release claimed.", "/downloads/wallet/sha256-929315133c68eda1cabac51cec889c4aeca5e3ee1701578916bc67e096c5dc35/ynx-wallet-desktop-0.1.1-arm64.exe")
     }
   },
@@ -344,7 +344,7 @@ const evidence = {
   video: {
     commit: "489bf23ac56fb11c5b2ed869fb2a93c2465d2b24",
     centralAccepted: false,
-    productRelease: { href: "/releases/video/489bf23ac56f/public-runtime.json", release: "video-testnet-web-20260906-489bf23ac56f" },
+    productRelease: { href: "/releases/video/77ac093356e8/public-runtime.json", release: "video-testnet-web-20260906-77ac093356e8" },
     statusNote: "Browse published test videos and shared links in the public Web preview. The latest Wallet session update is live; current-version browser playback, signed-in library and installed Wallet acceptance are being verified. Native downloads, complete translations and production streaming remain unfinished.",
     downloads: {
       android: artifactDownload(PRODUCT_STATUS.LOCAL, "apps/video/android/app/build/outputs/apk/debug/app-debug.apk", "Video Android debug APK."),

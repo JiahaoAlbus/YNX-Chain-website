@@ -10,7 +10,7 @@ const released = { ...metadata, href, downloadHosted: true };
 test("a file action requires complete immutable release provenance and registry authorization", () => {
   const state = walletDownloadState("windowsX64", released);
   assert.equal(state.available, true);
-  assert.equal(state.filename, "ynx-wallet-desktop-0.1.1-x64.exe");
+  assert.equal(state.filename, "ynx-wallet-desktop-0.6.4-x64.exe");
   assert.equal(walletDownloadState("windowsX64", released, false).available, false);
   for (const field of ["sha256", "sourceCommit", "sizeBytes", "publicationEvidence", "signingClass", "downloadHosted"]) {
     assert.equal(walletDownloadState("windowsX64", { ...released, [field]: undefined }).available, false, field);

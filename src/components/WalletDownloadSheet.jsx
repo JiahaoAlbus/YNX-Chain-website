@@ -2,7 +2,7 @@ import React from "react";
 import { ArrowUpRight, Download, Monitor, Smartphone } from "lucide-react";
 import { getCatalog } from "../lib/ecosystemCatalog.js";
 import { getProductPublicContract } from "../lib/productPublicContract.js";
-import { walletDownloadOptions } from "../lib/walletDownloads.js";
+import { walletDownloadLabel, walletDownloadOptions } from "../lib/walletDownloads.js";
 import { PRODUCT_UI_COPY } from "../content/productUiCopy.js";
 import { WALLET_DOWNLOAD_COPY } from "../content/walletDownloadCopy.js";
 
@@ -12,9 +12,9 @@ export function WalletDownloadSheet({ locale = "en", noticeId }) {
   const product = getCatalog().find(item => item.key === "wallet");
   const contract = getProductPublicContract(product);
   const options = walletDownloadOptions(product, contract.downloadHostedVerified);
-  const renderOption = ({ platform, item, available, filename, requirements, limitationKey }) => {
+  const renderOption = ({ platform, item, available, filename, requirements, limitationKey, installProofKey, signingKey }) => {
     const Icon = ["android", "ios"].includes(platform) ? Smartphone : Monitor;
-    const platformLabel = copy.platformNames[platform];
+    const platformLabel = walletDownloadLabel(platform, copy);
     const version = item?.version?.split("-testnet")[0];
     const size = item?.sizeBytes ? `${new Intl.NumberFormat(locale, { maximumFractionDigits: 1 }).format(item.sizeBytes / 1000000)} MB` : null;
     return <li key={platform} className="walletDownloadOption" data-platform={platform}>
@@ -25,11 +25,15 @@ export function WalletDownloadSheet({ locale = "en", noticeId }) {
         <p>{available ? [version, size, requirements].filter(Boolean).join(" · ") : copy[limitationKey]}</p>
         {available && <>
           <p className="walletDownloadFlowBoundary">{copy[limitationKey]}</p>
+          {signingKey && <p className="walletDownloadFlowBoundary">{copy[signingKey]}</p>}
+          {installProofKey && <p className="walletDownloadFlowBoundary">{copy[installProofKey]}</p>}
           <details className="walletDownloadDetails">
             <summary>{copy.releaseDetails}</summary>
             <p>SHA-256 <code dir="ltr">{item.sha256}</code></p>
-            <p>Source <code dir="ltr">{item.sourceCommit}</code></p>
+            <p>{copy.sourceCode} <code dir="ltr">{item.sourceCommit}</code></p>
             <a href={item.publicationEvidence}>{copy.releases}<ArrowUpRight size={14} aria-hidden="true" /></a>
+            {item.sdkManifest && <p><a href={item.sdkManifest}>{copy.downloadManifest}<ArrowUpRight size={14} aria-hidden="true" /></a></p>}
+            {item.previewManifest && <p><a href={item.previewManifest}>{copy.previewManifest}<ArrowUpRight size={14} aria-hidden="true" /></a></p>}
           </details>
         </>}
       </div>
@@ -40,11 +44,11 @@ export function WalletDownloadSheet({ locale = "en", noticeId }) {
   };
   return <>
     <p className="walletDownloadNotice" id={noticeId}>{copy.choosePlatform}. {copy.installNotice}</p>
-    <a className="walletDownloadGuide" href="/manual#wallet">{copy.installation}<ArrowUpRight size={16} aria-hidden="true" /></a>
-    <ul className="walletDownloadOptions">{options.slice(0, 5).map(renderOption)}</ul>
+    <a className="walletDownloadGuide" href={`/manual?path=wallet&lang=${encodeURIComponent(locale)}`}>{copy.installation}<ArrowUpRight size={16} aria-hidden="true" /></a>
+    <ul className="walletDownloadOptions">{options.slice(0, 8).map(renderOption)}</ul>
     <details className="walletDownloadOtherPlatforms">
       <summary>{copy.otherPlatforms}</summary>
-      <ul className="walletDownloadOptions">{options.slice(5).map(renderOption)}</ul>
+      <ul className="walletDownloadOptions">{options.slice(8).map(renderOption)}</ul>
     </details>
     <footer className="walletDownloadFooter">
       <span>{copy.testnetPreview}</span>

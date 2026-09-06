@@ -13,7 +13,7 @@ import { useLocale } from "../lib/i18n.jsx";
 import { useLocalizedDocs } from "../lib/useLocalizedDocs.js";
 import { PRODUCT_UI_COPY, PRODUCT_SECTION_LABEL_KEYS } from "../content/productUiCopy.js";
 import { ProductDownloads } from "../components/ProductDownloads.jsx";
-import { walletDownloadState } from "../lib/walletDownloads.js";
+import { WALLET_DOWNLOAD_PLATFORMS, walletDownloadLabel, walletDownloadState } from "../lib/walletDownloads.js";
 import { WALLET_DOWNLOAD_COPY } from "../content/walletDownloadCopy.js";
 
 const platformOrder = ["web", "pwa", "chromeEdge", "firefox", "android", "ios", "macos", "windows", "windowsX64", "windowsArm64", "linux"];
@@ -28,7 +28,7 @@ function Surface({ platform, item, registryAllowsDownloads, productKey }) {
   const state = PLATFORM_STATUS[item?.status] || PLATFORM_STATUS[PRODUCT_STATUS.NOT_READY];
   const walletFile = productKey === "wallet" && platform !== "web" ? walletDownloadState(platform, item, registryAllowsDownloads) : null;
   const canOpen = registryAllowsDownloads && item?.downloadHosted === true && item?.href && (!walletFile || walletFile.available);
-  return <li className={`productSurface ${item?.status || PRODUCT_STATUS.NOT_READY}`}><span><strong>{DOWNLOAD_LABELS[platform]}</strong><small>{walletFile && (!walletFile.available || item.historicalPreview) ? copy[walletFile.limitationKey] : item?.note || "No verified release evidence."}</small></span>{canOpen ? <a href={item.href} download={walletFile?.filename} rel={item.external ? "noopener" : undefined}>{walletFile ? copy.download : "Download"} <ArrowUpRight size={14} /></a> : <em>{walletFile ? copy.unavailableYet : item?.href ? "Registry verification required" : state.text}</em>}</li>;
+  return <li className={`productSurface ${item?.status || PRODUCT_STATUS.NOT_READY}`}><span><strong>{productKey === "wallet" ? walletDownloadLabel(platform, copy) : DOWNLOAD_LABELS[platform]}</strong><small>{walletFile ? copy[walletFile.limitationKey] : item?.note || "No verified release evidence."}</small>{walletFile?.signingKey && <small>{copy[walletFile.signingKey]}</small>}{walletFile?.installProofKey && <small>{copy[walletFile.installProofKey]}</small>}</span>{canOpen ? <a href={item.href} download={walletFile?.filename} rel={item.external ? "noopener" : undefined}>{walletFile ? copy.download : "Download"} <ArrowUpRight size={14} /></a> : <em>{walletFile ? copy.unavailableYet : item?.href ? "Registry verification required" : state.text}</em>}</li>;
 }
 
 function SectionNavigation({ contract, activeSection, copy }) {
@@ -116,7 +116,7 @@ export function ProductStatusPage({ product, sectionId = "overview", article, ar
             <EvidenceState label="Hosted installer" value={hasHostedDownload} detail={hasHostedDownload ? "A registry-authorized immutable hosted artifact is available in this website build." : "No registry-authorized immutable artifact URL is available from this website contract."} />
             <EvidenceState label="Production signing / store release" value={false} detail="No owner production signature or app-store acceptance is claimed." />
           </ul></div>
-          <div className="productStatusSection"><div className="sectionHeader compact"><div><p className="sectionEyebrow">Platforms</p><h2>Install and access</h2></div></div><ul className="productSurfaceList">{platformOrder.map((platform) => <Surface key={platform} platform={platform} item={product.downloads?.[platform]} registryAllowsDownloads={contract.downloadHostedVerified} productKey={product.key} />)}</ul></div>
+          <div className="productStatusSection"><div className="sectionHeader compact"><div><p className="sectionEyebrow">Platforms</p><h2>Install and access</h2></div></div><ul className="productSurfaceList">{(product.key === "wallet" ? ["web", ...WALLET_DOWNLOAD_PLATFORMS] : platformOrder).map((platform) => <Surface key={platform} platform={platform} item={product.downloads?.[platform]} registryAllowsDownloads={contract.downloadHostedVerified} productKey={product.key} />)}</ul></div>
         </div>
         <aside className="productStatusAside"><div><GitBranch size={18} /><span><small>Registry source commit</small><code>{contract.registryCommit || "No registry record"}</code></span></div><p>{product.release?.statusNote || "No product release record has been accepted."}</p><a className="button primary" href={contract.sections.find((item) => item.id === "docs-api").href}>Docs and API <ArrowUpRight size={16} /></a><a className="button secondary" href={contract.sections.find((item) => item.id === "open-download").href}>Open or download <ArrowUpRight size={16} /></a><a className="button secondary" href={contract.sections.find((item) => item.id === "releases").href}>Release evidence <ArrowUpRight size={16} /></a><a className="textLink" href="/dapp/download"><Download size={16} /> Download center</a></aside>
       </section>

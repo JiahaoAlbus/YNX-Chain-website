@@ -14,6 +14,39 @@ function worker(fetcher, { putFails = false } = {}) {
   };
   return {dispatch,stored};
 }
+test('activation deletes only old website shell caches and preserves current and unrelated caches', async () => {
+  const current = 'ynx-web-shell-v9-scoped-cleanup';
+  const old = ['ynx-web-shell-v6-faucet-runtime-recovery', 'ynx-web-shell-v8-static-performance'];
+  const unrelated = ['ynx-wallet-offline-v1', 'square-cache-v2', 'unknown-cache', 'ynx-web-shell', 'other-ynx-web-shell-v8'];
+  const remaining = new Set([...old, current, ...unrelated]);
+  const handlers = {};
+  const deleted = [];
+  let claimed = false;
+  vm.runInNewContext(source, {
+    self: {
+      addEventListener: (name, handler) => { handlers[name] = handler; },
+      clients: { claim: async () => {
+        assert.deepEqual(deleted.sort(), old.slice().sort());
+        claimed = true;
+      } },
+    },
+    caches: {
+      keys: async () => [...remaining],
+      delete: async (key) => {
+        // Make cleanup asynchronous so claim must await completed deletions.
+        await Promise.resolve();
+        deleted.push(key);
+        return remaining.delete(key);
+      },
+    },
+  });
+  let activation;
+  handlers.activate({ waitUntil: (promise) => { activation = promise; } });
+  assert.ok(activation, 'activation must keep cleanup alive');
+  await activation;
+  assert.equal(claimed, true);
+  assert.deepEqual([...remaining].sort(), [current, ...unrelated].sort());
+});
 test('runtime identity, API and explicit no-store requests always bypass the shell cache',()=>{
  const w=worker(()=>{throw Error('must bypass');});
  for(const [path,extras] of [['/build-identity.json',{}],['/api/network/status',{}],['/',{cache:'no-store'}]]) assert.equal(w.dispatch(path,extras),undefined);
