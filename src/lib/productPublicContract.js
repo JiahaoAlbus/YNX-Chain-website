@@ -1,4 +1,5 @@
 import releaseRegistry from "../../public/releases/ecosystem-release-registry.json" with { type: "json" };
+import { walletDownloadState } from "./walletDownloads.js";
 
 export const PRODUCT_PUBLIC_CONTRACT_SCHEMA = "ynx.product-public-contract.v1";
 
@@ -36,7 +37,9 @@ export function getProductPublicContract(product) {
     : null;
   const registryDownloadHosted = registry?.downloadHosted === true;
   const hostedDownloads = Object.entries(product.downloads || {})
-    .filter(([, item]) => registryDownloadHosted && item?.downloadHosted === true && item?.href)
+    .filter(([platform, item]) => product.key === "wallet"
+      ? walletDownloadState(platform, item, registryDownloadHosted).available
+      : registryDownloadHosted && item?.downloadHosted === true && item?.href)
     .map(([platform, item]) => ({ platform, ...item }));
   const docs = product.docs?.href
     ? { status: "available", href: product.docs.href, external: product.docs.external === true, label: product.docs.label || `${product.name} docs` }

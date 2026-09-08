@@ -42,6 +42,7 @@ test("all Wallet download surfaces enforce the same file eligibility without cha
     const expected = helpers.walletDownloadOptions(wallet, contract.downloadHostedVerified)
       .filter(option => option.available).map(option => option.item.href).sort();
     assert.equal(expected.length, 11, "all eleven current packages are selectable");
+    assert.deepEqual(contract.downloads.items.map(item => item.href).sort(), expected, "the public download contract excludes withheld and historical packages");
     const [trigger, chooser, details, directory, overview] = await Promise.all([
       markup(React.createElement(WalletDownload)),
       markup(React.createElement(WalletDownloadSheet, { locale: "en", noticeId: "download-notice" })),
