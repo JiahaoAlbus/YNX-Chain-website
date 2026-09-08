@@ -923,18 +923,30 @@ const publicWebSnapshots = {
     mainScript: "assets/index-K0OYhxgg.js",
     pending: ["existingWorkspaceEdited", "existingWorkspaceExecuted", "newWorkspaceCompileVerified", "aiWorkflowVerified", "terminalAcceptanceVerified", "fullVSCodeParityAccepted", "productionConcurrencyAccepted", "allTaskLosslessDrainAccepted", "blueWhiteAllStatesVerified"],
   },
-  monitor: {
-    commit: "5ff75b2e5dd15928da728f17567a68b16e1801fa",
-    tree: "236afca6ed332ce9ec7644250c897ca0b3e25fb0",
-    origin: "https://monitor.ynxweb4.com/",
-    runtimePath: "/releases/monitor/5ff75b2e5dd1/public-runtime.json",
-    verifiedAt: "2026-09-06T15:03:36.657228+00:00",
+  explorer: {
+    commit: "d5eb0d9069a699155581124a2926efd887f315cc",
+    tree: "bb9422247fbddef8d20c73ccc25eab314f374b87",
+    origin: "https://explorer.ynxweb4.com",
+    runtimePath: "/releases/explorer/d5eb0d9069a6/public-runtime.json",
+    verifiedAt: "2026-09-06T16:19:21.417Z",
     count: 7,
-    listSha256: "40b28905526f7b0dd54e1614a1519cae10b609a4bc6bbbb6323a4a6d06c115d5",
-    artifactSha256: "f13ee5135426bdb899f1b5f7c12bbad324ba0eec0e1ebb3782af605c98bad393",
-    artifactBytes: 40089194,
-    mainScript: "assets/index-BhwUFu2c.js",
-    pending: ["oldUserProfileUpgradeVerified", "authenticatedOperatorViewsVerified", "walletConnectionSigningVerified", "concurrencyValidated", "overallUIComplete"],
+    listSha256: "71dc0fc7d11e0003a90b76836b4c6ba473ba339067d6d0c12e617093b833988d",
+    mainScript: "/assets/ynx-address.js",
+    absoluteResponsePaths: true,
+    pending: ["nativeClipboardWriteVerified", "walletConnectionSigningVerified", "concurrencyValidated", "overallUIComplete"],
+  },
+  monitor: {
+    commit: "3cae747ed897a3feec50157d3add33318a484f16",
+    tree: "10c611feab838c0b23337fc84870ec26c19214cc",
+    origin: "https://monitor.ynxweb4.com/",
+    runtimePath: "/releases/monitor/3cae747ed897/public-runtime.json",
+    verifiedAt: "2026-09-06T16:45:29.615808+00:00",
+    count: 14,
+    listSha256: "d782202bb3299de4cbbdcf50189e66c9b074aa125a015e9e3e64e5ce4a1b5a2f",
+    artifactSha256: "1b97e80e1cedb5441588e5e1fac8563870dc84ead49b47a8adcf44a2fba20262",
+    artifactBytes: 40354905,
+    mainScript: "assets/index-BozBpyIp.js",
+    pending: ["oldUserProfileUpgradeVerified", "authenticatedOperatorViewsVerified", "walletConnectionSigningVerified", "concurrencyValidated", "overallUIComplete", "previousIntermittentTimeoutResolved"],
   },
 };
 for (const [key, expected] of Object.entries(publicWebSnapshots)) {
@@ -944,6 +956,17 @@ for (const [key, expected] of Object.entries(publicWebSnapshots)) {
   const listSha256 = crypto.createHash("sha256").update(JSON.stringify(files.map(({ path, bytes, sha256 }) => ({ path, bytes, sha256 })))).digest("hex");
   const browser = runtime.browserVerification;
   const mainScript = files.find((file) => file.path === expected.mainScript);
+  // Explorer embeds HTTP responses at / and /address rather than physical index.html files.
+  // Keep those exact public paths; all other snapshots retain their relative asset-path contract.
+  const safePublicPath = (value) => {
+    if (typeof value !== "string" || !/^[a-zA-Z0-9_./-]+$/.test(value)) return false;
+    if (expected.absoluteResponsePaths) {
+      if (!value.startsWith("/")) return false;
+      if (value === "/") return true;
+      value = value.slice(1);
+    } else if (value.startsWith("/")) return false;
+    return !value.split("/").some((part) => !part || part === "." || part === "..");
+  };
   if (
     record?.state !== "public-web-preview-incomplete" || record.commit !== expected.commit ||
     record.publicWeb !== expected.origin || record.publicWebRelease !== expected.runtimePath ||
@@ -958,8 +981,7 @@ for (const [key, expected] of Object.entries(publicWebSnapshots)) {
     runtime.checks?.actualDeployment !== true || runtime.checks?.publicPageRendered !== true ||
     runtime.checks?.sourceBoundPublicFilesMatched !== expected.count || files.length !== expected.count ||
     new Set(files.map((file) => file.path)).size !== files.length ||
-    files.some((file) => typeof file.path !== "string" || !/^[a-zA-Z0-9_./-]+$/.test(file.path) ||
-      file.path.startsWith("/") || file.path.split("/").some((part) => !part || part === "." || part === "..") ||
+    files.some((file) => !safePublicPath(file.path) ||
       !/^[0-9a-f]{64}$/.test(file.sha256) || !Number.isSafeInteger(file.bytes) || file.bytes <= 0 ||
       (file.status !== undefined && file.status !== 200)) ||
     runtime.publicFileListSha256 !== expected.listSha256 || listSha256 !== expected.listSha256 ||
@@ -977,10 +999,27 @@ for (const [key, expected] of Object.entries(publicWebSnapshots)) {
     (key === "developer" && (runtime.checks.existingWorkspaceObservedReadOnly !== true ||
       runtime.checks.loopbackFilesMatched !== 203 || runtime.checks.statePreserved !== true ||
       runtime.checks.stateRestoreOnRollback !== false || browser?.existingWorkspaceEditorVisible !== true)) ||
+    (["explorer", "monitor"].includes(key) && (runtime.fullInstalledE2E !== false ||
+      record.fullInstalledE2E !== false || record.productionSigned !== false || record.storeReleased !== false ||
+      runtime.currentIdentityCheck?.sourceCommit !== expected.commit ||
+      runtime.currentIdentityCheck?.status !== 200 || runtime.currentIdentityCheck?.trustedTLS !== true)) ||
+    (key === "explorer" && (runtime.runtimeIdentity?.build?.commit !== expected.commit ||
+      runtime.checks.publicReadOnlyUI !== true || browser?.nativeAddressFormatsVerified !== true ||
+      browser?.clipboardStubOnly !== true || browser?.accountRequested !== false ||
+      browser?.chainMutationPerformed !== false || browser?.freshContexts !== 3 ||
+      !runtime.artifactClass?.includes("no hosted desktop or mobile installer"))) ||
     (key === "monitor" && (runtime.checks.publicLoginAndStatusOnly !== true ||
       runtime.checks.opsAndAuthorizationNoStore !== true || runtime.runtimeIdentity?.commit !== expected.commit ||
       runtime.checks.workerSha256 !== files.find((file) => file.path === "sw.js")?.sha256 ||
-      browser?.freshServiceWorkerActivated !== true || files.some((file) => file.status !== 200)))
+      browser?.freshServiceWorkerActivated !== true || files.some((file) => file.status !== 200) ||
+      browser?.freshContexts !== 6 || browser?.publicLoginStatusAcceptancePassed !== true ||
+      browser?.rawSixContextAggregatePassed !== false || browser?.cacheIconReadbackPassed !== true ||
+      runtime.walletDownloadVerification?.product !== "YNX Wallet" ||
+      runtime.walletDownloadVerification?.url !== "https://downloads.ynxweb4.com/wallet/sha256-061a25cb9b44e6a0e26667b4a46aacffd434780d5c705bea14d4fd7368eab0c5/ynx-wallet-chrome-edge-f90ad90-local-qa.zip" ||
+      runtime.walletDownloadVerification?.sha256 !== "061a25cb9b44e6a0e26667b4a46aacffd434780d5c705bea14d4fd7368eab0c5" ||
+      runtime.walletDownloadVerification?.bytes !== 539744 || runtime.walletDownloadVerification?.browserDownloadSaved !== true ||
+      runtime.walletDownloadVerification?.installed !== false || runtime.walletDownloadVerification?.monitorInstaller !== false ||
+      runtime.artifactClass !== "server-runtime-package; not a hosted user installer"))
   ) {
     console.error(`Public Web snapshot must match its exact published files and preserve unverified scope: ${key}`);
     process.exit(1);
@@ -1114,7 +1153,6 @@ if (invalidDesktopInstallerClaims.some((pattern) => pattern.test(ecosystemCatalo
 for (const requiredText of [
   'web: { status: PRODUCT_STATUS.LIVE, href: "https://wallet.ynxweb4.com/"',
   'entry: { label: "Open Wallet Companion", href: "https://wallet.ynxweb4.com/", external: true }',
-  '/downloads/wallet/sha256-929315133c68eda1cabac51cec889c4aeca5e3ee1701578916bc67e096c5dc35/ynx-wallet-desktop-0.1.1-arm64.exe',
   'installerReplacement("macOS", ".dmg", "ynx-developer-testnet-preview-macos-unsigned.zip", "developer")',
   'installerReplacement("Windows", ".exe or .msix", "ynx-developer-testnet-preview-windows-x64-unsigned.zip", "developer")'
 ]) {

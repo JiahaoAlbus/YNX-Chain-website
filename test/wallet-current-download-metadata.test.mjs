@@ -5,8 +5,8 @@ import { walletDownloadState } from '../src/lib/walletDownloads.js';
 
 const clone = () => structuredClone(currentWalletDownloads);
 
-test('nine current packages are bound to eight exact public manifests and keep installed acceptance separate', () => {
-  assert.deepEqual(verifyWalletDownloadMetadata(), { files: 9, manifests: 8 });
+test('eleven current packages are bound to two canonical public manifests and keep installed acceptance separate', () => {
+  assert.deepEqual(verifyWalletDownloadMetadata(), { files: 11, manifests: 2, publishedHistory: 17, superseded: 6 });
   for (const [platform, item] of Object.entries(currentWalletDownloads)) {
     const state = walletDownloadState(platform, { ...item, href: item.publicUrl, downloadHosted: true });
     assert.equal(state.available, true, platform);
@@ -30,7 +30,10 @@ test('manifest verification rejects substituted bytes, architecture, evidence, r
     ['macos', 'notarized', true], ['macos', 'developerIdSigned', true],
     ['macos', 'spctlAccepted', true], ['macos', 'fullInstalledE2E', true],
     ['macos', 'sourceCommit', '5a6b033897a1295d35fc325a92c6bb81c8b04a19'],
-    ['macos', 'architecture', 'arm64']
+    ['macos', 'architecture', 'arm64'], ['androidUniversal', 'architecture', 'arm64'],
+    ['windowsArm64', 'version', '0.6.4'], ['pwa', 'version', '0.6.5'],
+    ['linuxArm64AppImage', 'limitedInstalledEvidence', { appImageBuildOnly: false, thisFormatInstalledOnNativeCI: true }],
+    ['androidUniversal', 'limitedInstalledEvidence', { otherABIsInstalledVerified: true, realHardwareVerified: true }]
   ]) {
     const changed = clone(); changed[platform][field] = value;
     assert.throws(() => verifyWalletDownloadMetadata(changed), undefined, `${platform}.${field}`);

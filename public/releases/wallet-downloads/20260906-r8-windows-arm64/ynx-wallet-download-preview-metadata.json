@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "product": "YNX Wallet",
+  "releaseId": "wallet-static-20260906-r8-windows-arm64",
+  "status": "published-files-verified",
+  "distribution": "testnet-preview",
+  "hosting": "static-artifact-files-only",
+  "artifacts": [
+    {
+      "sha256": "2b58178fb3fea4d9ff9042abbe72c33f7bc3b86de3b413e37c20b179e20648bb",
+      "bytes": 113823742,
+      "id": "windows-arm64-exe-1cab8a71",
+      "sourceCommit": "1cab8a7198f9481901c642a3682983366a50374c",
+      "filename": "ynx-wallet-desktop-0.6.4-arm64.exe",
+      "platform": "windows",
+      "architecture": "arm64",
+      "browser": null,
+      "installation": "exe",
+      "mimeType": "application/vnd.microsoft.portable-executable",
+      "relativePath": "wallet/sha256-2b58178fb3fea4d9ff9042abbe72c33f7bc3b86de3b413e37c20b179e20648bb/ynx-wallet-desktop-0.6.4-arm64.exe",
+      "labelZh": "Windows 0.6.4 · ARM64 exe 测试预览",
+      "labelEn": "Windows 0.6.4 - ARM64 test preview",
+      "published": true,
+      "publicDownloadVerified": true,
+      "storeReleased": false,
+      "productionSigned": false,
+      "fullInstalledE2E": false,
+      "pwaDeployed": false,
+      "launchURL": null,
+      "limitations": [
+        "The exact original ARM64 installer was installed successfully on a native ARM64 Windows CI runner; 81 runtime source files and two locked cold launches were checked. This does not establish personal-device acceptance.",
+        "No production signature or store release. Account creation, callback, signing and complete transaction E2E remain unverified."
+      ],
+      "limitedInstalledEvidence": {
+        "nativeArm64Runner": true,
+        "originalInstallerWholeSHA": true,
+        "twoLockedColdStarts": true,
+        "runtimeSourceFiles": 81,
+        "fullInstalledE2E": false
+      },
+      "url": "https://downloads.ynxweb4.com/wallet/sha256-2b58178fb3fea4d9ff9042abbe72c33f7bc3b86de3b413e37c20b179e20648bb/ynx-wallet-desktop-0.6.4-arm64.exe"
+    }
+  ],
+  "accessContract": {
+    "sha256": "49e0ceb7a72e769b3fd6e30e6fa93fa597e8cdaf886f47abc72767d59575b0ab",
+    "defaultWallet": "YNX Wallet",
+    "thirdPartyWallets": "Only explicit service-approved basic capabilities; never promoted to full YNX account access.",
+    "fullAccountAccess": "Auth V3 ProductSessionV2 with device-bound HTTP proof plus live revocation/control-intent and server-required scopes. Provider flags and personal_sign do not establish service authorization.",
+    "integratedAllProducts": false
+  },
+  "notes": [
+    "Independent Windows ARM64 preview; the already published x64/Linux batch remains unchanged.",
+    "One exact platform/architecture artifact only. No Mac/Android/browser dependency.",
+    "Whole-file delivery and limited CI installation checks do not imply full installed product E2E."
+  ]
+}

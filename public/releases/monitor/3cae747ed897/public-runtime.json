@@ -1,0 +1,266 @@
+{
+  "schemaVersion": 1,
+  "product": "YNX Monitor",
+  "verifiedAt": "2026-09-06T16:45:29.615808+00:00",
+  "publicUrl": "https://monitor.ynxweb4.com/",
+  "sourceCommit": "3cae747ed897a3feec50157d3add33318a484f16",
+  "sourceTree": "10c611feab838c0b23337fc84870ec26c19214cc",
+  "release": "ynx-monitor-controls-downloads-3cae747ed897",
+  "artifactSha256": "1b97e80e1cedb5441588e5e1fac8563870dc84ead49b47a8adcf44a2fba20262",
+  "artifactBytes": 40354905,
+  "artifactClass": "server-runtime-package; not a hosted user installer",
+  "state": "public-web-preview-incomplete",
+  "centralAccepted": false,
+  "fullProductAccepted": false,
+  "downloadHosted": false,
+  "fullInstalledE2E": false,
+  "productionSigned": false,
+  "storeReleased": false,
+  "runtimeIdentity": {
+    "schemaVersion": "ynx.monitor.version.v1",
+    "service": "ynx-monitor-control-plane",
+    "contractVersion": "ynx.monitor.integration.v1",
+    "commit": "3cae747ed897a3feec50157d3add33318a484f16",
+    "release": "ynx-monitor-controls-downloads-3cae747ed897",
+    "startedAt": "2026-09-06T16:20:08.937Z"
+  },
+  "currentIdentityCheck": {
+    "observedAt": "2026-09-08T02:58:04.862Z",
+    "url": "https://monitor.ynxweb4.com/version",
+    "method": "GET",
+    "status": 200,
+    "trustedTLS": true,
+    "sourceCommit": "3cae747ed897a3feec50157d3add33318a484f16",
+    "release": "ynx-monitor-controls-downloads-3cae747ed897"
+  },
+  "checks": {
+    "actualDeployment": true,
+    "sourceBoundPublicFilesMatched": 14,
+    "publicFileReadbackAt": "2026-09-06T16:27:12.043Z",
+    "publicPageRendered": true,
+    "publicLoginAndStatusOnly": true,
+    "opsAndAuthorizationNoStore": true,
+    "workerSha256": "ece3ca1326fd4e4c2f2dc53a90c2699f529984e78f15ac13ecbacae0b04efe72"
+  },
+  "publicFiles": [
+    {
+      "path": "assets/index-BozBpyIp.js",
+      "bytes": 374302,
+      "sha256": "f55dae49eb0bf093ceb81e91ef5073b129604e03aa8dac29dbc95540f989167d",
+      "status": 200,
+      "url": "https://monitor.ynxweb4.com/assets/index-BozBpyIp.js",
+      "contentType": "text/javascript; charset=utf-8"
+    },
+    {
+      "path": "assets/index-DWb2U6l7.css",
+      "bytes": 20742,
+      "sha256": "f8a7555329cb6a5b19294ce1341768ae2480bb6906b7bc6cb06d03f9476f1ae4",
+      "status": 200,
+      "url": "https://monitor.ynxweb4.com/assets/index-DWb2U6l7.css",
+      "contentType": "text/css; charset=utf-8"
+    },
+    {
+      "path": "favicon.ico",
+      "bytes": 1918,
+      "sha256": "98948952a502835d43db9f3d23b277bc6d5290c7d5361e609e5830c98b32c063",
+      "status": 200,
+      "url": "https://monitor.ynxweb4.com/favicon.ico",
+      "contentType": "image/vnd.microsoft.icon"
+    },
+    {
+      "path": "icon.svg",
+      "bytes": 54952,
+      "sha256": "cf3e73e6b75022c3e81869629169e6424442bb2ef804a37a116e11aa4c156c6d",
+      "status": 200,
+      "url": "https://monitor.ynxweb4.com/icon.svg",
+      "contentType": "image/svg+xml"
+    },
+    {
+      "path": "index.html",
+      "bytes": 1310,
+      "sha256": "c8329e8cc0d6c47678e0e21e9bd81893ce32ca23c1f9b2ecf4fcf8a801515627",
+      "status": 200,
+      "url": "https://monitor.ynxweb4.com/",
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "path": "manifest.webmanifest",
+      "bytes": 512,
+      "sha256": "ddaa629f4e0268d411b325179f60bee006ac8edf61edf8566287d06bb272f8e2",
+      "status": 200,
+      "url": "https://monitor.ynxweb4.com/manifest.webmanifest"
+    },
+    {
+      "path": "sw.js",
+      "bytes": 2389,
+      "sha256": "ece3ca1326fd4e4c2f2dc53a90c2699f529984e78f15ac13ecbacae0b04efe72",
+      "status": 200,
+      "url": "https://monitor.ynxweb4.com/sw.js",
+      "contentType": "text/javascript; charset=utf-8"
+    },
+    {
+      "path": "ynx-favicon-48.png",
+      "bytes": 1896,
+      "sha256": "bf382c1cb986b92ede3a658a4190f843aee949c6e14ab5aa20d6f7c1f502e962",
+      "status": 200,
+      "url": "https://monitor.ynxweb4.com/ynx-favicon-48.png",
+      "contentType": "image/png"
+    },
+    {
+      "path": "ynx-favicon.svg",
+      "bytes": 54952,
+      "sha256": "cf3e73e6b75022c3e81869629169e6424442bb2ef804a37a116e11aa4c156c6d",
+      "status": 200,
+      "url": "https://monitor.ynxweb4.com/ynx-favicon.svg",
+      "contentType": "image/svg+xml"
+    },
+    {
+      "path": "ynx-icon-192.png",
+      "bytes": 11595,
+      "sha256": "37efed414f0cd67490f002d91c553adf875c6da6c207bc69b6a1fc1ea64dde9e",
+      "status": 200,
+      "url": "https://monitor.ynxweb4.com/ynx-icon-192.png",
+      "contentType": "image/png"
+    },
+    {
+      "path": "ynx-icon-512.png",
+      "bytes": 41080,
+      "sha256": "bb2528fe9bfa8ce2f5c52520c251c89eddf484403fdc91a129780cd93a964dd1",
+      "status": 200,
+      "url": "https://monitor.ynxweb4.com/ynx-icon-512.png",
+      "contentType": "image/png"
+    },
+    {
+      "path": "ynx-icon-96.png",
+      "bytes": 4075,
+      "sha256": "7dd4e0460f8b4ba4230b834301ccf1613e5899e1b0f58b742bd8df474f44d007",
+      "status": 200,
+      "url": "https://monitor.ynxweb4.com/ynx-icon-96.png",
+      "contentType": "image/png"
+    },
+    {
+      "path": "ynx-icon-maskable-512.png",
+      "bytes": 33219,
+      "sha256": "5a274c3c0d361cf7cb4b0d6e44a803041d3d4394be3193eb820bf0b3025ff60b",
+      "status": 200,
+      "url": "https://monitor.ynxweb4.com/ynx-icon-maskable-512.png",
+      "contentType": "image/png"
+    },
+    {
+      "path": "ynx-tab-icon.png",
+      "bytes": 5286,
+      "sha256": "86450b32dba373070bbf5389661356cfd788e4bfc6761fc59d42f04daed932fa",
+      "status": 200,
+      "url": "https://monitor.ynxweb4.com/ynx-tab-icon.png",
+      "contentType": "image/png"
+    }
+  ],
+  "publicFileListSha256": "d782202bb3299de4cbbdcf50189e66c9b074aa125a015e9e3e64e5ce4a1b5a2f",
+  "browserVerification": {
+    "sourceCommit": "3cae747ed897a3feec50157d3add33318a484f16",
+    "observedAt": "2026-09-06T16:27:12.043Z",
+    "scope": "Recorded six fresh public login/status browser contexts, complete static GETs and an isolated service-worker cache diagnostic; no authenticated operator actions.",
+    "mainScript": {
+      "path": "assets/index-BozBpyIp.js",
+      "bytes": 374302,
+      "sha256": "f55dae49eb0bf093ceb81e91ef5073b129604e03aa8dac29dbc95540f989167d"
+    },
+    "freshContexts": 6,
+    "localeWidths": [
+      {
+        "locale": "en",
+        "width": 1440
+      },
+      {
+        "locale": "zh-CN",
+        "width": 1440
+      },
+      {
+        "locale": "ar",
+        "width": 1440
+      },
+      {
+        "locale": "en",
+        "width": 390
+      },
+      {
+        "locale": "zh-CN",
+        "width": 390
+      },
+      {
+        "locale": "ar",
+        "width": 390
+      }
+    ],
+    "publicLoginStatusAcceptancePassed": true,
+    "freshServiceWorkerActivated": true,
+    "serviceWorkerCache": "ynx-monitor-shell-v3",
+    "cacheIconReadbackPassed": true,
+    "rawSixContextAggregatePassed": false,
+    "rawAggregateDiagnostic": "Worker-originated icon preload exposed an empty observer body. All fourteen direct GETs and loaded document/JS/CSS matched; separate CacheStorage and controlled-fetch readback verified the expected icon bytes and SHA.",
+    "controlsMinimumHeight": 46,
+    "whiteKleinBlueAndRTLPassed": true,
+    "consoleErrors": 0,
+    "pageErrors": 0,
+    "oldUserProfileUpgradeVerified": false,
+    "authenticatedOperatorViewsVerified": false,
+    "walletConnectionSigningVerified": false,
+    "concurrencyValidated": false,
+    "overallUIComplete": false,
+    "previousIntermittentTimeoutResolved": false
+  },
+  "walletDownloadVerification": {
+    "product": "YNX Wallet",
+    "url": "https://downloads.ynxweb4.com/wallet/sha256-061a25cb9b44e6a0e26667b4a46aacffd434780d5c705bea14d4fd7368eab0c5/ynx-wallet-chrome-edge-f90ad90-local-qa.zip",
+    "filename": "ynx-wallet-chrome-edge-f90ad90-local-qa.zip",
+    "bytes": 539744,
+    "sha256": "061a25cb9b44e6a0e26667b4a46aacffd434780d5c705bea14d4fd7368eab0c5",
+    "browserDownloadSaved": true,
+    "installed": false,
+    "monitorInstaller": false
+  },
+  "notVerified": [
+    "The recorded Chrome/Edge ZIP download is YNX Wallet, not a Monitor installer; Monitor downloadHosted remains false. The downloaded Wallet ZIP was not installed or used to log in, approve, sign or transfer.",
+    "Old browser-profile service-worker upgrade, authenticated operator actions, capacity/load and complete product acceptance remain unverified.",
+    "The raw six-context aggregate remains false for worker-prefetch observer bodies; the independent cache diagnostic resolved that observation boundary without overwriting the raw proof.",
+    "Eighteen recorded status responses were HTTP 200 in this run. Earlier intermittent timeouts are not declared resolved, and the run is not a capacity benchmark.",
+    "No Monitor desktop/mobile installer, production signature or store release is established."
+  ],
+  "evidenceBasis": {
+    "type": "Recorded source freeze and deployment, complete fourteen-file public GET readback, six public login/status contexts and separate cache readback; current /version check only refreshes runtime identity.",
+    "records": [
+      {
+        "record": "monitor-controls-downloads/final/source-freeze.json",
+        "sha256": "25d6d58ac64216d38deece34a96fcc4eb300453aa467288d30bc017e9954d391"
+      },
+      {
+        "record": "monitor-controls-downloads/final/linux-package-metadata.json",
+        "sha256": "dd7cad99792def98c2bddcac2cabca6fd0a10c375b60c84feb5371caa74119af"
+      },
+      {
+        "record": "monitor-controls-downloads/final/linux-dist-sha256.json",
+        "sha256": "da824c25db91c3d82ddb7292f006bb683f614e91d19046a6eacbec628bbfac1c"
+      },
+      {
+        "record": "monitor-controls-downloads/final/root-release-r2/root-deploy-result.json",
+        "sha256": "f0cc1bc7386d1e6d8d085c2781fb4b47106b608513239bbbc11832c241577a00"
+      },
+      {
+        "record": "monitor-controls-downloads/final/root-release-r2/root-publication-summary.json",
+        "sha256": "aebb7b1ce45505bb607a31fffc9f82c4bc340d05bc11b3921f240d15163e4f3b"
+      },
+      {
+        "record": "monitor-controls-downloads/public-r2/SUMMARY.json",
+        "sha256": "dbb33a43b29f1e010d47756dfe81f2f2fe20f6086eb430a241ac5b2d477d96ae"
+      },
+      {
+        "record": "monitor-controls-downloads/public-r2/public-browser-proof-refined.json",
+        "sha256": "7ced174e17cb841d2fa73239409f763c18bfc3d08e73ed4aa86ebb799a8e265a"
+      },
+      {
+        "record": "monitor-controls-downloads/public-r2/cache-icon-readback.json",
+        "sha256": "3b8a29546fe39f79ed17c60c04266f75139fff12446ad25b9e5c71ec442ae4bd"
+      }
+    ]
+  }
+}

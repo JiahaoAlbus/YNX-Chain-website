@@ -1,3 +1,4 @@
+import { WalletDownloadHistory } from "../components/WalletDownloadHistory.jsx";
 import React from "react";
 import { ArrowUpRight, Download, FileJson2, ShieldCheck } from "lucide-react";
 import { getCatalog, DOWNLOAD_LABELS, PLATFORM_STATUS, PRODUCT_STATUS } from "../lib/ecosystemCatalog.js";
@@ -82,6 +83,7 @@ export function DownloadPage() {
           .filter(([platform]) => (product.key === "wallet" ? ["web", ...WALLET_DOWNLOAD_PLATFORMS] : ["web", "pwa", "chromeEdge", "firefox", "android", "ios", "macos", "windows", "windowsX64", "windowsArm64", "linux"]).includes(platform))
           .map(([platform, item]) => renderTarget(platform, item, product.key, locale, copy, product.key !== "wallet" || getProductPublicContract(product).downloadHostedVerified))}
       </ul>
+      {product.key === "wallet" && <WalletDownloadHistory locale={locale} />}
 
       <a href={product.route}>
         <Download size={14} />

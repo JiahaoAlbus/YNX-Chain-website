@@ -41,6 +41,7 @@ test("all Wallet download surfaces enforce the same file eligibility without cha
     }
     const expected = helpers.walletDownloadOptions(wallet, contract.downloadHostedVerified)
       .filter(option => option.available).map(option => option.item.href).sort();
+    assert.equal(expected.length, 11, "all eleven current packages are selectable");
     const [trigger, chooser, details, directory, overview] = await Promise.all([
       markup(React.createElement(WalletDownload)),
       markup(React.createElement(WalletDownloadSheet, { locale: "en", noticeId: "download-notice" })),
@@ -55,13 +56,14 @@ test("all Wallet download surfaces enforce the same file eligibility without cha
       assert.deepEqual(anchors.map(([, href]) => href).sort(), expected, surface);
       for (const [anchor] of anchors) assert.match(anchor, /\bdownload="[^"]+"/, `${surface} has a direct file download`);
       assert.ok(!anchors.some(([, href]) => href.includes("sha256-69b4fa5db7b8a9ab105af6633de44f5a5a4a9fceeaa0925a306f77b22381b044")), `${surface} blocks the old macOS package`);
-      assert.match(html, /Historical preview/, `${surface} identifies the downloadable archives as historical`);
+      assert.match(html, /Release history/, `${surface} links separate historical records`);
+      assert.ok(!anchors.some(([, href]) => /desktop-0\.6\.4|desktop-0\.1\.1/.test(href)), `${surface} excludes superseded desktop defaults`);
     }
     assert.match(trigger, /<button\b[^>]*aria-haspopup="dialog"[^>]*>Download Wallet</);
     assert.equal(fileAnchors(trigger).length, 0, "The unopened trigger does not render the release catalog");
     assert.match(chooser, /<a[^>]*href="\/manual\?path=wallet&amp;lang=en">Installation guide</);
     assert.ok(!/<a\b[^>]*>Download Wallet</.test(chooser));
-    assert.match(chooser, /<p class="walletDownloadFlowBoundary">Historical preview\. Installation, connection and signing have not been verified against current Wallet requirements for this exact package\.<\/p>/);
+    assert.doesNotMatch(chooser, /class="walletDownloadFlowBoundary">Historical preview/);
 
     assert.ok(!fileAnchors(chooser).some(([, href]) => /firefox|1\.0\.3|0\.1\.1-x64/.test(href)), "current packages replace old defaults and Firefox remains held");
     assert.ok(!chooser.includes('data-platform="linux"'), "specific Linux packages replace the aggregate unavailable row");
@@ -71,7 +73,7 @@ test("all Wallet download surfaces enforce the same file eligibility without cha
       const localizedProduct = await markup(React.createElement(ProductDownloads, { product: wallet, contract, copy: copy.PRODUCT_UI_COPY[locale], locale }));
       for (const [surface, html] of Object.entries({ chooser: localizedChooser, product: localizedProduct })) {
         assert.equal(fileAnchors(html).length, expected.length, locale + surface);
-        for (const key of ["desktopPreviewBoundary", "limitedCiLaunch", "appImageNotInstalled", "unsignedPreview", "browserPreviewBoundary", "manualExtension", "pwaArchiveOnly", "androidPreviewBoundary", "androidLimitedProof", "qaSignedPreview", "macosPreviewBoundary", "macosLimitedProof", "macosAdHocSignature"]) {
+        for (const key of ["desktopPreviewBoundary", "limitedCiLaunch", "appImageNotInstalled", "unsignedPreview", "browserPreviewBoundary", "manualExtension", "pwaArchiveOnly", "androidPreviewBoundary", "androidLimitedProof", "qaSignedPreview", "macosPreviewBoundary", "macosLimitedProof", "macosAdHocSignature", "androidUniversalProof", "androidUniversalLabel", "downloadHistory"]) {
           assert.ok(localized[key], locale + key);
           assert.ok(html.includes(escaped(localized[key])), locale + surface + key);
         }

@@ -1,14 +1,8 @@
-import { WALLET_BROWSER_DOWNLOADS } from "./walletBrowserDownloads.js";
-import { WALLET_ANDROID_DOWNLOADS } from "./walletAndroidDownloads.js";
-import { WALLET_MACOS_DOWNLOADS } from "./walletMacosDownloads.js";
-import { WALLET_DESKTOP_DOWNLOADS } from "./walletDesktopDownloads.js";
+import { WALLET_CANONICAL_DOWNLOADS } from "./walletCanonicalDownloads.js";
 
 // Immutable published artifacts. Historical previews are not current Wallet acceptance.
 export const publishedDownloadPaths = [
-  ...Object.values(WALLET_BROWSER_DOWNLOADS).map(artifact => artifact.publicUrl),
-  ...Object.values(WALLET_ANDROID_DOWNLOADS).map(artifact => artifact.publicUrl),
-  ...Object.values(WALLET_MACOS_DOWNLOADS).map(artifact => artifact.publicUrl),
-  ...Object.values(WALLET_DESKTOP_DOWNLOADS).map(artifact => artifact.publicUrl),
+  ...Object.values(WALLET_CANONICAL_DOWNLOADS).map(artifact => artifact.publicUrl),
   "/downloads/wallet-web/sha256-417d9b9e5babf05fdfdf8161504389eb99c636be75f94444bf4ff91a9b4536b3/ynx-wallet-firefox-0.1.0.zip",
   "/downloads/wallet-web/sha256-63d83cd20925f2d52c0f21f548fa7a857a4d056e03e5fa16244f173164a7d287/ynx-wallet-web-pwa-0.1.0.zip",
   "/downloads/wallet-web/sha256-c733093dea47c6612c8a9d5ecea40be2227f62402f4b4966955c9e1accf4e2aa/ynx-wallet-chrome-edge-0.1.0.zip",
@@ -36,10 +30,7 @@ export const publishedDownloadPaths = [
 ];
 
 export const publishedDownloadMetadata = {
-  ...Object.fromEntries(Object.values(WALLET_BROWSER_DOWNLOADS).map(artifact => [artifact.publicUrl, artifact])),
-  ...Object.fromEntries(Object.values(WALLET_ANDROID_DOWNLOADS).map(artifact => [artifact.publicUrl, artifact])),
-  ...Object.fromEntries(Object.values(WALLET_MACOS_DOWNLOADS).map(artifact => [artifact.publicUrl, artifact])),
-  ...Object.fromEntries(Object.values(WALLET_DESKTOP_DOWNLOADS).map(artifact => [artifact.publicUrl, artifact])),
+  ...Object.fromEntries(Object.values(WALLET_CANONICAL_DOWNLOADS).map(artifact => [artifact.publicUrl, artifact])),
   "https://downloads.ynxweb4.com/wallet/sha256-69b4fa5db7b8a9ab105af6633de44f5a5a4a9fceeaa0925a306f77b22381b044/ynx-wallet-macos-0.1.2-universal.dmg": {
     "version": "0.1.2",
     "sizeBytes": 237777236,

@@ -1,3 +1,4 @@
+import { WalletDownloadHistory } from "./WalletDownloadHistory.jsx";
 import React from "react";
 import { ArrowUpRight, Download, Globe, Monitor, Smartphone } from "lucide-react";
 import { DOWNLOAD_LABELS } from "../lib/ecosystemCatalog.js";
@@ -33,10 +34,10 @@ export function ProductDownloads({ product, contract, copy, locale }) {
         const item = hosted.get(platform) || product.downloads[platform];
         const available = hosted.has(platform);
         const presentation = releasePresentation(product.key, platform, item);
-        const Icon = ["ios", "android"].includes(platform) ? Smartphone : Monitor;
+        const Icon = ["ios", "android", "androidUniversal"].includes(platform) ? Smartphone : Monitor;
         const version = item.version?.split("-testnet")[0];
         const size = item.sizeBytes ? `${new Intl.NumberFormat(locale, {maximumFractionDigits:1}).format(item.sizeBytes / 1000000)} MB` : null;
-        const platformLabel = product.key === "wallet" ? walletDownloadLabel(platform, copy) : copy.platformNames[platform] || DOWNLOAD_LABELS[platform] || platform;
+        const platformLabel = product.key === "wallet" ? walletDownloadLabel(platform, downloadCopy) : copy.platformNames[platform] || DOWNLOAD_LABELS[platform] || platform;
         return <li key={platform} className="productDownloadRow">
           <Icon className="downloadPlatformIcon" aria-hidden="true" />
           <div className="downloadPlatformInfo">
@@ -64,5 +65,6 @@ export function ProductDownloads({ product, contract, copy, locale }) {
         </li>;
       })}
     </ul>
+    {product.key === "wallet" && <WalletDownloadHistory locale={locale} />}
   </div>;
 }

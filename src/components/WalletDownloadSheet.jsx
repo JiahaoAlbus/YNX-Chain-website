@@ -1,3 +1,4 @@
+import { WalletDownloadHistory } from "./WalletDownloadHistory.jsx";
 import React from "react";
 import { ArrowUpRight, Download, Monitor, Smartphone } from "lucide-react";
 import { getCatalog } from "../lib/ecosystemCatalog.js";
@@ -13,7 +14,7 @@ export function WalletDownloadSheet({ locale = "en", noticeId }) {
   const contract = getProductPublicContract(product);
   const options = walletDownloadOptions(product, contract.downloadHostedVerified);
   const renderOption = ({ platform, item, available, filename, requirements, limitationKey, installProofKey, signingKey }) => {
-    const Icon = ["android", "ios"].includes(platform) ? Smartphone : Monitor;
+    const Icon = ["android", "androidUniversal", "ios"].includes(platform) ? Smartphone : Monitor;
     const platformLabel = walletDownloadLabel(platform, copy);
     const version = item?.version?.split("-testnet")[0];
     const size = item?.sizeBytes ? `${new Intl.NumberFormat(locale, { maximumFractionDigits: 1 }).format(item.sizeBytes / 1000000)} MB` : null;
@@ -45,11 +46,12 @@ export function WalletDownloadSheet({ locale = "en", noticeId }) {
   return <>
     <p className="walletDownloadNotice" id={noticeId}>{copy.choosePlatform}. {copy.installNotice}</p>
     <a className="walletDownloadGuide" href={`/manual?path=wallet&lang=${encodeURIComponent(locale)}`}>{copy.installation}<ArrowUpRight size={16} aria-hidden="true" /></a>
-    <ul className="walletDownloadOptions">{options.slice(0, 9).map(renderOption)}</ul>
+    <ul className="walletDownloadOptions">{options.filter(option => option.available).map(renderOption)}</ul>
     <details className="walletDownloadOtherPlatforms">
       <summary>{copy.otherPlatforms}</summary>
-      <ul className="walletDownloadOptions">{options.slice(9).map(renderOption)}</ul>
+      <ul className="walletDownloadOptions">{options.filter(option => !option.available).map(renderOption)}</ul>
     </details>
+    <WalletDownloadHistory locale={locale} />
     <footer className="walletDownloadFooter">
       <span>{copy.testnetPreview}</span>
       <a href="/dapp/wallet/releases">{copy.releases}<ArrowUpRight size={16} aria-hidden="true" /></a>

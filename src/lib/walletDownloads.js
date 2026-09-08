@@ -1,23 +1,24 @@
 // Website download eligibility is separate from Wallet feature completion.
 // Keep this check shared by the chooser and the product download page.
-export const WALLET_DOWNLOAD_PLATFORMS = ["windowsX64", "linuxX64Deb", "linuxX64AppImage", "linuxArm64Deb", "linuxArm64AppImage", "chromeEdge", "pwa", "android", "macos", "windowsArm64", "firefox", "ios"];
+export const WALLET_DOWNLOAD_PLATFORMS = ["windowsX64", "windowsArm64", "linuxX64Deb", "linuxX64AppImage", "linuxArm64Deb", "linuxArm64AppImage", "chromeEdge", "pwa", "android", "androidUniversal", "macos", "firefox", "ios"];
 export const WALLET_LINUX_LABELS = {
   linuxX64Deb: "Linux x64 · DEB", linuxX64AppImage: "Linux x64 · AppImage",
   linuxArm64Deb: "Linux arm64 · DEB", linuxArm64AppImage: "Linux arm64 · AppImage"
 };
 
 export function walletDownloadLabel(platform, copy) {
-  return (platform === "android" ? "Android · ARM64" : null) || WALLET_LINUX_LABELS[platform] || copy.platformNames?.[platform] || platform;
+  return (platform === "androidUniversal" ? copy.androidUniversalLabel : null) || (platform === "android" ? "Android · ARM64" : null) || WALLET_LINUX_LABELS[platform] || copy.platformNames?.[platform] || platform;
 }
 
 export function walletDownloadState(platform, item, registryAllowsDownloads = true) {
   const legacyBlocked = platform === "macos" && item?.sourceCommit === "5a6b033897a1295d35fc325a92c6bb81c8b04a19";
   const permissionHold = platform === "firefox";
   const macosPreview = item?.releaseBatch === "wallet-static-20260906-r6-macos";
+  const androidUniversal = item?.releaseBatch === "wallet-static-20260906-r7-android-universal";
   const androidPreview = item?.releaseBatch === "wallet-static-20260906-r5-android";
   const browserPreview = item?.releaseBatch === "wallet-static-20260906-r4c-browser";
-  const desktopPreview = item?.releaseBatch === "wallet-static-20260906-r2a";
-  const requirements = macosPreview ? "macOS · Apple Silicon / Intel · DMG" : androidPreview ? "Android · ARM64 · APK" : browserPreview ? platform === "pwa" ? "ZIP" : "Chrome / Edge · Chromium" : {
+  const desktopPreview = item?.releaseBatch === "wallet-static-20260906-r9-desktop-065";
+  const requirements = androidUniversal ? "Android · arm64-v8a / armeabi-v7a / x86 / x86_64 · APK" : macosPreview ? "macOS · Apple Silicon / Intel · DMG" : androidPreview ? "Android · ARM64 · APK" : browserPreview ? platform === "pwa" ? "ZIP" : "Chrome / Edge · Chromium" : {
     android: "Android 7.0+ (API 24)", macos: "macOS 13+ · Apple Silicon / Intel",
     windowsX64: "Windows · x64", windowsArm64: "Windows · ARM64",
     chromeEdge: "Chrome / Edge 120+", firefox: "Firefox 128+"
@@ -35,13 +36,13 @@ export function walletDownloadState(platform, item, registryAllowsDownloads = tr
     typeof item?.publicationEvidence === "string" && item.publicationEvidence.startsWith("/releases/") &&
     typeof item?.signingClass === "string" && item.signingClass.length > 0;
   const available = Boolean(registryAllowsDownloads && item?.downloadHosted === true &&
-    item.downloadApproved !== false && !legacyBlocked && !permissionHold && trustedFile && completeProvenance);
+    item.canonicalDownload === true && item.historicalPreview !== true && item.downloadApproved !== false && !legacyBlocked && !permissionHold && trustedFile && completeProvenance);
   return {
     available, legacyBlocked, permissionHold, requirements,
     filename: available ? decodeURIComponent(fileUrl.pathname.split("/").pop()) : null,
-    limitationKey: permissionHold ? "firefoxPermissionHold" : legacyBlocked ? "macLegacyBlocked" : available ? item.historicalPreview ? "historicalBoundary" : macosPreview ? "macosPreviewBoundary" : androidPreview ? "androidPreviewBoundary" : desktopPreview ? "desktopPreviewBoundary" : browserPreview ? "browserPreviewBoundary" : "previewUnverified" : "releasePending",
-    installProofKey: macosPreview ? "macosLimitedProof" : androidPreview ? "androidLimitedProof" : desktopPreview ? item.installation === "appimage" ? "appImageNotInstalled" : "limitedCiLaunch" : browserPreview ? platform === "pwa" ? "pwaArchiveOnly" : "manualExtension" : null,
-    signingKey: macosPreview ? "macosAdHocSignature" : androidPreview ? "qaSignedPreview" : desktopPreview || browserPreview ? "unsignedPreview" : null
+    limitationKey: permissionHold ? "firefoxPermissionHold" : legacyBlocked ? "macLegacyBlocked" : available ? item.historicalPreview ? "historicalBoundary" : macosPreview ? "macosPreviewBoundary" : androidPreview || androidUniversal ? "androidPreviewBoundary" : desktopPreview ? "desktopPreviewBoundary" : browserPreview ? "browserPreviewBoundary" : "previewUnverified" : "releasePending",
+    installProofKey: androidUniversal ? "androidUniversalProof" : macosPreview ? "macosLimitedProof" : androidPreview ? "androidLimitedProof" : desktopPreview ? item.installation === "appimage" ? "appImageNotInstalled" : "limitedCiLaunch" : browserPreview ? platform === "pwa" ? "pwaArchiveOnly" : "manualExtension" : null,
+    signingKey: desktopPreview ? "unsignedPreview" : macosPreview ? "macosAdHocSignature" : androidPreview || androidUniversal ? "qaSignedPreview" : desktopPreview || browserPreview ? "unsignedPreview" : null
   };
 }
 

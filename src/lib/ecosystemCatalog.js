@@ -23,11 +23,8 @@ import {
   Repeat2,
   BarChart3
 } from "lucide-react";
+import { WALLET_CANONICAL_DOWNLOADS } from "../content/walletCanonicalDownloads.js";
 import { publishedDownloadPaths, publishedDownloadMetadata } from "../content/publishedDownloads.js";
-import { WALLET_BROWSER_DOWNLOADS } from "../content/walletBrowserDownloads.js";
-import { WALLET_ANDROID_DOWNLOADS } from "../content/walletAndroidDownloads.js";
-import { WALLET_MACOS_DOWNLOADS } from "../content/walletMacosDownloads.js";
-import { WALLET_DESKTOP_DOWNLOADS } from "../content/walletDesktopDownloads.js";
 import { apiConfig } from "./api/ynxApi.js";
 import { isProductPublicSection } from "./productPublicContract.js";
 
@@ -157,14 +154,13 @@ const evidence = {
       href: "/releases/ecosystem-release-registry.json",
       release: "wallet-auth-v1.0.0-testnet-preview.5"
     },
-    statusNote: "Windows x64 and Linux x64/arm64 0.6.4 files are published as unsigned Testnet previews with exact immutable URLs, byte counts and SHA-256. Limited CI cold launches do not establish complete installed account, callback, signing or transfer E2E; AppImage installation remains unverified. Chrome/Edge f90ad90 is a manual-install ZIP with installed UI, permission upgrades and public-sender E2E unverified. PWA is a static ZIP with no deployed PWA or launch URL. Android 1.0.7 is an ARM64-only QA-signed APK; limited emulator upgrade/fingerprint evidence does not establish current login, real-device or full transfer E2E. macOS 0.6.4 universal is an ad-hoc-signed DMG with Gatekeeper rejection and no Developer ID signature or notarization. Installation and limited locked launch are recorded; password unlock, clipboard and complete account/transfer E2E remain unverified. Sending stays disabled when amount-unit capability is unverified. Historical archives remain separate; the old macOS package and Firefox downloads remain disabled.",
+    statusNote: "The canonical release manifest selects 11 published test-preview packages: Windows/Linux 0.6.5, macOS 0.6.4, Android 1.0.7 ARM64 and universal, Chrome/Edge and a static PWA ZIP. Native CI and limited emulator or locked-launch evidence do not prove complete account, callback, signing or transfer flows. AppImage remains build-only. macOS remains ad-hoc signed, not notarized and rejected by Gatekeeper. PWA has no launch URL; Firefox is withheld. All 17 published historical package records remain separate from current selections.",
     downloads: {
-      ...Object.fromEntries(Object.entries({ ...WALLET_DESKTOP_DOWNLOADS, ...WALLET_BROWSER_DOWNLOADS, ...WALLET_ANDROID_DOWNLOADS, ...WALLET_MACOS_DOWNLOADS }).map(([platform, artifact]) => [platform, artifactDownload(PRODUCT_STATUS.PREVIEW, artifact.artifactPath, artifact.note, artifact.publicUrl)])),
+      ...Object.fromEntries(Object.entries(WALLET_CANONICAL_DOWNLOADS).map(([platform, artifact]) => [platform, artifactDownload(PRODUCT_STATUS.PREVIEW, artifact.artifactPath, artifact.installProof, artifact.publicUrl)])),
       web: { status: PRODUCT_STATUS.LIVE, href: "https://wallet.ynxweb4.com/", external: true, downloadHosted: false, note: "Public Wallet Companion for provider discovery, YNX Testnet setup, signing and transaction requests. The Wallet/Auth health endpoint is not a product entry." },
       firefox: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-firefox-0.1.0.zip", "Unsigned unpacked Firefox Testnet Preview · source a1c680982b63 · SHA-256 417d9b9e…36b3 · 188,883 bytes · Firefox 128+.", "/downloads/wallet-web/sha256-417d9b9e5babf05fdfdf8161504389eb99c636be75f94444bf4ff91a9b4536b3/ynx-wallet-firefox-0.1.0.zip"),
       ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS project exists; simulator/launch evidence not completed on this host." },
       linux: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-desktop-0.1.0-x86_64.rpm", "Unsigned Linux x64 RPM candidate · evidence c2622ca2e189 · SHA-256 8cf24d83…2bea · 86,926,281 bytes · Fedora 42 x64 lifecycle verified; official hosting gate pending."),
-      windowsArm64: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-desktop-0.1.1-arm64.exe", "Windows arm64 NSIS Testnet Preview EXE · source a8f36e4c5723 · evidence 6ec336ef7fb5 · SHA-256 929315133c68eda1cabac51cec889c4aeca5e3ee1701578916bc67e096c5dc35 · 103,487,635 bytes · native Windows 11 arm64 install, cold launch, second launch, YNX Testnet fail-closed lifecycle, upgrade and uninstall verified · unsigned; Authenticode NotSigned; no production signing or store release claimed.", "/downloads/wallet/sha256-929315133c68eda1cabac51cec889c4aeca5e3ee1701578916bc67e096c5dc35/ynx-wallet-desktop-0.1.1-arm64.exe")
     }
   },
   social: {
@@ -273,17 +269,19 @@ const evidence = {
     }
   },
   explorer: {
-	commit: "8bf7716ee671a5a9b64517280743c5a281899712",
-	statusNote: "The public Explorer and canonical Indexer report release ynx-explorer-monitor-8bf7716ee671 at central source commit 8bf7716ee671a5a9b64517280743c5a281899712. Public health shows real Testnet data, four validators and explicit index lag; browser acceptance remains a separate verification state.",
+    commit: "d5eb0d9069a699155581124a2926efd887f315cc",
+    productRelease: { href: "/releases/explorer/d5eb0d9069a6/public-runtime.json", release: "ynx-explorer-native-d5eb0d9069a6" },
+    statusNote: "The public Explorer Web release d5eb0d9069a6 has seven source-bound public responses and read-only native-address, conversion and icon checks in English, Simplified Chinese and Arabic. Copy testing used a clipboard stub. This is a Web preview; installation, Wallet signing and complete product acceptance are not claimed.",
     downloads: {
-      web: { status: PRODUCT_STATUS.LIVE, href: apiConfig.explorerUrl, note: "Live public explorer deployment." }
+      web: { status: PRODUCT_STATUS.LIVE, href: apiConfig.explorerUrl, downloadHosted: false, note: "Public Explorer Web preview; no desktop or mobile installer." }
     }
   },
   monitor: {
-    commit: "8bf7716ee671a5a9b64517280743c5a281899712",
-	statusNote: "The public Monitor reports release ynx-explorer-monitor-8bf7716ee671 at central source commit 8bf7716ee671a5a9b64517280743c5a281899712. Its signed v2 public status is available and operational for the configured Testnet probes; private operations remain authorization-gated.",
+    commit: "3cae747ed897a3feec50157d3add33318a484f16",
+    productRelease: { href: "/releases/monitor/3cae747ed897/public-runtime.json", release: "ynx-monitor-controls-downloads-3cae747ed897" },
+    statusNote: "The public Monitor Web release 3cae747ed897 has fourteen source-bound files and login/status checks in six desktop/mobile browser contexts. Its Chrome/Edge ZIP link downloads YNX Wallet, not a Monitor installer. Wallet installation, login/signing, old-profile upgrades and authenticated operator actions remain unverified.",
     downloads: {
-      web: { status: PRODUCT_STATUS.LIVE, href: "https://monitor.ynxweb4.com/", external: true, downloadHosted: false, note: "Live signed Testnet status; private operator controls remain authorization-gated." }
+      web: { status: PRODUCT_STATUS.LIVE, href: "https://monitor.ynxweb4.com/", external: true, downloadHosted: false, note: "Public login/status Web preview; operator actions remain authorization-gated." }
     }
   },
   ai: {
