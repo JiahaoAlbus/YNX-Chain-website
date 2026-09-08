@@ -30,6 +30,8 @@ test("all Wallet download surfaces enforce the same file eligibility without cha
       server.ssrLoadModule("/src/content/productUiCopy.js")
     ]);
     const { WALLET_DOWNLOAD_COPY } = await server.ssrLoadModule("/src/content/walletDownloadCopy.js");
+    const { WALLET_SAFETY_COPY } = await server.ssrLoadModule("/src/content/walletSafetyCopy.js");
+    const { LocaleProvider } = await server.ssrLoadModule("/src/lib/i18n.jsx");
     const { currentWalletDownloads } = await import("../scripts/lib/verify-wallet-download-metadata.mjs");
     const products = catalog.getCatalog();
     const wallet = products.find(product => product.key === "wallet");
@@ -41,7 +43,8 @@ test("all Wallet download surfaces enforce the same file eligibility without cha
     }
     const expected = helpers.walletDownloadOptions(wallet, contract.downloadHostedVerified)
       .filter(option => option.available).map(option => option.item.href).sort();
-    assert.equal(expected.length, 11, "all eleven current packages are selectable");
+    assert.equal(expected.length, 9, "two current AppImages are paused while upstream still lists eleven");
+    assert.deepEqual(expected, Object.entries(currentWalletDownloads).filter(([platform]) => !['linuxX64AppImage', 'linuxArm64AppImage'].includes(platform)).map(([, item]) => item.publicUrl).sort());
     assert.deepEqual(contract.downloads.items.map(item => item.href).sort(), expected, "the public download contract excludes withheld and historical packages");
     const [trigger, chooser, details, directory, overview] = await Promise.all([
       markup(React.createElement(WalletDownload)),
@@ -59,7 +62,13 @@ test("all Wallet download surfaces enforce the same file eligibility without cha
       assert.ok(!anchors.some(([, href]) => href.includes("sha256-69b4fa5db7b8a9ab105af6633de44f5a5a4a9fceeaa0925a306f77b22381b044")), `${surface} blocks the old macOS package`);
       assert.match(html, /Release history/, `${surface} links separate historical records`);
       assert.ok(!anchors.some(([, href]) => /desktop-0\.6\.4|desktop-0\.1\.1/.test(href)), `${surface} excludes superseded desktop defaults`);
+      assert.equal((html.match(/data-wallet-safety-hold="GHSA-7g7r-gx96-252g"/g) || []).length, 2, `${surface} retains both paused rows`);
+      assert.ok(!anchors.some(([, href]) => href.endsWith('.AppImage')), `${surface} has no held file action`);
+      assert.match(html, /href="https:\/\/github.com\/electron-userland\/electron-builder\/security\/advisories\/GHSA-7g7r-gx96-252g"/, `${surface} links the official notice`);
+      assert.match(html, /upstream-11-available-9/, `${surface} separates publication and website eligibility counts`);
+      assert.match(html, /AppImage build and hash only|built and hashed only|AppImage was built/i, `${surface} preserves the uninstalled AppImage boundary`);
     }
+    assert.equal((chooser.split('<details class="walletDownloadOtherPlatforms">')[0].match(/data-wallet-safety-hold=/g) || []).length, 2, 'paused current files remain visible in the main list');
     assert.match(trigger, /<button\b[^>]*aria-haspopup="dialog"[^>]*>Download Wallet</);
     assert.equal(fileAnchors(trigger).length, 0, "The unopened trigger does not render the release catalog");
     assert.match(chooser, /<a[^>]*href="\/manual\?path=wallet&amp;lang=en">Installation guide</);
@@ -83,6 +92,23 @@ test("all Wallet download surfaces enforce the same file eligibility without cha
       }
       assert.ok(localizedChooser.includes(escaped(localized.firefoxPermissionHold)));
       assert.ok(localizedChooser.includes('href="/manual?path=wallet&amp;lang=' + locale + '"'));
+      const previousWindow = globalThis.window;
+      let localizedDirectory, localizedOverview;
+      try {
+        globalThis.window = { location: { search: `?lang=${locale}` }, localStorage: { getItem: () => null } };
+        const withLocale = element => React.createElement(LocaleProvider, null, element);
+        const directoryPage = await markup(withLocale(React.createElement(DownloadPage)));
+        localizedDirectory = directoryPage.match(/<article\b[^>]*data-product="wallet"[^>]*>([\s\S]*?)<\/article>/)?.[1];
+        localizedOverview = await markup(withLocale(React.createElement(ProductStatusPage, { product: wallet })));
+      } finally {
+        if (previousWindow === undefined) delete globalThis.window;
+        else globalThis.window = previousWindow;
+      }
+      for (const [surface, html] of Object.entries({ chooser: localizedChooser, product: localizedProduct, directory: localizedDirectory, overview: localizedOverview })) {
+        assert.deepEqual(fileAnchors(html).map(([, href]) => href).sort(), expected, `${locale}:${surface}:nine exact files`);
+        assert.equal((html.match(/data-wallet-safety-hold=/g) || []).length, 2, `${locale}:${surface}:two visible holds`);
+        for (const [key, value] of Object.entries(WALLET_SAFETY_COPY[locale])) assert.ok(html.includes(escaped(value)), `${locale}:${surface}:${key}`);
+      }
     }
 
     const developer = products.find(product => product.key === "developer");

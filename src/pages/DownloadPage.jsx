@@ -1,3 +1,5 @@
+import { WalletDownloadSafetyNotice, WalletDownloadInventoryNotice } from "../components/WalletDownloadSafetyNotice.jsx";
+import { getWalletSafetyCopy } from "../content/walletSafetyCopy.js";
 import { WalletDownloadHistory } from "../components/WalletDownloadHistory.jsx";
 import React from "react";
 import { ArrowUpRight, Download, FileJson2, ShieldCheck } from "lucide-react";
@@ -27,7 +29,8 @@ function renderTarget(platform, item, productName, locale, copy, registryAllowsD
     ? walletDownloadState(platform, item, registryAllowsDownloads) : null;
   const canOpen = item.href && (item.downloadHosted || item.status === PRODUCT_STATUS.LIVE) && (!walletFile || walletFile.available);
   if (!canOpen) {
-    return <li key={`${productName}-${platform}`} className="downloadItem disabled"><span>{name}</span><em>{walletFile ? walletCopy.unavailableYet : statusText}</em>{walletFile ? <small>{walletCopy[walletFile.limitationKey]}</small> : item.note ? <small>{item.note}</small> : null}</li>;
+    const hold = walletFile?.safetyHold;
+    return <li key={`${productName}-${platform}`} className="downloadItem disabled"><span>{name}</span><em>{hold ? getWalletSafetyCopy(locale).pausedLabel : walletFile ? walletCopy.unavailableYet : statusText}</em>{walletFile ? <small>{hold ? <WalletDownloadSafetyNotice locale={locale} hold={hold} /> : walletCopy[walletFile.limitationKey]}</small> : item.note ? <small>{item.note}</small> : null}{hold && <><small>{walletCopy[walletFile.installProofKey]}</small><small>SHA-256 <code dir="ltr">{item.sha256}</code></small></>}</li>;
   }
 
   return (
@@ -78,6 +81,7 @@ export function DownloadPage() {
       </div>
 
       <p>{product.detail}</p>
+      {product.key === "wallet" && <WalletDownloadInventoryNotice locale={locale} />}
       <ul className="downloadList">
         {Object.entries(product.downloads)
           .filter(([platform]) => (product.key === "wallet" ? ["web", ...WALLET_DOWNLOAD_PLATFORMS] : ["web", "pwa", "chromeEdge", "firefox", "android", "ios", "macos", "windows", "windowsX64", "windowsArm64", "linux"]).includes(platform))

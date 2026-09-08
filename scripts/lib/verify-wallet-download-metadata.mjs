@@ -6,6 +6,8 @@ import { WALLET_MACOS_MANIFESTS } from '../../src/content/walletMacosDownloads.j
 import { WALLET_DESKTOP_MANIFESTS } from '../../src/content/walletDesktopDownloads.js';
 import { WALLET_BROWSER_MANIFESTS } from '../../src/content/walletBrowserDownloads.js';
 import { WALLET_ANDROID_MANIFESTS } from '../../src/content/walletAndroidDownloads.js';
+import { walletDownloadState } from '../../src/lib/walletDownloads.js';
+import { WALLET_APPIMAGE_ADVISORY, WALLET_APPIMAGE_HELD_SHA256, WALLET_DOWNLOAD_SAFETY_POLICY_PATH } from '../../src/lib/walletDownloadSafety.js';
 
 export const currentWalletDownloads = WALLET_CANONICAL_DOWNLOADS;
 const archivedManifests = [...WALLET_DESKTOP_MANIFESTS, ...WALLET_BROWSER_MANIFESTS, ...WALLET_ANDROID_MANIFESTS, ...WALLET_MACOS_MANIFESTS];
@@ -22,6 +24,12 @@ const archivePins = [
 const canonicalPins = [
   ['344651e9f6f4324a9dddbc2bd7b103aad1bfc1bc855b412e62048b4f48fad0ef', 6012],
   ['28162c332f04f0a683457f7dc0f53172a02a58cb0008eafa979f38e83973b6ca', 29774]
+];
+const safetyPins = [
+  '3ba16d0372021471e13733425eaa39b155c122175e5bdcbc0e39b2554c199b00',
+  '66dde56c9f8da969e9916d72c8929add581b1a0ea0695cd70a2e9fcb3c960a72',
+  'dcaf1372b29e6d3cb58f9a37d3db3b6fcb45aa9e13feff1c7c247bf283cd9893',
+  '5664be113dea0e06862fcc8e6d1918de86a60197d7ca1906bbb30e8e5b3c4183'
 ];
 // Select explicit release IDs; array order, dates and lexical commit order are not selection rules.
 const slots = {
@@ -100,5 +108,32 @@ export function verifyWalletDownloadMetadata(downloads = currentWalletDownloads,
   assert.equal(new Set(history.artifacts.map(a => a.id)).size, 17);
   assert.deepEqual(history.publicationProofs, preview.publicationProofs);
   assert.equal(history.publicationProofs.reduce((n, p) => n + p.artifactCount, 0), 17);
-  return { files: 11, manifests: 2, publishedHistory: 17, superseded: 6 };
+  // Upstream publication counts stay immutable. Website safety selection is a separate overlay.
+  assert.deepEqual(WALLET_APPIMAGE_HELD_SHA256, safetyPins);
+  assert.equal(WALLET_APPIMAGE_ADVISORY.href, 'https://github.com/electron-userland/electron-builder/security/advisories/GHSA-7g7r-gx96-252g');
+  const safetyPolicy = JSON.parse(fs.readFileSync(`public${WALLET_DOWNLOAD_SAFETY_POLICY_PATH}`));
+  assert.equal(safetyPolicy.scope, 'website-download-selection');
+  assert.equal(safetyPolicy.upstreamCurrentDownloadCount, 11);
+  assert.equal(safetyPolicy.websiteSelectableCount, 9);
+  assert.equal(safetyPolicy.withheldCurrentCount, 2);
+  assert.equal(safetyPolicy.withheldHistoricalCount, 2);
+  assert.equal(safetyPolicy.upstreamManifestsChanged, false);
+  assert.equal(safetyPolicy.upstreamHistoryChanged, false);
+  assert.equal(safetyPolicy.installedAppImageVerified, false);
+  assert.equal(safetyPolicy.fixedReplacementVerified, false);
+  assert.deepEqual(safetyPolicy.advisory, WALLET_APPIMAGE_ADVISORY);
+  assert.deepEqual(safetyPolicy.heldSHA256, safetyPins);
+  assert.deepEqual(safetyPolicy.currentHeldSHA256, safetyPins.slice(0, 2));
+  assert.deepEqual(safetyPolicy.historicalHeldSHA256, safetyPins.slice(2));
+  assert.deepEqual(safetyPolicy.upstreamManifests, WALLET_CANONICAL_MANIFESTS.map(({ url, sha256, bytes }) => ({ url, sha256, bytes })));
+  const websiteChoices = Object.entries(downloads).filter(([platform, item]) => walletDownloadState(platform, { ...item, href: item.publicUrl, downloadHosted: true }).available);
+  assert.equal(websiteChoices.length, 9);
+  assert.deepEqual(websiteChoices.map(([, item]) => item.publicUrl).sort(), preview.artifacts.filter(item => !safetyPins.includes(item.sha256)).map(item => item.url).sort());
+  for (const artifact of history.artifacts.filter(item => safetyPins.includes(item.sha256))) {
+    const selection = walletDownloadState('linuxX64AppImage', { ...artifact, href: artifact.url, canonicalDownload: true, historicalPreview: false, downloadApproved: true, downloadHosted: true, sizeBytes: artifact.bytes, publicationEvidence: WALLET_CANONICAL_MANIFESTS[1].localPath, signingClass: 'preview' });
+    assert.equal(selection.available, false, `${artifact.id} cannot be re-promoted`);
+    assert.equal(selection.safetyHold?.id, WALLET_APPIMAGE_ADVISORY.id);
+    assert.equal(selection.filename, null);
+  }
+  return { files: 11, manifests: 2, publishedHistory: 17, superseded: 6, websiteSelectable: 9, securityPaused: 2 };
 }

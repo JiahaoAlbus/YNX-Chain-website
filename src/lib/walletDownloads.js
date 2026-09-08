@@ -1,3 +1,5 @@
+import { walletDownloadSafetyHold } from "./walletDownloadSafety.js";
+
 // Website download eligibility is separate from Wallet feature completion.
 // Keep this check shared by the chooser and the product download page.
 export const WALLET_DOWNLOAD_PLATFORMS = ["windowsX64", "windowsArm64", "linuxX64Deb", "linuxX64AppImage", "linuxArm64Deb", "linuxArm64AppImage", "chromeEdge", "pwa", "android", "androidUniversal", "macos", "firefox", "ios"];
@@ -11,6 +13,7 @@ export function walletDownloadLabel(platform, copy) {
 }
 
 export function walletDownloadState(platform, item, registryAllowsDownloads = true) {
+  const safetyHold = walletDownloadSafetyHold(item);
   const legacyBlocked = platform === "macos" && item?.sourceCommit === "5a6b033897a1295d35fc325a92c6bb81c8b04a19";
   const permissionHold = platform === "firefox";
   const macosPreview = item?.releaseBatch === "wallet-static-20260906-r6-macos";
@@ -36,9 +39,9 @@ export function walletDownloadState(platform, item, registryAllowsDownloads = tr
     typeof item?.publicationEvidence === "string" && item.publicationEvidence.startsWith("/releases/") &&
     typeof item?.signingClass === "string" && item.signingClass.length > 0;
   const available = Boolean(registryAllowsDownloads && item?.downloadHosted === true &&
-    item.canonicalDownload === true && item.historicalPreview !== true && item.downloadApproved !== false && !legacyBlocked && !permissionHold && trustedFile && completeProvenance);
+    item.canonicalDownload === true && item.historicalPreview !== true && item.downloadApproved !== false && !legacyBlocked && !permissionHold && !safetyHold && trustedFile && completeProvenance);
   return {
-    available, legacyBlocked, permissionHold, requirements,
+    available, legacyBlocked, permissionHold, safetyHold, requirements,
     filename: available ? decodeURIComponent(fileUrl.pathname.split("/").pop()) : null,
     limitationKey: permissionHold ? "firefoxPermissionHold" : legacyBlocked ? "macLegacyBlocked" : available ? item.historicalPreview ? "historicalBoundary" : macosPreview ? "macosPreviewBoundary" : androidPreview || androidUniversal ? "androidPreviewBoundary" : desktopPreview ? "desktopPreviewBoundary" : browserPreview ? "browserPreviewBoundary" : "previewUnverified" : "releasePending",
     installProofKey: androidUniversal ? "androidUniversalProof" : macosPreview ? "macosLimitedProof" : androidPreview ? "androidLimitedProof" : desktopPreview ? item.installation === "appimage" ? "appImageNotInstalled" : "limitedCiLaunch" : browserPreview ? platform === "pwa" ? "pwaArchiveOnly" : "manualExtension" : null,

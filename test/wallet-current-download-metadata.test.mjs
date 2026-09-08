@@ -6,11 +6,13 @@ import { walletDownloadState } from '../src/lib/walletDownloads.js';
 const clone = () => structuredClone(currentWalletDownloads);
 
 test('eleven current packages are bound to two canonical public manifests and keep installed acceptance separate', () => {
-  assert.deepEqual(verifyWalletDownloadMetadata(), { files: 11, manifests: 2, publishedHistory: 17, superseded: 6 });
+  assert.deepEqual(verifyWalletDownloadMetadata(), { files: 11, manifests: 2, publishedHistory: 17, superseded: 6, websiteSelectable: 9, securityPaused: 2 });
   for (const [platform, item] of Object.entries(currentWalletDownloads)) {
     const state = walletDownloadState(platform, { ...item, href: item.publicUrl, downloadHosted: true });
-    assert.equal(state.available, true, platform);
-    assert.equal(state.filename, item.artifactPath);
+    const held = ['linuxX64AppImage', 'linuxArm64AppImage'].includes(platform);
+    assert.equal(state.available, !held, platform);
+    assert.equal(state.filename, held ? null : item.artifactPath);
+    assert.equal(Boolean(state.safetyHold), held, platform);
     assert.ok(state.installProofKey && state.signingKey, platform);
   }
   const android = currentWalletDownloads.android;

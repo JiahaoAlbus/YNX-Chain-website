@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "policyId": "wallet-appimage-hold-20260908",
+  "scope": "website-download-selection",
+  "upstreamCurrentDownloadCount": 11,
+  "websiteSelectableCount": 9,
+  "withheldCurrentCount": 2,
+  "withheldHistoricalCount": 2,
+  "upstreamManifestsChanged": false,
+  "upstreamHistoryChanged": false,
+  "advisory": {
+    "id": "GHSA-7g7r-gx96-252g",
+    "href": "https://github.com/electron-userland/electron-builder/security/advisories/GHSA-7g7r-gx96-252g",
+    "builderVersion": "26.0.12",
+    "affectedBuilderVersions": "<26.15.0"
+  },
+  "heldSHA256": [
+    "3ba16d0372021471e13733425eaa39b155c122175e5bdcbc0e39b2554c199b00",
+    "66dde56c9f8da969e9916d72c8929add581b1a0ea0695cd70a2e9fcb3c960a72",
+    "dcaf1372b29e6d3cb58f9a37d3db3b6fcb45aa9e13feff1c7c247bf283cd9893",
+    "5664be113dea0e06862fcc8e6d1918de86a60197d7ca1906bbb30e8e5b3c4183"
+  ],
+  "currentHeldSHA256": [
+    "3ba16d0372021471e13733425eaa39b155c122175e5bdcbc0e39b2554c199b00",
+    "66dde56c9f8da969e9916d72c8929add581b1a0ea0695cd70a2e9fcb3c960a72"
+  ],
+  "historicalHeldSHA256": [
+    "dcaf1372b29e6d3cb58f9a37d3db3b6fcb45aa9e13feff1c7c247bf283cd9893",
+    "5664be113dea0e06862fcc8e6d1918de86a60197d7ca1906bbb30e8e5b3c4183"
+  ],
+  "upstreamManifests": [
+    {
+      "url": "https://downloads.ynxweb4.com/wallet/sha256-344651e9f6f4324a9dddbc2bd7b103aad1bfc1bc855b412e62048b4f48fad0ef/ynx-wallet-downloads.json",
+      "sha256": "344651e9f6f4324a9dddbc2bd7b103aad1bfc1bc855b412e62048b4f48fad0ef",
+      "bytes": 6012
+    },
+    {
+      "url": "https://downloads.ynxweb4.com/wallet/sha256-28162c332f04f0a683457f7dc0f53172a02a58cb0008eafa979f38e83973b6ca/ynx-wallet-download-preview-metadata.json",
+      "sha256": "28162c332f04f0a683457f7dc0f53172a02a58cb0008eafa979f38e83973b6ca",
+      "bytes": 29774
+    }
+  ],
+  "sourceBindingReportSHA256": "4584eceea2a89aea3c47f1a63d400851daf32b830b20892c7785530126d1a472",
+  "reason": "Known AppImage files built with an affected app-builder-lib version are paused pending rebuilt and verified replacements. Original upstream manifests and publication history are preserved. This policy does not assert an upstream withdrawal or safety of other packages.",
+  "installedAppImageVerified": false,
+  "fixedReplacementVerified": false
+}
