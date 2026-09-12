@@ -16,12 +16,12 @@ const registry = JSON.parse(fs.readFileSync("public/releases/ecosystem-release-r
 const catalog = getCatalog();
 const registryByKey = new Map(registry.products.map((product) => [product.key, product]));
 
-test("all 25 registry products and the 26-product catalog expose the complete public contract", () => {
-  assert.equal(RELEASE_REGISTRY_PRODUCT_COUNT, 25);
+test("all 26 registry products and the 26-product catalog expose the complete public contract", () => {
+  assert.equal(RELEASE_REGISTRY_PRODUCT_COUNT, 26);
   assert.equal(catalog.length, 26);
   assert.equal(PRODUCT_PUBLIC_SECTIONS.length, 8);
   assert.equal(new Set(PRODUCT_PUBLIC_SECTIONS.map((section) => section.id)).size, 8);
-  assert.deepEqual(catalog.filter((product) => !registryByKey.has(product.key)).map((product) => product.key), ["quant"]);
+  assert.deepEqual(catalog.filter((product) => !registryByKey.has(product.key)).map((product) => product.key), []);
 
   for (const product of catalog) {
     const contract = getProductPublicContract(product);

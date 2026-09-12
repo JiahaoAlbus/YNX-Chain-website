@@ -33,6 +33,7 @@
     {"key":"finance","name":"YNX Finance","route":"/finance","state":"public-web-preview-incomplete","commit":"7a1d2aba6e72e5567931f451a9f069a544f58783","centralAccepted":false,"publicWeb":"https://finance.ynxweb4.com/","downloadHosted":false,"fullProductAccepted":false,"publicWebSourceCommit":"7a1d2aba6e72e5567931f451a9f069a544f58783","publicWebRelease":"/releases/finance/7a1d2aba6e72/public-runtime.json","productRelease":"/releases/finance/7a1d2aba6e72/public-runtime.json","publicWebVerifiedAt":"2026-09-12T10:57:37.135Z"},
     { "key": "mail", "name": "YNX Mail", "route": "/mail", "state": "candidate", "commit": "8126a2dae869", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
     { "key": "calendar", "name": "YNX Calendar", "route": "/calendar", "state": "candidate", "commit": "8126a2dae869", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
-    { "key": "dex", "name": "YNX DEX", "route": "/dex", "state": "candidate-incomplete", "commit": "719e1018267e", "centralAccepted": false, "publicWeb": null, "downloadHosted": false }
+    { "key": "dex", "name": "YNX DEX", "route": "/dex", "state": "candidate-incomplete", "commit": "719e1018267e", "centralAccepted": false, "publicWeb": null, "downloadHosted": false },
+    {"key":"quant","name":"YNX Quant","route":"/quant","state":"public-web-preview-incomplete","commit":"e022589fbd11024d7df075091a21de9f01565bf9","centralAccepted":false,"publicWeb":"https://quant.ynxweb4.com/","downloadHosted":false,"fullProductAccepted":false,"publicWebSourceCommit":"e022589fbd11024d7df075091a21de9f01565bf9","publicWebRelease":"/releases/quant/e022589fbd11/public-runtime.json","productRelease":"/releases/quant/e022589fbd11/public-runtime.json"}
   ]
 }

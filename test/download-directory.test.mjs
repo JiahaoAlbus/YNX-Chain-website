@@ -12,7 +12,7 @@ test('unreleased packages and health URLs cannot bypass the directory release de
   assert.notEqual(social.status, 'live');
 });
 test('unregistered products cannot claim public availability from catalog defaults', () => {
-  const quant = getDownloadDirectoryProduct(getCatalog().find(p => p.key === 'quant'));
+  const quant = getDownloadDirectoryProduct({ ...getCatalog().find(p => p.key === 'quant'), key: 'unregistered-fixture' });
   assert.equal(quant.downloads.web.href, null);
   assert.equal(quant.status, 'not-ready');
 });

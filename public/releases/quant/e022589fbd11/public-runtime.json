@@ -1,0 +1,16 @@
+{
+  "product": "quant",
+  "sourceCommit": "e022589fbd11024d7df075091a21de9f01565bf9",
+  "publicUrl": "https://quant.ynxweb4.com/",
+  "state": "public-web-preview-incomplete",
+  "downloadHosted": false,
+  "fullProductAccepted": false,
+  "fullInstalledE2E": false,
+  "realWalletApproval": false,
+  "signingVerified": false,
+  "transactionsVerified": false,
+  "readinessHTTP": 503,
+  "scope": "Owner verified public guest research/backtest computation, English reload and source-bound Web assets.",
+  "limitations": "Single-writer storage. Saved strategies and Paper permissions, real Wallet approval, signing and transactions remain unverified.",
+  "ownerEvidenceCommit": "cb3769086fa87e3fd56a54b739ecc7b97c4f13e1"
+}

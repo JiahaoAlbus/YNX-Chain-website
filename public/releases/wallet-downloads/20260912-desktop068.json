@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "product": "YNX Wallet Desktop",
+  "version": "0.6.8",
+  "sourceCommit": "6f332753baae5deaf6b05c8276b20a02cc4887c5",
+  "distribution": "testnet-preview",
+  "desktopTests": {
+    "passed": 284,
+    "failed": 0
+  },
+  "assets": [
+    {
+      "filename": "ynx-wallet-macos-0.6.8-universal.dmg",
+      "bytes": 258681947,
+      "sha256": "f7c8a6d3f639ba950e701355f567608542aaf6fd4bdd8a15c956330f831bd25f"
+    },
+    {
+      "filename": "ynx-wallet-desktop-0.6.8-amd64.deb",
+      "bytes": 95869208,
+      "sha256": "0a06a27486c7eabf3569d0e9d225ae9f0ec6e2e7a31076cc789c1cbce7bf6dce"
+    },
+    {
+      "filename": "ynx-wallet-desktop-0.6.8-arm64.deb",
+      "bytes": 89954040,
+      "sha256": "e8d3f5e902b290432fc4ee27952bbcd1972124ace89b0ac3d1e83ec4d1c43fb7"
+    },
+    {
+      "filename": "ynx-wallet-desktop-0.6.8-x64.exe",
+      "bytes": 120954701,
+      "sha256": "da2e564eb680de0595202bd388eda9d524f40d62052b03da9b0bba4bf9da3716"
+    },
+    {
+      "filename": "ynx-wallet-desktop-0.6.8-arm64.exe",
+      "bytes": 114596628,
+      "sha256": "122027d7f5668876ae5bdae8bab31c4bd34dee517096eae07813f66775b02902"
+    }
+  ],
+  "sdkRegistrySHA256": "e74e1668e631dd623a4364cc9580951a9fe96fcef0c66c5910d84c774f4fdc08",
+  "verification": {
+    "exactPackagedRuntimeBytes": true,
+    "sdkRootRegistrySupplementVerified": true,
+    "emptyLockedColdStartsPerPlatform": 2,
+    "macExecutionArchitecture": "arm64",
+    "macUniversalArchitectures": [
+      "arm64",
+      "x86_64"
+    ],
+    "windowsLinuxNativeCI": "https://github.com/JiahaoAlbus/YNX-Chain/actions/runs/34690206697",
+    "macAdHocSigned": true,
+    "macDeveloperIDSigned": false,
+    "macNotarized": false,
+    "windowsProductionSigned": false,
+    "storeReleased": false,
+    "fundedWalletUpgradeVerified": false,
+    "signingOrTransactionVerifiedByThisReleaseQA": false,
+    "userProfileOpenedByThisReleaseQA": false
+  },
+  "withheld": [
+    {
+      "format": "AppImage",
+      "architectures": [
+        "x64",
+        "arm64"
+      ],
+      "reason": "Launcher fallback was required; actual AppImage launch and sandbox acceptance are unverified."
+    }
+  ]
+}
