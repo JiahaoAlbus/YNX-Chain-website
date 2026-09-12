@@ -1,7 +1,7 @@
 import { WalletDownloadSafetyNotice, WalletDownloadInventoryNotice } from "../components/WalletDownloadSafetyNotice.jsx";
 import { getWalletSafetyCopy } from "../content/walletSafetyCopy.js";
 import { WalletDownloadHistory } from "../components/WalletDownloadHistory.jsx";
-import React from "react";
+import React, { useState } from "react";
 import { ArrowUpRight, Download, FileJson2, ShieldCheck } from "lucide-react";
 import { getCatalog, DOWNLOAD_LABELS, PLATFORM_STATUS, PRODUCT_STATUS } from "../lib/ecosystemCatalog.js";
 import { useLocale } from "../lib/i18n.jsx";
@@ -58,7 +58,17 @@ function renderTarget(platform, item, productName, locale, copy, registryAllowsD
 export function DownloadPage() {
   const { locale } = useLocale();
   const copy = getDownloadCopy(locale);
-  const catalog = getCatalog().map(getDownloadDirectoryProduct);
+  const [query, setQuery] = useState("");
+  const [availability, setAvailability] = useState("all");
+  const filterCopy = locale === "zh-CN"
+    ? ["搜索产品", "输入产品名称", "可用方式", "全部产品", "可打开网页", "发布包", "个产品", "没有匹配的产品", "清除筛选"]
+    : locale === "zh-TW"
+      ? ["搜尋產品", "輸入產品名稱", "可用方式", "全部產品", "可開啟網頁", "發布套件", "個產品", "沒有符合的產品", "清除篩選"]
+      : ["Search products", "Enter a product name", "Availability", "All products", "Public Web", "Release packages", "products", "No matching products", "Clear filters"];
+  const catalog = getCatalog().map(getDownloadDirectoryProduct).filter(product =>
+    product.name.toLowerCase().includes(query.trim().toLowerCase()) &&
+    (availability === "all" || (availability === "web" ? Boolean(product.downloads.web?.href) : product.hasDownload))
+  );
   const priority = {
     [PRODUCT_STATUS.LIVE]: 0,
     [PRODUCT_STATUS.LOCAL]: 1,
@@ -106,21 +116,31 @@ export function DownloadPage() {
         <p>{copy.hero[2]}</p>
       </header>
 
-      <section className="downloadGroup" aria-labelledby="available-downloads-title">
+      <div className="downloadFilters" role="search" aria-label={filterCopy[0]}>
+        <label>{filterCopy[0]}<input type="search" value={query} placeholder={filterCopy[1]} onChange={event => setQuery(event.target.value)} /></label>
+        <label>{filterCopy[2]}<select value={availability} onChange={event => setAvailability(event.target.value)}>
+          <option value="all">{filterCopy[3]}</option><option value="web">{filterCopy[4]}</option><option value="packages">{filterCopy[5]}</option>
+        </select></label>
+        <p role="status">{products.length} {filterCopy[6]}</p>
+        {(query || availability !== "all") && <button type="button" onClick={() => { setQuery(""); setAvailability("all"); }}>{filterCopy[8]}</button>}
+      </div>
+      {!products.length && <p className="downloadEmpty">{filterCopy[7]}</p>}
+
+      {hostedProducts.length > 0 && <section className="downloadGroup" aria-labelledby="available-downloads-title">
         <div className="downloadGroupHeader">
           <div><p className="sectionEyebrow">{copy.available[0]}</p><h2 id="available-downloads-title">{copy.available[1]}</h2></div>
           <p>{copy.available[2]}</p>
         </div>
         <div className="downloadDirectory">{hostedProducts.map(renderProduct)}</div>
-      </section>
+      </section>}
 
-      <section className="downloadGroup" aria-labelledby="release-directory-title">
+      {directoryProducts.length > 0 && <section className="downloadGroup" aria-labelledby="release-directory-title">
         <div className="downloadGroupHeader">
           <div><p className="sectionEyebrow">{copy.other[0]}</p><h2 id="release-directory-title">{copy.other[1]}</h2></div>
           <p>{copy.other[2]}</p>
         </div>
         <div className="downloadDirectory">{directoryProducts.map(renderProduct)}</div>
-      </section>
+      </section>}
 
       <aside className="evidenceBoundary">
         <ShieldCheck />
