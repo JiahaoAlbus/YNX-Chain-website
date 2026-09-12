@@ -5,6 +5,7 @@ import { createHostedArtifactManifest, loadDocsAuthority } from "./scripts/lib/d
 import { loadDocsLocales } from "./scripts/lib/docs-locales.mjs";
 
 export default defineConfig({
+  build: { manifest: true },
   plugins: [
     react(),
     docsAuthorityPlugin(),
