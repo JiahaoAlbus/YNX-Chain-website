@@ -7,6 +7,7 @@ import { getCatalog, DOWNLOAD_LABELS, PLATFORM_STATUS, PRODUCT_STATUS } from "..
 import { useLocale } from "../lib/i18n.jsx";
 import { getDownloadCopy } from "../content/businessLocaleContent.js";
 import { getProductPublicContract } from "../lib/productPublicContract.js";
+import { getDownloadDirectoryProduct } from "../lib/downloadDirectory.js";
 import { WALLET_DOWNLOAD_PLATFORMS, walletDownloadLabel, walletDownloadState } from "../lib/walletDownloads.js";
 import { PRODUCT_UI_COPY } from "../content/productUiCopy.js";
 import { WALLET_DOWNLOAD_COPY } from "../content/walletDownloadCopy.js";
@@ -57,7 +58,7 @@ function renderTarget(platform, item, productName, locale, copy, registryAllowsD
 export function DownloadPage() {
   const { locale } = useLocale();
   const copy = getDownloadCopy(locale);
-  const catalog = getCatalog();
+  const catalog = getCatalog().map(getDownloadDirectoryProduct);
   const priority = {
     [PRODUCT_STATUS.LIVE]: 0,
     [PRODUCT_STATUS.LOCAL]: 1,
@@ -70,7 +71,7 @@ export function DownloadPage() {
     const nameSort = a.name.localeCompare(b.name);
     return scoreA - scoreB || nameSort;
   });
-  const hostedProducts = products.filter((product) => Object.values(product.downloads || {}).some((item) => item.downloadHosted && item.href));
+  const hostedProducts = products.filter((product) => product.hasDownload);
   const directoryProducts = products.filter((product) => !hostedProducts.includes(product));
 
   const renderProduct = (product) => (
