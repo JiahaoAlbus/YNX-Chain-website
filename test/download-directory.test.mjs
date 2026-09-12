@@ -1,3 +1,4 @@
+import { WALLET_ANDROID14 } from "../src/content/walletAndroid14.js";
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { getCatalog } from '../src/lib/ecosystemCatalog.js';
@@ -17,7 +18,7 @@ test('unregistered products cannot claim public availability from catalog defaul
 });
 test('approved files remain direct downloads while blocked files keep their reason', () => {
   const wallet = getDownloadDirectoryProduct(getCatalog().find(p => p.key === 'wallet'));
-  assert.match(wallet.downloads.android.href, /^https:\/\/downloads\.ynxweb4\.com\//);
+  assert.equal(wallet.downloads.android.href, WALLET_ANDROID14.publicUrl);
   assert.equal(wallet.downloads.linuxX64AppImage.href, null);
   assert.match(wallet.downloads.linuxX64AppImage.sha256, /^[a-f0-9]{64}$/);
   assert.equal(wallet.hasDownload, true);

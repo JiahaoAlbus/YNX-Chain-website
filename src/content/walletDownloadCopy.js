@@ -348,3 +348,8 @@ export const WALLET_DOWNLOAD_COPY = {
     "downloadHistory": "Riwayat rilis"
   }
 };
+
+for (const [locale, copy] of Object.entries(WALLET_DOWNLOAD_COPY)) {
+  copy.android14Boundary = locale === "zh-CN" ? "测试签名预览版。真机、其他 ABI、13→14 升级及完整业务流程尚未验证；原生水龙头暂未启用。" : locale === "zh-TW" ? "測試簽名預覽版。實機、其他 ABI、13→14 升級及完整業務流程尚未驗證；原生水龍頭暫未啟用。" : "Test-signed preview. Physical devices, other ABIs, 13-to-14 upgrade and complete workflows are not verified; native Faucet remains disabled.";
+  copy.android14Proof = locale === "zh-CN" ? "API 36 ARM64 模拟器已完成新装和三次冷启动；包含四种 ABI，可独立运行，无需 Metro。" : locale === "zh-TW" ? "API 36 ARM64 模擬器已完成新裝和三次冷啟動；包含四種 ABI，可獨立執行，無需 Metro。" : "API 36 ARM64 emulator: fresh installation and three cold starts verified. Four ABIs packaged; standalone Hermes, no Metro required.";
+}

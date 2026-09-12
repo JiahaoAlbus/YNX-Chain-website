@@ -1,3 +1,4 @@
+import { WALLET_ANDROID14 } from "./walletAndroid14.js";
 // Compact current selections. Full source manifests and all historical bodies are served from public/releases only.
 export const WALLET_CANONICAL_MANIFESTS = [
   {
@@ -241,7 +242,7 @@ const FILES = {
   }
 };
 
-export const WALLET_CANONICAL_DOWNLOADS = Object.fromEntries(Object.entries(FILES).map(([key, { profile, ...file }]) => {
+export const WALLET_PREVIOUS_CANONICAL_DOWNLOADS = Object.fromEntries(Object.entries(FILES).map(([key, { profile, ...file }]) => {
   const item = { ...SHARED, ...PROFILES[profile], ...file };
   return [key, { ...item,
     publicUrl: `https://downloads.ynxweb4.com/wallet/sha256-${item.sha256}/${item.artifactPath}`,
@@ -250,3 +251,5 @@ export const WALLET_CANONICAL_DOWNLOADS = Object.fromEntries(Object.entries(FILE
     ...(item.targetPlatform === "pwa-archive" ? {} : { sdkManifest: WALLET_CANONICAL_MANIFESTS[0].url })
   }];
 }));
+
+export const WALLET_CANONICAL_DOWNLOADS = { ...WALLET_PREVIOUS_CANONICAL_DOWNLOADS, android: WALLET_ANDROID14, androidUniversal: WALLET_ANDROID14 };
