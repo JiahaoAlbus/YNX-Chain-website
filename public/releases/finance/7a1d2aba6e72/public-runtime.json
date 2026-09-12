@@ -1,0 +1,16 @@
+{
+  "product": "finance",
+  "sourceCommit": "7a1d2aba6e72e5567931f451a9f069a544f58783",
+  "publicUrl": "https://finance.ynxweb4.com/",
+  "state": "public-web-preview-incomplete",
+  "downloadHosted": false,
+  "fullInstalledE2E": false,
+  "fullProductAccepted": false,
+  "realWalletApproval": false,
+  "signingVerified": false,
+  "transactionsVerified": false,
+  "verifiedAt": "2026-09-12T10:57:37.135Z",
+  "scope": "Public Web runtime. Owner reports source-bound version, health and seven Web assets; browser guest view, wallet choices and responsive layout observed. No native installer published.",
+  "limitations": "Private approval, signing and transactions remain unverified. Default Web language is English.",
+  "ownerEvidenceCommit": "abb24d78bdbf370e2b671dcbcb707d005cb2cb1a"
+}
