@@ -83,7 +83,7 @@ test("all Wallet download surfaces enforce the same file eligibility without cha
       const localizedProduct = await markup(React.createElement(ProductDownloads, { product: wallet, contract, copy: copy.PRODUCT_UI_COPY[locale], locale }));
       for (const [surface, html] of Object.entries({ chooser: localizedChooser, product: localizedProduct })) {
         assert.equal(fileAnchors(html).length, expected.length, locale + surface);
-        for (const key of ["desktopPreviewBoundary", "limitedCiLaunch", "appImageNotInstalled", "unsignedPreview", "browserPreviewBoundary", "manualExtension", "pwaArchiveOnly", "android14Boundary", "android14Proof", "qaSignedPreview", "macosPreviewBoundary", "macosLimitedProof", "macosAdHocSignature", "androidUniversalLabel", "downloadHistory"]) {
+        for (const key of ["desktopPreviewBoundary", "limitedCiLaunch", "appImageNotInstalled", "unsignedPreview", "browserPreviewBoundary", "manualExtension", "pwaArchiveOnly", "android15Boundary", "android15Proof", "qaSignedPreview", "macosPreviewBoundary", "macosLimitedProof", "macosAdHocSignature", "androidUniversalLabel", "downloadHistory"]) {
           assert.ok(localized[key], locale + key);
           assert.ok(html.includes(escaped(localized[key])), locale + surface + key);
         }
