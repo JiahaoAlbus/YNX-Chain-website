@@ -9,7 +9,7 @@ export const YNX_6423 = Object.freeze({
     rpc: "https://rpc.ynxweb4.com",
     evm: "https://evm.ynxweb4.com",
     explorer: "https://explorer.ynxweb4.com",
-    faucet: "https://faucet.ynxweb4.com",
+    faucet: "https://faucet-testnet.ynxweb4.com",
     monitor: "https://monitor.ynxweb4.com",
     gateway: "https://api.ynxweb4.com"
   })

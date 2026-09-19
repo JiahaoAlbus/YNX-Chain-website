@@ -3,7 +3,7 @@ const tab = (label, title, description, steps) => ({ label, title, description, 
 const term = (term, definition) => ({ term, definition });
 
 const WALLET_GUIDE = "/dapp/wallet/open-download";
-const FAUCET = "https://faucet.ynxweb4.com";
+const FAUCET = "https://faucet-testnet.ynxweb4.com";
 const EXPLORER = "https://explorer.ynxweb4.com";
 
 export const HOME_EXPERIENCE_COPY = {

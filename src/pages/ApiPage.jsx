@@ -12,7 +12,7 @@ export function ApiPage() {
   if (!copy) return <main className="learningPage" aria-busy="true"><p role="status">{t("checking")}</p></main>;
   if (copy.loadFailed) { const errorCopy=getDocumentLibraryCopy(locale); return <main className="learningPage" lang={locale}><p role="alert">{errorCopy.loadError}</p><button type="button" onClick={()=>window.location.reload()}>{errorCopy.retry}</button></main>; }
   const ui = guideUi(copy);
-  const endpoints = [["GET","https://rpc.ynxweb4.com/status",ui.status],["POST","https://evm.ynxweb4.com",ui.identity],["GET","https://explorer.ynxweb4.com",ui.inspect],["GET","https://faucet.ynxweb4.com",ui.assets],["GET","/status",ui.serviceStatus]];
+  const endpoints = [["GET","https://rpc.ynxweb4.com/status",ui.status],["POST","https://evm.ynxweb4.com",ui.identity],["GET","https://explorer.ynxweb4.com",ui.inspect],["GET","https://faucet-testnet.ynxweb4.com",ui.assets],["GET","/status",ui.serviceStatus]];
   return <main className="learningPage apiLearningPage" lang={copy.bodyLocale || locale} dir={(copy.bodyLocale || locale) === "ar" ? "rtl" : "ltr"}>
     {copy.bodyLocale !== locale && <aside className="learningNetworkNote" lang={locale}><strong>{getDocumentLibraryCopy(locale).translationPending}</strong><p>{getDocumentLibraryCopy(locale).originalBodyNotice}</p></aside>}
     <header className="learningHero"><p className="sectionEyebrow">{ui.api}</p><h1>{ui.apiTitle}</h1><p>{ui.apiLead}</p><div className="learningLinks"><a href="/manual?path=develop">{ui.build}<ArrowRight size={16} /></a><a href="/docs?doc=api-api-reference">{ui.fullReference}</a></div></header>

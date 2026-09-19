@@ -45,7 +45,7 @@ test("each supported platform has a read-only identity request and a real packag
 
 test("rendered wallet journey links installation, network, faucet, Explorer and account recovery",()=>{
   const html=render("wallet");
-  for(const href of ["/dapp/wallet/open-download","/dapp/wallet","https://faucet.ynxweb4.com","https://explorer.ynxweb4.com"])assert.ok(html.includes(`href="${href}"`),href);
+  for(const href of ["/dapp/wallet/open-download","/dapp/wallet","https://faucet-testnet.ynxweb4.com","https://explorer.ynxweb4.com"])assert.ok(html.includes(`href="${href}"`),href);
   for(const identity of ["6423","0x1917","YNXT","20-byte"])assert.ok(html.includes(identity));
   assert.match(html,/Creating, importing and unlocking YNX Wallet never require MetaMask login/);
   assert.match(html,/Never enter recovery words or a private key into this website/);

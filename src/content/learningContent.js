@@ -34,7 +34,7 @@ export const LEARNING_WINDOWS_COMMANDS = {
 export const LEARNING_PATHS = [
   { id: "wallet", minutes: "15–25", steps: [
     { id: "install", href: "/dapp/wallet/open-download" }, { id: "account", href: "/dapp/wallet" },
-    { id: "network", network: true }, { id: "faucet", href: "https://faucet.ynxweb4.com" },
+    { id: "network", network: true }, { id: "faucet", href: "https://faucet-testnet.ynxweb4.com" },
     { id: "transaction", href: "https://explorer.ynxweb4.com" }, { id: "disconnect", href: "/dapp" },
   ] },
   { id: "node", minutes: "30–45", steps: [
