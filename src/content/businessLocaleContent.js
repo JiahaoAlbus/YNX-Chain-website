@@ -46,6 +46,12 @@ const translatedSafety = {
 };
 Object.assign(safety, translatedSafety);
 
+const downloadFilters = {
+  en: ["Search products", "Enter a product name", "Availability", "All products", "Public Web", "Release packages", "products", "No matching products", "Clear filters"],
+  "zh-CN": ["搜索产品", "输入产品名称", "可用方式", "全部产品", "可打开网页", "发布包", "个产品", "没有匹配的产品", "清除筛选"],
+  "zh-TW": ["搜尋產品", "輸入產品名稱", "可用方式", "全部產品", "可開啟網頁", "發布套件", "個產品", "沒有符合的產品", "清除篩選"]
+};
+
 const faucet = {
   en: ["Claim test coins. Verify the real transaction.", "Enter a YNX or compatible 0x address. The Faucet sends 100 Testnet YNXT and returns a hash for Explorer verification.", "Claim YNXT Testnet coins", "Claim amount", "Receiving address", "Valid address", "Will be sent on-chain to", "I understand this Testnet asset has no represented monetary value, and I will never enter a seed phrase or private key.", "Submitting real transaction…", "Claim", "Nothing was sent", "Try again", "Testnet transfer submitted", "View RPC record", "Done", "Claim rules", "Four clear steps", "Copy an address", "Use only an address controlled by your Wallet.", "Validate and claim", "100 YNXT per address per hour; shared IP protection also applies.", "Wait for finality", "A timeout stays unknown; it never becomes fake success.", "Verify the transfer", "Compare From, To, amount, fee and block in Explorer.", "Security boundary", "The Faucet needs only a public address. It never asks for a seed phrase, private key, payment or Wallet approval.", "View current runtime identity", "Faucet status", "Verified · RPC backed", "one claim per IP/address per hour", "Temporarily unavailable", "Retry connection", "Connecting…", "A claim limit was reached. Retry the same saved request later.", "Faucet connection unavailable. Retry after the public service is reachable."],
   "zh-CN": ["领取测试币，然后验证真实交易。", "输入 YNX 或兼容 0x 地址。Faucet 发送 100 测试网 YNXT，并返回可在 Explorer 核验的哈希。", "领取 YNXT 测试币", "本次领取", "收款地址", "有效地址", "链上将使用", "我理解这是没有货币价值的测试网资产，并且绝不会输入助记词或私钥。", "正在提交真实交易…", "领取", "未发送", "返回重试", "测试币交易已提交", "查看 RPC 记录", "完成", "领取规则", "四步完成", "复制地址", "只使用你控制的钱包地址。", "验证并领取", "每个地址每小时领取 100 YNXT；共享 IP 另有保护限额。", "等待最终确认", "超时属于未知状态，不会显示虚假成功。", "核对交易", "在 Explorer 对比 From、To、金额、手续费和区块。", "安全边界", "Faucet 只需要公开地址，绝不会要求助记词、私钥、付款或钱包授权。", "查看当前运行版本", "Faucet 状态", "已验证 · RPC 支持", "每个 IP/地址每小时一次", "暂时不可用", "重试连接", "正在连接…", "已达到领取限额，请稍后重试同一已保存请求。", "Faucet 连接不可用，请在公开服务恢复后重试。"],
@@ -76,7 +82,7 @@ export function getDownloadCopy(locale) {
   const v = safety[locale];
   const common = language[locale];
   if (!v || !common) return null;
-  return { hero: v.slice(0, 3), available: v.slice(3, 6), other: v.slice(6, 9), boundary: v.slice(9, 12), statusLabels: { [PRODUCT_STATUS.LIVE]: common[8], [PRODUCT_STATUS.LOCAL]: common[9], [PRODUCT_STATUS.PLANNED]: common[10], [PRODUCT_STATUS.NOT_READY]: common[11] }, download: locale === "zh-CN" ? "从官网下载" : locale === "zh-TW" ? "從官方下載" : "Official download", unavailable: common[11], evidence: locale === "zh-CN" ? ["版本", "大小", "签名", "来源提交", "安装验证", "发布证据"] : locale === "zh-TW" ? ["版本", "大小", "簽署", "來源提交", "安裝驗證", "發布證據"] : ["Version", "Size", "Signing", "Source commit", "Install proof", "Release evidence"], view: locale === "en" ? "View release status" : common[14] };
+  return { hero: v.slice(0, 3), available: v.slice(3, 6), other: v.slice(6, 9), boundary: v.slice(9, 12), filters: downloadFilters[locale] || downloadFilters.en, statusLabels: { [PRODUCT_STATUS.LIVE]: common[8], [PRODUCT_STATUS.LOCAL]: common[9], [PRODUCT_STATUS.PLANNED]: common[10], [PRODUCT_STATUS.NOT_READY]: common[11] }, download: locale === "zh-CN" ? "从官网下载" : locale === "zh-TW" ? "從官方下載" : "Official download", unavailable: common[11], evidence: locale === "zh-CN" ? ["版本", "大小", "签名", "来源提交", "安装验证", "发布证据"] : locale === "zh-TW" ? ["版本", "大小", "簽署", "來源提交", "安裝驗證", "發布證據"] : ["Version", "Size", "Signing", "Source commit", "Install proof", "Release evidence"], view: locale === "en" ? "View release status" : common[14] };
 }
 
 const faucetRecovery = {

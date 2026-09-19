@@ -3,9 +3,7 @@ import { WALLET_CANONICAL_DOWNLOADS } from "./walletCanonicalDownloads.js";
 // Immutable published artifacts. Historical previews are not current Wallet acceptance.
 export const publishedDownloadPaths = [
   ...Object.values(WALLET_CANONICAL_DOWNLOADS).map(artifact => artifact.publicUrl),
-  "/downloads/wallet-web/sha256-417d9b9e5babf05fdfdf8161504389eb99c636be75f94444bf4ff91a9b4536b3/ynx-wallet-firefox-0.1.0.zip",
-  "/downloads/wallet-web/sha256-63d83cd20925f2d52c0f21f548fa7a857a4d056e03e5fa16244f173164a7d287/ynx-wallet-web-pwa-0.1.0.zip",
-  "/downloads/wallet-web/sha256-c733093dea47c6612c8a9d5ecea40be2227f62402f4b4966955c9e1accf4e2aa/ynx-wallet-chrome-edge-0.1.0.zip",
+  "https://www.ynxweb4.com/downloads/wallet-web/sha256-b30f67a87e841039f2141065a5857e425838c34ffdb98f3094eedd8abcbb81b0/ynx-wallet-firefox-0.1.0.zip",
   "/downloads/wallet/sha256-21db36f1c80d4e88520918de141a7f71921817799270ff671db88179023b5591/ynx-wallet-cli-darwin-arm64.gz",
   "/downloads/wallet/sha256-43dfe20665c62f0c963f0d06dc6fca9800d49543b613678a76988879537924c5/ynx-wallet-1.0.0-testnet-preview-8e8d5644-local-test-signed.apk",
   "/downloads/wallet/sha256-66a0954f7955d800af4b205680ce879c786568cbf6af8a71307cddad31c216a0/ynx-wallet-1.0.2-testnet-preview-1f8820c5-local-test-signed.apk",
@@ -22,8 +20,6 @@ export const publishedDownloadPaths = [
   "/downloads/ynx-social-1.0.0-testnet-preview-aa852496-test-signed.apk",
   "/downloads/ynx-trust-center-4d40557229b4-linux-amd64.tar.gz",
   "https://downloads.ynxweb4.com/wallet/sha256-69b4fa5db7b8a9ab105af6633de44f5a5a4a9fceeaa0925a306f77b22381b044/ynx-wallet-macos-0.1.2-universal.dmg",
-  "https://www.ynxweb4.com/downloads/wallet-web/sha256-c733093dea47c6612c8a9d5ecea40be2227f62402f4b4966955c9e1accf4e2aa/ynx-wallet-chrome-edge-0.1.0.zip",
-  "https://www.ynxweb4.com/downloads/wallet-web/sha256-417d9b9e5babf05fdfdf8161504389eb99c636be75f94444bf4ff91a9b4536b3/ynx-wallet-firefox-0.1.0.zip",
   "https://www.ynxweb4.com/downloads/wallet/sha256-856b2a260efc43c25f62508dabc6bb6b74b84da71c9b477e8a02a12d17598cd7/ynx-wallet-desktop-0.1.1-x64.exe",
   "https://www.ynxweb4.com/downloads/wallet/sha256-929315133c68eda1cabac51cec889c4aeca5e3ee1701578916bc67e096c5dc35/ynx-wallet-desktop-0.1.1-arm64.exe",
   "https://www.ynxweb4.com/downloads/wallet/sha256-afd686851ef07fbb07823295d07179b79e1a4a078d1b528bc149bd619c8689e0/ynx-wallet-1.0.3-testnet-preview-3ab8c24c-local-test-signed.apk"
@@ -31,6 +27,35 @@ export const publishedDownloadPaths = [
 
 export const publishedDownloadMetadata = {
   ...Object.fromEntries(Object.values(WALLET_CANONICAL_DOWNLOADS).map(artifact => [artifact.publicUrl, artifact])),
+  "https://www.ynxweb4.com/downloads/wallet-web/sha256-b30f67a87e841039f2141065a5857e425838c34ffdb98f3094eedd8abcbb81b0/ynx-wallet-firefox-0.1.0.zip": {
+    "publicUrl": "https://www.ynxweb4.com/downloads/wallet-web/sha256-b30f67a87e841039f2141065a5857e425838c34ffdb98f3094eedd8abcbb81b0/ynx-wallet-firefox-0.1.0.zip",
+    "version": "0.1.0-testnet-preview.1",
+    "sizeBytes": 546293,
+    "sha256": "b30f67a87e841039f2141065a5857e425838c34ffdb98f3094eedd8abcbb81b0",
+    "sourceCommit": "e76388bf613a6e94a03ae2729c7e40761c808146",
+    "releaseBatch": "wallet-web-testnet-preview-0.1.0-8099e1937",
+    "architecture": "any",
+    "installation": "extension-unpacked",
+    "targetPlatform": "web-extension",
+    "sourceBinding": "Deterministic package manifest and GitHub release asset digest match the downloaded public bytes.",
+    "signingClass": "unsigned unpacked Firefox extension; not store released",
+    "installProof": "354 Wallet Web tests and the package integrity gate passed. The public ZIP bytes were downloaded and rehashed; permanent signed Firefox installation remains unverified.",
+    "publicationEvidence": "/releases/wallet-web/20260920-wallet-web-testnet-preview.json",
+    "previewManifest": "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-web-testnet-preview-0.1.0-8099e1937/artifact-manifest.json",
+    "mimeType": "application/zip",
+    "observedHTTPContentType": "application/octet-stream",
+    "contentDisposition": "attachment; filename=\"ynx-wallet-firefox-0.1.0.zip\"",
+    "actualDownloadFilename": "ynx-wallet-firefox-0.1.0.zip",
+    "canonicalDownload": true,
+    "historicalPreview": false,
+    "downloadApproved": true,
+    "publicDownloadVerified": true,
+    "productionSigned": false,
+    "storeReleased": false,
+    "fullInstalledE2E": false,
+    "newWalletGoalsAccepted": false,
+    "note": "Unsigned Firefox Testnet Preview. Public bytes and package integrity are verified; browser-store signing and current installed-browser acceptance remain unverified."
+  },
   "https://downloads.ynxweb4.com/wallet/sha256-69b4fa5db7b8a9ab105af6633de44f5a5a4a9fceeaa0925a306f77b22381b044/ynx-wallet-macos-0.1.2-universal.dmg": {
     "version": "0.1.2",
     "sizeBytes": 237777236,

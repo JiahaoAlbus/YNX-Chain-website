@@ -60,11 +60,7 @@ export function DownloadPage() {
   const copy = getDownloadCopy(locale);
   const [query, setQuery] = useState("");
   const [availability, setAvailability] = useState("all");
-  const filterCopy = locale === "zh-CN"
-    ? ["搜索产品", "输入产品名称", "可用方式", "全部产品", "可打开网页", "发布包", "个产品", "没有匹配的产品", "清除筛选"]
-    : locale === "zh-TW"
-      ? ["搜尋產品", "輸入產品名稱", "可用方式", "全部產品", "可開啟網頁", "發布套件", "個產品", "沒有符合的產品", "清除篩選"]
-      : ["Search products", "Enter a product name", "Availability", "All products", "Public Web", "Release packages", "products", "No matching products", "Clear filters"];
+  const filterCopy = copy.filters;
   const catalog = getCatalog().map(getDownloadDirectoryProduct).filter(product =>
     product.name.toLowerCase().includes(query.trim().toLowerCase()) &&
     (availability === "all" || (availability === "web" ? Boolean(product.downloads.web?.href) : product.hasDownload))

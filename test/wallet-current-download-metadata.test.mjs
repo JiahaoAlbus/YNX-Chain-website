@@ -16,7 +16,7 @@ test('eleven current packages are bound to two canonical public manifests and ke
     assert.ok(state.installProofKey && state.signingKey, platform);
   }
   const android = currentWalletDownloads.android;
-  assert.equal(walletDownloadState('android', android).requirements, 'Android · ARM64 · APK');
+  assert.equal(walletDownloadState('android', { ...android, href: android.publicUrl, downloadHosted: true }).requirements, 'Android · 4 ABI · standalone APK');
   assert.equal(walletDownloadState('firefox', { ...currentWalletDownloads.chromeEdge, href: currentWalletDownloads.chromeEdge.publicUrl, downloadHosted: true }).available, false, 'Firefox permission hold cannot reuse a hosted Chromium ZIP');
 });
 
@@ -40,6 +40,6 @@ test('manifest verification rejects substituted bytes, architecture, evidence, r
     const changed = clone(); changed[platform][field] = value;
     assert.throws(() => verifyWalletDownloadMetadata(changed), undefined, `${platform}.${field}`);
   }
-  const changed = clone(); changed.android.limitedInstalledEvidence.realHardwareVerified = true;
-  assert.throws(() => verifyWalletDownloadMetadata(changed), undefined, 'emulator proof cannot become Pixel acceptance');
+  const changed = clone(); changed.android.installProof = 'physical-device acceptance invented';
+  assert.throws(() => verifyWalletDownloadMetadata(changed), undefined, 'emulator proof cannot become physical-device acceptance');
 });

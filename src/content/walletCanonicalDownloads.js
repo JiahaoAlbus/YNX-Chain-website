@@ -139,12 +139,13 @@ const PROFILES = {
   },
   "5": {
     "architecture": "any",
-    "sourceCommit": "f90ad909fe30f11ad425adc4871131a82ebc2075",
+    "sourceCommit": "e76388bf613a6e94a03ae2729c7e40761c808146",
     "mimeType": "application/zip",
-    "observedHTTPContentType": "application/zip",
-    "signingClass": "test preview; no production signature or store release",
-    "releaseBatch": "wallet-static-20260906-r4c-browser",
-    "publicationReceiptSHA256": "4281803c90efeda36a69397f181bda23849484057c89f9c72c0780ded3ad1b29"
+    "observedHTTPContentType": "application/octet-stream",
+    "signingClass": "unsigned test preview; no production signature or browser-store release",
+    "releaseBatch": "wallet-web-testnet-preview-0.1.0-8099e1937",
+    "previewManifest": "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-web-testnet-preview-0.1.0-8099e1937/artifact-manifest.json",
+    "publicationEvidence": "/releases/wallet-web/20260920-wallet-web-testnet-preview.json"
   }
 };
 const FILES = {
@@ -223,22 +224,25 @@ const FILES = {
   },
   "pwa": {
     "profile": 5,
-    "id": "web-pwa-f90ad90",
+    "id": "web-pwa-e76388bf",
     "installation": "zip-archive",
-    "artifactPath": "ynx-wallet-pwa-f90ad90-local-qa.zip",
-    "sizeBytes": 310065,
-    "sha256": "1a5277f178ca205f8e14fdf1eb6ceb6ab2770764ff5e7bac8b33fbbb501d1b2b",
-    "installProof": "Current f90ad90 installed UI, permission-upgrade flow and public-sender E2E remain unverified; earlier installed extension evidence is not reused. No browser store release. This is a manual-install test preview, not a store installation. PWA is a static ZIP only; it has no deployed origin, launch URL, installed PWA or Auth callback proof.",
+    "artifactPath": "ynx-wallet-web-pwa-0.1.0.zip",
+    "sizeBytes": 310025,
+    "sha256": "4aa64152ecc80e7a6fe8186e1c3bd7710f111644f6e41d8402e58d7b582802fd",
+    "publicUrl": "https://www.ynxweb4.com/downloads/wallet-web/sha256-4aa64152ecc80e7a6fe8186e1c3bd7710f111644f6e41d8402e58d7b582802fd/ynx-wallet-web-pwa-0.1.0.zip",
+    "installProof": "Deterministically rebuilt twice from e76388bf and verified with 354 Wallet Web tests plus the package integrity gate. This is an unsigned static PWA ZIP; public bytes are verified, but installed PWA and production release acceptance remain unverified.",
     "targetPlatform": "pwa-archive"
   },
   "chromeEdge": {
     "profile": 5,
-    "id": "web-chromium-f90ad90",
+    "id": "web-chromium-e76388bf",
     "installation": "extension-unpacked",
-    "artifactPath": "ynx-wallet-chrome-edge-f90ad90-local-qa.zip",
-    "sizeBytes": 539744,
-    "sha256": "061a25cb9b44e6a0e26667b4a46aacffd434780d5c705bea14d4fd7368eab0c5",
-    "installProof": "Current f90ad90 installed UI, permission-upgrade flow and public-sender E2E remain unverified; earlier installed extension evidence is not reused. No browser store release. This is a manual-install test preview, not a store installation.",
+    "artifactPath": "ynx-wallet-chrome-edge-0.1.0.zip",
+    "sizeBytes": 546193,
+    "sha256": "c24d4939ccb1ff8110d35a1b67baf91df7316b4b77f67d95dbc428076552a634",
+    "publicUrl": "https://www.ynxweb4.com/downloads/wallet-web/sha256-c24d4939ccb1ff8110d35a1b67baf91df7316b4b77f67d95dbc428076552a634/ynx-wallet-chrome-edge-0.1.0.zip",
+    "sdkManifest": false,
+    "installProof": "Deterministically rebuilt twice from e76388bf and verified with 354 Wallet Web tests plus the package integrity gate. This is an unsigned unpacked Chrome/Edge extension preview, not a browser-store release; current installed-browser acceptance remains unverified.",
     "targetPlatform": "web-extension"
   }
 };
@@ -246,10 +250,10 @@ const FILES = {
 export const WALLET_PREVIOUS_CANONICAL_DOWNLOADS = Object.fromEntries(Object.entries(FILES).map(([key, { profile, ...file }]) => {
   const item = { ...SHARED, ...PROFILES[profile], ...file };
   return [key, { ...item,
-    publicUrl: `https://downloads.ynxweb4.com/wallet/sha256-${item.sha256}/${item.artifactPath}`,
-    publicationEvidence: WALLET_CANONICAL_MANIFESTS[1].localPath,
-    previewManifest: WALLET_CANONICAL_MANIFESTS[1].url,
-    ...(item.targetPlatform === "pwa-archive" ? {} : { sdkManifest: WALLET_CANONICAL_MANIFESTS[0].url })
+    publicUrl: item.publicUrl || `https://downloads.ynxweb4.com/wallet/sha256-${item.sha256}/${item.artifactPath}`,
+    publicationEvidence: item.publicationEvidence || WALLET_CANONICAL_MANIFESTS[1].localPath,
+    previewManifest: item.previewManifest || WALLET_CANONICAL_MANIFESTS[1].url,
+    ...(item.targetPlatform === "pwa-archive" || item.sdkManifest === false ? {} : { sdkManifest: item.sdkManifest || WALLET_CANONICAL_MANIFESTS[0].url })
   }];
 }));
 

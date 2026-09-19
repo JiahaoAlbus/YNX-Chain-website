@@ -43,8 +43,8 @@ test("all Wallet download surfaces enforce the same file eligibility without cha
     }
     const expected = helpers.walletDownloadOptions(wallet, contract.downloadHostedVerified)
       .filter(option => option.available).map(option => option.item.href).sort();
-    assert.equal(expected.length, 9, "two current AppImages are paused while upstream still lists eleven");
-    assert.deepEqual(expected, Object.entries(currentWalletDownloads).filter(([platform]) => !['linuxX64AppImage', 'linuxArm64AppImage'].includes(platform)).map(([, item]) => item.publicUrl).sort());
+    assert.equal(expected.length, 10, "two current AppImages are paused and the separately released Firefox preview is available");
+    assert.deepEqual(expected, [...Object.entries(currentWalletDownloads).filter(([platform]) => !['linuxX64AppImage', 'linuxArm64AppImage'].includes(platform)).map(([, item]) => item.publicUrl), wallet.downloads.firefox.href].sort());
     assert.deepEqual(contract.downloads.items.map(item => item.href).sort(), expected, "the public download contract excludes withheld and historical packages");
     const [trigger, chooser, details, directory, overview] = await Promise.all([
       markup(React.createElement(WalletDownload)),
@@ -75,7 +75,8 @@ test("all Wallet download surfaces enforce the same file eligibility without cha
     assert.ok(!/<a\b[^>]*>Download Wallet</.test(chooser));
     assert.doesNotMatch(chooser, /class="walletDownloadFlowBoundary">Historical preview/);
 
-    assert.ok(!fileAnchors(chooser).some(([, href]) => /firefox|1\.0\.3|0\.1\.1-x64/.test(href)), "current packages replace old defaults and Firefox remains held");
+    assert.ok(fileAnchors(chooser).some(([, href]) => /firefox/.test(href)), "the current exact-source Firefox manual-install preview is downloadable");
+    assert.ok(!fileAnchors(chooser).some(([, href]) => /1\.0\.3|0\.1\.1-x64/.test(href)), "current packages replace old defaults");
     assert.ok(!chooser.includes('data-platform="linux"'), "specific Linux packages replace the aggregate unavailable row");
     const escaped = value => value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#x27;");
     for (const [locale, localized] of Object.entries(WALLET_DOWNLOAD_COPY)) {
@@ -90,7 +91,7 @@ test("all Wallet download surfaces enforce the same file eligibility without cha
         assert.ok(html.includes("Android · 4 ABI · standalone APK"));
         assert.ok(!html.includes("Android 7.0+"), "current Android has no inferred minimum OS");
       }
-      assert.ok(localizedChooser.includes(escaped(localized.firefoxPermissionHold)));
+      assert.ok(localizedChooser.includes(escaped(localized.manualExtension)));
       assert.ok(localizedChooser.includes('href="/manual?path=wallet&amp;lang=' + locale + '"'));
       const previousWindow = globalThis.window;
       let localizedDirectory, localizedOverview;
@@ -105,7 +106,7 @@ test("all Wallet download surfaces enforce the same file eligibility without cha
         else globalThis.window = previousWindow;
       }
       for (const [surface, html] of Object.entries({ chooser: localizedChooser, product: localizedProduct, directory: localizedDirectory, overview: localizedOverview })) {
-        assert.deepEqual(fileAnchors(html).map(([, href]) => href).sort(), expected, `${locale}:${surface}:nine exact files`);
+        assert.deepEqual(fileAnchors(html).map(([, href]) => href).sort(), expected, `${locale}:${surface}:ten exact files`);
         assert.equal((html.match(/data-wallet-safety-hold=/g) || []).length, 2, `${locale}:${surface}:two visible holds`);
         for (const [key, value] of Object.entries(WALLET_SAFETY_COPY[locale])) assert.ok(html.includes(escaped(value)), `${locale}:${surface}:${key}`);
       }

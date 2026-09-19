@@ -35,3 +35,19 @@ test('the exact safety hold leaves nine current choices and does not certify oth
   assert.equal(walletDownloadSafetyHold({ installation: 'appimage', version: '0.6.5', sha256: 'a'.repeat(64) }), null, 'an unknown replacement is not a known affected identity');
   assert.equal(walletDownloadState('linuxX64AppImage', { installation: 'appimage', sha256: 'a'.repeat(64) }).available, false, 'not being held is insufficient publication evidence');
 });
+
+test('current Wallet Web choices bind the rebuilt source, immutable website path and exact bytes', () => {
+  const expected = {
+    pwa: ['4aa64152ecc80e7a6fe8186e1c3bd7710f111644f6e41d8402e58d7b582802fd', 310025, 'ynx-wallet-web-pwa-0.1.0.zip'],
+    chromeEdge: ['c24d4939ccb1ff8110d35a1b67baf91df7316b4b77f67d95dbc428076552a634', 546193, 'ynx-wallet-chrome-edge-0.1.0.zip']
+  };
+  for (const [platform, [sha256, sizeBytes, filename]] of Object.entries(expected)) {
+    const item = WALLET_CANONICAL_DOWNLOADS[platform];
+    assert.equal(item.sourceCommit, 'e76388bf613a6e94a03ae2729c7e40761c808146');
+    assert.equal(item.sha256, sha256);
+    assert.equal(item.sizeBytes, sizeBytes);
+    assert.equal(item.artifactPath, filename);
+    assert.equal(item.publicUrl, `https://www.ynxweb4.com/downloads/wallet-web/sha256-${sha256}/${filename}`);
+    assert.equal(walletDownloadState(platform, { ...item, href: item.publicUrl, downloadHosted: true }).available, true);
+  }
+});

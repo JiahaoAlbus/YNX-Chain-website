@@ -846,7 +846,7 @@ if (legacyUnmergedRegistrySnapshot && (
 }
 if (
   releaseRegistry.schemaVersion !== 1 ||
-  registryKeys.length !== 25 ||
+  registryKeys.length !== 26 ||
   new Set(registryKeys).size !== registryKeys.length ||
   registryKeys.some((key) => !productKeys.includes(key)) ||
   hostedPreviewProducts.length !== 1 ||

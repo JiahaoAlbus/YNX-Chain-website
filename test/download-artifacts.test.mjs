@@ -12,7 +12,9 @@ test("only manifest-backed website artifacts are advertised as downloadable", ()
   const rewrites = JSON.parse(fs.readFileSync("vercel.json", "utf8")).rewrites;
   for (const artifact of hosted) {
     const artifactUrl = new URL(artifact.href, "https://ynxweb4.com");
-    assert.ok(artifactUrl.hostname === "downloads.ynxweb4.com" || (["ynxweb4.com", "www.ynxweb4.com"].includes(artifactUrl.hostname) && rewrites.some((entry) => entry.source === artifactUrl.pathname && entry.destination.startsWith("https://"))), artifact.href);
+    const websiteRedirect = ["ynxweb4.com", "www.ynxweb4.com"].includes(artifactUrl.hostname) && rewrites.some((entry) => entry.source === artifactUrl.pathname && entry.destination.startsWith("https://"));
+    const immutableGithubRelease = artifactUrl.hostname === "github.com" && artifactUrl.pathname.startsWith("/JiahaoAlbus/YNX-Chain/releases/download/") && artifactUrl.pathname.includes(artifact.sourceCommit.slice(0, 8));
+    assert.ok(artifactUrl.hostname === "downloads.ynxweb4.com" || websiteRedirect || immutableGithubRelease, artifact.href);
     if (artifact.publicationEvidence) {
       assert.ok(fs.existsSync(path.join(process.cwd(), "public", artifact.publicationEvidence)));
       assert.match(artifact.sha256, /^[a-f0-9]{64}$/);
@@ -44,10 +46,11 @@ test("historical Wallet public record preserves exact owner bindings without pri
 
 test("Wallet download entries preserve current Android and both Windows architectures", () => {
   const downloads = getCatalog().find((product) => product.key === "wallet").downloads;
-  for (const platform of ["android", "macos", "windowsX64", "windowsArm64"]) {
+  for (const platform of ["android", "macos", "windowsX64", "windowsArm64", "pwa", "chromeEdge", "firefox"]) {
     assert.equal(downloads[platform].downloadHosted, true, platform);
     assert.ok(downloads[platform].publicationEvidence, platform);
-    assert.ok(downloads[platform].href.includes(downloads[platform].sha256), platform);
+    const url = new URL(downloads[platform].href);
+    assert.ok(downloads[platform].href.includes(downloads[platform].sha256) || (url.hostname === "github.com" && url.pathname.includes(downloads[platform].sourceCommit.slice(0, 8))), platform);
   }
   assert.equal(downloads.ios.downloadHosted, undefined);
   assert.equal(downloads.linux.downloadHosted, false);

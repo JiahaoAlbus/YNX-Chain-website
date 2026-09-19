@@ -10,7 +10,7 @@ const released = { ...metadata, href, downloadHosted: true };
 test("a file action requires complete immutable release provenance and registry authorization", () => {
   const state = walletDownloadState("windowsX64", released);
   assert.equal(state.available, true);
-  assert.equal(state.filename, "ynx-wallet-desktop-0.6.5-x64.exe");
+  assert.equal(state.filename, metadata.artifactPath);
   assert.equal(walletDownloadState("windowsX64", released, false).available, false);
   for (const field of ["sha256", "sourceCommit", "sizeBytes", "publicationEvidence", "signingClass", "downloadHosted", "canonicalDownload"]) {
     assert.equal(walletDownloadState("windowsX64", { ...released, [field]: undefined }).available, false, field);
@@ -20,7 +20,7 @@ test("a file action requires complete immutable release provenance and registry 
 
 test("download actions cannot become product-page or untrusted URL navigation", () => {
   for (const badHref of ["/dapp/wallet", "/dapp/wallet/open-download", "https://example.com" + href,
-    href.replace(metadata.sha256, "0".repeat(64)), href + "?redirect=/dapp/wallet", "javascript:alert(1)",
+    href.replace(/\/releases\/download\/[^/]+\//, "/releases/download/untrusted-release/"), href + "?redirect=/dapp/wallet", "javascript:alert(1)",
     "https://user:pass@ynxweb4.com" + href, href.replace(".exe", ".html")]) {
     assert.equal(walletDownloadState("windowsX64", { ...released, href: badHref }).available, false, badHref);
   }

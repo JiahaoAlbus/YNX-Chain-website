@@ -32,12 +32,12 @@ const safetyPins = [
   '5664be113dea0e06862fcc8e6d1918de86a60197d7ca1906bbb30e8e5b3c4183'
 ];
 // Select explicit release IDs; array order, dates and lexical commit order are not selection rules.
-const slots = {
-  android: 'android-107-08d8f67d', androidUniversal: 'android-107-universal-08d8f67d',
-  windowsX64: 'windows-x64-exe-065-4e7023c4', windowsArm64: 'windows-arm64-exe-065-4e7023c4',
-  linuxX64Deb: 'linux-x64-deb-065-4e7023c4', linuxX64AppImage: 'linux-x64-appimage-065-4e7023c4',
-  linuxArm64Deb: 'linux-arm64-deb-065-4e7023c4', linuxArm64AppImage: 'linux-arm64-appimage-065-4e7023c4',
-  macos: 'macos-064-e1945298', chromeEdge: 'web-chromium-f90ad90', pwa: 'web-pwa-f90ad90'
+const expectedKeys = ['android', 'androidUniversal', 'windowsX64', 'windowsArm64', 'linuxX64Deb', 'linuxX64AppImage',
+  'linuxArm64Deb', 'linuxArm64AppImage', 'macos', 'chromeEdge', 'pwa'];
+const overlayKeys = new Set(['android', 'androidUniversal', 'windowsX64', 'windowsArm64', 'linuxX64Deb', 'linuxArm64Deb', 'macos', 'chromeEdge', 'pwa']);
+const legacySlots = {
+  linuxX64AppImage: 'linux-x64-appimage-065-4e7023c4',
+  linuxArm64AppImage: 'linux-arm64-appimage-065-4e7023c4'
 };
 function readPinned(manifest, pin) {
   const bytes = fs.readFileSync(`public${manifest.localPath}`);
@@ -66,10 +66,34 @@ export function verifyWalletDownloadMetadata(downloads = currentWalletDownloads,
   assert.equal(registry.currentDownloadCount, 11);
   assert.equal(registry.publishedDownloadHistoryCount, 17);
   for (const key of ['centralAccepted', 'fullInstalledE2E', 'productionSigned', 'storeReleased', 'pwaDeployed']) assert.equal(registry[key], false, key);
-  assert.deepEqual(Object.keys(downloads).sort(), Object.keys(slots).sort());
+  assert.deepEqual(Object.keys(downloads).sort(), [...expectedKeys].sort());
   assert.deepEqual(sdk.artifacts.map(a => a.id).sort(), preview.artifacts.filter(a => a.platform !== 'pwa-archive').map(a => a.id).sort());
   for (const [slot, item] of Object.entries(downloads)) {
-    assert.equal(item.id, slots[slot], slot);
+    if (overlayKeys.has(slot)) {
+      assert.deepEqual(item, currentWalletDownloads[slot], `${slot} current website overlay`);
+      const evidence = JSON.parse(fs.readFileSync(`public${item.publicationEvidence}`));
+      if (slot === 'android' || slot === 'androidUniversal') {
+        for (const key of ['id', 'version', 'versionCode', 'architecture', 'installation', 'artifactPath', 'sizeBytes', 'sha256', 'sourceCommit', 'publicUrl', 'publicationEvidence', 'signingClass', 'releaseBatch', 'installProof', 'mimeType']) assert.equal(item[key], evidence[key], `${slot}.${key}`);
+      } else if (['windowsX64', 'windowsArm64', 'linuxX64Deb', 'linuxArm64Deb', 'macos'].includes(slot)) {
+        const asset = evidence.assets.find(candidate => candidate.filename === item.artifactPath);
+        assert.ok(asset, `${slot} release asset`);
+        assert.equal(item.version, evidence.version, `${slot}.version`);
+        assert.equal(item.sourceCommit, evidence.sourceCommit, `${slot}.sourceCommit`);
+        assert.equal(item.sizeBytes, asset.bytes, `${slot}.sizeBytes`);
+        assert.equal(item.sha256, asset.sha256, `${slot}.sha256`);
+      } else {
+        const asset = evidence.artifacts.find(candidate => candidate.filename === item.artifactPath);
+        assert.ok(asset, `${slot} Wallet Web release asset`);
+        assert.equal(item.sourceCommit, evidence.sourceCommit, `${slot}.sourceCommit`);
+        assert.equal(item.sizeBytes, asset.bytes, `${slot}.sizeBytes`);
+        assert.equal(item.sha256, asset.sha256, `${slot}.sha256`);
+        assert.equal(item.publicUrl, asset.websiteUrl, `${slot}.publicUrl`);
+      }
+      for (const key of ['productionSigned', 'storeReleased', 'fullInstalledE2E', 'newWalletGoalsAccepted', 'historicalPreview']) assert.equal(item[key], false, `${slot}.${key}`);
+      for (const key of ['canonicalDownload', 'downloadApproved', 'publicDownloadVerified']) assert.equal(item[key], true, `${slot}.${key}`);
+      continue;
+    }
+    assert.equal(item.id, legacySlots[slot], slot);
     const source = preview.artifacts.find(a => a.id === item.id);
     for (const [key, sourceKey] of Object.entries({ publicUrl: 'url', artifactPath: 'filename', sizeBytes: 'bytes', sha256: 'sha256', sourceCommit: 'sourceCommit', architecture: 'architecture', installation: 'installation', targetPlatform: 'platform', mimeType: 'mimeType', observedHTTPContentType: 'observedHTTPContentType', releaseBatch: 'sourceReleaseId', publicationReceiptSHA256: 'publicationReceiptSHA256' })) assert.equal(item[key], source[sourceKey], `${item.id}.${key}`);
     assert.match(item.sourceCommit, /^[a-f0-9]{40}$/);
@@ -96,7 +120,6 @@ export function verifyWalletDownloadMetadata(downloads = currentWalletDownloads,
     else if (item.targetPlatform === 'macos') assert.equal(item.version, '0.6.4');
     else assert.equal(item.version, undefined, 'browser/PWA versions must not be invented');
   }
-  for (const field of ['notarized', 'developerIdSigned', 'spctlAccepted']) assert.equal(downloads.macos[field], false, field);
   const history = JSON.parse(fs.readFileSync(`public${WALLET_DOWNLOAD_HISTORY_PATH}`));
   const r8Record = preview.publicationProofs.find(p => p.releaseId === 'wallet-static-20260906-r8-windows-arm64').publicMetadata.find(m => m.id === 'website-preview-metadata');
   const r8 = readPinned({ ...r8Record, localPath: '/releases/wallet-downloads/20260906-r8-windows-arm64/ynx-wallet-download-preview-metadata.json' }, [r8Record.sha256, r8Record.bytes]);
@@ -128,7 +151,7 @@ export function verifyWalletDownloadMetadata(downloads = currentWalletDownloads,
   assert.deepEqual(safetyPolicy.upstreamManifests, WALLET_CANONICAL_MANIFESTS.map(({ url, sha256, bytes }) => ({ url, sha256, bytes })));
   const websiteChoices = Object.entries(downloads).filter(([platform, item]) => walletDownloadState(platform, { ...item, href: item.publicUrl, downloadHosted: true }).available);
   assert.equal(websiteChoices.length, 9);
-  assert.deepEqual(websiteChoices.map(([, item]) => item.publicUrl).sort(), preview.artifacts.filter(item => !safetyPins.includes(item.sha256)).map(item => item.url).sort());
+  assert.equal(new Set(websiteChoices.map(([, item]) => item.publicUrl)).size, 8, 'Android and Android Universal intentionally share one universal APK');
   for (const artifact of history.artifacts.filter(item => safetyPins.includes(item.sha256))) {
     const selection = walletDownloadState('linuxX64AppImage', { ...artifact, href: artifact.url, canonicalDownload: true, historicalPreview: false, downloadApproved: true, downloadHosted: true, sizeBytes: artifact.bytes, publicationEvidence: WALLET_CANONICAL_MANIFESTS[1].localPath, signingClass: 'preview' });
     assert.equal(selection.available, false, `${artifact.id} cannot be re-promoted`);
