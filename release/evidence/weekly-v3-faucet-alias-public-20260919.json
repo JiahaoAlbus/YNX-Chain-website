@@ -1,0 +1,157 @@
+{
+  "schema": "ynx-website-faucet-alias-public-release/v1",
+  "recordedAt": "2026-09-19T14:53:30.592Z",
+  "sourceCommit": "0226db0c7b6b7eaed42208c61ae10ca8da6c6ea0",
+  "sourceTree": "76bcfafafdc3c899776226393211cc54b50cf32d",
+  "projectId": "prj_tPB0KDTFohQ9FXZAzq25mYFWkbNa",
+  "deploymentId": "dpl_9rzGYBQVwXLcyCMSoWw1urPkbfDj",
+  "deploymentURL": "https://ynx-web4-website-8ml69lerj-jiahaoalbus-projects.vercel.app",
+  "readyState": "READY",
+  "skipDomainFirst": true,
+  "promotionCompleted": true,
+  "publicDeployed": true,
+  "publicReadonlyVerified": true,
+  "publicClaimExecuted": false,
+  "localTests": {
+    "focusedPass": 18,
+    "fullPass": 199,
+    "fullFail": 7,
+    "baselinePass": 188,
+    "baselineFail": 7,
+    "baselineCommit": "275df1e8d637e001cb0f29076d284134d370675a",
+    "sameFailures": true,
+    "allTestsPassed": false,
+    "productionBuildPassed": true,
+    "docsHostingPassed": true
+  },
+  "prePromotionLimitations": {
+    "localImmutableTLSVerified": false,
+    "reason": "Local vercel.app DNS returns unrelated IPs; correct-IP TLS resets. No TLS bypass used.",
+    "coordinatorHostReport": "Normal TLS successful; immutable deployment returns 302 Vercel Deployment Protection. Coordinator authorized promotion against preserved rollback and exact build outputs."
+  },
+  "rollback": {
+    "deploymentId": "dpl_GNjA5SY2KDHMiDU7jwX1Km4cnjn5",
+    "sourceCommit": "275df1e8d637e001cb0f29076d284134d370675a",
+    "sourceTree": "bd312a985fe5fd88f1786641f371c18797142edc",
+    "command": "vercel rollback dpl_GNjA5SY2KDHMiDU7jwX1Km4cnjn5 --yes --scope jiahaoalbus-projects",
+    "executed": false,
+    "dbMutationRequired": false
+  },
+  "browser": {
+    "tool": "Codex in-app browser",
+    "pages": [
+      "https://www.ynxweb4.com/dapp/faucet",
+      "https://www.ynxweb4.com/testnet"
+    ],
+    "faucetReady": true,
+    "observedRuntimeCommit": "37adf89a2a2c5227335f77690d859a6d4dcb7459",
+    "rateLimit": "1 per 1h0m0s per address",
+    "newVersionLink": true,
+    "newFaucetFooter": true,
+    "publicTestAddressValidation": true,
+    "claimButtonEnabledAfterValidInput": true,
+    "consentChecked": false,
+    "claimClicked": false,
+    "consoleWarnings": 0,
+    "consoleErrors": 0
+  },
+  "readback": {
+    "checkedAt": "2026-09-19T14:53:30.592Z",
+    "normalTLS": true,
+    "readOnly": true,
+    "observations": [
+      {
+        "url": "https://www.ynxweb4.com/api/build-identity",
+        "status": 200,
+        "bodySHA256": "5cd845e9a92dee39e721584e7089732ac17003c280e131d4e1a0d3aef44a686c",
+        "cacheControl": "no-store, max-age=0",
+        "cspBothFaucetOrigins": true,
+        "newFaucetLink": false,
+        "entryScripts": [],
+        "identity": {
+          "schemaVersion": "ynx.website.build-identity.v1",
+          "sourceCommit": "0226db0c7b6b7eaed42208c61ae10ca8da6c6ea0",
+          "sourceTree": "76bcfafafdc3c899776226393211cc54b50cf32d",
+          "chainId": 6423,
+          "chainIdHex": "0x1917",
+          "nativeAsset": "YNXT",
+          "release": "website-weekly-v3-faucet-alias-20260919"
+        }
+      },
+      {
+        "url": "https://www.ynxweb4.com/testnet",
+        "status": 200,
+        "bodySHA256": "0ccc7b0c0da2fdb7d5853584dfc976fdf43591e840af1bae5e92eaea48b78c2d",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cspBothFaucetOrigins": true,
+        "newFaucetLink": true,
+        "entryScripts": [
+          "/assets/index-BDUGfzEg.js"
+        ]
+      },
+      {
+        "url": "https://www.ynxweb4.com/dapp/faucet",
+        "status": 200,
+        "bodySHA256": "d571f3564ecedcf8372f65b2d0038296c110028abbdc731a1482da45a86efe88",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cspBothFaucetOrigins": true,
+        "newFaucetLink": false,
+        "entryScripts": [
+          "/assets/index-BDUGfzEg.js"
+        ]
+      }
+    ]
+  },
+  "cors": {
+    "checkedAt": "2026-09-19T14:51:57.319Z",
+    "readOnly": true,
+    "allPassed": true,
+    "observations": [
+      {
+        "host": "https://faucet.ynxweb4.com",
+        "origin": "https://www.ynxweb4.com",
+        "status": 204,
+        "allowOrigin": "https://www.ynxweb4.com",
+        "passed": true
+      },
+      {
+        "host": "https://faucet.ynxweb4.com",
+        "origin": "https://wallet.ynxweb4.com",
+        "status": 204,
+        "allowOrigin": "https://wallet.ynxweb4.com",
+        "passed": true
+      },
+      {
+        "host": "https://faucet.ynxweb4.com",
+        "origin": "https://untrusted.invalid",
+        "status": 403,
+        "allowOrigin": null,
+        "passed": true
+      },
+      {
+        "host": "https://faucet-testnet.ynxweb4.com",
+        "origin": "https://www.ynxweb4.com",
+        "status": 204,
+        "allowOrigin": "https://www.ynxweb4.com",
+        "passed": true
+      },
+      {
+        "host": "https://faucet-testnet.ynxweb4.com",
+        "origin": "https://wallet.ynxweb4.com",
+        "status": 204,
+        "allowOrigin": "https://wallet.ynxweb4.com",
+        "passed": true
+      },
+      {
+        "host": "https://faucet-testnet.ynxweb4.com",
+        "origin": "https://untrusted.invalid",
+        "status": 403,
+        "allowOrigin": null,
+        "passed": true
+      }
+    ]
+  },
+  "officialSandboxVerified": false,
+  "globalRegionalVerified": false,
+  "productionApproved": false
+}
