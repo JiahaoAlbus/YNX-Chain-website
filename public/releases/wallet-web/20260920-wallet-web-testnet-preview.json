@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "observedAt": "2026-09-19T22:46:00Z",
+  "observedAt": "2026-09-20T07:16:00+08:00",
   "releaseTag": "wallet-web-testnet-preview-0.1.0-8099e1937",
   "carrierCommit": "8099e19373b5505fe8ab0fd33071419816e5a16b",
   "sourceCommit": "e76388bf613a6e94a03ae2729c7e40761c808146",
@@ -12,7 +12,14 @@
     "publicReleaseAssetsDownloadedAndRehashed": true,
     "installedBrowserAcceptance": false,
     "productionSigned": false,
-    "storeReleased": false
+    "storeReleased": false,
+    "websiteAssetsDownloadedAndRehashed": true,
+    "websiteDownloadEntriesVerified": 3,
+    "websiteDeploymentId": "dpl_DaVcRsdy76wyeiAikuysM6hFFcx8",
+    "websiteDeploymentUrl": "https://ynx-web4-website-7rjtbew2n-jiahaoalbus-projects.vercel.app",
+    "websiteProductionAlias": "https://ynxweb4.com",
+    "websiteRollbackDeploymentId": "dpl_9rzGYBQVwXLcyCMSoWw1urPkbfDj",
+    "websiteRollbackUrl": "https://ynx-web4-website-8ml69lerj-jiahaoalbus-projects.vercel.app"
   },
   "artifacts": [
     {
@@ -43,7 +50,7 @@
   "claims": {
     "releaseAssetsHosted": true,
     "websiteCodePrepared": true,
-    "websitePublicDeploymentVerified": false,
+    "websitePublicDeploymentVerified": true,
     "productionApproved": false
   }
 }
