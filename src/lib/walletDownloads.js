@@ -27,7 +27,7 @@ export function walletDownloadState(platform, item, registryAllowsDownloads = tr
   const safetyHold = walletDownloadSafetyHold(item);
   const release068 = WALLET_DESKTOP068[platform];
   const desktop068 = Boolean(release068 && item?.sha256 === release068.sha256 && item?.href === release068.publicUrl && item?.sourceCommit === release068.sourceCommit && item?.sizeBytes === release068.sizeBytes);
-  const androidCurrent = ["sha256", "sourceCommit", "sizeBytes", "versionCode", "releaseTag", "signingClass", "productionSigned", "storeReleased"].every(key => item?.[key] === WALLET_ANDROID22[key]) && item?.href === WALLET_ANDROID22.publicUrl;
+  const androidCurrent = ["artifactPath", "fallbackUrl", "sha256", "sourceCommit", "sizeBytes", "versionCode", "releaseTag", "signingClass", "productionSigned", "storeReleased", "releaseImmutable", "publisherCanReplaceAssets", "downloadTimeSha256Verified"].every(key => item?.[key] === WALLET_ANDROID22[key]) && item?.href === WALLET_ANDROID22.publicUrl;
   const legacyBlocked = platform === "macos" && item?.sourceCommit === "5a6b033897a1295d35fc325a92c6bb81c8b04a19";
   const currentFirefox = platform === "firefox" && item?.sha256 === "6ac256415c34b4b492dc6094be8be8c9f0acf6a40653e2e18fde64dd20f801e0" &&
     item?.sourceCommit === "c93e16be81beddc957ef5f27b7bbcdfa89c28db3" && item?.sizeBytes === 547577;

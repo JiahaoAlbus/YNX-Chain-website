@@ -11,6 +11,13 @@ matched 116631255 bytes and SHA-256
 `89a842dc8641206a9154a6e41fd1c9e3cbb4b6cca2cea455ed5b7fc674b558c0`.
 GitHub asset metadata also matches that digest and size.
 
+GitHub API observation at 2026-09-20T10:30:53Z reports `immutable=false`
+for release ID 392389176: `releaseImmutable=false`. The publisher can replace
+assets. URL/size/SHA checks are point-in-time evidence, not immutability.
+The website does not recompute SHA-256 while downloading; users should verify
+the displayed expected digest independently. No repository-wide release
+immutability setting or CDN was enabled.
+
 The exact GitHub URL is the primary entry. No new downloads-origin mirror
 has been asserted or invented. Desktop and Web artifact selections are
 unchanged. The prior Android21 manifest remains at its historical URL.
