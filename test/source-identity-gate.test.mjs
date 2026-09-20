@@ -54,7 +54,15 @@ test("source identity gate rejects dirty, partial and inconsistent identities", 
 
   const dirty = fixture();
   writeFileSync(path.join(dirty, "source.txt"), "dirty\n");
-  assert.notEqual(run(dirty).status, 0);
+  const dirtyResult = run(dirty);
+  assert.notEqual(dirtyResult.status, 0);
+  assert.match(dirtyResult.stderr, / M source\.txt/);
+
+  const untracked = fixture();
+  writeFileSync(path.join(untracked, "unexpected-source.js"), "export default true;\n");
+  const untrackedResult = run(untracked);
+  assert.notEqual(untrackedResult.status, 0);
+  assert.match(untrackedResult.stderr, /\?\? unexpected-source\.js/);
 });
 
 test("an archive build without Git requires the complete injected identity", () => {

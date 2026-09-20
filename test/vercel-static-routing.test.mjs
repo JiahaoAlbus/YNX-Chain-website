@@ -34,7 +34,7 @@ test('Vercel uses the lockfile-exact install without bypassing source identity g
     fs.readFile(new URL('../deploy/source-identity.sh', import.meta.url), 'utf8'),
   ]);
   assert.match(build, /source deploy\/source-identity\.sh/);
-  assert.match(identityGate, /status --porcelain --untracked-files=normal/);
+  assert.match(identityGate, /status --porcelain=v1 --untracked-files=normal/);
   assert.match(identityGate, /Website production build requires a clean Git worktree/);
   assert.doesNotMatch(identityGate, /git (?:reset|clean|checkout)/);
 });

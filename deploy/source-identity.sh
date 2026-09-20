@@ -13,8 +13,13 @@ if ! website_root="$(git rev-parse --show-toplevel 2>/dev/null)"; then
   return 0 2>/dev/null || exit 0
 fi
 
-if [[ -n "$(git -C "$website_root" status --porcelain --untracked-files=normal)" ]]; then
+website_dirty_paths="$(git -C "$website_root" status --porcelain=v1 --untracked-files=normal)"
+if [[ -n "$website_dirty_paths" ]]; then
   echo "Website production build requires a clean Git worktree" >&2
+  echo "Dirty paths (status and repository-relative path only):" >&2
+  while IFS= read -r website_dirty_path; do
+    printf '  %s\n' "$website_dirty_path" >&2
+  done <<< "$website_dirty_paths"
   return 1 2>/dev/null || exit 1
 fi
 
@@ -53,4 +58,4 @@ node "$website_identity_verifier" || {
   return 1 2>/dev/null || exit 1
 }
 
-unset website_commit website_tree website_identity_count website_identity_verifier website_key website_root
+unset website_commit website_tree website_dirty_path website_dirty_paths website_identity_count website_identity_verifier website_key website_root
