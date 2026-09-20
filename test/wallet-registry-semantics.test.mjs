@@ -6,14 +6,25 @@ import test from "node:test";
 const registry = JSON.parse(fs.readFileSync("public/releases/ecosystem-release-registry.json", "utf8"));
 const wallet = registry.products.find((product) => product.key === "wallet");
 const productRelease = JSON.parse(fs.readFileSync(`public${wallet.productRelease}`, "utf8"));
+const publicProductMetadata = JSON.parse(fs.readFileSync(`public${wallet.publicProductMetadata}`, "utf8"));
 const webRuntime = JSON.parse(fs.readFileSync(`public${wallet.publicWebRelease}`, "utf8"));
 const webDownloadManifestBytes = fs.readFileSync(`public${wallet.webDownloadManifest.localPath}`);
 const webDownloadManifest = JSON.parse(webDownloadManifestBytes);
 
 test("Wallet product-package and Companion source identities stay separately bound", () => {
-  assert.equal(wallet.commit, "3ab8c24cac04");
+  assert.equal(wallet.commit, "875f6c5b744b");
   assert.ok(productRelease.sourceCommit.startsWith(wallet.commit));
   assert.equal(productRelease.product, "YNX Wallet");
+  assert.equal(productRelease.release, "1.0.17-testnet-preview-875f6c5b7");
+  assert.equal(productRelease.releaseImmutable, false);
+  assert.equal(productRelease.externalStates.androidWebsiteEntry, true);
+  assert.equal(productRelease.externalStates.walletConnectRelayE2E, false);
+  assert.equal(productRelease.externalStates.liveChainTransferExecuted, false);
+  assert.equal(publicProductMetadata.publicEvidence.sourceCommit, productRelease.sourceCommit);
+  assert.equal(publicProductMetadata.publicEvidence.sha256, productRelease.artifacts[0].sha256);
+  assert.equal(publicProductMetadata.publicEvidence.sizeBytes, productRelease.artifacts[0].sizeBytes);
+  assert.equal(publicProductMetadata.status.productionSigningApproved, false);
+  assert.equal(publicProductMetadata.status.storeAccepted, false);
 
   assert.equal(wallet.publicWeb, "https://wallet.ynxweb4.com/");
   assert.equal(wallet.publicWebSourceCommit, "2f1822ef268e825f14274d87c912b6b863bbaca3");

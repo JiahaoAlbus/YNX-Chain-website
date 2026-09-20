@@ -1,0 +1,46 @@
+{
+  "schema": "ynx-product-release/v1",
+  "product": "YNX Wallet",
+  "release": "1.0.17-testnet-preview-875f6c5b7",
+  "releaseMode": "testnet-preview",
+  "sourceCommit": "875f6c5b744b4b641eb5c2c9b2cb41e928676c90",
+  "sourceCommitBoundByManifest": true,
+  "releaseTag": "wallet-android-testnet-preview-1.0.17-875f6c5b7",
+  "releaseImmutable": false,
+  "artifacts": [
+    {
+      "file": "ynx-wallet-1.0.17-testnet-preview-875f6c5b7-universal-local-test-signed.apk",
+      "platform": "android",
+      "format": "apk",
+      "url": "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-android-testnet-preview-1.0.17-875f6c5b7/ynx-wallet-1.0.17-testnet-preview-875f6c5b7-universal-local-test-signed.apk",
+      "sha256": "04a37e7bd9f76bb3bb76fe330921f0f80e6d2cfa3b115d38ac93c53cb80370a2",
+      "sizeBytes": 116636787,
+      "minimumOS": "Android API 24",
+      "targetOS": "Android API 36",
+      "versionCode": 23,
+      "signingClass": "local-test-signed",
+      "installProof": "Android API 36 emulator upgraded versionCode 22 to 23 with first install time preserved; cold launch completed in 220 ms and malformed deep links failed closed without a crash."
+    },
+    {
+      "file": "ynx-wallet-1.0.17-testnet-preview-875f6c5b7-local-test-signed.aab",
+      "platform": "android",
+      "format": "aab",
+      "url": "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-android-testnet-preview-1.0.17-875f6c5b7/ynx-wallet-1.0.17-testnet-preview-875f6c5b7-local-test-signed.aab",
+      "sha256": "079c8e0597ab0c30b884e10c0d15bd1a8f606c6412509162fa85429966dbef1b",
+      "sizeBytes": 71872002,
+      "targetOS": "Android API 36",
+      "versionCode": 23,
+      "signingClass": "local-test-signed"
+    }
+  ],
+  "externalStates": {
+    "mainnet": false,
+    "androidWebsiteEntry": true,
+    "productionSigned": false,
+    "storeSubmitted": false,
+    "storeAccepted": false,
+    "walletConnectRelayE2E": false,
+    "liveChainTransferExecuted": false,
+    "installedFinanceE2E": false
+  }
+}

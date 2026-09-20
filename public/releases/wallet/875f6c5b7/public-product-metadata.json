@@ -1,0 +1,39 @@
+{
+  "schema": "ynx-public-product-metadata/v1",
+  "name": "YNX Wallet",
+  "title": "YNX Wallet — Android 1.0.17 Testnet Preview",
+  "canonicalUrl": "https://ynxweb4.com/dapp/wallet",
+  "description": "Android 1.0.17 Testnet Preview uses rpc-testnet.ynxweb4.com as the canonical Testnet endpoint, retries interrupted balance reads, falls back to the compatible legacy read endpoint, and preserves an accepted transfer for exact-hash status recovery. It is local-test-signed and is not production signed or store released.",
+  "network": {
+    "chainId": 6423,
+    "chainIdHex": "0x1917",
+    "name": "YNX Testnet",
+    "nativeAsset": "YNXT",
+    "testnet": true
+  },
+  "routes": {
+    "product": "/dapp/wallet",
+    "download": "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-android-testnet-preview-1.0.17-875f6c5b7/ynx-wallet-1.0.17-testnet-preview-875f6c5b7-universal-local-test-signed.apk",
+    "releaseEvidence": "/releases/wallet-downloads/20260920-android23.json",
+    "docs": "/docs#wallet",
+    "support": "/support"
+  },
+  "status": {
+    "walletMainnetReady": false,
+    "androidWebsiteEntry": true,
+    "productionSigningApproved": false,
+    "storeSubmitted": false,
+    "storeAccepted": false,
+    "walletConnectRelayE2E": false,
+    "liveChainTransferExecuted": false,
+    "installedFinanceE2E": false
+  },
+  "publicEvidence": {
+    "packageCheckCommand": "sha256sum ynx-wallet-1.0.17-testnet-preview-875f6c5b7-universal-local-test-signed.apk",
+    "sha256": "04a37e7bd9f76bb3bb76fe330921f0f80e6d2cfa3b115d38ac93c53cb80370a2",
+    "sizeBytes": 116636787,
+    "sourceCommit": "875f6c5b744b4b641eb5c2c9b2cb41e928676c90",
+    "releaseTag": "wallet-android-testnet-preview-1.0.17-875f6c5b7",
+    "installProof": "Android API 36 emulator upgrade and cold-launch evidence; no physical-device transfer or WalletConnect Relay acceptance is claimed."
+  }
+}
