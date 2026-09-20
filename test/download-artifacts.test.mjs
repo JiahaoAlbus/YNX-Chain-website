@@ -54,4 +54,9 @@ test("Wallet download entries preserve current Android and both Windows architec
   }
   assert.equal(downloads.ios.downloadHosted, undefined);
   assert.equal(downloads.linux.downloadHosted, false);
+  for (const platform of ["android", "macos", "windowsX64", "windowsArm64", "linuxX64Deb", "linuxArm64Deb"]) {
+    const item = downloads[platform];
+    assert.equal(new URL(item.href).hostname, "downloads.ynxweb4.com", platform);
+    assert.ok(item.href.includes(`/sha256-${item.sha256}/`), platform);
+  }
 });

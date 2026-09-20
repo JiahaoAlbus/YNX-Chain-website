@@ -8,7 +8,7 @@
   "sizeBytes": 79014862,
   "sha256": "b82c4354329e2fb517730b02211e4e10ee9e45c720a4494556a68f911a753210",
   "sourceCommit": "8a4f009822bea6c04201cbec40b8989d67a686a9",
-  "publicUrl": "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-android-testnet-preview-1.0.15-8a4f00982/ynx-wallet-1.0.15-testnet-preview-8a4f00982-universal-local-test-signed.apk",
+  "publicUrl": "https://downloads.ynxweb4.com/wallet/sha256-b82c4354329e2fb517730b02211e4e10ee9e45c720a4494556a68f911a753210/ynx-wallet-1.0.15-testnet-preview-8a4f00982-universal-local-test-signed.apk",
   "publicationEvidence": "/releases/wallet-downloads/20260920-android21.json",
   "signingClass": "Local test signed; not production signed or store released",
   "canonicalDownload": true,

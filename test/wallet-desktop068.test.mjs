@@ -2,7 +2,7 @@ import test from 'node:test';import assert from 'node:assert/strict';
 import {WALLET_DESKTOP068} from '../src/content/walletDesktop068.js';
 import {walletDownloadState} from '../src/lib/walletDownloads.js';
 import {getCatalog} from '../src/lib/ecosystemCatalog.js';
-test('five exact Desktop 0.6.8 releases are selected without broadening GitHub trust',()=>{
+test('five exact Desktop 0.6.8 releases are selected without broadening official-origin trust',()=>{
  const wallet=getCatalog().find(x=>x.key==='wallet');
  for(const [platform,expected] of Object.entries(WALLET_DESKTOP068)){
   const item=wallet.downloads[platform];assert.equal(item.href,expected.publicUrl);assert.equal(walletDownloadState(platform,item).available,true);

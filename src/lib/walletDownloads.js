@@ -45,8 +45,9 @@ export function walletDownloadState(platform, item, registryAllowsDownloads = tr
     Number.isSafeInteger(item?.sizeBytes) && item.sizeBytes > 0 &&
     typeof item?.publicationEvidence === "string" && item.publicationEvidence.startsWith("/releases/") &&
     typeof item?.signingClass === "string" && item.signingClass.length > 0;
+  const exactCurrentFile = release068 ? desktop068 : ["android", "androidUniversal"].includes(platform) ? androidCurrent : trustedFile;
   const available = Boolean(registryAllowsDownloads && item?.downloadHosted === true &&
-    item.canonicalDownload === true && item.historicalPreview !== true && item.downloadApproved !== false && !legacyBlocked && !permissionHold && !safetyHold && (trustedFile || androidCurrent || desktop068) && completeProvenance);
+    item.canonicalDownload === true && item.historicalPreview !== true && item.downloadApproved !== false && !legacyBlocked && !permissionHold && !safetyHold && exactCurrentFile && completeProvenance);
   return {
     available, legacyBlocked, permissionHold, safetyHold, requirements,
     filename: available ? decodeURIComponent(fileUrl.pathname.split("/").pop()) : null,

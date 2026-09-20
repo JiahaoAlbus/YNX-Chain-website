@@ -2,9 +2,11 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { walletDownloadState, walletDownloadOptions } from "../src/lib/walletDownloads.js";
 import { WALLET_DOWNLOAD_COPY } from "../src/content/walletDownloadCopy.js";
+import { WALLET_DESKTOP068 } from "../src/content/walletDesktop068.js";
 import { publishedDownloadMetadata } from "../src/content/publishedDownloads.js";
 
-const [href, metadata] = Object.entries(publishedDownloadMetadata).find(([href]) => href.endsWith("x64.exe"));
+const metadata = WALLET_DESKTOP068.windowsX64;
+const href = metadata.publicUrl;
 const released = { ...metadata, href, downloadHosted: true };
 
 test("a file action requires complete immutable release provenance and registry authorization", () => {
@@ -20,7 +22,7 @@ test("a file action requires complete immutable release provenance and registry 
 
 test("download actions cannot become product-page or untrusted URL navigation", () => {
   for (const badHref of ["/dapp/wallet", "/dapp/wallet/open-download", "https://example.com" + href,
-    href.replace(/\/releases\/download\/[^/]+\//, "/releases/download/untrusted-release/"), href + "?redirect=/dapp/wallet", "javascript:alert(1)",
+    href.replace(/\/sha256-[a-f0-9]{64}\//, `/sha256-${"0".repeat(64)}/`), href + "?redirect=/dapp/wallet", "javascript:alert(1)",
     "https://user:pass@ynxweb4.com" + href, href.replace(".exe", ".html")]) {
     assert.equal(walletDownloadState("windowsX64", { ...released, href: badHref }).available, false, badHref);
   }
