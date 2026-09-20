@@ -20,6 +20,10 @@ if [[ -n "$website_dirty_paths" ]]; then
   while IFS= read -r website_dirty_path; do
     printf '  %s\n' "$website_dirty_path" >&2
   done <<< "$website_dirty_paths"
+  if [[ "${VERCEL:-}" == "1" && "$website_dirty_paths" == " M vercel.json" ]]; then
+    echo "Vercel vercel.json mutation diff (public deployment configuration only):" >&2
+    git -C "$website_root" --no-pager diff --no-ext-diff -- vercel.json >&2
+  fi
   return 1 2>/dev/null || exit 1
 fi
 

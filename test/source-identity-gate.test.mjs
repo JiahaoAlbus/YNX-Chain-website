@@ -63,6 +63,16 @@ test("source identity gate rejects dirty, partial and inconsistent identities", 
   const untrackedResult = run(untracked);
   assert.notEqual(untrackedResult.status, 0);
   assert.match(untrackedResult.stderr, /\?\? unexpected-source\.js/);
+
+  const vercelMutation = fixture();
+  writeFileSync(path.join(vercelMutation, "vercel.json"), '{"buildCommand":"npm run build"}\n');
+  git(vercelMutation, "add", "vercel.json");
+  git(vercelMutation, "commit", "-qm", "add public config");
+  writeFileSync(path.join(vercelMutation, "vercel.json"), '{"buildCommand":"npm run changed"}\n');
+  const vercelMutationResult = run(vercelMutation, { VERCEL: "1" });
+  assert.notEqual(vercelMutationResult.status, 0);
+  assert.match(vercelMutationResult.stderr, /Vercel vercel\.json mutation diff/);
+  assert.match(vercelMutationResult.stderr, /npm run changed/);
 });
 
 test("an archive build without Git requires the complete injected identity", () => {
