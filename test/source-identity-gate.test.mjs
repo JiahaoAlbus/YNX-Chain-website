@@ -64,15 +64,29 @@ test("source identity gate rejects dirty, partial and inconsistent identities", 
   assert.notEqual(untrackedResult.status, 0);
   assert.match(untrackedResult.stderr, /\?\? unexpected-source\.js/);
 
-  const vercelMutation = fixture();
-  writeFileSync(path.join(vercelMutation, "vercel.json"), '{"buildCommand":"npm run build"}\n');
-  git(vercelMutation, "add", "vercel.json");
-  git(vercelMutation, "commit", "-qm", "add public config");
-  writeFileSync(path.join(vercelMutation, "vercel.json"), '{"buildCommand":"npm run changed"}\n');
-  const vercelMutationResult = run(vercelMutation, { VERCEL: "1" });
-  assert.notEqual(vercelMutationResult.status, 0);
-  assert.match(vercelMutationResult.stderr, /Vercel vercel\.json mutation diff/);
-  assert.match(vercelMutationResult.stderr, /npm run changed/);
+});
+
+test("only Vercel's semantically identical vercel.json normalization is accepted", () => {
+  const cwd = fixture();
+  writeFileSync(path.join(cwd, "vercel.json"), '{\n  "buildCommand": "npm run build",\n  "cleanUrls": true\n}\n');
+  git(cwd, "add", "vercel.json");
+  git(cwd, "commit", "-qm", "add public config");
+  const head = git(cwd, "rev-parse", "HEAD");
+  const vercel = { VERCEL: "1", VERCEL_GIT_COMMIT_SHA: head };
+
+  writeFileSync(path.join(cwd, "vercel.json"), '{"buildCommand":"npm run build","cleanUrls":true}\n');
+  assert.equal(run(cwd, vercel).status, 0, run(cwd, vercel).stderr);
+  assert.notEqual(run(cwd).status, 0, "local normalization remains dirty");
+  assert.notEqual(run(cwd, { ...vercel, VERCEL_GIT_COMMIT_SHA: "0".repeat(40) }).status, 0, "wrong clone commit fails");
+
+  writeFileSync(path.join(cwd, "vercel.json"), '{"buildCommand":"npm run changed","cleanUrls":true}\n');
+  const changed = run(cwd, vercel);
+  assert.notEqual(changed.status, 0);
+  assert.match(changed.stderr, /not semantically identical to exact HEAD/);
+
+  writeFileSync(path.join(cwd, "vercel.json"), '{"buildCommand":"npm run build","cleanUrls":true}\n');
+  writeFileSync(path.join(cwd, "unexpected-source.js"), "export default true;\n");
+  assert.notEqual(run(cwd, vercel).status, 0, "an extra dirty path fails");
 });
 
 test("an archive build without Git requires the complete injected identity", () => {
