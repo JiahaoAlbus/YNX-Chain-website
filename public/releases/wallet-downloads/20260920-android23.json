@@ -69,5 +69,6 @@
     "realDeviceVerified": false,
     "walletConnectRelayE2E": false,
     "liveChainTransferExecuted": false
-  }
+  },
+  "publicationMergeCommit": "c75cd8690b0bc43941db522ac502aa989addd713"
 }

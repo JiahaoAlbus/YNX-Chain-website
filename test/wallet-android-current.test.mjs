@@ -3,6 +3,8 @@ import assert from 'node:assert/strict';
 import { WALLET_ANDROID23 } from '../src/content/walletAndroid23.js';
 import { walletDownloadState } from '../src/lib/walletDownloads.js';
 import { getCatalog } from '../src/lib/ecosystemCatalog.js';
+import { readFileSync } from 'node:fs';
+import { verifyWalletAndroidPublication } from '../scripts/lib/verify-wallet-download-metadata.mjs';
 test('Android23 public selection uses the exact verified release and distinct installation evidence',()=>{
  const item=getCatalog().find(p=>p.key==='wallet').downloads.android;
  assert.equal(item.sha256,WALLET_ANDROID23.sha256);
@@ -28,6 +30,8 @@ test('Android23 rejects a coordinated filename and fallback substitution under t
 test('Android23 manifest preserves exact AAB provenance and links the unchanged Android22 history', async()=>{
  const {readFile}=await import('node:fs/promises');
  const manifest=JSON.parse(await readFile(new URL('../public'+WALLET_ANDROID23.publicationEvidence,import.meta.url),'utf8'));
+ verifyWalletAndroidPublication(manifest);
+ assert.equal(manifest.publicationMergeCommit,'c75cd8690b0bc43941db522ac502aa989addd713');
  for(const [key,value] of Object.entries(WALLET_ANDROID23)) assert.deepEqual(manifest[key],value,key);
  assert.equal(manifest.ownerPublication.evidenceCommit,'6e8e25015ad702728045e409153748d5b9fcdfcf');
  assert.equal(manifest.aab.sizeBytes,71872002);
@@ -44,4 +48,45 @@ test('Android23 manifest preserves exact AAB provenance and links the unchanged 
  }
  assert.equal(manifest.limitedInstalledEvidence.recoveryContractTestsPassed,56);
  assert.equal(manifest.limitedInstalledEvidence.liveChainTransferExecuted,false);
+});
+
+const publication = JSON.parse(readFileSync(new URL('../public/releases/wallet-downloads/20260920-android23.json',import.meta.url)));
+const metadataFields = ['publicationMergeCommit','githubReleaseId','githubApiImmutable','apkAssetId','assetUpdatedAt','verificationBoundary'];
+const nestedSections = ['ownerPublication','aab','limitedInstalledEvidence'];
+const checkedPaths = [
+ ...metadataFields.map(key=>[key]),
+ ...nestedSections.flatMap(section=>Object.keys(publication[section]).map(key=>[section,key]))
+];
+for(const path of checkedPaths){
+ test(`Android23 publication rejects tampered or omitted ${path.join('.')}`,()=>{
+  const changed=structuredClone(publication);
+  const missing=structuredClone(publication);
+  const key=path.at(-1);
+  const changedParent=path.length===1?changed:changed[path[0]];
+  const missingParent=path.length===1?missing:missing[path[0]];
+  const old=changedParent[key];
+  changedParent[key]=typeof old==='boolean'?!old:typeof old==='number'?1:
+   old.startsWith('https://')?'https://attacker.example/forged-evidence':old+'-tampered';
+  delete missingParent[key];
+  assert.throws(()=>verifyWalletAndroidPublication(changed),/exact merged owner evidence/);
+  assert.throws(()=>verifyWalletAndroidPublication(missing),/exact merged owner evidence/);
+ });
+}
+for(const section of nestedSections){
+ test(`Android23 publication rejects unrecognized or missing ${section} facts`,()=>{
+  const extra=structuredClone(publication);
+  extra[section].unreviewedAcceptance=true;
+  assert.throws(()=>verifyWalletAndroidPublication(extra),/exact merged owner evidence/);
+  const missing=structuredClone(publication);
+  delete missing[section];
+  assert.throws(()=>verifyWalletAndroidPublication(missing),/exact merged owner evidence/);
+ });
+}
+test('Android23 publication rejects the coordinated release, proof, signing and installed-acceptance attack',()=>{
+ const attack=structuredClone(publication);
+ Object.assign(attack,{githubReleaseId:1,apkAssetId:1,githubApiImmutable:true});
+ Object.assign(attack.ownerPublication,{manifest:'https://attacker.example/manifest',proof:'https://attacker.example/proof',freshDownloadDigestMatched:false});
+ Object.assign(attack.aab,{githubAssetId:1,signingClass:'production-signed',productionSigned:true,storeReleased:true});
+ Object.assign(attack.limitedInstalledEvidence,{realDeviceVerified:true,walletConnectRelayE2E:true});
+ assert.throws(()=>verifyWalletAndroidPublication(attack),/exact merged owner evidence/);
 });

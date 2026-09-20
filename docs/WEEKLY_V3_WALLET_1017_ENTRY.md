@@ -9,7 +9,11 @@ Wallet source `875f6c5b744b4b641eb5c2c9b2cb41e928676c90` (source PR #162).
 Release: `wallet-android-testnet-preview-1.0.17-875f6c5b7`.
 The machine-readable website manifest is
 `/releases/wallet-downloads/20260920-android23.json`; it records the APK and AAB
-URLs, sizes, SHA-256 digests and GitHub asset identities. Only the universal APK
+URLs, sizes, SHA-256 digests and GitHub asset identities. It binds
+`publicationMergeCommit=c75cd8690b0bc43941db522ac502aa989addd713`. The verifier
+compares the complete public manifest with independently pinned owner, AAB and
+limited-installation facts, rejecting changed, missing or added fields. Negative
+tests cover every nested fact and coordinated false acceptance claims. Only the universal APK
 is an install action. The AAB is retained as publication metadata.
 The prior 1.0.16 manifest and source record remain unchanged, and the new
 manifest's `previousRelease` links `/releases/wallet-downloads/20260920-android22.json`.
@@ -40,7 +44,7 @@ No real-device or complete financial acceptance is implied.
 
 Run `npm ci --no-audit --no-fund`, then `npm test`. The production build requires
 a clean committed checkout: run `npm run build` on the eventual exact commit.
-Validation completed: `npm test` passes all 218 tests plus docs authority and
+Validation completed: `npm test` passes all 255 tests plus docs authority and
 website verification. The preliminary Vite build passes the bundle gate at
 449187 bytes (63 chunks). The existing 450000-byte entry limit remains unchanged.
 Run the clean production build after commit; record its result against the
