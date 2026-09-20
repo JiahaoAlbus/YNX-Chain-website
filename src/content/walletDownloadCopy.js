@@ -26,7 +26,9 @@ export const WALLET_DOWNLOAD_COPY = {
     "macosAdHocSignature": "临时 ad-hoc 签名；Gatekeeper 检查未通过，尚无 Developer ID 签名或公证。",
     "androidUniversalLabel": "Android · 通用包",
     "androidUniversalProof": "包含四种 ABI；升级与系统解锁仅在 ARM64 模拟器上做了有限检查，其他 ABI 和真机尚未验证。",
-    "downloadHistory": "发布历史"
+    "downloadHistory": "发布历史",
+    "githubFallback": "GitHub 备用下载",
+    "fallbackManual": "备用链接绑定同一发布标签与文件名。仅在主下载不可用时手动选择；本站不会自动切换。"
   },
   "zh-TW": {
     "downloadWallet": "下載 Wallet",
@@ -55,7 +57,9 @@ export const WALLET_DOWNLOAD_COPY = {
     "macosAdHocSignature": "臨時 ad-hoc 簽章；Gatekeeper 檢查未通過，尚無 Developer ID 簽章或公證。",
     "androidUniversalLabel": "Android · 通用套件",
     "androidUniversalProof": "包含四種 ABI；升級與系統解鎖僅在 ARM64 模擬器上做了有限檢查，其他 ABI 和實機尚未驗證。",
-    "downloadHistory": "發布歷程"
+    "downloadHistory": "發布歷程",
+    "githubFallback": "GitHub 備用下載",
+    "fallbackManual": "備用連結綁定相同發布標籤與檔名。僅在主要下載不可用時手動選擇；本站不會自動切換。"
   },
   "en": {
     "downloadWallet": "Download Wallet",
@@ -84,7 +88,9 @@ export const WALLET_DOWNLOAD_COPY = {
     "macosAdHocSignature": "Ad-hoc signature; Gatekeeper rejected this build. No Developer ID signature or notarization.",
     "androidUniversalLabel": "Android · Universal",
     "androidUniversalProof": "Four ABIs included. Limited upgrade and OS-unlock checks used an ARM64 emulator; other ABIs and real devices remain unverified.",
-    "downloadHistory": "Release history"
+    "downloadHistory": "Release history",
+    "githubFallback": "GitHub fallback",
+    "fallbackManual": "The fallback is bound to the same release tag and filename. Choose it manually only if the primary download is unavailable; the site never switches automatically."
   },
   "ja": {
     "downloadWallet": "Wallet をダウンロード",
@@ -113,7 +119,9 @@ export const WALLET_DOWNLOAD_COPY = {
     "macosAdHocSignature": "ad-hoc 署名。Gatekeeper の評価は不合格です。Developer ID 署名と公証はありません。",
     "androidUniversalLabel": "Android · ユニバーサル",
     "androidUniversalProof": "4 種類の ABI を含みます。更新と OS ロック解除の限定的な確認は ARM64 エミュレーターのみで、他の ABI と実機は未検証です。",
-    "downloadHistory": "リリース履歴"
+    "downloadHistory": "リリース履歴",
+    "githubFallback": "GitHub 予備ダウンロード",
+    "fallbackManual": "予備リンクは同じリリースタグとファイル名に固定されています。主ダウンロードを利用できない場合のみ手動で選択してください。自動切替は行いません。"
   },
   "ko": {
     "downloadWallet": "Wallet 다운로드",
@@ -142,7 +150,9 @@ export const WALLET_DOWNLOAD_COPY = {
     "macosAdHocSignature": "ad-hoc 서명입니다. Gatekeeper 검사를 통과하지 못했으며 Developer ID 서명이나 공증은 없습니다.",
     "androidUniversalLabel": "Android · 범용 패키지",
     "androidUniversalProof": "ABI 4종을 포함합니다. 업그레이드와 OS 잠금 해제는 ARM64 에뮬레이터에서만 제한적으로 확인했으며 다른 ABI와 실기기는 미검증입니다.",
-    "downloadHistory": "출시 이력"
+    "downloadHistory": "출시 이력",
+    "githubFallback": "GitHub 대체 다운로드",
+    "fallbackManual": "대체 링크는 동일한 릴리스 태그와 파일명에 고정됩니다. 기본 다운로드를 사용할 수 없을 때만 직접 선택하세요. 자동 전환되지 않습니다."
   },
   "es": {
     "downloadWallet": "Descargar Wallet",
@@ -171,7 +181,9 @@ export const WALLET_DOWNLOAD_COPY = {
     "macosAdHocSignature": "Firma ad-hoc; Gatekeeper rechazó esta versión. Sin firma Developer ID ni notarización.",
     "androidUniversalLabel": "Android · Universal",
     "androidUniversalProof": "Incluye cuatro ABI. Las pruebas limitadas de actualización y desbloqueo del SO usaron un emulador ARM64; otras ABI y dispositivos físicos siguen sin verificarse.",
-    "downloadHistory": "Historial de versiones"
+    "downloadHistory": "Historial de versiones",
+    "githubFallback": "Descarga alternativa de GitHub",
+    "fallbackManual": "La alternativa está vinculada a la misma etiqueta de versión y nombre de archivo. Elígela manualmente solo si falla la descarga principal; el sitio no cambia automáticamente."
   },
   "fr": {
     "downloadWallet": "Télécharger Wallet",
@@ -200,7 +212,9 @@ export const WALLET_DOWNLOAD_COPY = {
     "macosAdHocSignature": "Signature ad-hoc ; Gatekeeper a rejeté cette version. Aucune signature Developer ID ni notarisation.",
     "androidUniversalLabel": "Android · Universel",
     "androidUniversalProof": "Quatre ABI incluses. Les vérifications limitées de mise à niveau et de déverrouillage système ont utilisé un émulateur ARM64 ; autres ABI et appareils physiques non vérifiés.",
-    "downloadHistory": "Historique des versions"
+    "downloadHistory": "Historique des versions",
+    "githubFallback": "Téléchargement de secours GitHub",
+    "fallbackManual": "Le lien de secours est lié au même tag de version et au même nom de fichier. Choisissez-le manuellement seulement si la source principale est indisponible ; le site ne bascule jamais automatiquement."
   },
   "de": {
     "downloadWallet": "Wallet herunterladen",
@@ -229,7 +243,9 @@ export const WALLET_DOWNLOAD_COPY = {
     "macosAdHocSignature": "Ad-hoc-Signatur; Gatekeeper hat diese Version abgelehnt. Keine Developer-ID-Signatur oder Notarisierung.",
     "androidUniversalLabel": "Android · Universal",
     "androidUniversalProof": "Vier ABIs enthalten. Begrenzte Update- und OS-Entsperrprüfungen nutzten einen ARM64-Emulator; andere ABIs und echte Geräte sind ungeprüft.",
-    "downloadHistory": "Versionsverlauf"
+    "downloadHistory": "Versionsverlauf",
+    "githubFallback": "GitHub-Ersatzdownload",
+    "fallbackManual": "Der Ersatzlink ist an dasselbe Release-Tag und denselben Dateinamen gebunden. Wähle ihn nur manuell, wenn der Hauptdownload nicht verfügbar ist; die Website wechselt nie automatisch."
   },
   "pt": {
     "downloadWallet": "Baixar Wallet",
@@ -258,7 +274,9 @@ export const WALLET_DOWNLOAD_COPY = {
     "macosAdHocSignature": "Assinatura ad-hoc; Gatekeeper rejeitou esta versão. Sem assinatura Developer ID ou notarização.",
     "androidUniversalLabel": "Android · Universal",
     "androidUniversalProof": "Inclui quatro ABIs. Os testes limitados de atualização e desbloqueio do sistema usaram um emulador ARM64; outras ABIs e aparelhos físicos não foram verificados.",
-    "downloadHistory": "Histórico de versões"
+    "downloadHistory": "Histórico de versões",
+    "githubFallback": "Download alternativo no GitHub",
+    "fallbackManual": "O link alternativo está vinculado à mesma tag de versão e ao mesmo nome de arquivo. Escolha-o manualmente apenas se o download principal estiver indisponível; o site nunca troca automaticamente."
   },
   "ru": {
     "downloadWallet": "Скачать Wallet",
@@ -287,7 +305,9 @@ export const WALLET_DOWNLOAD_COPY = {
     "macosAdHocSignature": "Подпись ad-hoc; Gatekeeper отклонил эту сборку. Подписи Developer ID и нотариального заверения Apple нет.",
     "androidUniversalLabel": "Android · Универсальный",
     "androidUniversalProof": "Включены четыре ABI. Ограниченные проверки обновления и разблокировки ОС выполнены на эмуляторе ARM64; другие ABI и реальные устройства не проверены.",
-    "downloadHistory": "История выпусков"
+    "downloadHistory": "История выпусков",
+    "githubFallback": "Резервная загрузка с GitHub",
+    "fallbackManual": "Резервная ссылка привязана к тому же тегу выпуска и имени файла. Выбирайте её вручную только при недоступности основного источника; сайт не переключается автоматически."
   },
   "ar": {
     "downloadWallet": "تنزيل Wallet",
@@ -316,7 +336,9 @@ export const WALLET_DOWNLOAD_COPY = {
     "macosAdHocSignature": "توقيع ad-hoc؛ رفض Gatekeeper هذا الإصدار. لا توقيع Developer ID أو توثيق من Apple.",
     "androidUniversalLabel": "Android · حزمة شاملة",
     "androidUniversalProof": "تتضمن أربع واجهات ABI. اقتصرت فحوص الترقية وفتح قفل النظام على محاكي ARM64؛ لم تُتحقق الواجهات الأخرى أو الأجهزة الفعلية.",
-    "downloadHistory": "سجل الإصدارات"
+    "downloadHistory": "سجل الإصدارات",
+    "githubFallback": "تنزيل احتياطي من GitHub",
+    "fallbackManual": "يرتبط الرابط الاحتياطي بوسم الإصدار واسم الملف نفسيهما. اختره يدوياً فقط عند تعذر المصدر الرئيسي؛ لا يبدّل الموقع تلقائياً."
   },
   "id": {
     "downloadWallet": "Unduh Wallet",
@@ -345,7 +367,9 @@ export const WALLET_DOWNLOAD_COPY = {
     "macosAdHocSignature": "Tanda tangan ad-hoc; Gatekeeper menolak build ini. Tanpa tanda tangan Developer ID atau notarisasi.",
     "androidUniversalLabel": "Android · Universal",
     "androidUniversalProof": "Mencakup empat ABI. Pemeriksaan terbatas pembaruan dan pembukaan kunci OS memakai emulator ARM64; ABI lain dan perangkat fisik belum diverifikasi.",
-    "downloadHistory": "Riwayat rilis"
+    "downloadHistory": "Riwayat rilis",
+    "githubFallback": "Unduhan cadangan GitHub",
+    "fallbackManual": "Tautan cadangan terikat pada tag rilis dan nama file yang sama. Pilih secara manual hanya jika unduhan utama tidak tersedia; situs tidak pernah beralih otomatis."
   }
 };
 

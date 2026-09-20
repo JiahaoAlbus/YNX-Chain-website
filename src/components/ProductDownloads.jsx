@@ -53,6 +53,7 @@ export function ProductDownloads({ product, contract, copy, locale }) {
             </p>
             {presentation.signingKey && <p className="downloadLimitation">{downloadCopy[presentation.signingKey]}</p>}
             {presentation.installProofKey && <p className="downloadLimitation">{downloadCopy[presentation.installProofKey]}</p>}
+            {presentation.fallbackHref && <p className="downloadLimitation">{downloadCopy.fallbackManual}</p>}
             {(item.note || item.sha256) && <details className="downloadReleaseDetails">
               <summary>{copy.releaseDetails}</summary>
               {item.note && !presentation.installProofKey && <p lang="en">{item.note}</p>}
@@ -64,7 +65,7 @@ export function ProductDownloads({ product, contract, copy, locale }) {
             </details>}
           </div>
           {available && !presentation.blocked
-            ? <a className="button secondary downloadPlatformAction" aria-label={`${copy.download} ${platformLabel}`} href={item.href} download={presentation.filename || item.artifactPath} rel={item.external ? "noopener" : undefined}>{copy.download}<Download size={16}/></a>
+            ? <div className="downloadPlatformActions"><a className="button secondary downloadPlatformAction" aria-label={`${copy.download} ${platformLabel}`} href={item.href} download={presentation.filename || item.artifactPath} data-download-source="official" rel={item.external ? "noopener" : undefined}>{copy.download}<Download size={16}/></a>{presentation.fallbackHref && <a className="downloadFallbackAction" href={presentation.fallbackHref} download={presentation.filename || item.artifactPath} data-download-source="github-fallback" rel="noopener">{downloadCopy.githubFallback}<ArrowUpRight size={14}/></a>}</div>
             : <span className="downloadUnavailable downloadPlatformAction">{presentation.safetyHold ? safetyCopy.pausedLabel : copy.unavailableYet}</span>}
         </li>;
       })}

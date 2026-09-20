@@ -1,4 +1,5 @@
 import process from "node:process";
+import { readWebsiteBuildIdentity } from "../lib/build-identity.mjs";
 
 const required = [
   "VITE_YNX_API_BASE_URL",
@@ -45,4 +46,10 @@ for (const key of required) {
 }
 
 if (failed) process.exit(1);
+try {
+  readWebsiteBuildIdentity(process.env);
+} catch (error) {
+  console.error(`Invalid website source identity: ${error.issues?.join(",") || "unavailable"}`);
+  process.exit(1);
+}
 console.log("website deployment env check passed");

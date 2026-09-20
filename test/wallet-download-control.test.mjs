@@ -43,6 +43,6 @@ test("known blocked macOS package and incomplete platform evidence remain unavai
 test("download chooser has native text for all twelve website locales", () => {
   assert.deepEqual(Object.keys(WALLET_DOWNLOAD_COPY).sort(), ["zh-CN", "zh-TW", "en", "ja", "ko", "es", "fr", "de", "pt", "ru", "ar", "id"].sort());
   for (const [locale, copy] of Object.entries(WALLET_DOWNLOAD_COPY)) {
-    for (const key of ["downloadWallet", "close", "otherPlatforms", "releasePending", "historicalPreview", "historicalBoundary"]) assert.ok(copy[key]?.length, `${locale}.${key}`);
+    for (const key of ["downloadWallet", "close", "otherPlatforms", "releasePending", "historicalPreview", "historicalBoundary", "githubFallback", "fallbackManual"]) assert.ok(copy[key]?.length, `${locale}.${key}`);
   }
 });

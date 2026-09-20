@@ -40,6 +40,9 @@
 .walletDownloadDetails a, .walletDownloadFooter a { color: var(--wd-accent); display: inline-flex; align-items: center; gap: 8px; text-decoration: none; }
 .walletDownloadFile { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 10px 14px; border: 1px solid var(--wd-line); border-radius: 12px; color: var(--wd-accent); text-decoration: none; font-size: 13px; font-weight: 600; line-height: 1.4; max-width: 150px; text-align: center; }
 .walletDownloadFile:hover, .walletDownloadClose:hover { border-color: var(--wd-accent); background: color-mix(in srgb, var(--wd-accent) 5%, var(--wd-bg)); }
+.walletDownloadActions { display: grid; justify-items: stretch; gap: 8px; }
+.walletDownloadFallback { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 36px; color: var(--wd-muted); font-size: 12px; font-weight: 600; text-decoration: none; }
+.walletDownloadFallback:hover { color: var(--wd-accent); text-decoration: underline; }
 .walletDownloadUnavailable { display: block; max-width: 130px; padding-block: 10px; font-size: 12px; line-height: 1.5; color: var(--wd-muted); text-align: end; }
 .walletDownloadFooter { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; padding-top: 24px; font-size: 13px; color: var(--wd-muted); }
 .walletDownloadDialog :is(button, a, summary):focus-visible { outline: 3px solid var(--wd-accent); outline-offset: 4px; }
@@ -48,7 +51,7 @@ html:has(.walletDownloadDialog[open]) { overflow: hidden; }
   .walletDownloadDialog { width: calc(100vw - 20px); max-height: calc(100dvh - 20px); border-radius: 18px; }
   .walletDownloadSheet { padding: 24px 20px; }
   .walletDownloadOption { grid-template-columns: 23px minmax(0, 1fr); gap: 10px 12px; }
-  .walletDownloadFile, .walletDownloadUnavailable { grid-column: 2; justify-self: start; text-align: start; max-width: none; }
+  .walletDownloadActions, .walletDownloadFile, .walletDownloadUnavailable { grid-column: 2; justify-self: start; text-align: start; max-width: none; }
   .walletDownloadUnavailable { padding: 0; }
 }
 @media (prefers-reduced-motion: no-preference) {

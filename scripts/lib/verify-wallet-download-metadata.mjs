@@ -73,7 +73,7 @@ export function verifyWalletDownloadMetadata(downloads = currentWalletDownloads,
       assert.deepEqual(item, currentWalletDownloads[slot], `${slot} current website overlay`);
       const evidence = JSON.parse(fs.readFileSync(`public${item.publicationEvidence}`));
       if (slot === 'android' || slot === 'androidUniversal') {
-        for (const key of ['id', 'version', 'versionCode', 'architecture', 'installation', 'artifactPath', 'sizeBytes', 'sha256', 'sourceCommit', 'publicUrl', 'publicationEvidence', 'signingClass', 'releaseBatch', 'installProof', 'mimeType']) assert.equal(item[key], evidence[key], `${slot}.${key}`);
+        for (const key of ['id', 'version', 'versionCode', 'architecture', 'installation', 'artifactPath', 'sizeBytes', 'sha256', 'sourceCommit', 'publicUrl', 'fallbackUrl', 'releaseTag', 'publicationEvidence', 'signingClass', 'releaseBatch', 'installProof', 'mimeType']) assert.equal(item[key], evidence[key], `${slot}.${key}`);
       } else if (['windowsX64', 'windowsArm64', 'linuxX64Deb', 'linuxArm64Deb', 'macos'].includes(slot)) {
         const asset = evidence.assets.find(candidate => candidate.filename === item.artifactPath);
         assert.ok(asset, `${slot} release asset`);
@@ -81,6 +81,8 @@ export function verifyWalletDownloadMetadata(downloads = currentWalletDownloads,
         assert.equal(item.sourceCommit, evidence.sourceCommit, `${slot}.sourceCommit`);
         assert.equal(item.sizeBytes, asset.bytes, `${slot}.sizeBytes`);
         assert.equal(item.sha256, asset.sha256, `${slot}.sha256`);
+        assert.equal(item.releaseTag, evidence.releaseTag, `${slot}.releaseTag`);
+        assert.equal(item.fallbackUrl, asset.githubUrl, `${slot}.fallbackUrl`);
       } else {
         const asset = evidence.artifacts.find(candidate => candidate.filename === item.artifactPath);
         assert.ok(asset, `${slot} Wallet Web release asset`);

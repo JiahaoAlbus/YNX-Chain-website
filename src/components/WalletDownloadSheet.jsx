@@ -16,7 +16,7 @@ export function WalletDownloadSheet({ locale = "en", noticeId }) {
   const product = getCatalog().find(item => item.key === "wallet");
   const contract = getProductPublicContract(product);
   const options = walletDownloadOptions(product, contract.downloadHostedVerified);
-  const renderOption = ({ platform, item, available, filename, requirements, limitationKey, installProofKey, signingKey, safetyHold }) => {
+  const renderOption = ({ platform, item, available, fallbackHref, filename, requirements, limitationKey, installProofKey, signingKey, safetyHold }) => {
     const Icon = ["android", "androidUniversal", "ios"].includes(platform) ? Smartphone : Monitor;
     const platformLabel = walletDownloadLabel(platform, copy);
     const version = item?.version?.split("-testnet")[0];
@@ -31,6 +31,7 @@ export function WalletDownloadSheet({ locale = "en", noticeId }) {
           <p className="walletDownloadFlowBoundary">{safetyHold ? <WalletDownloadSafetyNotice locale={locale} hold={safetyHold} /> : copy[limitationKey]}</p>
           {signingKey && <p className="walletDownloadFlowBoundary">{copy[signingKey]}</p>}
           {installProofKey && <p className="walletDownloadFlowBoundary">{copy[installProofKey]}</p>}
+          {fallbackHref && <p className="walletDownloadFlowBoundary">{copy.fallbackManual}</p>}
           <details className="walletDownloadDetails">
             <summary>{copy.releaseDetails}</summary>
             <p>SHA-256 <code dir="ltr">{item.sha256}</code></p>
@@ -41,9 +42,9 @@ export function WalletDownloadSheet({ locale = "en", noticeId }) {
           </details>
         </>}
       </div>
-      {available ? <a className="walletDownloadFile" href={item.href} download={filename} aria-label={`${copy.download} ${platformLabel}`}>
+      {available ? <div className="walletDownloadActions"><a className="walletDownloadFile" href={item.href} download={filename} data-download-source="official" aria-label={`${copy.download} ${platformLabel}`}>
         {copy.download}<Download size={16} aria-hidden="true" />
-      </a> : <span className="walletDownloadUnavailable">{safetyHold ? safetyCopy.pausedLabel : copy.unavailableYet}</span>}
+      </a>{fallbackHref && <a className="walletDownloadFallback" href={fallbackHref} download={filename} data-download-source="github-fallback" rel="noopener" aria-label={`${copy.githubFallback} ${platformLabel}`}>{copy.githubFallback}<ArrowUpRight size={14} aria-hidden="true" /></a>}</div> : <span className="walletDownloadUnavailable">{safetyHold ? safetyCopy.pausedLabel : copy.unavailableYet}</span>}
     </li>;
   };
   return <>

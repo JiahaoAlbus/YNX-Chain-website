@@ -58,5 +58,6 @@ test("Wallet download entries preserve current Android and both Windows architec
     const item = downloads[platform];
     assert.equal(new URL(item.href).hostname, "downloads.ynxweb4.com", platform);
     assert.ok(item.href.includes(`/sha256-${item.sha256}/`), platform);
+    assert.equal(item.fallbackUrl, `https://github.com/JiahaoAlbus/YNX-Chain/releases/download/${item.releaseTag}/${item.artifactPath}`, platform);
   }
 });

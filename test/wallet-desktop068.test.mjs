@@ -6,7 +6,9 @@ test('five exact Desktop 0.6.8 releases are selected without broadening official
  const wallet=getCatalog().find(x=>x.key==='wallet');
  for(const [platform,expected] of Object.entries(WALLET_DESKTOP068)){
   const item=wallet.downloads[platform];assert.equal(item.href,expected.publicUrl);assert.equal(walletDownloadState(platform,item).available,true);
+  assert.equal(walletDownloadState(platform,item).fallbackHref,expected.fallbackUrl);assert.ok(expected.fallbackUrl.endsWith('/'+expected.releaseTag+'/'+expected.artifactPath));
   for(const patch of [{href:expected.publicUrl+'?other=1'},{sha256:'0'.repeat(64)},{sizeBytes:1},{sourceCommit:'0'.repeat(40)}]) assert.equal(walletDownloadState(platform,{...item,...patch}).available,false);
+  for(const patch of [{fallbackUrl:expected.fallbackUrl+'?redirect=1'},{fallbackUrl:expected.fallbackUrl.replace('github.com','example.com')},{releaseTag:'other'}]) assert.equal(walletDownloadState(platform,{...item,...patch}).available,false);
  }
  for(const platform of ['linuxX64AppImage','linuxArm64AppImage']) assert.equal(walletDownloadState(platform,wallet.downloads[platform]).available,false);
  assert.equal(wallet.downloads.android.versionCode,21);

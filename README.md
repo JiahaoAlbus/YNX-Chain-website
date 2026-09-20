@@ -40,6 +40,14 @@ The deployment script supplies the audited public-testnet defaults used by the
 site. Environment variables may override those values, but private credentials
 must never be committed.
 
+Production builds and deployments require a clean Git worktree. The build gate
+derives the exact `HEAD` commit and tree and a deterministic release ID. The
+deployment command passes `YNX_WEBSITE_SOURCE_COMMIT`,
+`YNX_WEBSITE_SOURCE_TREE`, and `YNX_WEBSITE_RELEASE` to both the Vercel build
+and runtime so `/build-identity.json` can return that exact source identity.
+Providing only part of the identity, or values that do not match `HEAD`, fails
+before build or deployment.
+
 Production deployment requires:
 
 - `VITE_YNX_API_BASE_URL`

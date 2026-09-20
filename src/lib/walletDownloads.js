@@ -14,6 +14,15 @@ export function walletDownloadLabel(platform, copy) {
   return (platform === "androidUniversal" ? copy.androidUniversalLabel : null) || (platform === "android" ? "Android" : null) || WALLET_LINUX_LABELS[platform] || copy.platformNames?.[platform] || platform;
 }
 
+function exactGithubFallback(item) {
+  if (!item?.releaseTag || !item?.artifactPath || !item?.fallbackUrl) return null;
+  let fallback;
+  try { fallback = new URL(item.fallbackUrl); } catch { return null; }
+  const expectedPath = `/JiahaoAlbus/YNX-Chain/releases/download/${encodeURIComponent(item.releaseTag)}/${encodeURIComponent(item.artifactPath)}`;
+  return fallback.protocol === "https:" && fallback.hostname === "github.com" && !fallback.username && !fallback.password &&
+    !fallback.search && !fallback.hash && fallback.pathname === expectedPath ? fallback.href : null;
+}
+
 export function walletDownloadState(platform, item, registryAllowsDownloads = true) {
   const safetyHold = walletDownloadSafetyHold(item);
   const release068 = WALLET_DESKTOP068[platform];
@@ -45,11 +54,15 @@ export function walletDownloadState(platform, item, registryAllowsDownloads = tr
     Number.isSafeInteger(item?.sizeBytes) && item.sizeBytes > 0 &&
     typeof item?.publicationEvidence === "string" && item.publicationEvidence.startsWith("/releases/") &&
     typeof item?.signingClass === "string" && item.signingClass.length > 0;
+  const nativeCurrent = Boolean(release068 || ["android", "androidUniversal"].includes(platform));
+  const fallbackHref = exactGithubFallback(item);
+  const exposesFallbackAction = Boolean(release068 || platform === "android");
   const exactCurrentFile = release068 ? desktop068 : ["android", "androidUniversal"].includes(platform) ? androidCurrent : trustedFile;
   const available = Boolean(registryAllowsDownloads && item?.downloadHosted === true &&
-    item.canonicalDownload === true && item.historicalPreview !== true && item.downloadApproved !== false && !legacyBlocked && !permissionHold && !safetyHold && exactCurrentFile && completeProvenance);
+    item.canonicalDownload === true && item.historicalPreview !== true && item.downloadApproved !== false && !legacyBlocked && !permissionHold && !safetyHold && exactCurrentFile && completeProvenance &&
+    (!nativeCurrent || fallbackHref));
   return {
-    available, legacyBlocked, permissionHold, safetyHold, requirements,
+    available, fallbackHref: available && exposesFallbackAction ? fallbackHref : null, legacyBlocked, permissionHold, safetyHold, requirements,
     filename: available ? decodeURIComponent(fileUrl.pathname.split("/").pop()) : null,
     limitationKey: desktop068 ? "desktop068Boundary" : androidCurrent ? "android15Boundary" : permissionHold ? "firefoxPermissionHold" : legacyBlocked ? "macLegacyBlocked" : available ? item.historicalPreview ? "historicalBoundary" : macosPreview ? "macosPreviewBoundary" : androidPreview || androidUniversal ? "androidPreviewBoundary" : desktopPreview ? "desktopPreviewBoundary" : browserPreview ? "browserPreviewBoundary" : "previewUnverified" : "releasePending",
     installProofKey: desktop068 ? "desktop068Proof" : androidCurrent ? "android15Proof" : androidUniversal ? "androidUniversalProof" : macosPreview ? "macosLimitedProof" : androidPreview ? "androidLimitedProof" : desktopPreview ? item.installation === "appimage" ? "appImageNotInstalled" : "limitedCiLaunch" : browserPreview ? platform === "pwa" ? "pwaArchiveOnly" : "manualExtension" : null,

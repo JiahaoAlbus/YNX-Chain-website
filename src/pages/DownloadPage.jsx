@@ -37,10 +37,11 @@ function renderTarget(platform, item, productName, locale, copy, registryAllowsD
   return (
     <li key={`${productName}-${platform}`} className={`downloadItem ${item.status}`}>
       <span>{name}</span>
-      <a href={item.href} rel={item.external ? "noopener" : undefined} download={walletFile?.filename || (item.downloadHosted ? item.artifactPath : undefined)}>
+      <a href={item.href} rel={item.external ? "noopener" : undefined} download={walletFile?.filename || (item.downloadHosted ? item.artifactPath : undefined)} data-download-source={walletFile ? "official" : undefined}>
         <span>{item.downloadHosted ? copy.download : statusText}</span>
         {item.downloadHosted ? <Download size={14} /> : <ArrowUpRight size={14} />}
       </a>
+      {walletFile?.fallbackHref && <><a href={walletFile.fallbackHref} rel="noopener" download={walletFile.filename} data-download-source="github-fallback">{walletCopy.githubFallback}<ArrowUpRight size={14}/></a><small>{walletCopy.fallbackManual}</small></>}
       {walletFile ? <small>{walletCopy[walletFile.limitationKey]}</small> : item.note ? <small>{item.note}</small> : null}
       {item.downloadHosted ? <dl className="downloadEvidence" aria-label={`${productName} ${name} ${copy.evidence[5]}`}>
         <div><dt>{!item.version && walletFile ? walletCopy.sourceCode : copy.evidence[0]}</dt><dd>{item.version || (walletFile ? item.sourceCommit?.slice(0, 12) : null) || copy.unavailable}</dd></div>

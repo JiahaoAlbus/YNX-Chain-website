@@ -30,9 +30,12 @@ const files = [
     "122027d7f5668876ae5bdae8bab31c4bd34dee517096eae07813f66775b02902"
   ]
 ];
+const releaseTag = "wallet-desktop-testnet-preview-6f332753";
 export const WALLET_DESKTOP068 = Object.fromEntries(files.map(([platform, artifactPath, sizeBytes, sha256]) => [platform, {
  version: "0.6.8", sourceCommit: "6f332753baae5deaf6b05c8276b20a02cc4887c5", artifactPath, sizeBytes, sha256,
  publicUrl: `https://downloads.ynxweb4.com/wallet/sha256-${sha256}/${artifactPath}`,
+ fallbackUrl: `https://github.com/JiahaoAlbus/YNX-Chain/releases/download/${releaseTag}/${artifactPath}`,
+ releaseTag,
  publicationEvidence: "/releases/wallet-downloads/20260912-desktop068.json", releaseBatch: "wallet-desktop068-20260912",
  canonicalDownload: true, downloadApproved: true, historicalPreview: false, publicDownloadVerified: true,
  productionSigned: false, storeReleased: false, fullInstalledE2E: false, newWalletGoalsAccepted: false,
