@@ -374,18 +374,13 @@ export const WALLET_DOWNLOAD_COPY = {
 };
 
 for (const [locale, copy] of Object.entries(WALLET_DOWNLOAD_COPY)) {
-  copy.android14Boundary = locale === "zh-CN" ? "测试签名预览版。真机、其他 ABI、13→14 升级及完整业务流程尚未验证；原生水龙头暂未启用。" : locale === "zh-TW" ? "測試簽名預覽版。實機、其他 ABI、13→14 升級及完整業務流程尚未驗證；原生水龍頭暫未啟用。" : "Test-signed preview. Physical devices, other ABIs, 13-to-14 upgrade and complete workflows are not verified; native Faucet remains disabled.";
-  copy.android14Proof = locale === "zh-CN" ? "API 36 ARM64 模拟器已完成新装和三次冷启动；包含四种 ABI，可独立运行，无需 Metro。" : locale === "zh-TW" ? "API 36 ARM64 模擬器已完成新裝和三次冷啟動；包含四種 ABI，可獨立執行，無需 Metro。" : "API 36 ARM64 emulator: fresh installation and three cold starts verified. Four ABIs packaged; standalone Hermes, no Metro required.";
-}
-
-for (const [locale, copy] of Object.entries(WALLET_DOWNLOAD_COPY)) {
-  copy.android15Boundary = locale === "zh-CN" ? "测试签名预览版。真机、其他 ABI、已有账户与密钥迁移、Card 实际授权及转账尚未验证；原生水龙头暂未启用。" : locale === "zh-TW" ? "測試簽名預覽版。實機、其他 ABI、既有帳戶與金鑰遷移、Card 實際授權及轉帳尚未驗證；原生水龍頭暫未啟用。" : "Test-signed preview. Physical devices, other ABIs, existing accounts/key migration, Card approval and transfers are unverified; native Faucet remains disabled.";
-  copy.android15Proof = locale === "zh-CN" ? "无账户 API 36 ARM64 模拟器已完成 14→15 升级和三次冷启动，首次安装时间与英文偏好保留；四种 ABI，可独立运行，无需 Metro。" : locale === "zh-TW" ? "無帳戶 API 36 ARM64 模擬器已完成 14→15 升級及三次冷啟動，首次安裝時間與英文偏好保留；四種 ABI，可獨立執行，無需 Metro。" : "Empty-account API 36 ARM64 emulator: 14-to-15 upgrade and three cold starts passed, preserving first-install time and English preference. Four ABIs; standalone, no Metro.";
-}
-
-for (const [locale, copy] of Object.entries(WALLET_DOWNLOAD_COPY)) {
  copy.desktop068Boundary = locale === "zh-CN" ? "测试预览版；已有钱包升级、真实签名与转账尚未验证。" : locale === "zh-TW" ? "測試預覽版；既有錢包升級、真實簽名與轉帳尚未驗證。" : "Test preview; existing wallet upgrades, real signing and transactions remain unverified.";
  copy.desktop068Proof = locale === "zh-CN" ? "各平台已核对打包运行文件及两次空钱包锁定冷启动。Windows/Linux 为原生 CI，Mac 实跑 ARM64；不代表用户钱包迁移通过。" : locale === "zh-TW" ? "各平台已核對打包執行檔及兩次空錢包鎖定冷啟動。Windows/Linux 為原生 CI，Mac 實跑 ARM64；不代表使用者錢包遷移通過。" : "Packaged runtime and two empty locked cold starts checked per platform: native Windows/Linux CI and macOS ARM64. No user-wallet migration proof.";
 }
 
 for (const [locale, copy] of Object.entries(WALLET_DOWNLOAD_COPY)) copy.desktop068MacSignature = locale === "zh-CN" ? "ad-hoc 测试签名；未取得 Developer ID 签名或公证。" : locale === "zh-TW" ? "ad-hoc 測試簽名；未取得 Developer ID 簽名或公證。" : "Ad-hoc test signature; no Developer ID signing or notarization.";
+
+for (const [locale, copy] of Object.entries(WALLET_DOWNLOAD_COPY)) {
+ copy.android22Boundary = locale === "zh-CN" ? "1.0.16 测试网预览版，仅测试签名、未上架。真实 Relay、真机转账及已安装 Finance 流程未验证；缺 Reown ID 禁止配对。releaseImmutable=false：发布者可替换文件；网站下载时不重算 SHA-256，请自行核对摘要。" : locale === "zh-TW" ? "1.0.16 測試網預覽版，僅測試簽名、未上架。真實 Relay、實機轉帳及已安裝 Finance 流程未驗證；缺 Reown ID 禁止配對。releaseImmutable=false：發布者可替換檔案；網站下載時不重算 SHA-256，請自行核對摘要。" : "1.0.16 Testnet Preview; test signed, not store released. Real Relay, physical transfers and installed Finance E2E unverified; no Reown ID means no pairing. releaseImmutable=false: publisher can replace assets. Website does not recompute SHA-256 during download; verify the digest yourself.";
+ copy.android22Proof = locale === "zh-CN" ? "发布证据：API 36 ARM64 模拟器已安装 versionCode 22 并冷启动，崩溃缓冲区为空。不沿用旧版本的升级、密钥迁移或转账验收。" : locale === "zh-TW" ? "發布證據：API 36 ARM64 模擬器已安裝 versionCode 22 並冷啟動，崩潰緩衝區為空。不沿用舊版本的升級、金鑰遷移或轉帳驗收。" : "Release evidence: versionCode 22 installed and cold-launched on an API 36 ARM64 emulator with an empty crash buffer. Older upgrade, key-migration and transfer acceptance is not inherited.";
+}
