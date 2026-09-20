@@ -7,6 +7,7 @@
   "sourceCommitBoundByManifest": true,
   "releaseTag": "wallet-android-testnet-preview-1.0.19-d58ce00dc",
   "releaseImmutable": false,
+  "websiteActivationEvidence": "/releases/wallet/d58ce00dc/website-activation.json",
   "artifacts": [
     {
       "file": "ynx-wallet-1.0.19-testnet-preview-d58ce00dc-universal-local-test-signed.apk",
@@ -35,7 +36,7 @@
   ],
   "externalStates": {
     "mainnet": false,
-    "androidWebsiteEntry": false,
+    "androidWebsiteEntry": true,
     "productionSigned": false,
     "storeSubmitted": false,
     "storeAccepted": false,

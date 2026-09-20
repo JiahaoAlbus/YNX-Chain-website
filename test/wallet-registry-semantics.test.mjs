@@ -26,7 +26,7 @@ test("Wallet Android25 product metadata binds both artifacts without promoting i
   }
   for (const states of [productRelease.externalStates, publicProductMetadata.status]) {
     assert.equal(states.androidWebsiteEntryPrepared, true);
-    assert.equal(states.androidWebsiteEntry, false);
+    assert.equal(states.androidWebsiteEntry, true);
     for (const field of ["androidInstallVerified", "physicalDeviceVerified", "fullInstalledE2E", "walletConnectRelayE2E", "installedFinanceE2E", "liveChainTransferExecuted", "storeSubmitted", "storeAccepted"]) assert.equal(states[field], false, field);
   }
   assert.equal(publicProductMetadata.routes.releaseEvidence, WALLET_ANDROID25.publicationEvidence);
@@ -42,7 +42,7 @@ test("Wallet product-package and Companion source identities stay separately bou
   assert.equal(productRelease.product, "YNX Wallet");
   assert.equal(productRelease.release, "1.0.19-testnet-preview-d58ce00dc");
   assert.equal(productRelease.releaseImmutable, false);
-  assert.equal(productRelease.externalStates.androidWebsiteEntry, false);
+  assert.equal(productRelease.externalStates.androidWebsiteEntry, true);
   assert.equal(productRelease.externalStates.productionSigned, false);
   assert.equal(productRelease.externalStates.mainnet, false);
   assert.equal(publicProductMetadata.status.walletMainnetReady, false);
@@ -117,10 +117,47 @@ test("Historical Android24 website activation binds the first public build and b
   assert.match(evidence.verificationBoundary, /No APK download, installation, signing, transaction or Sandbox execution/);
 });
 
-test("Android25 prepared entry does not inherit Android24 website activation", () => {
-  assert.equal(productRelease.websiteActivationEvidence, undefined);
-  assert.equal(publicProductMetadata.websiteActivationEvidence, undefined);
+test("Android25 activation binds its own verified public build without inheriting installed acceptance", () => {
+  const path = "/releases/wallet/d58ce00dc/website-activation.json";
+  assert.equal(productRelease.websiteActivationEvidence, path);
+  assert.equal(publicProductMetadata.websiteActivationEvidence, path);
   assert.equal(publicProductMetadata.routes.download, WALLET_ANDROID25.publicUrl);
-  assert.equal(productRelease.externalStates.androidWebsiteEntry, false);
-  assert.equal(publicProductMetadata.status.androidWebsiteEntry, false);
+  assert.equal(productRelease.externalStates.androidWebsiteEntry, true);
+  assert.equal(publicProductMetadata.status.androidWebsiteEntry, true);
+  const evidence = JSON.parse(fs.readFileSync(`public${path}`, "utf8"));
+  assert.equal(evidence.schema, "ynx-wallet-website-activation/v1");
+  assert.equal(evidence.httpObservedAt, "2026-09-20T22:54:29Z");
+  assert.deepEqual(evidence.websiteBuild, {
+    url: "https://ynxweb4.com/build-identity.json",
+    sourceCommit: "8ad37c17b3bc778fd820281339f9eeaf53703535",
+    sourceTree: "7570357b41eeb608476c25b073c2356d30e7d809",
+    release: "website-8ad37c17b3bc"
+  });
+  assert.notEqual(evidence.websiteBuild.sourceCommit, productRelease.sourceCommit);
+  assert.equal(evidence.canonicalPage, "https://ynxweb4.com/dapp/download");
+  assert.equal(evidence.registryUrl, "https://ynxweb4.com/releases/ecosystem-release-registry.json");
+  assert.deepEqual(evidence.metadataUrls, [
+    `https://ynxweb4.com${WALLET_ANDROID25.publicationEvidence}`,
+    `https://ynxweb4.com${wallet.productRelease}`,
+    `https://ynxweb4.com${wallet.publicProductMetadata}`
+  ]);
+  assert.deepEqual(evidence.historicalUrls, [
+    `https://ynxweb4.com${WALLET_ANDROID24.publicationEvidence}`,
+    "https://ynxweb4.com/releases/wallet/2fdd679f9/product-release.json",
+    "https://ynxweb4.com/releases/wallet/2fdd679f9/public-product-metadata.json"
+  ]);
+  assert.deepEqual(evidence.checks, {
+    buildIdentityReadback: true, canonicalPageHttp200: true, registryHttp200: true,
+    metadataHttp200: true, historicalUrlsHttp200: true,
+    browserRenderedAndroidAndUniversalVersionLinkShaAndSource: true
+  });
+  assert.deepEqual(evidence.unchangedAcceptance, {
+    androidInstallVerified: false, androidInstall: "NOT_REPEATED_FOR_VERSION_ONLY_RELEASE",
+    androidColdLaunch: "NOT_REPEATED_FOR_VERSION_ONLY_RELEASE", physicalDeviceVerified: false,
+    fullInstalledE2E: false, productionSigned: false, storeSubmitted: false, storeAccepted: false,
+    walletConnectRelayE2E: false, installedFinanceE2E: false, liveChainTransferExecuted: false,
+    downloadTimeSha256Verified: false
+  });
+  assert.match(evidence.scope, /point-in-time evidence/);
+  assert.match(evidence.verificationBoundary, /No APK download, installation, signing, transaction or Sandbox execution/);
 });

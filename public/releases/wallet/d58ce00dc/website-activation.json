@@ -1,0 +1,46 @@
+{
+  "schema": "ynx-wallet-website-activation/v1",
+  "scope": "First verified official website entry for Android 1.0.19; point-in-time evidence, not continuous availability or installed acceptance.",
+  "httpObservedAt": "2026-09-20T22:54:29Z",
+  "websiteBuild": {
+    "url": "https://ynxweb4.com/build-identity.json",
+    "sourceCommit": "8ad37c17b3bc778fd820281339f9eeaf53703535",
+    "sourceTree": "7570357b41eeb608476c25b073c2356d30e7d809",
+    "release": "website-8ad37c17b3bc"
+  },
+  "canonicalPage": "https://ynxweb4.com/dapp/download",
+  "registryUrl": "https://ynxweb4.com/releases/ecosystem-release-registry.json",
+  "metadataUrls": [
+    "https://ynxweb4.com/releases/wallet-downloads/20260921-android25.json",
+    "https://ynxweb4.com/releases/wallet/d58ce00dc/product-release.json",
+    "https://ynxweb4.com/releases/wallet/d58ce00dc/public-product-metadata.json"
+  ],
+  "historicalUrls": [
+    "https://ynxweb4.com/releases/wallet-downloads/20260921-android24.json",
+    "https://ynxweb4.com/releases/wallet/2fdd679f9/product-release.json",
+    "https://ynxweb4.com/releases/wallet/2fdd679f9/public-product-metadata.json"
+  ],
+  "checks": {
+    "buildIdentityReadback": true,
+    "canonicalPageHttp200": true,
+    "registryHttp200": true,
+    "metadataHttp200": true,
+    "historicalUrlsHttp200": true,
+    "browserRenderedAndroidAndUniversalVersionLinkShaAndSource": true
+  },
+  "verificationBoundary": "Read-only HTTP and browser-rendered download entry checks. The initial product/public metadata still reported androidWebsiteEntry=false; this evidence supports correcting that status only. No APK download, installation, signing, transaction or Sandbox execution was performed in this check.",
+  "unchangedAcceptance": {
+    "androidInstallVerified": false,
+    "androidInstall": "NOT_REPEATED_FOR_VERSION_ONLY_RELEASE",
+    "androidColdLaunch": "NOT_REPEATED_FOR_VERSION_ONLY_RELEASE",
+    "physicalDeviceVerified": false,
+    "fullInstalledE2E": false,
+    "productionSigned": false,
+    "storeSubmitted": false,
+    "storeAccepted": false,
+    "walletConnectRelayE2E": false,
+    "installedFinanceE2E": false,
+    "liveChainTransferExecuted": false,
+    "downloadTimeSha256Verified": false
+  }
+}
