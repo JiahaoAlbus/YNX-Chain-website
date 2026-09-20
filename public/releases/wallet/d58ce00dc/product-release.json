@@ -1,0 +1,50 @@
+{
+  "schema": "ynx-product-release/v1",
+  "product": "YNX Wallet",
+  "release": "1.0.19-testnet-preview-d58ce00dc",
+  "releaseMode": "testnet-preview",
+  "sourceCommit": "d58ce00dc4e83f4c24747dfef7e0b59395d6b789",
+  "sourceCommitBoundByManifest": true,
+  "releaseTag": "wallet-android-testnet-preview-1.0.19-d58ce00dc",
+  "releaseImmutable": false,
+  "artifacts": [
+    {
+      "file": "ynx-wallet-1.0.19-testnet-preview-d58ce00dc-universal-local-test-signed.apk",
+      "platform": "android",
+      "format": "apk",
+      "url": "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-android-testnet-preview-1.0.19-d58ce00dc/ynx-wallet-1.0.19-testnet-preview-d58ce00dc-universal-local-test-signed.apk",
+      "sha256": "437973258f40e4f7b3a2d3d603bbf67e932d1fca8082ed8eb9e8ff7b84514730",
+      "sizeBytes": 116639211,
+      "minimumOS": "Android API 24",
+      "targetOS": "Android API 36",
+      "versionCode": 25,
+      "signingClass": "local-test-signed",
+      "installProof": "Owner evidence: published APK/AAB digests matched. Android 1.0.19 install/cold launch NOT_REPEATED_FOR_VERSION_ONLY_RELEASE; 1.0.18 installation evidence is historical only. Physical device, Finance, transfer and Relay acceptance remain unverified."
+    },
+    {
+      "file": "ynx-wallet-1.0.19-testnet-preview-d58ce00dc-local-test-signed.aab",
+      "platform": "android",
+      "format": "aab",
+      "url": "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-android-testnet-preview-1.0.19-d58ce00dc/ynx-wallet-1.0.19-testnet-preview-d58ce00dc-local-test-signed.aab",
+      "sha256": "e60c165362ba5d85cf96e562800b5a1ef2f33812fff9eacd10745370bf114b7f",
+      "sizeBytes": 71874951,
+      "targetOS": "Android API 36",
+      "versionCode": 25,
+      "signingClass": "local-test-signed"
+    }
+  ],
+  "externalStates": {
+    "mainnet": false,
+    "androidWebsiteEntry": false,
+    "productionSigned": false,
+    "storeSubmitted": false,
+    "storeAccepted": false,
+    "walletConnectRelayE2E": false,
+    "liveChainTransferExecuted": false,
+    "installedFinanceE2E": false,
+    "androidWebsiteEntryPrepared": true,
+    "androidInstallVerified": false,
+    "physicalDeviceVerified": false,
+    "fullInstalledE2E": false
+  }
+}

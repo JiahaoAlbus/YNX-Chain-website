@@ -1,0 +1,43 @@
+{
+  "schema": "ynx-public-product-metadata/v1",
+  "name": "YNX Wallet",
+  "title": "YNX Wallet — Android 1.0.19 Testnet Preview",
+  "canonicalUrl": "https://ynxweb4.com/dapp/wallet",
+  "description": "Android 1.0.19 Testnet Preview has published APK/AAB digest evidence. Android install/cold launch were not repeated for this version; older evidence is historical only. Physical-device, Finance and Relay acceptance remain unverified. Local-test-signed, not store released.",
+  "network": {
+    "chainId": 6423,
+    "chainIdHex": "0x1917",
+    "name": "YNX Testnet",
+    "nativeAsset": "YNXT",
+    "testnet": true
+  },
+  "routes": {
+    "product": "/dapp/wallet",
+    "download": "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-android-testnet-preview-1.0.19-d58ce00dc/ynx-wallet-1.0.19-testnet-preview-d58ce00dc-universal-local-test-signed.apk",
+    "releaseEvidence": "/releases/wallet-downloads/20260921-android25.json",
+    "docs": "/docs#wallet",
+    "support": "/support"
+  },
+  "status": {
+    "walletMainnetReady": false,
+    "androidWebsiteEntry": false,
+    "productionSigningApproved": false,
+    "storeSubmitted": false,
+    "storeAccepted": false,
+    "walletConnectRelayE2E": false,
+    "liveChainTransferExecuted": false,
+    "installedFinanceE2E": false,
+    "androidWebsiteEntryPrepared": true,
+    "androidInstallVerified": false,
+    "physicalDeviceVerified": false,
+    "fullInstalledE2E": false
+  },
+  "publicEvidence": {
+    "packageCheckCommand": "sha256sum ynx-wallet-1.0.19-testnet-preview-d58ce00dc-universal-local-test-signed.apk",
+    "sha256": "437973258f40e4f7b3a2d3d603bbf67e932d1fca8082ed8eb9e8ff7b84514730",
+    "sizeBytes": 116639211,
+    "sourceCommit": "d58ce00dc4e83f4c24747dfef7e0b59395d6b789",
+    "releaseTag": "wallet-android-testnet-preview-1.0.19-d58ce00dc",
+    "installProof": "Owner evidence: published APK/AAB digests matched. Android 1.0.19 install/cold launch NOT_REPEATED_FOR_VERSION_ONLY_RELEASE; 1.0.18 installation evidence is historical only. Physical device, Finance, transfer and Relay acceptance remain unverified."
+  }
+}

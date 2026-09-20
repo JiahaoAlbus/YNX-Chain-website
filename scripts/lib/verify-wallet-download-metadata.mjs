@@ -12,36 +12,40 @@ import { WALLET_APPIMAGE_ADVISORY, WALLET_APPIMAGE_HELD_SHA256, WALLET_DOWNLOAD_
 export const currentWalletDownloads = WALLET_CANONICAL_DOWNLOADS;
 // Pins observed GitHub metadata and owner evidence independently of the public JSON.
 // Deep equality rejects omitted, added or promoted nested acceptance claims.
-const android24PublicationPins = {
-  "publicationEvidenceCommit": "f3c0a39af312d36027459ba113d68ce83b0615c5",
-  "githubReleaseId": 392546625,
+const android25PublicationPins = {
+  "publicationMergeCommit": "cdb9bd25cdef9524c7c869d1110f4ce0b7d8cd91",
+  "publicationEvidenceCommit": "cd71230a8a3e5536a4a61bf6b5786fcf4962d8c9",
+  "githubReleaseId": 392588529,
   "githubApiImmutable": false,
-  "apkAssetId": 577412914,
-  "assetUpdatedAt": "2026-09-20T19:25:42Z",
-  "verificationBoundary": "Owner point-in-time download digests and GitHub metadata verified; publisher may replace assets. Website does not recompute SHA-256 during download. Installation remains NOT_VERIFIED.",
+  "apkAssetId": 577641202,
+  "assetUpdatedAt": "2026-09-20T22:00:42Z",
+  "verificationBoundary": "Owner point-in-time download digests and GitHub metadata verified; publisher may replace assets. Website does not recompute SHA-256 during download. Version 1.0.19 installation was not repeated.",
   "ownerPublication": {
-    "pullRequest": "https://github.com/JiahaoAlbus/YNX-Chain/pull/179",
-    "evidenceCommit": "f3c0a39af312d36027459ba113d68ce83b0615c5",
-    "manifest": "https://github.com/JiahaoAlbus/YNX-Chain/blob/f3c0a39af312d36027459ba113d68ce83b0615c5/apps/wallet/artifact-publication-1.0.18.json",
-    "proof": "https://github.com/JiahaoAlbus/YNX-Chain/blob/f3c0a39af312d36027459ba113d68ce83b0615c5/apps/wallet/proof/wallet-android-1.0.18-publication-20260921.json",
+    "pullRequest": "https://github.com/JiahaoAlbus/YNX-Chain/pull/184",
+    "evidenceCommit": "cd71230a8a3e5536a4a61bf6b5786fcf4962d8c9",
+    "manifest": "https://github.com/JiahaoAlbus/YNX-Chain/blob/cd71230a8a3e5536a4a61bf6b5786fcf4962d8c9/apps/wallet/artifact-publication-1.0.19.json",
+    "proof": "https://github.com/JiahaoAlbus/YNX-Chain/blob/cd71230a8a3e5536a4a61bf6b5786fcf4962d8c9/apps/wallet/proof/wallet-android-1.0.19-publication-20260921.json",
     "freshDownloadDigestMatched": true,
     "downloadVerificationBy": "Wallet publication owner; website independently matched GitHub asset metadata"
   },
   "aab": {
-    "artifactPath": "ynx-wallet-1.0.18-testnet-preview-2fdd679f9-local-test-signed.aab",
-    "publicUrl": "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-android-testnet-preview-1.0.18-2fdd679f9/ynx-wallet-1.0.18-testnet-preview-2fdd679f9-local-test-signed.aab",
-    "sizeBytes": 71875238,
-    "sha256": "c6f920a00b8768c9ea8837bd35cfcee4b1b2c9106959c101c44026fa388c7850",
-    "githubAssetId": 577412911,
-    "assetUpdatedAt": "2026-09-20T19:25:34Z",
+    "artifactPath": "ynx-wallet-1.0.19-testnet-preview-d58ce00dc-local-test-signed.aab",
+    "publicUrl": "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-android-testnet-preview-1.0.19-d58ce00dc/ynx-wallet-1.0.19-testnet-preview-d58ce00dc-local-test-signed.aab",
+    "sizeBytes": 71874951,
+    "sha256": "e60c165362ba5d85cf96e562800b5a1ef2f33812fff9eacd10745370bf114b7f",
+    "githubAssetId": 577641200,
+    "assetUpdatedAt": "2026-09-20T22:00:33Z",
     "signingClass": "local-test-signed",
     "productionSigned": false,
     "storeReleased": false,
     "directInstallable": false
   },
   "limitedInstalledEvidence": {
-    "androidInstall": "NOT_VERIFIED",
-    "androidColdLaunch": "NOT_VERIFIED",
+    "androidInstall": "NOT_REPEATED_FOR_VERSION_ONLY_RELEASE",
+    "androidColdLaunch": "NOT_REPEATED_FOR_VERSION_ONLY_RELEASE",
+    "historicalVersion": "1.0.18-testnet-preview",
+    "historicalProof": "https://github.com/JiahaoAlbus/YNX-Chain/blob/cdb9bd25cdef9524c7c869d1110f4ce0b7d8cd91/apps/wallet/proof/wallet-android-1.0.18-installed-faucet-transfer-20260921.json",
+    "mutationRepeatedFor1019": false,
     "realDeviceVerified": false,
     "walletConnectRelayE2E": false,
     "liveChainTransferExecuted": false,
@@ -49,15 +53,24 @@ const android24PublicationPins = {
   },
   "reproducibility": {
     "fixedAbsolutePathBuilds": 2,
-    "apkBitForBitMatched": true,
+    "rawGradleApkBitForBitMatched": false,
+    "rawGradleApkV2SignaturesMatched": true,
+    "rawGradleApkV2SignatureAlgorithmId": "0x0103",
+    "rawGradleApkV2SignatureAlgorithm": "RSA_PKCS1_V1_5_WITH_SHA256",
+    "differingBlockId": "0x504b4453",
+    "differingBlock": "APK Dependency Info",
+    "differingBlockContainedDifferentBuildHashes": true,
+    "resigningRemovedOrReplacedDependencyMetadata": true,
+    "rsaPssSaltNormalizationClaim": false,
+    "publishedApkBitForBitMatched": true,
     "aabBitForBitMatched": true,
     "crossPathComparisonExcluded": true
   }
 };
 
 export function verifyWalletAndroidPublication(evidence) {
-  assert.deepEqual(evidence, { ...currentWalletDownloads.android, ...android24PublicationPins },
-    'Android24 publication must match the exact pinned owner evidence and release assets');
+  assert.deepEqual(evidence, { ...currentWalletDownloads.android, ...android25PublicationPins },
+    'Android25 publication must match the exact pinned owner evidence and release assets');
 }
 
 const archivedManifests = [...WALLET_DESKTOP_MANIFESTS, ...WALLET_BROWSER_MANIFESTS, ...WALLET_ANDROID_MANIFESTS, ...WALLET_MACOS_MANIFESTS];
