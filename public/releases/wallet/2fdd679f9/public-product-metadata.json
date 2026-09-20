@@ -1,0 +1,43 @@
+{
+  "schema": "ynx-public-product-metadata/v1",
+  "name": "YNX Wallet",
+  "title": "YNX Wallet — Android 1.0.18 Testnet Preview",
+  "canonicalUrl": "https://ynxweb4.com/dapp/wallet",
+  "description": "Android 1.0.18 Testnet Preview has published APK/AAB digest evidence and fixed-path reproducible builds. Android installation, cold launch, physical-device transfers and Relay remain NOT_VERIFIED. Local-test-signed; not production signed or store released.",
+  "network": {
+    "chainId": 6423,
+    "chainIdHex": "0x1917",
+    "name": "YNX Testnet",
+    "nativeAsset": "YNXT",
+    "testnet": true
+  },
+  "routes": {
+    "product": "/dapp/wallet",
+    "download": "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-android-testnet-preview-1.0.18-2fdd679f9/ynx-wallet-1.0.18-testnet-preview-2fdd679f9-universal-local-test-signed.apk",
+    "releaseEvidence": "/releases/wallet-downloads/20260921-android24.json",
+    "docs": "/docs#wallet",
+    "support": "/support"
+  },
+  "status": {
+    "walletMainnetReady": false,
+    "androidWebsiteEntry": false,
+    "productionSigningApproved": false,
+    "storeSubmitted": false,
+    "storeAccepted": false,
+    "walletConnectRelayE2E": false,
+    "liveChainTransferExecuted": false,
+    "installedFinanceE2E": false,
+    "androidWebsiteEntryPrepared": true,
+    "androidInstallVerified": false,
+    "physicalDeviceVerified": false,
+    "fullInstalledE2E": false
+  },
+  "publicEvidence": {
+    "packageCheckCommand": "sha256sum ynx-wallet-1.0.18-testnet-preview-2fdd679f9-universal-local-test-signed.apk",
+    "sha256": "45fd5004c9156d4fb5880d9caa2056f5b2238e85ca63a13ddf73f25dea96266a",
+    "sizeBytes": 116737714,
+    "sourceCommit": "2fdd679f9044a51e4facfa5b71b6e57864bb6508",
+    "releaseTag": "wallet-android-testnet-preview-1.0.18-2fdd679f9",
+    "installProof": "Owner evidence: fresh APK/AAB digests and fixed-path two-build outputs matched. Android install/cold launch and physical-device use are NOT_VERIFIED; no installed Finance, live transfer or Relay acceptance."
+  }
+}

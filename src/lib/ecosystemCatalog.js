@@ -148,13 +148,13 @@ const PRODUCT_ROUTES = Object.fromEntries(
 
 const evidence = {
   wallet: {
-    commit: "a1c680982b63",
+    commit: "2fdd679f9044",
     centralAccepted: false,
     productRelease: {
       href: "/releases/ecosystem-release-registry.json",
       release: "wallet-auth-v1.0.0-testnet-preview.5"
     },
-    statusNote: "The Wallet download selector publishes Android 1.0.17 from source 875f6c5b7 and the current desktop test previews, and points to immutable Wallet Web packages from source c93e16be. Android 1.0.17 adds interrupted-read recovery and durable transfer status recovery, but remains local-test-signed. Real WalletConnect Relay pairing, physical-device transfer, installed Finance E2E, production signing and store release remain unverified. Browser packages remain unsigned manual-install previews; AppImage remains build-only and macOS remains ad-hoc signed and not notarized.",
+    statusNote: "The Wallet download selector publishes Android 1.0.18 from source 2fdd679f9 and the current desktop test previews, and points to immutable Wallet Web packages from source c93e16be. Android 1.0.18 has published APK/AAB digest evidence but Android install/cold launch remains NOT_VERIFIED; it remains local-test-signed. Real WalletConnect Relay pairing, physical-device transfer, installed Finance E2E, production signing and store release remain unverified. Browser packages remain unsigned manual-install previews; AppImage remains build-only and macOS remains ad-hoc signed and not notarized.",
     downloads: {
       ...Object.fromEntries(Object.entries(WALLET_CANONICAL_DOWNLOADS).map(([platform, artifact]) => [platform, artifactDownload(PRODUCT_STATUS.PREVIEW, artifact.artifactPath, artifact.installProof, artifact.publicUrl)])),
       web: { status: PRODUCT_STATUS.LIVE, href: "https://wallet.ynxweb4.com/", external: true, downloadHosted: false, note: "Public Wallet Companion for provider discovery, YNX Testnet setup, signing and transaction requests. The Wallet/Auth health endpoint is not a product entry." },
