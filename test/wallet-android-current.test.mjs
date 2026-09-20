@@ -64,12 +64,16 @@ test('Android25 manifest preserves exact AAB provenance and links the unchanged 
  assert.equal(history.version,'1.0.18-testnet-preview');
  assert.equal(history.sha256,'45fd5004c9156d4fb5880d9caa2056f5b2238e85ca63a13ddf73f25dea96266a');
  const item=getCatalog().find(p=>p.key==='wallet').downloads.android;
- for(const field of ['walletConnectRelayE2E','liveChainTransferExecuted','installedFinanceE2E','androidInstallVerified','physicalDeviceVerified','fullInstalledE2E','newWalletGoalsAccepted']){
+ for(const field of ['walletConnectRelayE2E','liveChainTransferExecuted','installedFinanceE2E','fundedBalanceNonceVerified','physicalDeviceVerified','fullInstalledE2E','newWalletGoalsAccepted']){
   assert.equal(manifest[field],false,field);
   assert.equal(walletDownloadState('android',{...item,[field]:true}).available,false,field);
  }
- assert.equal(manifest.limitedInstalledEvidence.androidInstall,'NOT_REPEATED_FOR_VERSION_ONLY_RELEASE');
- assert.equal(manifest.limitedInstalledEvidence.androidColdLaunch,'NOT_REPEATED_FOR_VERSION_ONLY_RELEASE');
+ assert.equal(manifest.androidInstallVerified,true);
+ assert.equal(manifest.androidInstallScope,'API 36 emulator only');
+ assert.equal(walletDownloadState('android',{...item,androidInstallVerified:false}).available,false);
+ assert.equal(walletDownloadState('android',{...item,androidInstallScope:'physical device'}).available,false);
+ assert.equal(manifest.limitedInstalledEvidence.androidInstall,'PASS_API36_EMULATOR_ONLY');
+ assert.equal(manifest.limitedInstalledEvidence.androidColdLaunch,'PASS_API36_EMULATOR_ONLY');
  assert.equal(manifest.limitedInstalledEvidence.liveChainTransferExecuted,false);
 });
 
@@ -135,4 +139,13 @@ test('Android25 does not promote raw Gradle reproducibility or historical instal
  assert.equal(publication.limitedInstalledEvidence.historicalVersion,'1.0.18-testnet-preview');
  assert.equal(publication.limitedInstalledEvidence.mutationRepeatedFor1019,false);
  assert.equal(publication.downloadTimeSha256Verified,false);
+});
+
+test('Android25 emulator evidence preserves zero mutations and the historical first website activation',()=>{
+ assert.equal(publication.limitedInstalledEvidence.evidenceCommit,'5009572445f08e3a7b138e71ce9d4328199f4a83');
+ assert.equal(publication.limitedInstalledEvidence.mergeCommit,'b29e1be58f3ed28104d9d35a3c8eb4f599635ab7');
+ assert.equal(publication.limitedInstalledEvidence.readOnlyResult,'NO_ON_CHAIN_ACCOUNT_RECORD');
+ assert.equal(publication.limitedInstalledEvidence.biometricToSettledResultMillis,9848);
+ for(const field of ['faucetRequests','transferBroadcasts','walletConnectRelayContacts','publicServiceMutations']) assert.equal(publication.limitedInstalledEvidence[field],0,field);
+ assert.equal(createHash('sha256').update(readFileSync(new URL('../public/releases/wallet/d58ce00dc/website-activation.json',import.meta.url))).digest('hex'),'eb64a0631fe94fdcf2909d89767fdd401e66920721e09125f35e716b05cd4c49');
 });

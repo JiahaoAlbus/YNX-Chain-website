@@ -3,8 +3,9 @@
   "name": "YNX Wallet",
   "title": "YNX Wallet — Android 1.0.19 Testnet Preview",
   "canonicalUrl": "https://ynxweb4.com/dapp/wallet",
+  "installedEvidence": "https://github.com/JiahaoAlbus/YNX-Chain/blob/5009572445f08e3a7b138e71ce9d4328199f4a83/apps/wallet/proof/wallet-android-1.0.19-installed-readonly-20260921.json",
   "websiteActivationEvidence": "/releases/wallet/d58ce00dc/website-activation.json",
-  "description": "Android 1.0.19 Testnet Preview has published APK/AAB digest evidence. Android install/cold launch were not repeated for this version; older evidence is historical only. Physical-device, Finance and Relay acceptance remain unverified. Local-test-signed, not store released.",
+  "description": "Android 1.0.19 Testnet Preview has published APK/AAB digest evidence. Fresh API 36 emulator install, cold launch, locked recovery and strong biometrics passed. Read-only result: NO_ON_CHAIN_ACCOUNT_RECORD; funded balance/nonce unverified. Physical-device, Finance and Relay acceptance remain unverified. Local-test-signed, not store released.",
   "network": {
     "chainId": 6423,
     "chainIdHex": "0x1917",
@@ -29,7 +30,9 @@
     "liveChainTransferExecuted": false,
     "installedFinanceE2E": false,
     "androidWebsiteEntryPrepared": true,
-    "androidInstallVerified": false,
+    "androidInstallVerified": true,
+    "androidInstallScope": "API 36 emulator only",
+    "fundedBalanceNonceVerified": false,
     "physicalDeviceVerified": false,
     "fullInstalledE2E": false
   },
@@ -39,6 +42,6 @@
     "sizeBytes": 116639211,
     "sourceCommit": "d58ce00dc4e83f4c24747dfef7e0b59395d6b789",
     "releaseTag": "wallet-android-testnet-preview-1.0.19-d58ce00dc",
-    "installProof": "Owner evidence: published APK/AAB digests matched. Android 1.0.19 install/cold launch NOT_REPEATED_FOR_VERSION_ONLY_RELEASE; 1.0.18 installation evidence is historical only. Physical device, Finance, transfer and Relay acceptance remain unverified."
+    "installProof": "Owner evidence: 1.0.19 APK installed on a fresh API 36 emulator; cold launch, locked recovery and strong biometrics passed. Read-only result: NO_ON_CHAIN_ACCOUNT_RECORD. Funded balance/nonce, physical device, transfer, Finance and Relay remain unverified."
   }
 }

@@ -26,12 +26,14 @@ export const WALLET_ANDROID25 = {
   "fullInstalledE2E": false,
   "newWalletGoalsAccepted": false,
   "releaseBatch": "wallet-android25-20260921",
-  "installProof": "Owner evidence: published APK/AAB digests matched. Android 1.0.19 install/cold launch NOT_REPEATED_FOR_VERSION_ONLY_RELEASE; 1.0.18 installation evidence is historical only. Physical device, Finance, transfer and Relay acceptance remain unverified.",
+  "installProof": "Owner evidence: 1.0.19 APK installed on a fresh API 36 emulator; cold launch, locked recovery and strong biometrics passed. Read-only result: NO_ON_CHAIN_ACCOUNT_RECORD. Funded balance/nonce, physical device, transfer, Finance and Relay remain unverified.",
   "mimeType": "application/vnd.android.package-archive",
   "previousRelease": "/releases/wallet-downloads/20260921-android24.json",
   "walletConnectRelayE2E": false,
   "liveChainTransferExecuted": false,
   "installedFinanceE2E": false,
-  "androidInstallVerified": false,
+  "androidInstallVerified": true,
+  "androidInstallScope": "API 36 emulator only",
+  "fundedBalanceNonceVerified": false,
   "physicalDeviceVerified": false
 };
