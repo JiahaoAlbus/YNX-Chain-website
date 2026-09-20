@@ -28,7 +28,9 @@ owner evidence covers emulator installation/cold launch only. Older package
 upgrade, account migration and transfer acceptance is not inherited.
 Real WalletConnect Relay and installed Finance E2E remain NOT_VERIFIED.
 
-Validation: `npm test` (216 tests, docs authority and website verification).
+Validation after the publication review fix: `npm test` (217 tests, docs
+authority and website verification). Clean production build: 449157-byte
+entry, below the unchanged 450000-byte limit.
 The production build requires a clean committed checkpoint; run `npm run build`
 after commit. Publishing this source is not production deployment.
 
