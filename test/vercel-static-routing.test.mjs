@@ -26,6 +26,41 @@ const pages = ['/', '/manual?path=wallet&lang=ja', '/docs?doc=example.en', '/api
   '/dapp/wallet/open-download', '/dapp/wallet/auth/callback', '/whitepaper', '/assets-explained'];
 const identity = readWebsiteBuildIdentity({ YNX_WEBSITE_SOURCE_COMMIT: 'a'.repeat(40), YNX_WEBSITE_SOURCE_TREE: 'b'.repeat(40), YNX_WEBSITE_RELEASE: 'routing-test' });
 
+test('Vercel uses the lockfile-exact install without bypassing source identity gates', async () => {
+  assert.equal(configuration.installCommand, 'npm ci --no-audit --no-fund');
+  assert.equal(configuration.buildCommand, 'npm run build');
+  const [build, identityGate] = await Promise.all([
+    fs.readFile(new URL('../deploy/production-build.sh', import.meta.url), 'utf8'),
+    fs.readFile(new URL('../deploy/source-identity.sh', import.meta.url), 'utf8'),
+  ]);
+  assert.match(build, /source deploy\/source-identity\.sh/);
+  assert.match(identityGate, /status --porcelain --untracked-files=normal/);
+  assert.match(identityGate, /Website production build requires a clean Git worktree/);
+  assert.doesNotMatch(identityGate, /git (?:reset|clean|checkout)/);
+});
+
+test('current Wallet Web content paths bind c93 release assets while prior paths remain available for rollback', () => {
+  const current = [
+    ['6e7e6dd17e9e729a44ed915e46433124c1a3794e06a0d072c55097084cc45e13', 'ynx-wallet-web-pwa-0.1.1.zip'],
+    ['09066d82a94cb6b8108120f980ab2cc40c42dc830ffce166529cbd570eb6a6b2', 'ynx-wallet-chrome-edge-0.1.1.zip'],
+    ['6ac256415c34b4b492dc6094be8be8c9f0acf6a40653e2e18fde64dd20f801e0', 'ynx-wallet-firefox-0.1.1.zip'],
+  ];
+  const previous = [
+    ['ed841dd13d04d9fe3b335c040d6859cd59326432376d4390943b573920786186', 'ynx-wallet-web-pwa-0.1.1.zip'],
+    ['6e8094cc4031aad706d930b09fcf8297cb6bd004a0352a4d9fbd984c3ad3a2bd', 'ynx-wallet-chrome-edge-0.1.1.zip'],
+    ['ed5bdc6c195b1598900a175ff2e294c6529dbca9130ddffde980abdcf29711f5', 'ynx-wallet-firefox-0.1.1.zip'],
+  ];
+  const bySource = new Map(configuration.rewrites.map((rewrite) => [rewrite.source, rewrite.destination]));
+  for (const [sha256, filename] of current) assert.equal(
+    bySource.get(`/downloads/wallet-web/sha256-${sha256}/${filename}`),
+    `https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-web-testnet-preview-0.1.1-c93e16be8/${filename}`,
+  );
+  for (const [sha256, filename] of previous) assert.equal(
+    bySource.get(`/downloads/wallet-web/sha256-${sha256}/${filename}`),
+    `https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-web-testnet-preview-0.1.1-b04765f11/${filename}`,
+  );
+});
+
 test('the final Vercel fallback excludes missing static resources while preserving business page routes', async () => {
   assert.equal(fallbacks.length, 1);
   assert.equal(configuration.rewrites.at(-1), fallback);

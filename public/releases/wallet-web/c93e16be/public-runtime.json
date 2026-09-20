@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "verifiedAt": "2026-09-20T04:09:59Z",
+  "product": "YNX Wallet Companion",
+  "publicUrl": "https://wallet.ynxweb4.com/",
+  "sourceCommit": "c93e16be81beddc957ef5f27b7bbcdfa89c28db3",
+  "sourceTree": "f85fd8d76612b03936bfe63b47e9974073445169",
+  "deploymentId": "dpl_2tgJm2y6bUBcmnx8pUhWzdYuErMq",
+  "runtimeIdentity": {
+    "schemaVersion": 1,
+    "product": "YNX Wallet Companion",
+    "sourceCommit": "c93e16be81beddc957ef5f27b7bbcdfa89c28db3",
+    "providerAuthorityCommit": "98c6d5d784d212df8981a53b17118a511e246ad2",
+    "providerEvidenceCommit": "d3831c300560507f64a50e73117bab7b85926d9a",
+    "authorityArchiveSha256": "4a7eed2da6b1626cce94713a0d4420c56ebedef0d71ee39b7e2cd9bc6762ead7",
+    "authorityRecordCount": 14,
+    "walletAddressAuthoritySha256": "df4bade31952f98602f51fbc9cbcb731bffe772da3d685b5be7ce895cb0e409f",
+    "walletAuthSourceTree": "8e50f7a52a614ea6d4c4a4d2988315d036ea0b25",
+    "walletAddressWrapperBlob": "fb0f96cc68df36c13eb6c9d92a59cb771ddd6b93",
+    "chainId": "0x1917"
+  },
+  "servedFilesVerified": 2,
+  "checks": {
+    "actualDeployment": true,
+    "publicPageRendered": true,
+    "buildIdentityReadback": true,
+    "sourceCommitMatched": true,
+    "identityNoStore": true,
+    "sourceTreeResolvedFromGitCommit": true,
+    "sourceTreePublicReadback": false
+  },
+  "notVerified": [
+    "installed provider connection",
+    "connected transaction review, signing and transaction execution",
+    "WalletConnect pairing",
+    "native installation and mobile callbacks",
+    "installed PWA upgrade across every historical artifact",
+    "production signing or store release"
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "bytes": 927,
+      "sha256": "84f5f31f3fae93fe58727a974d61732ecb452e60fb628681305d354c8841bd20"
+    },
+    {
+      "path": "build-identity.json",
+      "bytes": 619,
+      "sha256": "00f30f81de5f6478683b45f84c4d2a92aa0f7ade17ffa90a99ff8ae8e5af53ee"
+    }
+  ]
+}

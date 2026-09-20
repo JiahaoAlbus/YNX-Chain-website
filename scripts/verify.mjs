@@ -863,7 +863,11 @@ if (
   exchangeRegistry?.publicProductMetadata !== "/releases/exchange/fc2276e1ce4c/public-product-metadata.json" ||
   registryByKey.get("wallet")?.centralAccepted !== false ||
   registryByKey.get("wallet")?.publicWeb !== "https://wallet.ynxweb4.com/" ||
-  registryByKey.get("wallet")?.publicWebRelease !== "/releases/wallet-web/27d00feb/public-runtime.json" ||
+  registryByKey.get("wallet")?.publicWebRelease !== "/releases/wallet-web/c93e16be/public-runtime.json" ||
+  registryByKey.get("wallet")?.publicWebSourceCommit !== "c93e16be81beddc957ef5f27b7bbcdfa89c28db3" ||
+  registryByKey.get("wallet")?.webDownloadManifest?.sha256 !== "fe3edc16c36b5307b266c66ddb1349e2146febf332eeeb21ac4070fb0c6cce0b" ||
+  registryByKey.get("wallet")?.webDownloadManifest?.bytes !== 1858 ||
+  registryByKey.get("wallet")?.webDownloadRelease !== "/releases/wallet-web/20260920-wallet-web-testnet-preview-c93e16be.json" ||
   videoRegistry?.publicWeb !== "https://video.ynxweb4.com/" ||
   videoRegistry?.publicWebSourceCommit !== "77ac093356e8517e16d6280c8a01a598791d2d0d" ||
   videoRegistry?.centralAccepted !== false ||

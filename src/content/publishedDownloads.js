@@ -3,7 +3,7 @@ import { WALLET_CANONICAL_DOWNLOADS } from "./walletCanonicalDownloads.js";
 // Immutable published artifacts. Historical previews are not current Wallet acceptance.
 export const publishedDownloadPaths = [
   ...Object.values(WALLET_CANONICAL_DOWNLOADS).map(artifact => artifact.publicUrl),
-  "https://www.ynxweb4.com/downloads/wallet-web/sha256-ed5bdc6c195b1598900a175ff2e294c6529dbca9130ddffde980abdcf29711f5/ynx-wallet-firefox-0.1.1.zip",
+  "https://www.ynxweb4.com/downloads/wallet-web/sha256-6ac256415c34b4b492dc6094be8be8c9f0acf6a40653e2e18fde64dd20f801e0/ynx-wallet-firefox-0.1.1.zip",
   "/downloads/wallet/sha256-21db36f1c80d4e88520918de141a7f71921817799270ff671db88179023b5591/ynx-wallet-cli-darwin-arm64.gz",
   "/downloads/wallet/sha256-43dfe20665c62f0c963f0d06dc6fca9800d49543b613678a76988879537924c5/ynx-wallet-1.0.0-testnet-preview-8e8d5644-local-test-signed.apk",
   "/downloads/wallet/sha256-66a0954f7955d800af4b205680ce879c786568cbf6af8a71307cddad31c216a0/ynx-wallet-1.0.2-testnet-preview-1f8820c5-local-test-signed.apk",
@@ -27,21 +27,21 @@ export const publishedDownloadPaths = [
 
 export const publishedDownloadMetadata = {
   ...Object.fromEntries(Object.values(WALLET_CANONICAL_DOWNLOADS).map(artifact => [artifact.publicUrl, artifact])),
-  "https://www.ynxweb4.com/downloads/wallet-web/sha256-ed5bdc6c195b1598900a175ff2e294c6529dbca9130ddffde980abdcf29711f5/ynx-wallet-firefox-0.1.1.zip": {
-    "publicUrl": "https://www.ynxweb4.com/downloads/wallet-web/sha256-ed5bdc6c195b1598900a175ff2e294c6529dbca9130ddffde980abdcf29711f5/ynx-wallet-firefox-0.1.1.zip",
+  "https://www.ynxweb4.com/downloads/wallet-web/sha256-6ac256415c34b4b492dc6094be8be8c9f0acf6a40653e2e18fde64dd20f801e0/ynx-wallet-firefox-0.1.1.zip": {
+    "publicUrl": "https://www.ynxweb4.com/downloads/wallet-web/sha256-6ac256415c34b4b492dc6094be8be8c9f0acf6a40653e2e18fde64dd20f801e0/ynx-wallet-firefox-0.1.1.zip",
     "version": "0.1.1-testnet-preview.1",
-    "sizeBytes": 546364,
-    "sha256": "ed5bdc6c195b1598900a175ff2e294c6529dbca9130ddffde980abdcf29711f5",
-    "sourceCommit": "b04765f112aca96cf7dff7cfa48f9b65a891166d",
-    "releaseBatch": "wallet-web-testnet-preview-0.1.1-b04765f11",
+    "sizeBytes": 547577,
+    "sha256": "6ac256415c34b4b492dc6094be8be8c9f0acf6a40653e2e18fde64dd20f801e0",
+    "sourceCommit": "c93e16be81beddc957ef5f27b7bbcdfa89c28db3",
+    "releaseBatch": "wallet-web-testnet-preview-0.1.1-c93e16be8",
     "architecture": "any",
     "installation": "extension-unpacked",
     "targetPlatform": "web-extension",
     "sourceBinding": "Deterministic package manifest and GitHub release asset digest match the downloaded public bytes.",
     "signingClass": "unsigned unpacked Firefox extension; not store released",
-    "installProof": "354 Wallet Web tests and the package integrity gate passed. The public ZIP bytes were downloaded and rehashed; permanent signed Firefox installation remains unverified.",
-    "publicationEvidence": "/releases/wallet-web/20260920-wallet-web-testnet-preview.json",
-    "previewManifest": "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-web-testnet-preview-0.1.1-b04765f11/artifact-manifest.json",
+    "installProof": "The immutable c93e16be8 release asset and artifact manifest were downloaded and rehashed, and the manifest records local tests passed. Permanent signed Firefox installation and the new public website path remain unverified.",
+    "publicationEvidence": "/releases/wallet-web/20260920-wallet-web-testnet-preview-c93e16be.json",
+    "previewManifest": "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-web-testnet-preview-0.1.1-c93e16be8/artifact-manifest.json",
     "mimeType": "application/zip",
     "observedHTTPContentType": "application/octet-stream",
     "contentDisposition": "attachment; filename=\"ynx-wallet-firefox-0.1.1.zip\"",

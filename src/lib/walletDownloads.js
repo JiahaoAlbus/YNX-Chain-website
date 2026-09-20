@@ -29,13 +29,13 @@ export function walletDownloadState(platform, item, registryAllowsDownloads = tr
   const desktop068 = Boolean(release068 && item?.sha256 === release068.sha256 && item?.href === release068.publicUrl && item?.sourceCommit === release068.sourceCommit && item?.sizeBytes === release068.sizeBytes);
   const androidCurrent = item?.sha256 === WALLET_ANDROID21.sha256 && item?.href === WALLET_ANDROID21.publicUrl && item?.sourceCommit === WALLET_ANDROID21.sourceCommit;
   const legacyBlocked = platform === "macos" && item?.sourceCommit === "5a6b033897a1295d35fc325a92c6bb81c8b04a19";
-  const currentFirefox = platform === "firefox" && item?.sha256 === "ed5bdc6c195b1598900a175ff2e294c6529dbca9130ddffde980abdcf29711f5" &&
-    item?.sourceCommit === "b04765f112aca96cf7dff7cfa48f9b65a891166d" && item?.sizeBytes === 546364;
+  const currentFirefox = platform === "firefox" && item?.sha256 === "6ac256415c34b4b492dc6094be8be8c9f0acf6a40653e2e18fde64dd20f801e0" &&
+    item?.sourceCommit === "c93e16be81beddc957ef5f27b7bbcdfa89c28db3" && item?.sizeBytes === 547577;
   const permissionHold = platform === "firefox" && !currentFirefox;
   const macosPreview = item?.releaseBatch === "wallet-static-20260906-r6-macos";
   const androidUniversal = item?.releaseBatch === "wallet-static-20260906-r7-android-universal";
   const androidPreview = item?.releaseBatch === "wallet-static-20260906-r5-android";
-  const browserPreview = ["wallet-static-20260906-r4c-browser", "wallet-web-testnet-preview-0.1.1-b04765f11"].includes(item?.releaseBatch);
+  const browserPreview = ["wallet-static-20260906-r4c-browser", "wallet-web-testnet-preview-0.1.1-c93e16be8"].includes(item?.releaseBatch);
   const desktopPreview = item?.releaseBatch === "wallet-static-20260906-r9-desktop-065";
   const requirements = desktop068 && platform === "macos" ? "macOS 13+ · Apple Silicon / Intel · DMG" : androidCurrent ? "Android · 4 ABI · standalone APK" : androidUniversal ? "Android · arm64-v8a / armeabi-v7a / x86 / x86_64 · APK" : macosPreview ? "macOS · Apple Silicon / Intel · DMG" : androidPreview ? "Android · ARM64 · APK" : browserPreview ? platform === "pwa" ? "ZIP" : "Chrome / Edge · Chromium" : {
     android: "Android 7.0+ (API 24)", macos: "macOS 13+ · Apple Silicon / Intel",
