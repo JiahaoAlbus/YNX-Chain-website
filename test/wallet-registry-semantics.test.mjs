@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import crypto from "node:crypto";
 import fs from "node:fs";
 import test from "node:test";
+import { WALLET_ANDROID24 } from "../src/content/walletAndroid24.js";
 
 const registry = JSON.parse(fs.readFileSync("public/releases/ecosystem-release-registry.json", "utf8"));
 const wallet = registry.products.find((product) => product.key === "wallet");
@@ -11,13 +12,35 @@ const webRuntime = JSON.parse(fs.readFileSync(`public${wallet.publicWebRelease}`
 const webDownloadManifestBytes = fs.readFileSync(`public${wallet.webDownloadManifest.localPath}`);
 const webDownloadManifest = JSON.parse(webDownloadManifestBytes);
 
+test("Wallet Android24 product metadata binds both artifacts without promoting installed or public acceptance", () => {
+  const publication = JSON.parse(fs.readFileSync(`public${WALLET_ANDROID24.publicationEvidence}`, "utf8"));
+  for (const [format, expected] of [["apk", WALLET_ANDROID24], ["aab", publication.aab]]) {
+    const artifact = productRelease.artifacts.find(item => item.format === format);
+    assert.equal(artifact.file, expected.artifactPath);
+    assert.equal(artifact.url, expected.publicUrl ?? expected.fallbackUrl);
+    assert.equal(artifact.sha256, expected.sha256);
+    assert.equal(artifact.sizeBytes, expected.sizeBytes);
+    assert.equal(artifact.versionCode, 24);
+    assert.equal(artifact.signingClass, "local-test-signed");
+  }
+  for (const states of [productRelease.externalStates, publicProductMetadata.status]) {
+    assert.equal(states.androidWebsiteEntryPrepared, true);
+    for (const field of ["androidWebsiteEntry", "androidInstallVerified", "physicalDeviceVerified", "fullInstalledE2E", "walletConnectRelayE2E", "installedFinanceE2E", "liveChainTransferExecuted", "storeSubmitted", "storeAccepted"]) assert.equal(states[field], false, field);
+  }
+  assert.equal(publicProductMetadata.routes.releaseEvidence, WALLET_ANDROID24.publicationEvidence);
+  assert.equal(publicProductMetadata.publicEvidence.installProof, WALLET_ANDROID24.installProof);
+  assert.match(publicProductMetadata.publicEvidence.installProof, /NOT_VERIFIED/);
+  assert.equal(publicProductMetadata.network.chainId, 6423);
+  assert.equal(publicProductMetadata.network.nativeAsset, "YNXT");
+});
+
 test("Wallet product-package and Companion source identities stay separately bound", () => {
-  assert.equal(wallet.commit, "875f6c5b744b");
+  assert.equal(wallet.commit, "2fdd679f9044");
   assert.ok(productRelease.sourceCommit.startsWith(wallet.commit));
   assert.equal(productRelease.product, "YNX Wallet");
-  assert.equal(productRelease.release, "1.0.17-testnet-preview-875f6c5b7");
+  assert.equal(productRelease.release, "1.0.18-testnet-preview-2fdd679f9");
   assert.equal(productRelease.releaseImmutable, false);
-  assert.equal(productRelease.externalStates.androidWebsiteEntry, true);
+  assert.equal(productRelease.externalStates.androidWebsiteEntry, false);
   assert.equal(productRelease.externalStates.walletConnectRelayE2E, false);
   assert.equal(productRelease.externalStates.liveChainTransferExecuted, false);
   assert.equal(publicProductMetadata.publicEvidence.sourceCommit, productRelease.sourceCommit);
