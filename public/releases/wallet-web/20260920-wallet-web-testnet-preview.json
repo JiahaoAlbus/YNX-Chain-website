@@ -13,13 +13,13 @@
     "installedBrowserAcceptance": false,
     "productionSigned": false,
     "storeReleased": false,
-    "websiteAssetsDownloadedAndRehashed": false,
-    "websiteDownloadEntriesVerified": 0,
-    "websiteDeploymentId": null,
-    "websiteDeploymentUrl": null,
+    "websiteAssetsDownloadedAndRehashed": true,
+    "websiteDownloadEntriesVerified": 3,
+    "websiteDeploymentId": "dpl_BUVTwhszsBRfXrEHexW29s7ArwPg",
+    "websiteDeploymentUrl": "https://ynx-web4-website-340ntbuvx-jiahaoalbus-projects.vercel.app",
     "websiteProductionAlias": "https://ynxweb4.com",
     "websiteRollbackDeploymentId": "dpl_Bh4yqfsHz1pMkz87j7U8skXeKGcQ",
-    "websiteRollbackUrl": null
+    "websiteRollbackUrl": "https://ynx-web4-website-new-jiahaoalbus-projects.vercel.app"
   },
   "artifacts": [
     {
@@ -50,7 +50,7 @@
   "claims": {
     "releaseAssetsHosted": true,
     "websiteCodePrepared": true,
-    "websitePublicDeploymentVerified": false,
+    "websitePublicDeploymentVerified": true,
     "productionApproved": false
   }
 }
