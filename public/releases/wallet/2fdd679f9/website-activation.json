@@ -1,0 +1,37 @@
+{
+  "schema": "ynx-wallet-website-activation/v1",
+  "scope": "First verified official website entry for Android 1.0.18; point-in-time evidence, not continuous availability or installed acceptance.",
+  "httpObservedAt": "2026-09-20T19:52:28Z",
+  "websiteBuild": {
+    "url": "https://ynxweb4.com/build-identity.json",
+    "sourceCommit": "677a4e3d1e193ce8a5e54253dbbe300736031182",
+    "sourceTree": "3fc040ec9521b9ce4460a223eed736eea6d6e1a7",
+    "release": "website-677a4e3d1e19"
+  },
+  "canonicalPage": "https://ynxweb4.com/dapp/download",
+  "metadataUrls": [
+    "https://ynxweb4.com/releases/wallet-downloads/20260921-android24.json",
+    "https://ynxweb4.com/releases/wallet/2fdd679f9/product-release.json",
+    "https://ynxweb4.com/releases/wallet/2fdd679f9/public-product-metadata.json"
+  ],
+  "checks": {
+    "buildIdentityReadback": true,
+    "canonicalPageHttp200": true,
+    "metadataHttp200": true,
+    "browserRenderedVersionLinkShaAndSource": true,
+    "metadataVersionCode24": true
+  },
+  "verificationBoundary": "Read-only HTTP and browser-rendered download entry checks. The initial product/public metadata still reported androidWebsiteEntry=false; this evidence supports correcting that status only. No APK download, installation, signing, transaction or Sandbox execution was performed in this check.",
+  "unchangedAcceptance": {
+    "androidInstallVerified": false,
+    "androidColdLaunch": "NOT_VERIFIED",
+    "physicalDeviceVerified": false,
+    "fullInstalledE2E": false,
+    "productionSigned": false,
+    "storeSubmitted": false,
+    "storeAccepted": false,
+    "walletConnectRelayE2E": false,
+    "installedFinanceE2E": false,
+    "liveChainTransferExecuted": false
+  }
+}
