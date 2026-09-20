@@ -10,6 +10,55 @@ import { walletDownloadState } from '../../src/lib/walletDownloads.js';
 import { WALLET_APPIMAGE_ADVISORY, WALLET_APPIMAGE_HELD_SHA256, WALLET_DOWNLOAD_SAFETY_POLICY_PATH } from '../../src/lib/walletDownloadSafety.js';
 
 export const currentWalletDownloads = WALLET_CANONICAL_DOWNLOADS;
+// Pins observed GitHub metadata and owner evidence independently of the public JSON.
+// Deep equality rejects omitted, added or promoted nested acceptance claims.
+const android23PublicationPins = {
+  "publicationMergeCommit": "c75cd8690b0bc43941db522ac502aa989addd713",
+  "githubReleaseId": 392422025,
+  "githubApiImmutable": false,
+  "apkAssetId": 576764497,
+  "assetUpdatedAt": "2026-09-20T12:19:30Z",
+  "verificationBoundary": "Point-in-time URL, size and SHA verification. Publisher may replace assets; website does not recompute SHA-256 during download.",
+  "ownerPublication": {
+    "pullRequest": "https://github.com/JiahaoAlbus/YNX-Chain/pull/164",
+    "evidenceCommit": "6e8e25015ad702728045e409153748d5b9fcdfcf",
+    "manifest": "https://github.com/JiahaoAlbus/YNX-Chain/blob/6e8e25015ad702728045e409153748d5b9fcdfcf/apps/wallet/artifact-publication-1.0.17.json",
+    "proof": "https://github.com/JiahaoAlbus/YNX-Chain/blob/6e8e25015ad702728045e409153748d5b9fcdfcf/apps/wallet/proof/wallet-android-1.0.17-publication-20260920.json",
+    "freshDownloadDigestMatched": true,
+    "downloadVerificationBy": "Wallet publication owner; website independently matched GitHub asset metadata"
+  },
+  "aab": {
+    "artifactPath": "ynx-wallet-1.0.17-testnet-preview-875f6c5b7-local-test-signed.aab",
+    "publicUrl": "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-android-testnet-preview-1.0.17-875f6c5b7/ynx-wallet-1.0.17-testnet-preview-875f6c5b7-local-test-signed.aab",
+    "sizeBytes": 71872002,
+    "sha256": "079c8e0597ab0c30b884e10c0d15bd1a8f606c6412509162fa85429966dbef1b",
+    "githubAssetId": 576764498,
+    "assetUpdatedAt": "2026-09-20T12:19:22Z",
+    "signingClass": "local-test-signed",
+    "productionSigned": false,
+    "storeReleased": false,
+    "directInstallable": false
+  },
+  "limitedInstalledEvidence": {
+    "api": 36,
+    "upgradedFromVersionCode": 22,
+    "versionCode": 23,
+    "firstInstallTimePreserved": true,
+    "coldLaunchTotalTimeMs": 220,
+    "deepLinksWithoutCrash": true,
+    "crashBufferEmpty": true,
+    "recoveryContractTestsPassed": 56,
+    "realDeviceVerified": false,
+    "walletConnectRelayE2E": false,
+    "liveChainTransferExecuted": false
+  }
+};
+
+export function verifyWalletAndroidPublication(evidence) {
+  assert.deepEqual(evidence, { ...currentWalletDownloads.android, ...android23PublicationPins },
+    'Android23 publication must match the exact merged owner evidence and release assets');
+}
+
 const archivedManifests = [...WALLET_DESKTOP_MANIFESTS, ...WALLET_BROWSER_MANIFESTS, ...WALLET_ANDROID_MANIFESTS, ...WALLET_MACOS_MANIFESTS];
 const archivePins = [
   ['c510fcd2b72eb2a6f7c07188e32161e9bcd4d6b4f79a131f5f7a213c46c9bfd3', 2926],
@@ -73,7 +122,8 @@ export function verifyWalletDownloadMetadata(downloads = currentWalletDownloads,
       assert.deepEqual(item, currentWalletDownloads[slot], `${slot} current website overlay`);
       const evidence = JSON.parse(fs.readFileSync(`public${item.publicationEvidence}`));
       if (slot === 'android' || slot === 'androidUniversal') {
-        for (const key of ['id', 'version', 'versionCode', 'architecture', 'installation', 'artifactPath', 'sizeBytes', 'sha256', 'sourceCommit', 'publicUrl', 'fallbackUrl', 'releaseTag', 'publicationEvidence', 'signingClass', 'releaseBatch', 'installProof', 'mimeType', 'releaseImmutable', 'publisherCanReplaceAssets', 'downloadTimeSha256Verified', 'releaseMetadataObservedAt']) assert.equal(item[key], evidence[key], `${slot}.${key}`);
+        verifyWalletAndroidPublication(evidence);
+        for (const key of ['id', 'version', 'versionCode', 'architecture', 'installation', 'artifactPath', 'sizeBytes', 'sha256', 'sourceCommit', 'publicUrl', 'fallbackUrl', 'releaseTag', 'publicationEvidence', 'signingClass', 'releaseBatch', 'installProof', 'mimeType', 'releaseImmutable', 'publisherCanReplaceAssets', 'downloadTimeSha256Verified', 'releaseMetadataObservedAt', 'walletConnectRelayE2E', 'liveChainTransferExecuted', 'installedFinanceE2E', 'previousRelease']) assert.equal(item[key], evidence[key], `${slot}.${key}`);
       } else if (['windowsX64', 'windowsArm64', 'linuxX64Deb', 'linuxArm64Deb', 'macos'].includes(slot)) {
         const asset = evidence.assets.find(candidate => candidate.filename === item.artifactPath);
         assert.ok(asset, `${slot} release asset`);
