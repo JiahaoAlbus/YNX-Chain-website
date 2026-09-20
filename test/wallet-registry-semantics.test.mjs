@@ -13,7 +13,7 @@ const webRuntime = JSON.parse(fs.readFileSync(`public${wallet.publicWebRelease}`
 const webDownloadManifestBytes = fs.readFileSync(`public${wallet.webDownloadManifest.localPath}`);
 const webDownloadManifest = JSON.parse(webDownloadManifestBytes);
 
-test("Wallet Android25 product metadata binds both artifacts without promoting installed acceptance", () => {
+test("Wallet Android25 product metadata binds both artifacts without promoting emulator-only acceptance", () => {
   const publication = JSON.parse(fs.readFileSync(`public${WALLET_ANDROID25.publicationEvidence}`, "utf8"));
   for (const [format, expected] of [["apk", WALLET_ANDROID25], ["aab", publication.aab]]) {
     const artifact = productRelease.artifacts.find(item => item.format === format);
@@ -25,13 +25,18 @@ test("Wallet Android25 product metadata binds both artifacts without promoting i
     assert.equal(artifact.signingClass, "local-test-signed");
   }
   for (const states of [productRelease.externalStates, publicProductMetadata.status]) {
+    assert.equal(states.androidInstallVerified, true);
+    assert.equal(states.androidInstallScope, "API 36 emulator only");
     assert.equal(states.androidWebsiteEntryPrepared, true);
     assert.equal(states.androidWebsiteEntry, true);
-    for (const field of ["androidInstallVerified", "physicalDeviceVerified", "fullInstalledE2E", "walletConnectRelayE2E", "installedFinanceE2E", "liveChainTransferExecuted", "storeSubmitted", "storeAccepted"]) assert.equal(states[field], false, field);
+    for (const field of ["fundedBalanceNonceVerified", "physicalDeviceVerified", "fullInstalledE2E", "walletConnectRelayE2E", "installedFinanceE2E", "liveChainTransferExecuted", "storeSubmitted", "storeAccepted"]) assert.equal(states[field], false, field);
   }
+  assert.equal(productRelease.installedEvidence, publication.limitedInstalledEvidence.proof);
+  assert.equal(publicProductMetadata.installedEvidence, publication.limitedInstalledEvidence.proof);
+  assert.equal(productRelease.artifacts.find(item => item.format === "apk").installProof, WALLET_ANDROID25.installProof);
   assert.equal(publicProductMetadata.routes.releaseEvidence, WALLET_ANDROID25.publicationEvidence);
   assert.equal(publicProductMetadata.publicEvidence.installProof, WALLET_ANDROID25.installProof);
-  assert.match(publicProductMetadata.publicEvidence.installProof, /NOT_REPEATED_FOR_VERSION_ONLY_RELEASE/);
+  assert.match(publicProductMetadata.publicEvidence.installProof, /fresh API 36 emulator/);
   assert.equal(publicProductMetadata.network.chainId, 6423);
   assert.equal(publicProductMetadata.network.nativeAsset, "YNXT");
 });
