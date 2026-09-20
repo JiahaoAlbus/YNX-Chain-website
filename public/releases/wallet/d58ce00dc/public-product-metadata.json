@@ -3,6 +3,7 @@
   "name": "YNX Wallet",
   "title": "YNX Wallet — Android 1.0.19 Testnet Preview",
   "canonicalUrl": "https://ynxweb4.com/dapp/wallet",
+  "websiteActivationEvidence": "/releases/wallet/d58ce00dc/website-activation.json",
   "description": "Android 1.0.19 Testnet Preview has published APK/AAB digest evidence. Android install/cold launch were not repeated for this version; older evidence is historical only. Physical-device, Finance and Relay acceptance remain unverified. Local-test-signed, not store released.",
   "network": {
     "chainId": 6423,
@@ -20,7 +21,7 @@
   },
   "status": {
     "walletMainnetReady": false,
-    "androidWebsiteEntry": false,
+    "androidWebsiteEntry": true,
     "productionSigningApproved": false,
     "storeSubmitted": false,
     "storeAccepted": false,
