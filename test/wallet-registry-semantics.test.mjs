@@ -3,6 +3,7 @@ import crypto from "node:crypto";
 import fs from "node:fs";
 import test from "node:test";
 import { WALLET_ANDROID24 } from "../src/content/walletAndroid24.js";
+import { WALLET_ANDROID25 } from "../src/content/walletAndroid25.js";
 
 const registry = JSON.parse(fs.readFileSync("public/releases/ecosystem-release-registry.json", "utf8"));
 const wallet = registry.products.find((product) => product.key === "wallet");
@@ -12,36 +13,36 @@ const webRuntime = JSON.parse(fs.readFileSync(`public${wallet.publicWebRelease}`
 const webDownloadManifestBytes = fs.readFileSync(`public${wallet.webDownloadManifest.localPath}`);
 const webDownloadManifest = JSON.parse(webDownloadManifestBytes);
 
-test("Wallet Android24 product metadata binds both artifacts without promoting installed acceptance", () => {
-  const publication = JSON.parse(fs.readFileSync(`public${WALLET_ANDROID24.publicationEvidence}`, "utf8"));
-  for (const [format, expected] of [["apk", WALLET_ANDROID24], ["aab", publication.aab]]) {
+test("Wallet Android25 product metadata binds both artifacts without promoting installed acceptance", () => {
+  const publication = JSON.parse(fs.readFileSync(`public${WALLET_ANDROID25.publicationEvidence}`, "utf8"));
+  for (const [format, expected] of [["apk", WALLET_ANDROID25], ["aab", publication.aab]]) {
     const artifact = productRelease.artifacts.find(item => item.format === format);
     assert.equal(artifact.file, expected.artifactPath);
     assert.equal(artifact.url, expected.publicUrl ?? expected.fallbackUrl);
     assert.equal(artifact.sha256, expected.sha256);
     assert.equal(artifact.sizeBytes, expected.sizeBytes);
-    assert.equal(artifact.versionCode, 24);
+    assert.equal(artifact.versionCode, 25);
     assert.equal(artifact.signingClass, "local-test-signed");
   }
   for (const states of [productRelease.externalStates, publicProductMetadata.status]) {
     assert.equal(states.androidWebsiteEntryPrepared, true);
-    assert.equal(states.androidWebsiteEntry, true);
+    assert.equal(states.androidWebsiteEntry, false);
     for (const field of ["androidInstallVerified", "physicalDeviceVerified", "fullInstalledE2E", "walletConnectRelayE2E", "installedFinanceE2E", "liveChainTransferExecuted", "storeSubmitted", "storeAccepted"]) assert.equal(states[field], false, field);
   }
-  assert.equal(publicProductMetadata.routes.releaseEvidence, WALLET_ANDROID24.publicationEvidence);
-  assert.equal(publicProductMetadata.publicEvidence.installProof, WALLET_ANDROID24.installProof);
-  assert.match(publicProductMetadata.publicEvidence.installProof, /NOT_VERIFIED/);
+  assert.equal(publicProductMetadata.routes.releaseEvidence, WALLET_ANDROID25.publicationEvidence);
+  assert.equal(publicProductMetadata.publicEvidence.installProof, WALLET_ANDROID25.installProof);
+  assert.match(publicProductMetadata.publicEvidence.installProof, /NOT_REPEATED_FOR_VERSION_ONLY_RELEASE/);
   assert.equal(publicProductMetadata.network.chainId, 6423);
   assert.equal(publicProductMetadata.network.nativeAsset, "YNXT");
 });
 
 test("Wallet product-package and Companion source identities stay separately bound", () => {
-  assert.equal(wallet.commit, "2fdd679f9044");
+  assert.equal(wallet.commit, "d58ce00dc4e8");
   assert.ok(productRelease.sourceCommit.startsWith(wallet.commit));
   assert.equal(productRelease.product, "YNX Wallet");
-  assert.equal(productRelease.release, "1.0.18-testnet-preview-2fdd679f9");
+  assert.equal(productRelease.release, "1.0.19-testnet-preview-d58ce00dc");
   assert.equal(productRelease.releaseImmutable, false);
-  assert.equal(productRelease.externalStates.androidWebsiteEntry, true);
+  assert.equal(productRelease.externalStates.androidWebsiteEntry, false);
   assert.equal(productRelease.externalStates.productionSigned, false);
   assert.equal(productRelease.externalStates.mainnet, false);
   assert.equal(publicProductMetadata.status.walletMainnetReady, false);
@@ -63,7 +64,26 @@ test("Wallet product-package and Companion source identities stay separately bou
   assert.notEqual(wallet.commit, wallet.publicWebSourceCommit);
 });
 
-test("Android website activation binds the first public build and bounded read-only evidence", () => {
+test("Wallet Web package manifest binds the exact immutable c93 release and all three current files", () => {
+  assert.equal(wallet.webDownloadRelease, "/releases/wallet-web/20260920-wallet-web-testnet-preview-c93e16be.json");
+  assert.equal(wallet.webDownloadManifest.url, "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-web-testnet-preview-0.1.1-c93e16be8/artifact-manifest.json");
+  assert.equal(webDownloadManifestBytes.length, wallet.webDownloadManifest.bytes);
+  assert.equal(crypto.createHash("sha256").update(webDownloadManifestBytes).digest("hex"), wallet.webDownloadManifest.sha256);
+  assert.equal(webDownloadManifest.sourceCommit, "c93e16be81beddc957ef5f27b7bbcdfa89c28db3");
+  assert.notEqual(webDownloadManifest.sourceCommit, wallet.publicWebSourceCommit);
+  assert.deepEqual(webDownloadManifest.artifacts.map(({ name, bytes, sha256 }) => ({ name, bytes, sha256 })), [
+    { name: "ynx-wallet-web-pwa-0.1.1.zip", bytes: 312868, sha256: "6e7e6dd17e9e729a44ed915e46433124c1a3794e06a0d072c55097084cc45e13" },
+    { name: "ynx-wallet-chrome-edge-0.1.1.zip", bytes: 547479, sha256: "09066d82a94cb6b8108120f980ab2cc40c42dc830ffce166529cbd570eb6a6b2" },
+    { name: "ynx-wallet-firefox-0.1.1.zip", bytes: 547577, sha256: "6ac256415c34b4b492dc6094be8be8c9f0acf6a40653e2e18fde64dd20f801e0" },
+  ]);
+});
+
+test("Historical Android24 website activation binds the first public build and bounded read-only evidence", () => {
+  const productRelease = JSON.parse(fs.readFileSync("public/releases/wallet/2fdd679f9/product-release.json", "utf8"));
+  const publicProductMetadata = JSON.parse(fs.readFileSync("public/releases/wallet/2fdd679f9/public-product-metadata.json", "utf8"));
+  const wallet = {productRelease: "/releases/wallet/2fdd679f9/product-release.json", publicProductMetadata: "/releases/wallet/2fdd679f9/public-product-metadata.json"};
+  assert.equal(productRelease.externalStates.androidWebsiteEntry, true);
+  assert.equal(publicProductMetadata.status.androidWebsiteEntry, true);
   const path = "/releases/wallet/2fdd679f9/website-activation.json";
   assert.equal(productRelease.websiteActivationEvidence, path);
   assert.equal(publicProductMetadata.websiteActivationEvidence, path);
@@ -97,16 +117,10 @@ test("Android website activation binds the first public build and bounded read-o
   assert.match(evidence.verificationBoundary, /No APK download, installation, signing, transaction or Sandbox execution/);
 });
 
-test("Wallet Web package manifest binds the exact immutable c93 release and all three current files", () => {
-  assert.equal(wallet.webDownloadRelease, "/releases/wallet-web/20260920-wallet-web-testnet-preview-c93e16be.json");
-  assert.equal(wallet.webDownloadManifest.url, "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-web-testnet-preview-0.1.1-c93e16be8/artifact-manifest.json");
-  assert.equal(webDownloadManifestBytes.length, wallet.webDownloadManifest.bytes);
-  assert.equal(crypto.createHash("sha256").update(webDownloadManifestBytes).digest("hex"), wallet.webDownloadManifest.sha256);
-  assert.equal(webDownloadManifest.sourceCommit, "c93e16be81beddc957ef5f27b7bbcdfa89c28db3");
-  assert.notEqual(webDownloadManifest.sourceCommit, wallet.publicWebSourceCommit);
-  assert.deepEqual(webDownloadManifest.artifacts.map(({ name, bytes, sha256 }) => ({ name, bytes, sha256 })), [
-    { name: "ynx-wallet-web-pwa-0.1.1.zip", bytes: 312868, sha256: "6e7e6dd17e9e729a44ed915e46433124c1a3794e06a0d072c55097084cc45e13" },
-    { name: "ynx-wallet-chrome-edge-0.1.1.zip", bytes: 547479, sha256: "09066d82a94cb6b8108120f980ab2cc40c42dc830ffce166529cbd570eb6a6b2" },
-    { name: "ynx-wallet-firefox-0.1.1.zip", bytes: 547577, sha256: "6ac256415c34b4b492dc6094be8be8c9f0acf6a40653e2e18fde64dd20f801e0" },
-  ]);
+test("Android25 prepared entry does not inherit Android24 website activation", () => {
+  assert.equal(productRelease.websiteActivationEvidence, undefined);
+  assert.equal(publicProductMetadata.websiteActivationEvidence, undefined);
+  assert.equal(publicProductMetadata.routes.download, WALLET_ANDROID25.publicUrl);
+  assert.equal(productRelease.externalStates.androidWebsiteEntry, false);
+  assert.equal(publicProductMetadata.status.androidWebsiteEntry, false);
 });
