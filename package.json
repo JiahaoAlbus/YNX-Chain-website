@@ -4,24 +4,26 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 127.0.0.1",
-    "build": "vite build && node scripts/prerender.mjs && node scripts/indexnow.mjs --dry-run",
+    "build": "bash deploy/production-build.sh",
     "preview": "vite preview --host 127.0.0.1",
     "test": "node --test test/*.test.mjs && node scripts/docs-authority.mjs --verify-hosting && node scripts/verify.mjs",
+    "test:ops-evidence": "node scripts/generate-website-sbom.mjs && node scripts/verify-website-ops-evidence.mjs",
     "docs:verify": "node scripts/docs-authority.mjs --verify",
+    "docs:i18n:report": "node scripts/docs-locales.mjs",
+    "docs:i18n:verify-complete": "node scripts/docs-locales.mjs --verify-complete",
     "indexnow:dry-run": "node scripts/indexnow.mjs --dry-run",
     "release:indexnow": "node scripts/indexnow.mjs",
     "deploy:dry-run": "DEPLOY_DRY_RUN=1 bash deploy/vercel-deploy.sh",
     "deploy:prod": "bash deploy/vercel-deploy.sh"
   },
   "dependencies": {
-    "@noble/curves": "2.2.0",
-    "@noble/hashes": "2.2.0",
     "@vitejs/plugin-react": "^5.0.0",
     "vite": "^7.0.0",
     "typescript": "^5.8.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "lucide-react": "^0.468.0"
+    "lucide-react": "^0.468.0",
+    "three": "0.180.0"
   },
   "devDependencies": {}
 }

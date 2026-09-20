@@ -1,0 +1,226 @@
+{
+  "title": "Mulai di sini, selangkah demi selangkah.",
+  "lead": "Pilih jalur sesuai tujuan dan belajar dengan ritme Anda. Setiap langkah menjelaskan tindakan, hasil yang diharapkan, dan cara mengatasi masalah.",
+  "ui": [
+    "Panduan pemula",
+    "Pilih jalur belajar",
+    "Sekitar",
+    "menit",
+    "Yang perlu dilakukan",
+    "Hasil yang diharapkan",
+    "Jika tidak berhasil",
+    "Tandai selesai",
+    "Selesai",
+    "Atur ulang progres",
+    "Progres adalah catatan belajar pribadi di browser ini, bukan bukti bahwa jaringan bekerja.",
+    "Langkah berikutnya",
+    "Langkah sebelumnya",
+    "Salin perintah",
+    "Tersalin",
+    "Gagal menyalin. Pilih dan salin teks secara manual.",
+    "Buka sumber daya",
+    "Pengaturan jaringan",
+    "Nama jaringan",
+    "ID jaringan",
+    "Alamat RPC",
+    "Simbol",
+    "Desimal",
+    "Penjelajah blok",
+    "Latihan di komputer Anda saja · Devnet 6425",
+    "Testnet publik · 6423",
+    "Versi sumber tutorial",
+    "Baca dokumentasi",
+    "Referensi API",
+    "Draf teknis",
+    "Jelajahi pustaka",
+    "Cari dokumentasi",
+    "Tidak ada dokumen yang cocok",
+    "Coba kata lain atau hapus pencarian.",
+    "Semua dokumen",
+    "Sumber asli",
+    "Baca",
+    "Jaringan saat ini",
+    "Testnet publik memakai produsen blok otoritatif dan pengikut terautentikasi yang hanya membaca. Pendaftaran validator bebas, staking, dan hadiah blok belum dibuka.",
+    "Sumber tutorial dan jaringan publik dapat memakai versi berbeda.",
+    "Contoh hanya membaca data publik. Akun, kunci, dan tanda tangan tidak diperlukan.",
+    "Metode",
+    "Alamat",
+    "Tujuan",
+    "Status REST",
+    "Identitas jaringan EVM",
+    "Periksa blok dan transaksi",
+    "Aset uji",
+    "Status layanan",
+    "Daftar pemeriksaan klien",
+    "Tetapkan batas waktu, tampilkan galat koneksi, dan izinkan pengguna mencoba lagi dengan sengaja.",
+    "Periksa 6423 / 0x1917 sebelum melanjutkan. URL yang merespons tidak membuktikan jaringan yang benar.",
+    "Bedakan tertunda, terkonfirmasi, gagal, dan tidak diketahui. Cari hash sebelum mengirim ulang.",
+    "Dukungan baca dan transfer native tidak membuktikan penerapan kontrak EVM sembarang di jaringan publik.",
+    "Jangan taruh kunci penyedia dalam sumber, pratinjau, atau tangkapan layar. Rahasia dompet tetap di dompet.",
+    "Baca dahulu, lalu kembangkan.",
+    "Mulailah dari identitas dan status jaringan. Contoh tidak mengirim transaksi atau menyiratkan dukungan semua metode Ethereum.",
+    "Antarmuka publik",
+    "JavaScript SDK dari sumber",
+    "Python SDK dari sumber",
+    "SDK dapat dibangun dari repositori; publikasi di npm atau PyPI belum terbukti.",
+    "Baca referensi sumber lengkap",
+    "Platform",
+    "Respons API tidak tersedia",
+    "Jalankan secara lokal",
+    "Jaringan",
+    "Belajar",
+    "Gunakan YNX",
+    "Jalankan node",
+    "Produksi blok",
+    "Bangun aplikasi",
+    "Unduh ZIP sumber",
+    "Periksa berkas unduhan",
+    "Sebagai alternatif Git, unduh ZIP dan jalankan pemeriksaan di folder unduhan. Cocokkan seluruh SHA-256 di bawah sebelum mengekstrak. Buka folder proyek hasil ekstraksi di terminal lalu jalankan perintah node berikutnya di sana."
+  ],
+  "paths": [
+    [
+      "Menggunakan YNX pertama kali",
+      "Pasang dompet, siapkan akun Testnet, dan periksa hasil setiap tindakan.",
+      [
+        [
+          "Pasang YNX Wallet",
+          "Buka panduan, pilih sistem atau browser yang benar, lalu baca versi dan status tanda tangan. Pasang paket dan buka dompet.",
+          "YNX Wallet terbuka di perangkat. Mengunduh berkas belum berarti memasangnya.",
+          "Jika platform tidak tersedia, periksa pilihan yang didukung. Jangan memasang dompet lain dengan menganggapnya YNX Wallet."
+        ],
+        [
+          "Buat atau pulihkan dompet sendiri",
+          "Gunakan alur buat, impor, atau buka kunci milik YNX Wallet. Simpan bahan pemulihan secara offline dan belajar memakai akun Testnet terpisah.",
+          "Akun muncul di dalam YNX Wallet. Pembuatan, impor, dan pembukaan kunci tidak membutuhkan login MetaMask.",
+          "Jangan masukkan frasa pemulihan atau kunci privat ke situs, dukungan, atau AI. Gunakan hanya layar pemulihan yang didokumentasikan dompet."
+        ],
+        [
+          "Tambahkan Testnet publik",
+          "Tambahkan atau pilih YNX Testnet di pengaturan dompet dengan nilai di bawah. Periksa akun dan jaringan sebelum menghubungkan aplikasi.",
+          "Jaringannya 6423 dengan simbol YNXT. Alamat ynx1 dan 0x yang setara mewakili identitas 20 byte yang sama.",
+          "Jika ID berbeda, berhenti dan perbaiki pengaturan. Penambahan jaringan tidak boleh diam-diam meminta transaksi."
+        ],
+        [
+          "Minta YNXT uji",
+          "Buka Faucet resmi, masukkan alamat Testnet, dan ikuti petunjuk layanan saat ini. YNXT adalah aset uji tanpa nilai uang.",
+          "Permintaan berhasil memberi hasil yang dapat diperiksa. Verifikasi transaksi dan saldo; ID permintaan bukan bukti dana masuk.",
+          "Saat pemeliharaan atau pembatasan, simpan informasi tidak sensitif lalu tunggu. Jangan ulangi permintaan yang hasilnya belum diketahui."
+        ],
+        [
+          "Periksa transaksi",
+          "Cari alamat atau hash di Explorer. Periksa jaringan, penerima, jumlah, dan hasil. Sebelum transfer berikutnya, baca konfirmasi dompet dengan teliti.",
+          "Anda dapat membedakan tertunda, terkonfirmasi, dan gagal serta menemukan hash transaksi.",
+          "Jika hasil tidak diketahui atau Explorer tertinggal, periksa status lalu cari lagi. Jangan kirim transfer ganda agar transfer pertama muncul."
+        ],
+        [
+          "Hubungkan dan putuskan aplikasi",
+          "Tinjau akun dan izin yang diminta, setujui hanya yang dimaksud. Setelah mencoba, putuskan aplikasi dan periksa situs terhubung di dompet.",
+          "Dompet yang dipilih terlihat jelas. YNX Wallet menyediakan akses lengkap; dompet lain memiliki mode dasar sesuai dukungan layanan.",
+          "Jika dompet tidak ada atau terkunci, kembali ke dompet tersebut. Identitas atau akun lain tidak boleh menggantikannya tanpa pilihan Anda."
+        ]
+      ]
+    ],
+    [
+      "Jalankan node pembelajaran",
+      "Mulai Devnet terisolasi di komputer. Bloknya milik jaringan 6425, bukan Testnet publik.",
+      [
+        [
+          "Siapkan alat pengembangan",
+          "Pasang Git dan Go 1.25 atau lebih baru. Di Windows gunakan lingkungan Linux seperti WSL untuk tutorial ini. Periksa versi di terminal.",
+          "Go menunjukkan minimal 1.25; terminal Linux atau macOS dapat menjalankan git dan go.",
+          "Jika perintah tidak ada, selesaikan pemasangan dan buka ulang terminal. Jangan tempel perintah di dompet atau bilah alamat browser."
+        ],
+        [
+          "Ambil salinan sumber baru",
+          "Klon repositori ke folder baru dan pilih versi yang ditampilkan. Pisahkan dari proyek dan data dompet yang sudah ada.",
+          "Terminal berada di ynx-learning dan revisi sesuai versi sumber yang ditampilkan.",
+          "Jika revisi tidak dapat diambil, berhenti dan periksa tautan sumber. Jangan ganti dengan biner sembarang atau nama perintah lain."
+        ],
+        [
+          "Mulai node lokal",
+          "Jalankan dari akar proyek dan biarkan terminal terbuka. Node hanya mendengarkan komputer Anda dan menyimpan data di .local/learning-node.",
+          "Proses terus berjalan: YNX Devnet 6425 pada 127.0.0.1:16420, bukan jaringan publik 6423.",
+          "Jika port terpakai, ubah kedua perintah ke port lokal kosong yang sama. Jangan hentikan proses yang tidak dikenal; baca galat pertama jika kompilasi gagal."
+        ],
+        [
+          "Amati pertumbuhan blok",
+          "Di terminal kedua baca status lokal, tunggu beberapa detik, lalu ulangi. Bandingkan network, chainId, dan height.",
+          "Terlihat YNX Devnet, chainId 6425, dan height bertambah. Sumber telah diperiksa memakai data lokal baru.",
+          "Jika koneksi ditolak, periksa terminal pertama dan port. Pertumbuhan lokal tidak membuktikan sinkronisasi publik atau penerimaan validator."
+        ],
+        [
+          "Hentikan dan lanjutkan",
+          "Tekan Ctrl+C di terminal node dan tunggu hingga keluar. Simpan direktori data dan mulai lagi dengan perintah yang sama.",
+          "Node berhenti dengan benar dan membuka data latihan yang ada. Bahan pemulihan dompet tidak diperlukan.",
+          "Jangan jalankan dua proses pada direktori yang sama. Jika gagal memulai ulang, simpan data dan baca galat sebelum mencoba folder baru terpisah."
+        ]
+      ]
+    ],
+    [
+      "Pahami produksi blok publik",
+      "Ketahui yang tersedia saat ini dan izin yang tidak diberikan oleh percobaan lokal.",
+      [
+        [
+          "Bedakan peran node",
+          "Produsen menulis blok otoritatif; pengikut terautentikasi menyalin status dan melayani pembacaan. Node latihan hanya menghasilkan blok Devnet sendiri.",
+          "Anda membedakan membaca data publik, mengikuti jaringan, dan memperoleh izin memproduksi bloknya.",
+          "Respons, port terbuka, atau empat proses lokal bukan bukti empat validator publik atau partisipasi bebas."
+        ],
+        [
+          "Periksa jalur akses saat ini",
+          "Pendaftaran validator bebas, staking, dan hadiah belum terbuka. Operator harus memberikan konfigurasi nyata, persyaratan, serta koneksi terautentikasi sebelum mengikuti jaringan publik.",
+          "Anda mengetahui kebutuhan host, sumber dan konfigurasi, endpoint, pemeriksaan sinkronisasi, pemulihan, dan keluar.",
+          "Jangan mengarang genesis atau peer, atau mengirim kunci penandatanganan ke dukungan. Jangan beli perangkat mining atau slot validator terjamin."
+        ],
+        [
+          "Periksa laboratorium konsensus lokal",
+          "Dry-run ini menunjukkan titik masuk pemeriksaan konsensus. Percobaan sesungguhnya membuat kunci latihan sementara, terpisah dari jaringan publik.",
+          "Keluaran menunjuk scripts/verify/consensus-quorum-check.sh. Ini tidak menjalankan percobaan atau membuktikan penerapan publik.",
+          "Baca skrip dan syarat sebelum menjalankannya. Jangan gunakan ulang kunci sementara di jaringan publik atau janjikan penghasilan mining dari hasilnya."
+        ]
+      ]
+    ],
+    [
+      "Bangun integrasi pertama",
+      "Baca data nyata, lalu tambah satu kemampuan setiap kali dengan persetujuan dompet yang jelas.",
+      [
+        [
+          "Pilih ruang kerja",
+          "Buka Code atau editor lokal dengan salinan repositori baru. Pilih bahasa, buat berkas, jalankan, dan baca keluaran. Di Code gunakan AI bawaan server atau atur penyedia sendiri dalam pengaturan.",
+          "Anda dapat menyunting, menjalankan, dan menemukan galat. Pratinjau, ekspor, dan publikasi merupakan tindakan terpisah.",
+          "Jika Code atau model tidak tersedia, gunakan editor lokal. Simpan kunci di pengaturan privat, bukan kode atau pratinjau publik."
+        ],
+        [
+          "Baca ID jaringan",
+          "Jalankan permintaan baca publik di terminal. Permintaan memeriksa identitas tanpa dompet, akun, atau kunci privat.",
+          "JSON memuat 0x1917, yaitu 6423 desimal. Tidak ada transaksi yang dikirim.",
+          "Jika gagal atau berbeda, periksa endpoint dan status. Jangan lanjut dengan ID perkiraan."
+        ],
+        [
+          "Gunakan SDK repositori",
+          "Dengan Node.js 18 atau lebih baru, jalankan dari akar untuk mengimpor SDK lokal dan memeriksa snapshot publik. Sumber juga menyediakan SDK Python 3.9 atau lebih baru.",
+          "Klien menampilkan tinggi dan ID EVM teramati atau galat nyata. Tidak diperlukan paket npm/PyPI yang publikasinya belum terbukti.",
+          "Jika impor gagal, periksa sdk/js/index.js. Jangan ganti galat endpoint dengan tinggi contoh."
+        ],
+        [
+          "Tambah interaksi dompet yang jelas",
+          "Hubungkan akun melalui tindakan pengguna. Tampilkan penyedia, jaringan, dan izin; konfirmasikan tanda tangan serta pengiriman secara terpisah lalu periksa hasilnya.",
+          "Pengguna dapat menolak, berganti akun, dan memutuskan koneksi. Mode dasar dompet lain dibedakan dari YNX Wallet.",
+          "Jangan meminta frasa atau kunci. Bedakan penolakan, terkunci, jaringan salah, dan penyedia tidak ada sebagai kondisi yang dapat dipulihkan."
+        ],
+        [
+          "Uji sebelum berbagi",
+          "Jalankan pemeriksaan SDK dalam lingkungan terdokumentasi. Uji batas waktu, jaringan salah, data tidak ada, dan penolakan. Kompilasikan kontrak lokal hanya dalam alat yang didukung.",
+          "Anda memperoleh hasil lokal yang dapat diulang. Paket, transfer native, dan kompilasi tidak membuktikan penerapan publik kontrak sembarang.",
+          "Baca penyebab kegagalan sebelum mengubah kode. Jangan lewati pemeriksaan jaringan atau tanda tangan demi meloloskan tes."
+        ],
+        [
+          "Ekspor, tinjau, lalu terbitkan",
+          "Ekspor atau kemas proyek, cari rahasia, dan uji pratinjau seluruh aplikasi. Periksa host tujuan, variabel, dan izin sebelum tindakan publikasi terpisah.",
+          "Proyek ekspor dapat diperiksa. URL publik dianggap dapat dipakai hanya setelah perilaku sebenarnya diperiksa.",
+          "Pertahankan kemampuan publik yang belum didukung sebagai contoh lokal atau baca saja. Pratinjau dan build berhasil bukan bukti integrasi publik berfungsi."
+        ]
+      ]
+    ]
+  ]
+}

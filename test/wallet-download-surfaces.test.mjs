@@ -1,0 +1,132 @@
+import assert from "node:assert/strict";
+import test from "node:test";
+import React from "react";
+import { renderToReadableStream } from "react-dom/server";
+import { createServer } from "vite";
+
+async function markup(element) {
+  const stream = await renderToReadableStream(element);
+  await stream.allReady;
+  return new Response(stream).text();
+}
+
+function fileAnchors(html) {
+  return [...html.matchAll(/(<a\b[^>]*\bhref="([^"]+)"[^>]*>)/g)]
+    .filter(([, , href]) => /\.(?:zip|apk|dmg|exe|rpm|deb|AppImage)$/.test(href));
+}
+
+const hrefs = anchors => anchors.map(([, , href]) => href);
+const bySource = (anchors, source) => anchors.filter(([anchor]) => anchor.includes(`data-download-source="${source}"`));
+
+test("all Wallet download surfaces enforce the same file eligibility without changing other products", async () => {
+  const server = await createServer({ server: { middlewareMode: true, watch: null }, optimizeDeps: { noDiscovery: true, entries: [] }, appType: "custom", logLevel: "error" });
+  try {
+    const [{ WalletDownload }, { WalletDownloadSheet }, { ProductDownloads }, { DownloadPage }, { ProductStatusPage }, catalog, contracts, helpers, copy] = await Promise.all([
+      server.ssrLoadModule("/src/components/WalletDownload.jsx"),
+      server.ssrLoadModule("/src/components/WalletDownloadSheet.jsx"),
+      server.ssrLoadModule("/src/components/ProductDownloads.jsx"),
+      server.ssrLoadModule("/src/pages/DownloadPage.jsx"),
+      server.ssrLoadModule("/src/pages/ProductStatusPage.jsx"),
+      server.ssrLoadModule("/src/lib/ecosystemCatalog.js"),
+      server.ssrLoadModule("/src/lib/productPublicContract.js"),
+      server.ssrLoadModule("/src/lib/walletDownloads.js"),
+      server.ssrLoadModule("/src/content/productUiCopy.js")
+    ]);
+    const { WALLET_DOWNLOAD_COPY } = await server.ssrLoadModule("/src/content/walletDownloadCopy.js");
+    const { WALLET_SAFETY_COPY } = await server.ssrLoadModule("/src/content/walletSafetyCopy.js");
+    const { LocaleProvider } = await server.ssrLoadModule("/src/lib/i18n.jsx");
+    const { currentWalletDownloads } = await import("../scripts/lib/verify-wallet-download-metadata.mjs");
+    const products = catalog.getCatalog();
+    const wallet = products.find(product => product.key === "wallet");
+    const contract = contracts.getProductPublicContract(wallet);
+    for (const [platform, artifact] of Object.entries(currentWalletDownloads)) {
+      assert.equal(wallet.downloads[platform].href, artifact.publicUrl, platform);
+      assert.equal(wallet.downloads[platform].sizeBytes, artifact.sizeBytes, platform);
+      assert.equal(wallet.downloads[platform].sha256, artifact.sha256, platform);
+    }
+    const expected = helpers.walletDownloadOptions(wallet, contract.downloadHostedVerified)
+      .filter(option => option.available).map(option => option.item.href).sort();
+    assert.equal(expected.length, 10, "two current AppImages are paused and the separately released Firefox preview is available");
+    assert.deepEqual(expected, [...Object.entries(currentWalletDownloads).filter(([platform]) => !['linuxX64AppImage', 'linuxArm64AppImage'].includes(platform)).map(([, item]) => item.publicUrl), wallet.downloads.firefox.href].sort());
+    assert.deepEqual(contract.downloads.items.map(item => item.href).sort(), expected, "the public download contract excludes withheld and historical packages");
+    const [trigger, chooser, details, directory, overview] = await Promise.all([
+      markup(React.createElement(WalletDownload)),
+      markup(React.createElement(WalletDownloadSheet, { locale: "en", noticeId: "download-notice" })),
+      markup(React.createElement(ProductDownloads, { product: wallet, contract, copy: copy.PRODUCT_UI_COPY.en, locale: "en" })),
+      markup(React.createElement(DownloadPage)),
+      markup(React.createElement(ProductStatusPage, { product: wallet }))
+    ]);
+    const walletDirectory = directory.match(/<article\b[^>]*data-product="wallet"[^>]*>([\s\S]*?)<\/article>/)?.[1];
+    assert.ok(walletDirectory, "Wallet is present in the download directory");
+    for (const [surface, html] of Object.entries({ chooser, details, directory: walletDirectory, overview })) {
+      const anchors = fileAnchors(html);
+      const official = bySource(anchors, "official");
+      const fallbacks = bySource(anchors, "github-fallback");
+      assert.deepEqual(hrefs(official).sort(), expected, surface);
+      assert.equal(fallbacks.length, 6, `${surface} has one explicit fallback for each current native installer`);
+      assert.ok(hrefs(fallbacks).every(href => href.startsWith("https://github.com/JiahaoAlbus/YNX-Chain/releases/download/") && !href.includes("?")), `${surface} uses immutable GitHub release paths`);
+      for (const [anchor] of anchors) assert.match(anchor, /\bdownload="[^"]+"/, `${surface} has a direct file download`);
+      assert.ok(!hrefs(anchors).some(href => href.includes("sha256-69b4fa5db7b8a9ab105af6633de44f5a5a4a9fceeaa0925a306f77b22381b044")), `${surface} blocks the old macOS package`);
+      assert.match(html, /Release history/, `${surface} links separate historical records`);
+      assert.ok(!hrefs(anchors).some(href => /desktop-0\.6\.4|desktop-0\.1\.1/.test(href)), `${surface} excludes superseded desktop defaults`);
+      assert.equal((html.match(/data-wallet-safety-hold="GHSA-7g7r-gx96-252g"/g) || []).length, 2, `${surface} retains both paused rows`);
+      assert.ok(!hrefs(anchors).some(href => href.endsWith('.AppImage')), `${surface} has no held file action`);
+      assert.match(html, /href="https:\/\/github.com\/electron-userland\/electron-builder\/security\/advisories\/GHSA-7g7r-gx96-252g"/, `${surface} links the official notice`);
+      assert.match(html, /upstream-11-available-9/, `${surface} separates publication and website eligibility counts`);
+      assert.match(html, /AppImage build and hash only|built and hashed only|AppImage was built/i, `${surface} preserves the uninstalled AppImage boundary`);
+    }
+    assert.equal((chooser.split('<details class="walletDownloadOtherPlatforms">')[0].match(/data-wallet-safety-hold=/g) || []).length, 2, 'paused current files remain visible in the main list');
+    assert.match(trigger, /<button\b[^>]*aria-haspopup="dialog"[^>]*>Download Wallet</);
+    assert.equal(fileAnchors(trigger).length, 0, "The unopened trigger does not render the release catalog");
+    assert.match(chooser, /<a[^>]*href="\/manual\?path=wallet&amp;lang=en">Installation guide</);
+    assert.ok(!/<a\b[^>]*>Download Wallet</.test(chooser));
+    assert.doesNotMatch(chooser, /class="walletDownloadFlowBoundary">Historical preview/);
+
+    assert.ok(hrefs(fileAnchors(chooser)).some(href => /firefox/.test(href)), "the current exact-source Firefox manual-install preview is downloadable");
+    assert.ok(!hrefs(fileAnchors(chooser)).some(href => /1\.0\.3|0\.1\.1-x64/.test(href)), "current packages replace old defaults");
+    assert.ok(!chooser.includes('data-platform="linux"'), "specific Linux packages replace the aggregate unavailable row");
+    const escaped = value => value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#x27;");
+    for (const [locale, localized] of Object.entries(WALLET_DOWNLOAD_COPY)) {
+      const localizedChooser = await markup(React.createElement(WalletDownloadSheet, { locale }));
+      const localizedProduct = await markup(React.createElement(ProductDownloads, { product: wallet, contract, copy: copy.PRODUCT_UI_COPY[locale], locale }));
+      for (const [surface, html] of Object.entries({ chooser: localizedChooser, product: localizedProduct })) {
+        assert.equal(bySource(fileAnchors(html), "official").length, expected.length, locale + surface);
+        assert.equal(bySource(fileAnchors(html), "github-fallback").length, 6, locale + surface + " fallbacks");
+        for (const key of ["desktop068Boundary", "desktop068Proof", "appImageNotInstalled", "unsignedPreview", "browserPreviewBoundary", "manualExtension", "pwaArchiveOnly", "android15Boundary", "android15Proof", "qaSignedPreview", "desktop068MacSignature", "androidUniversalLabel", "downloadHistory", "githubFallback", "fallbackManual"]) {
+          assert.ok(localized[key], locale + key);
+          assert.ok(html.includes(escaped(localized[key])), locale + surface + key);
+        }
+        assert.ok(html.includes("Android · 4 ABI · standalone APK"));
+        assert.ok(!html.includes("Android 7.0+"), "current Android has no inferred minimum OS");
+      }
+      assert.ok(localizedChooser.includes(escaped(localized.manualExtension)));
+      assert.ok(localizedChooser.includes('href="/manual?path=wallet&amp;lang=' + locale + '"'));
+      const previousWindow = globalThis.window;
+      let localizedDirectory, localizedOverview;
+      try {
+        globalThis.window = { location: { search: `?lang=${locale}` }, localStorage: { getItem: () => null } };
+        const withLocale = element => React.createElement(LocaleProvider, null, element);
+        const directoryPage = await markup(withLocale(React.createElement(DownloadPage)));
+        localizedDirectory = directoryPage.match(/<article\b[^>]*data-product="wallet"[^>]*>([\s\S]*?)<\/article>/)?.[1];
+        localizedOverview = await markup(withLocale(React.createElement(ProductStatusPage, { product: wallet })));
+      } finally {
+        if (previousWindow === undefined) delete globalThis.window;
+        else globalThis.window = previousWindow;
+      }
+      for (const [surface, html] of Object.entries({ chooser: localizedChooser, product: localizedProduct, directory: localizedDirectory, overview: localizedOverview })) {
+        assert.deepEqual(hrefs(bySource(fileAnchors(html), "official")).sort(), expected, `${locale}:${surface}:ten exact primary files`);
+        assert.equal(bySource(fileAnchors(html), "github-fallback").length, 6, `${locale}:${surface}:six explicit fallbacks`);
+        assert.equal((html.match(/data-wallet-safety-hold=/g) || []).length, 2, `${locale}:${surface}:two visible holds`);
+        for (const [key, value] of Object.entries(WALLET_SAFETY_COPY[locale])) assert.ok(html.includes(escaped(value)), `${locale}:${surface}:${key}`);
+      }
+    }
+
+    const developer = products.find(product => product.key === "developer");
+    const developerDirectory = directory.match(/<article\b[^>]*data-product="developer"[^>]*>([\s\S]*?)<\/article>/)?.[1];
+    assert.ok(developerDirectory);
+    assert.deepEqual(hrefs(fileAnchors(developerDirectory)).sort(),
+      Object.values(developer.downloads).filter(item => item.downloadHosted && item.href).map(item => item.href).sort());
+  } finally {
+    await server.close();
+  }
+});

@@ -1,7 +1,13 @@
 import fs from "node:fs";
+import { verifyWalletDownloadMetadata } from "./lib/verify-wallet-download-metadata.mjs";
+import { findRetiredNetworkIdentity } from "./lib/retired-network.mjs";
 import path from "node:path";
 import crypto from "node:crypto";
+import { verifyLearningContent } from "./lib/verify-learning-content.mjs";
 import { normalizeAddress, toEVMAddress, toYNXAddress } from "../src/lib/address.js";
+import { YNX_SERVICE_DIRECTORY } from "../src/lib/api/ynxApi.js";
+
+verifyWalletDownloadMetadata();
 
 const required = [
   "package.json",
@@ -41,6 +47,7 @@ const required = [
   "src/lib/address.js",
   "src/lib/i18n.jsx",
   "src/lib/walletAuthCallback.js",
+  "src/lib/walletProvider.js",
   "src/components/AddressConverter.jsx",
   "src/components/SquareAccountPanel.jsx",
   "src/pages/AppsPage.jsx",
@@ -52,6 +59,10 @@ const required = [
   "src/pages/SquarePage.jsx",
   "src/pages/ManualPage.jsx",
   "src/pages/ApiPage.jsx",
+  "src/pages/PortalPage.jsx",
+  "src/pages/EconomicPage.jsx",
+  "src/lib/economicsEvidence.js",
+  "api/economics/evidence.js",
   "src/lib/ecosystemCatalog.js",
   "src/lib/ynx-signer/index.js",
   "src/lib/ynx-signer/client.js",
@@ -60,8 +71,9 @@ const required = [
   "src/components/StatusCard.jsx",
   "src/components/ProductPanel.jsx",
   "src/components/LinkGrid.jsx",
+  "src/components/LatestRecords.jsx",
   "src/components/CommandPalette.jsx",
-  "src/sections/Hero.jsx",
+  "src/sections/HeroPortal.jsx",
   "server/network-status.mjs",
   "server/app-gateway.mjs",
   "api/network/status.js",
@@ -69,6 +81,7 @@ const required = [
   "api/apps/health.js",
   "api/apps/square/feed.js",
   "api/apps/square/post.js",
+  "api/explorer/resolve.js",
   "vite.config.js",
   "app/README.md",
   "components/README.md",
@@ -80,6 +93,9 @@ const required = [
   "grant/README.md",
   "ecosystem/README.md",
   "deploy/vercel-env-check.mjs",
+  "deploy/source-identity.sh",
+  "deploy/verify-source-identity.mjs",
+  "deploy/production-build.sh",
   "deploy/vercel-deploy.sh",
   "scripts/docs-authority.mjs",
   "scripts/lib/docs-authority.mjs",
@@ -118,12 +134,40 @@ for (const file of walk(".")) {
     }
   }
 }
+for (const root of ["src"]) {
+  for (const file of walk(root)) {
+    if (!/\.jsx$/i.test(file)) continue;
+    const source = fs.readFileSync(file, "utf8");
+    for (const unsafeNavigation of ["about:blank", "javascript:", "127.0.0.1", "localhost:"]) {
+      if (source.includes(unsafeNavigation)) {
+        console.error(`unsafe or local navigation leaked into production source: ${file}: ${unsafeNavigation}`);
+        process.exit(1);
+      }
+    }
+    if (source.includes('target="_blank"') && !source.includes('rel="noopener') && !source.includes('rel="noreferrer')) {
+      console.error(`new-tab link is missing a safe rel attribute: ${file}`);
+      process.exit(1);
+    }
+  }
+}
+for (const root of ["src", "server", "api", "vercel.json"]) {
+  const candidates = root.endsWith(".json") ? [root] : walk(root);
+  for (const file of candidates) {
+    if (!/\.(js|jsx|json)$/i.test(file)) continue;
+    const source = fs.readFileSync(file, "utf8");
+    const retired = findRetiredNetworkIdentity(source);
+    if (retired) {
+      console.error(`retired network identity leaked into production source: ${file}: ${retired}`);
+      process.exit(1);
+    }
+  }
+}
 const prohibitedPublicReferences = [
   /\bcodex\//i,
   /\bbranch\b/i,
   /\bworktree\b/i,
   /\brefs\/heads\b/i,
-  /\borigin\//i,
+  /\b(?:git[^\n]*\s|refs\/remotes\/)origin\//i,
   /\/users\//i,
 ];
 for (const root of ["public", "src"]) {
@@ -141,7 +185,7 @@ for (const root of ["public", "src"]) {
 for (const file of walk("src")) {
   if (!file.endsWith(".jsx")) continue;
   const source = fs.readFileSync(file, "utf8");
-  if (!source.includes('from "react"')) {
+  if (!/from\s+['"]react['"]/.test(source)) {
     console.error(`JSX module does not import React: ${file}`);
     process.exit(1);
   }
@@ -154,9 +198,9 @@ for (const key of ["VITE_YNX_API_BASE_URL", "VITE_YNX_EVM_RPC_URL", "VITE_YNX_EX
   }
 }
 const styles = fs.readFileSync("src/styles.css", "utf8");
-const hero = fs.readFileSync("src/sections/Hero.jsx", "utf8");
+const hero = fs.readFileSync("src/sections/HeroPortal.jsx", "utf8");
 const addressConverter = fs.readFileSync("src/components/AddressConverter.jsx", "utf8");
-const main = fs.readFileSync("src/main.jsx", "utf8");
+const main = `${fs.readFileSync("src/main.jsx", "utf8")}\n${fs.readFileSync("src/pages/RoutedContent.jsx", "utf8")}\n${fs.readFileSync("src/content/runtimeLocaleContent.js", "utf8")}`;
 const indexHtml = fs.readFileSync("index.html", "utf8");
 const serviceWorker = fs.readFileSync("public/sw.js", "utf8");
 const manifest = JSON.parse(fs.readFileSync("public/manifest.webmanifest", "utf8"));
@@ -177,16 +221,23 @@ const walletAuthRuntimePublication = JSON.parse(fs.readFileSync("public/releases
 const walletAuthRuntimeV2Publication = JSON.parse(fs.readFileSync("public/releases/wallet-auth-runtime/6cf3ef845202bd879ed94515a71b323dd2fc9e14/runtime-publication.json", "utf8"));
 const walletSessionCorsProductionEvidence = JSON.parse(fs.readFileSync("docs/integration/wallet-session-mobile-cors-production-evidence-20260815.json", "utf8"));
 const header = fs.readFileSync("src/components/SiteHeader.jsx", "utf8");
+const walletProviderSource = fs.readFileSync("src/lib/walletProvider.js", "utf8");
 const i18n = fs.readFileSync("src/lib/i18n.jsx", "utf8");
+const portalPage = fs.readFileSync("src/pages/PortalPage.jsx", "utf8");
+const footer = fs.readFileSync("src/components/SiteFooter.jsx", "utf8");
 const commandPalette = fs.readFileSync("src/components/CommandPalette.jsx", "utf8");
-const routePage = fs.readFileSync("src/components/RoutePage.jsx", "utf8");
+const routePage = fs.readFileSync("src/components/RoutePage.jsx", "utf8") + fs.readFileSync("src/content/basicRouteContent.js", "utf8");
 const manualPage = fs.readFileSync("src/pages/ManualPage.jsx", "utf8");
 const apiPage = fs.readFileSync("src/pages/ApiPage.jsx", "utf8");
-const appsPage = fs.readFileSync("src/pages/AppsPage.jsx", "utf8");
-const downloadsPage = fs.readFileSync("src/pages/DownloadPage.jsx", "utf8");
+const appsPage = `${fs.readFileSync("src/pages/AppsPage.jsx", "utf8")}\n${fs.readFileSync("src/content/businessLocaleContent.js", "utf8")}`;
+const downloadsPage = `${fs.readFileSync("src/pages/DownloadPage.jsx", "utf8")}\n${fs.readFileSync("src/content/businessLocaleContent.js", "utf8")}`;
 const productStatusPage = fs.readFileSync("src/pages/ProductStatusPage.jsx", "utf8");
 const ecosystemCatalog = fs.readFileSync("src/lib/ecosystemCatalog.js", "utf8");
 const installerReplacementMatrix = JSON.parse(fs.readFileSync("public/releases/installer-replacement-matrix.json", "utf8"));
+if (!header.includes("connectCanonicalProvider") || !header.includes('walletCopy.connect') || !header.includes('onClick={activateWallet}') || !walletProviderSource.includes('method: "eth_requestAccounts"')) {
+  console.error("header wallet connection must remain explicit and visible");
+  process.exit(1);
+}
 for (const platform of ["pwa", "chromeEdge", "firefox"]) {
   if (!downloadsPage.includes(`"${platform}"`) || !productStatusPage.includes(`"${platform}"`)) {
     console.error(`Wallet Web download platform is hidden from a public page: ${platform}`);
@@ -201,10 +252,43 @@ const vercel = JSON.parse(fs.readFileSync("vercel.json", "utf8"));
 const siteMap = JSON.parse(fs.readFileSync("content/site-map.json", "utf8"));
 const prerender = fs.readFileSync("scripts/prerender.mjs", "utf8");
 const packageJson = JSON.parse(fs.readFileSync("package.json", "utf8"));
+const productionBuildScript = fs.readFileSync("deploy/production-build.sh", "utf8");
+const enforcedBuild = `${packageJson.scripts?.build || ""}\n${productionBuildScript}`;
 const indexNowKey = fs.readFileSync("public/da45868fe3e0818f27f187b21a56ccb5.txt", "utf8").trim();
 const indexNowScript = fs.readFileSync("scripts/indexnow.mjs", "utf8");
 const viteConfig = fs.readFileSync("vite.config.js", "utf8");
 const signerSource = JSON.parse(fs.readFileSync("src/lib/ynx-signer/SOURCE.json", "utf8"));
+const explorerResolver = fs.readFileSync("api/explorer/resolve.js", "utf8");
+const networkStatusSource = fs.readFileSync("server/network-status.mjs", "utf8");
+const ynxApiSource = fs.readFileSync("src/lib/api/ynxApi.js", "utf8");
+if (networkStatusSource.includes("endpoint: url") || ynxApiSource.includes("endpoint: url")) {
+  console.error("service error payload exposes a raw endpoint");
+  process.exit(1);
+}
+if (!commandPalette.includes('/api/explorer/resolve') || !commandPalette.includes('commandSearchExplorer') || !explorerResolver.includes('https://explorer.ynxweb4.com') || !explorerResolver.includes('/api/search?q=')) {
+  console.error("global search does not resolve records through the separate Explorer");
+  process.exit(1);
+}
+if (!portalPage.includes('`${apiConfig.explorerUrl}/token/YNXT`') || portalPage.includes('/tokens/YNXT')) {
+  console.error("YNXT portal action does not use the verified Explorer token path");
+  process.exit(1);
+}
+if (!networkStatusSource.includes("YNX_SERVICE_DIRECTORY")) {
+  console.error("network-status must consume the canonical service directory");
+  process.exit(1);
+}
+for (const requiredLiveEndpoint of ["https://explorer.ynxweb4.com/api/blocks/latest", "https://explorer.ynxweb4.com/api/txs?limit=5", "https://explorer.ynxweb4.com/health"]) {
+  if (!Object.values(YNX_SERVICE_DIRECTORY).some((service) => Object.values(service).includes(requiredLiveEndpoint))) {
+    console.error(`home live-record source is missing: ${requiredLiveEndpoint}`);
+    process.exit(1);
+  }
+}
+for (const officialDestination of ["https://github.com/JiahaoAlbus/YNX-Chain", "https://github.com/JiahaoAlbus/YNX-Chain-website", "https://x.com/YNXChain", "https://discord.gg/t8KpAF2KE", "https://www.youtube.com/@YNX-Chain"]) {
+  if (!footer.includes(officialDestination)) {
+    console.error(`official community destination is missing: ${officialDestination}`);
+    process.exit(1);
+  }
+}
 if (releaseRegistry.products.some((product) => Object.hasOwn(product, "branch"))) {
   console.error("public release registry exposes internal branch names");
   process.exit(1);
@@ -435,30 +519,25 @@ for (const file of ["migration-matrix.json", "product-session-registry.json", "v
     process.exit(1);
   }
 }
-if (
-  !docsPage.includes("/releases/wallet-auth-runtime/6cf3ef845202bd879ed94515a71b323dd2fc9e14/runtime-publication.json") ||
-  !docsPage.includes("6cf3ef845202bd879ed94515a71b323dd2fc9e14") ||
-  !docsPage.includes("83a0a4f09a61d84a667d88a49708ffbe7643adc8") ||
-  !docsPage.includes("Installed Wallet/client verified</dt><dd>False") ||
-  !docsPage.includes("Account, sign, send, transaction, chain disconnect or public expiry verified</dt><dd>False") ||
-  !docsPage.includes("Product migrations</dt><dd>0 / 12") ||
-  !docsPage.includes("Central integration / aggregate public readiness</dt><dd>False / False") ||
-  !docsPage.includes("Production signing / store release</dt><dd>False / False")
-) {
-  console.error("Wallet/Auth P0 runtime publication or its claim boundary is not visible in Docs");
+const docsRecords = fs.readFileSync("src/components/DocsSourceRecords.jsx", "utf8");
+if (!docsPage.includes("<DocsSourceRecords locale={locale}") ||
+    !docsRecords.includes("/releases/wallet-auth-runtime/6cf3ef845202bd879ed94515a71b323dd2fc9e14/runtime-publication.json") ||
+    !["installedWalletClientVerified", "accountSigningTransactionVerified", "productMigrations", "integratedCentral", "aggregatePublicReady", "productionSigned", "storeReleased", "runtimeRecord.verification.evidenceUrl"].every(field => docsRecords.includes(field))) {
+  console.error("Docs must expose the archived runtime record and render its independently verified claim boundary");
   process.exit(1);
 }
-if (!styles.includes("--blue: #002fa7") || !styles.includes(".heroStage.isPulling")) {
-  console.error("missing Klein blue palette or draggable hero interaction");
+
+if (!styles.includes("--blue: #002fa7") || !styles.includes(".portalHeroV2")) {
+  console.error("missing Klein blue palette or visible portal hero");
   process.exit(1);
 }
-if (!hero.includes("executionScene") || !hero.includes("onPointerMove") || hero.includes("<img") || hero.includes("ynx-execution-sculpture.png")) {
-  console.error("CSS execution scene or pull interaction is not configured correctly");
+if (!hero.includes("YNX_6423.cosmosChainId") || !hero.includes("href={YNX_6423.services.explorer}") || !hero.includes("entry.explorer") || !hero.includes("onAddNetwork")) {
+  console.error("6423 portal hero identity or explicit actions are incomplete");
   process.exit(1);
 }
-const nativeOutput = addressConverter.indexOf('label="YNX native (default)"');
-const compatibilityOutput = addressConverter.indexOf('label="EVM compatibility / MetaMask"');
-if (nativeOutput < 0 || compatibilityOutput < 0 || nativeOutput > compatibilityOutput || !addressConverter.includes("isolated to the EVM compatibility layer")) {
+const nativeOutput = addressConverter.indexOf('label={labels.nativeLabel}');
+const compatibilityOutput = addressConverter.indexOf('label={labels.compatibilityLabel}');
+if (nativeOutput < 0 || compatibilityOutput < 0 || nativeOutput > compatibilityOutput || !addressConverter.includes("labels.boundary")) {
   console.error("YNX-native address identity is not the truthful default");
   process.exit(1);
 }
@@ -466,7 +545,7 @@ if (!main.includes("Exchange Integration Candidate") || !main.includes("No excha
   console.error("website does not expose the verified exchange candidate boundary");
   process.exit(1);
 }
-if (!main.includes('route === "/dapp"') || !main.includes('route === "/dapp/download"') || !main.includes('route === "/dapp/faucet"') || !main.includes('route === "/docs"') || !main.includes('route === "/dapp/square"') || !main.includes("getProductByRoute(route)") || !main.includes("getLegacyDAppRedirect") || !main.includes("LegacyRouteRedirect")) {
+if (!main.includes('route === "/dapp"') || !main.includes('route === "/dapp/download"') || !main.includes('route === "/dapp/faucet"') || !main.includes('route === "/docs"') || !main.includes('route === "/dapp/square"') || !main.includes("getProductRouteMatch(route)") || !main.includes("getLegacyDAppRedirect") || !main.includes("LegacyRouteRedirect")) {
   console.error("canonical DApp, download, product-status, Square, docs, or legacy compatibility routes are not configured");
   process.exit(1);
 }
@@ -474,13 +553,13 @@ if (!main.includes("AuthorityArticlePage") || !main.includes("docsAuthority.arti
   console.error("verified YNX documentation authority is not wired into the website runtime");
   process.exit(1);
 }
-if (!packageJson.scripts?.build?.includes("scripts/prerender.mjs") || !packageJson.scripts?.test?.includes("--verify-hosting")) {
+if (!enforcedBuild.includes("scripts/prerender.mjs") || !packageJson.scripts?.test?.includes("--verify-hosting")) {
   console.error("docs authority verification and prerender gates are not enforced");
   process.exit(1);
 }
 if (
   indexNowKey !== "da45868fe3e0818f27f187b21a56ccb5" ||
-  !packageJson.scripts?.build?.includes("scripts/indexnow.mjs --dry-run") ||
+  !enforcedBuild.includes("scripts/indexnow.mjs --dry-run") ||
   packageJson.scripts?.["release:indexnow"] !== "node scripts/indexnow.mjs" ||
   !indexNowScript.includes("https://api.indexnow.org/indexnow") ||
   !indexNowScript.includes("keyLocation") ||
@@ -493,9 +572,9 @@ const hostedDocsHeaders = vercel.headers?.find((entry) => entry.source === "/doc
 if (
   !hostedDocsHeaders.some((entry) => entry.key === "Cache-Control" && entry.value.includes("immutable")) ||
   !hostedDocsHeaders.some((entry) => entry.key === "Content-Disposition" && entry.value === "attachment") ||
-  !docsPage.includes("docsAuthority.artifact.downloadHosted") ||
-  !docsPage.includes("docsAuthority.artifact.downloadPath") ||
-  !docsPage.includes("docsAuthority.artifact.sha256")
+  !docsRecords.includes("artifact.downloadHosted") ||
+  !docsRecords.includes("artifact.downloadPath") ||
+  !docsRecords.includes("artifact.sha256")
 ) {
   console.error("immutable hosted documentation bundle is not wired into deployment and UI");
   process.exit(1);
@@ -504,13 +583,17 @@ if (!main.includes('navigator.serviceWorker.register("/sw.js")') || !indexHtml.i
   console.error("installable PWA shell is incomplete");
   process.exit(1);
 }
-if (!indexHtml.includes('class="notranslate"') || !indexHtml.includes('translate="no"') || !indexHtml.includes('<meta name="google" content="notranslate"') || !indexHtml.includes('<body class="notranslate" translate="no" dir="ltr">')) {
+if (!indexHtml.includes('class="notranslate"') || !indexHtml.includes('translate="no"') || !indexHtml.includes('<meta name="google" content="notranslate"') || !indexHtml.includes('<body class="notranslate" translate="no"')) {
   console.error("browser machine-translation opt-out is missing; native locale content could be mistranslated or mirrored");
   process.exit(1);
 }
-for (const requiredText of ['direction: ltr !important', 'body, #root { direction: ltr !important; }']) {
+if (/direction:\s*ltr\s*!important/.test(styles)) {
+  console.error("CSS must not force LTR because Arabic uses a native RTL document direction");
+  process.exit(1);
+}
+for (const requiredText of ['html[dir="rtl"] body', '[dir="rtl"] .scrollProgress', 'text-align: start']) {
   if (!styles.includes(requiredText)) {
-    console.error(`native LTR layout guard is missing: ${requiredText}`);
+    console.error(`locale-aware RTL layout guard is missing: ${requiredText}`);
     process.exit(1);
   }
 }
@@ -524,9 +607,27 @@ for (const boundary of ['url.origin !== self.location.origin', 'url.pathname.sta
     process.exit(1);
   }
 }
-if (!header.includes('["dapps", "/dapp"]') || !header.includes('["ecosystem", "/dapp"]') || !header.includes('["docs", "/docs"]') || !header.includes('["status", "/status"]')) {
-  console.error("stable DApps, Ecosystem, Docs, and Status navigation is missing");
+for (const requiredRoute of ['["blockchain", "/blockchain"]', '["tokens", "/tokens"]', '["data", "/data"]', '["governance", "/governance"]', '["ecosystem", "/ecosystem"]', '["developers", "/developers"]', '["downloads", "/downloads"]', '["docs", "/docs"]', '["more", "/more"]']) {
+  if (!header.includes(requiredRoute)) {
+    console.error(`required official navigation route is missing: ${requiredRoute}`);
+    process.exit(1);
+  }
+}
+if (!header.includes('apiConfig.explorerUrl') || !header.includes('navExplorer')) {
+  console.error("separate Explorer entry is missing from official navigation");
   process.exit(1);
+}
+for (const portalRoute of ["/blockchain", "/tokens", "/data", "/governance", "/ecosystem", "/developers", "/downloads", "/more"]) {
+  if (!portalPage.includes(`"${portalRoute}"`)) {
+    console.error(`official portal page is missing: ${portalRoute}`);
+    process.exit(1);
+  }
+}
+for (const expectedIdentity of ['cosmosChainId: "ynx_6423-1"', "chainId: 6423", 'evmChainId: "0x1917"', 'symbol: "YNXT"']) {
+  if (!fs.readFileSync("src/lib/api/ynxApi.js", "utf8").includes(expectedIdentity)) {
+    console.error(`canonical 6423 configuration is incomplete: ${expectedIdentity}`);
+    process.exit(1);
+  }
 }
 for (const requiredText of ["metaKey", "ctrlKey", "ynx-theme", "localStorage.removeItem(\"ynx-direction\")", "CommandPalette", 't("skip")']) {
   if (!header.includes(requiredText)) {
@@ -534,18 +635,18 @@ for (const requiredText of ["metaKey", "ctrlKey", "ynx-theme", "localStorage.rem
     process.exit(1);
   }
 }
-for (const requiredText of ["LocaleProvider", "SUPPORTED_LOCALES", '"zh-CN"', "ynx-locale", "enforceNativeLtr", "MutationObserver", 'style.setProperty("direction", "ltr", "important")', "navigator.language"]) {
+for (const requiredText of ["LocaleProvider", "SUPPORTED_LOCALES", '"zh-CN"', '"zh-TW"', '"ja"', '"ko"', "ynx-locale", "MutationObserver", "navigator.language"]) {
   const localeSource = requiredText === "LocaleProvider" ? main : i18n;
   if (!localeSource.includes(requiredText)) {
     console.error(`native locale capability missing: ${requiredText}`);
     process.exit(1);
   }
 }
-if (!header.includes("localeButton") || !header.includes('setLocale(locale === "en" ? "zh-CN" : "en")')) {
-  console.error("native English/Simplified Chinese locale control is missing");
+if (!header.includes("localeSelect") || !header.includes("SUPPORTED_LOCALES.map")) {
+  console.error("locale control is not derived from the canonical locale registry");
   process.exit(1);
 }
-for (const requiredText of ["role=\"dialog\"", "aria-modal=\"true\"", "ArrowDown", "ArrowUp", "No matching YNX resource", "API reference"]) {
+for (const requiredText of ["role=\"dialog\"", "aria-modal=\"true\"", "role=\"combobox\"", "role=\"listbox\"", "aria-activedescendant", 'event.key === "Tab"', "returnFocusRef", "ArrowDown", "ArrowUp", "commandNoMatch", 't("api")']) {
   if (!commandPalette.includes(requiredText)) {
     console.error(`command palette capability missing: ${requiredText}`);
     process.exit(1);
@@ -557,23 +658,25 @@ for (const requiredText of ['"/manual"', '"/api"', "Page unavailable", "Get supp
     process.exit(1);
   }
 }
-for (const requiredText of ["From zero to a verified testnet action", "Recovery", "A timeout is not proof", "Security boundary", "Node join manual", "Validator manual", "Mining manual", "no active automatic one-YNXT-per-block issuance", "external submission is disabled", "historical block cannot receive a new transaction"]) {
-  if (!manualPage.includes(requiredText)) {
-    console.error(`user manual capability missing: ${requiredText}`);
-    process.exit(1);
-  }
+try { verifyLearningContent(); } catch (error) {
+  console.error("Learning/manual/API/document-library contract failed:", error.message);
+  process.exit(1);
 }
-for (const requiredText of ["Chain status", "Validator roles", "EVM JSON-RPC", "Fail visibly and recover deliberately", "eth_chainId"]) {
-  if (!apiPage.includes(requiredText)) {
-    console.error(`API reference capability missing: ${requiredText}`);
-    process.exit(1);
-  }
+if (!manualPage.includes("useLearningCopy(locale)") || !apiPage.includes("useLearningCopy(locale)") ||
+    !manualPage.includes("learningCommandFor(platform, key)") || !apiPage.includes("LEARNING_COMMANDS.chainId") ||
+    !apiPage.includes("ui.timeoutRule") || !apiPage.includes("ui.evmRule")) {
+  console.error("Manual and API must render the verified localized learning data and bounded requests");
+  process.exit(1);
 }
-for (const requiredText of ['[data-theme="dark"]', ":focus-visible", ".commandPalette"]) {
+for (const requiredText of ['[data-theme="dark"]', '[data-theme="dark"] .portalHeroV2', ":focus-visible", ".commandPalette", "@media (max-width: 420px)", "@media (pointer: coarse)", "min-height: 44px"]) {
   if (!styles.includes(requiredText)) {
     console.error(`accessibility or adaptive appearance styles missing: ${requiredText}`);
     process.exit(1);
   }
+}
+if (!styles.includes("prefers-reduced-motion: reduce")) {
+  console.error("reduced-motion preference is not respected");
+  process.exit(1);
 }
 for (const requiredText of ["Public web", "Candidate", "Candidate incomplete", "Not ready", "evidence-backed status", "Money & commerce", "Identity & community", "Build & operate", "AI, media & data", "Trust & infrastructure", "Find a product, workflow, or capability", "Available surfaces", "View product", "appCardFacts"]) {
   if (!appsPage.includes(requiredText)) {
@@ -581,12 +684,12 @@ for (const requiredText of ["Public web", "Candidate", "Candidate incomplete", "
     process.exit(1);
   }
 }
-for (const requiredText of ["Transactions & blocks", "Node operations", "Validator candidate", "Mining truth", "Bridge evidence", "Historical block mutation", "Finalized locally; no external submission"]) {
-  if (!docsPage.includes(requiredText)) {
-    console.error(`detailed documentation capability missing: ${requiredText}`);
-    process.exit(1);
-  }
+if (!docsPage.includes("DOCUMENT_LIBRARY") || !docsPage.includes("<DocumentReader") ||
+    !docsPage.includes("docsLibrarySearch") || !docsPage.includes("LEARNING_PATHS") || !docsPage.includes("copy.archiveNotice")) {
+  console.error("Docs must expose learning routes, the complete searchable source library and archive boundaries");
+  process.exit(1);
 }
+
 const productKeys = [...ecosystemCatalog.matchAll(/^\s+key: "([^"]+)",$/gm)].map((match) => match[1]);
 if (productKeys.length !== 26 || new Set(productKeys).size !== 26 || !productKeys.includes("card") || !productKeys.includes("dex") || !productKeys.includes("quant")) {
   console.error(`ecosystem catalog must contain 26 unique products; found ${productKeys.length}`);
@@ -748,7 +851,7 @@ if (legacyUnmergedRegistrySnapshot && (
 }
 if (
   releaseRegistry.schemaVersion !== 1 ||
-  registryKeys.length !== 25 ||
+  registryKeys.length !== 26 ||
   new Set(registryKeys).size !== registryKeys.length ||
   registryKeys.some((key) => !productKeys.includes(key)) ||
   hostedPreviewProducts.length !== 1 ||
@@ -759,7 +862,20 @@ if (
   exchangeRegistry?.productRelease !== "/releases/exchange/fc2276e1ce4c/product-release.json" ||
   exchangeRegistry?.publicProductMetadata !== "/releases/exchange/fc2276e1ce4c/public-product-metadata.json" ||
   registryByKey.get("wallet")?.centralAccepted !== false ||
-  registryByKey.get("wallet")?.publicWeb !== null ||
+  registryByKey.get("wallet")?.publicWeb !== "https://wallet.ynxweb4.com/" ||
+  registryByKey.get("wallet")?.publicWebRelease !== "/releases/wallet-web/2f1822ef/public-runtime.json" ||
+  registryByKey.get("wallet")?.publicWebSourceCommit !== "2f1822ef268e825f14274d87c912b6b863bbaca3" ||
+  registryByKey.get("wallet")?.webDownloadManifest?.sha256 !== "fe3edc16c36b5307b266c66ddb1349e2146febf332eeeb21ac4070fb0c6cce0b" ||
+  registryByKey.get("wallet")?.webDownloadManifest?.bytes !== 1858 ||
+  registryByKey.get("wallet")?.webDownloadRelease !== "/releases/wallet-web/20260920-wallet-web-testnet-preview-c93e16be.json" ||
+  videoRegistry?.publicWeb !== "https://video.ynxweb4.com/" ||
+  videoRegistry?.publicWebSourceCommit !== "77ac093356e8517e16d6280c8a01a598791d2d0d" ||
+  videoRegistry?.centralAccepted !== false ||
+  videoRegistry?.fullProductAccepted !== false ||
+  creatorRegistry?.publicWeb !== "https://creator.ynxweb4.com/" ||
+  creatorRegistry?.publicWebSourceCommit !== "489bf23ac56fb11c5b2ed869fb2a93c2465d2b24" ||
+  creatorRegistry?.centralAccepted !== false ||
+  creatorRegistry?.fullProductAccepted !== false ||
   cardRegistry?.state !== "candidate-incomplete" ||
   cardRegistry?.centralAccepted !== false ||
   releaseRegistry.products.some((product) => typeof product.route !== "string" || !product.route.startsWith("/")) ||
@@ -769,6 +885,156 @@ if (
   console.error("release registry is inconsistent with the currently published evidence snapshot or its claim boundaries");
   process.exit(1);
 }
+for (const key of ["wallet", "creatorStudio"]) {
+  const record = registryByKey.get(key);
+  const runtime = JSON.parse(fs.readFileSync(`public${record.publicWebRelease}`, "utf8"));
+  if (runtime.publicUrl !== record.publicWeb || runtime.sourceCommit !== record.publicWebSourceCommit ||
+      !/^[0-9a-f]{40}$/.test(runtime.sourceCommit) || runtime.checks.publicPageRendered !== true ||
+      !Array.isArray(runtime.notVerified) || runtime.notVerified.length === 0) {
+    console.error(`Public product runtime record is incomplete: ${key}`);
+    process.exit(1);
+  }
+  if (key !== "wallet" && (
+    runtime.fullProductAccepted !== false || runtime.centralAccepted !== false ||
+    runtime.downloadHosted !== false || runtime.productionSigned !== false || runtime.storeReleased !== false ||
+    !/^[0-9a-f]{64}$/.test(runtime.artifactSha256) || !Number.isSafeInteger(runtime.artifactBytes) || runtime.artifactBytes <= 0 ||
+    runtime.checks.sourceBoundPublicFilesMatched !== runtime.publicFiles?.filter((file) => file.status === 200).length ||
+    runtime.publicFiles?.some((file) => !/^[0-9a-f]{64}$/.test(file.sha256) || !Number.isSafeInteger(file.bytes) || file.bytes < 0) ||
+    (key === "creatorStudio" && (runtime.walletVerification?.allDAppsAllPlatformsVerified !== false || runtime.walletVerification?.standardEVMProviderSigningVerified !== false))
+  )) {
+    console.error(`Public preview evidence crosses its scoped acceptance boundary: ${key}`);
+    process.exit(1);
+  }
+}
+// Exact public Web snapshots: owner publication plus complete source-bound asset readback.
+// The list digest covers ordered { path, bytes, sha256 } records, not an inferred installer.
+const publicWebSnapshots = {
+  video: {
+    commit: "77ac093356e8517e16d6280c8a01a598791d2d0d",
+    tree: "fdd53068fbdb1d745d80784ea8c14ba184c8821f",
+    origin: "https://video.ynxweb4.com/",
+    runtimePath: "/releases/video/77ac093356e8/public-runtime.json",
+    verifiedAt: "2026-09-06T13:20:06.375019+00:00",
+    count: 22,
+    listSha256: "c8fcd45034b3cfb354e8f7825c01f2348181d320ceb4a36e94eec5fbc9fdbe32",
+    artifactSha256: "4c50d63f698157491732f366654872d7213ffa4aedc7ed7a7e97f5519154f0da",
+    artifactBytes: 74642,
+    pending: ["installedWalletApprovalVerified", "privateLibraryVerified", "privateBusinessVerified", "blueWhiteAllStatesVerified", "directWalletDownload"],
+  },
+  developer: {
+    commit: "6f1c7c57c1638e1cff4e5e3e9bb1e4431092cc30",
+    tree: "e6138c1d1880af01c4de154cab78bbcb95c73004",
+    origin: "https://developer.ynxweb4.com/",
+    runtimePath: "/releases/developer/6f1c7c57c163/public-runtime.json",
+    verifiedAt: "2026-09-06T13:22:09.277949+00:00",
+    count: 203,
+    listSha256: "a513b2aaaf7787cd23eaa046403a730a9cb97aae5c4842458b72f01d65cd17af",
+    mainScript: "assets/index-K0OYhxgg.js",
+    pending: ["existingWorkspaceEdited", "existingWorkspaceExecuted", "newWorkspaceCompileVerified", "aiWorkflowVerified", "terminalAcceptanceVerified", "fullVSCodeParityAccepted", "productionConcurrencyAccepted", "allTaskLosslessDrainAccepted", "blueWhiteAllStatesVerified"],
+  },
+  explorer: {
+    commit: "d5eb0d9069a699155581124a2926efd887f315cc",
+    tree: "bb9422247fbddef8d20c73ccc25eab314f374b87",
+    origin: "https://explorer.ynxweb4.com",
+    runtimePath: "/releases/explorer/d5eb0d9069a6/public-runtime.json",
+    verifiedAt: "2026-09-06T16:19:21.417Z",
+    count: 7,
+    listSha256: "71dc0fc7d11e0003a90b76836b4c6ba473ba339067d6d0c12e617093b833988d",
+    mainScript: "/assets/ynx-address.js",
+    absoluteResponsePaths: true,
+    pending: ["nativeClipboardWriteVerified", "walletConnectionSigningVerified", "concurrencyValidated", "overallUIComplete"],
+  },
+  monitor: {
+    commit: "3cae747ed897a3feec50157d3add33318a484f16",
+    tree: "10c611feab838c0b23337fc84870ec26c19214cc",
+    origin: "https://monitor.ynxweb4.com/",
+    runtimePath: "/releases/monitor/3cae747ed897/public-runtime.json",
+    verifiedAt: "2026-09-06T16:45:29.615808+00:00",
+    count: 14,
+    listSha256: "d782202bb3299de4cbbdcf50189e66c9b074aa125a015e9e3e64e5ce4a1b5a2f",
+    artifactSha256: "1b97e80e1cedb5441588e5e1fac8563870dc84ead49b47a8adcf44a2fba20262",
+    artifactBytes: 40354905,
+    mainScript: "assets/index-BozBpyIp.js",
+    pending: ["oldUserProfileUpgradeVerified", "authenticatedOperatorViewsVerified", "walletConnectionSigningVerified", "concurrencyValidated", "overallUIComplete", "previousIntermittentTimeoutResolved"],
+  },
+};
+for (const [key, expected] of Object.entries(publicWebSnapshots)) {
+  const record = registryByKey.get(key);
+  const runtime = JSON.parse(fs.readFileSync(`public${expected.runtimePath}`, "utf8"));
+  const files = Array.isArray(runtime.publicFiles) ? runtime.publicFiles : [];
+  const listSha256 = crypto.createHash("sha256").update(JSON.stringify(files.map(({ path, bytes, sha256 }) => ({ path, bytes, sha256 })))).digest("hex");
+  const browser = runtime.browserVerification;
+  const mainScript = files.find((file) => file.path === expected.mainScript);
+  // Explorer embeds HTTP responses at / and /address rather than physical index.html files.
+  // Keep those exact public paths; all other snapshots retain their relative asset-path contract.
+  const safePublicPath = (value) => {
+    if (typeof value !== "string" || !/^[a-zA-Z0-9_./-]+$/.test(value)) return false;
+    if (expected.absoluteResponsePaths) {
+      if (!value.startsWith("/")) return false;
+      if (value === "/") return true;
+      value = value.slice(1);
+    } else if (value.startsWith("/")) return false;
+    return !value.split("/").some((part) => !part || part === "." || part === "..");
+  };
+  if (
+    record?.state !== "public-web-preview-incomplete" || record.commit !== expected.commit ||
+    record.publicWeb !== expected.origin || record.publicWebRelease !== expected.runtimePath ||
+    record.productRelease !== expected.runtimePath || record.publicWebSourceCommit !== expected.commit ||
+    record.publicWebVerifiedAt !== expected.verifiedAt || record.centralAccepted !== false ||
+    record.fullProductAccepted !== false || record.downloadHosted !== false ||
+    runtime.schemaVersion !== 1 || runtime.state !== record.state ||
+    runtime.publicUrl !== expected.origin || runtime.sourceCommit !== expected.commit ||
+    runtime.sourceTree !== expected.tree || runtime.verifiedAt !== expected.verifiedAt ||
+    runtime.centralAccepted !== false || runtime.fullProductAccepted !== false ||
+    runtime.downloadHosted !== false || runtime.productionSigned !== false || runtime.storeReleased !== false ||
+    runtime.checks?.actualDeployment !== true || runtime.checks?.publicPageRendered !== true ||
+    runtime.checks?.sourceBoundPublicFilesMatched !== expected.count || files.length !== expected.count ||
+    new Set(files.map((file) => file.path)).size !== files.length ||
+    files.some((file) => !safePublicPath(file.path) ||
+      !/^[0-9a-f]{64}$/.test(file.sha256) || !Number.isSafeInteger(file.bytes) || file.bytes <= 0 ||
+      (file.status !== undefined && file.status !== 200)) ||
+    runtime.publicFileListSha256 !== expected.listSha256 || listSha256 !== expected.listSha256 ||
+    runtime.artifactSha256 !== expected.artifactSha256 || runtime.artifactBytes !== expected.artifactBytes ||
+    !Array.isArray(runtime.notVerified) || runtime.notVerified.length === 0 ||
+    expected.pending.some((field) => browser?.[field] !== false) ||
+    (expected.mainScript && (!mainScript || browser?.sourceCommit !== expected.commit ||
+      browser?.mainScript?.path !== expected.mainScript || browser.mainScript.sha256 !== mainScript.sha256 ||
+      (browser.mainScript.bytes !== undefined && browser.mainScript.bytes !== mainScript.bytes))) ||
+    (key === "video" && (runtime.checks.guestOnly !== true || runtime.checks.noStoreVerified !== true ||
+      browser?.guestStateVisible !== true ||
+      runtime.sdkSourceCommit !== "529471f3822d2bac43ea47a1ab8004fa2ae79885" ||
+      runtime.sdkSha256 !== files.find((file) => file.path === "product-session-sdk.js")?.sha256 ||
+      runtime.checks.callbackRouteSha256 !== files.find((file) => file.path === "wallet-callback.html")?.sha256)) ||
+    (key === "developer" && (runtime.checks.existingWorkspaceObservedReadOnly !== true ||
+      runtime.checks.loopbackFilesMatched !== 203 || runtime.checks.statePreserved !== true ||
+      runtime.checks.stateRestoreOnRollback !== false || browser?.existingWorkspaceEditorVisible !== true)) ||
+    (["explorer", "monitor"].includes(key) && (runtime.fullInstalledE2E !== false ||
+      record.fullInstalledE2E !== false || record.productionSigned !== false || record.storeReleased !== false ||
+      runtime.currentIdentityCheck?.sourceCommit !== expected.commit ||
+      runtime.currentIdentityCheck?.status !== 200 || runtime.currentIdentityCheck?.trustedTLS !== true)) ||
+    (key === "explorer" && (runtime.runtimeIdentity?.build?.commit !== expected.commit ||
+      runtime.checks.publicReadOnlyUI !== true || browser?.nativeAddressFormatsVerified !== true ||
+      browser?.clipboardStubOnly !== true || browser?.accountRequested !== false ||
+      browser?.chainMutationPerformed !== false || browser?.freshContexts !== 3 ||
+      !runtime.artifactClass?.includes("no hosted desktop or mobile installer"))) ||
+    (key === "monitor" && (runtime.checks.publicLoginAndStatusOnly !== true ||
+      runtime.checks.opsAndAuthorizationNoStore !== true || runtime.runtimeIdentity?.commit !== expected.commit ||
+      runtime.checks.workerSha256 !== files.find((file) => file.path === "sw.js")?.sha256 ||
+      browser?.freshServiceWorkerActivated !== true || files.some((file) => file.status !== 200) ||
+      browser?.freshContexts !== 6 || browser?.publicLoginStatusAcceptancePassed !== true ||
+      browser?.rawSixContextAggregatePassed !== false || browser?.cacheIconReadbackPassed !== true ||
+      runtime.walletDownloadVerification?.product !== "YNX Wallet" ||
+      runtime.walletDownloadVerification?.url !== "https://downloads.ynxweb4.com/wallet/sha256-061a25cb9b44e6a0e26667b4a46aacffd434780d5c705bea14d4fd7368eab0c5/ynx-wallet-chrome-edge-f90ad90-local-qa.zip" ||
+      runtime.walletDownloadVerification?.sha256 !== "061a25cb9b44e6a0e26667b4a46aacffd434780d5c705bea14d4fd7368eab0c5" ||
+      runtime.walletDownloadVerification?.bytes !== 539744 || runtime.walletDownloadVerification?.browserDownloadSaved !== true ||
+      runtime.walletDownloadVerification?.installed !== false || runtime.walletDownloadVerification?.monitorInstaller !== false ||
+      runtime.artifactClass !== "server-runtime-package; not a hosted user installer"))
+  ) {
+    console.error(`Public Web snapshot must match its exact published files and preserve unverified scope: ${key}`);
+    process.exit(1);
+  }
+}
+// End exact public Web snapshots.
 for (const requiredText of ["downloadHosted", "Local build only", "Download Testnet Preview", "candidate incomplete", "Product status", "wallet-auth-v1.0.0-testnet-preview.5", "exchange-v1.0.0-testnet-preview.3", "shop-v0.3.0-testnet-preview.1", "developer-v0.2.0-testnet-preview.1", "trust-center-v0.1.0-testnet-preview.2"]) {
   if (!ecosystemCatalog.includes(requiredText)) {
     console.error(`ecosystem release boundary missing: ${requiredText}`);
@@ -787,26 +1053,34 @@ for (const requiredText of ["No committed product-release.json", "Hosted install
     process.exit(1);
   }
 }
-if (!squarePage.includes("No sample posts are inserted") || !squarePage.includes("signed writes beta") || !squarePage.includes("SquareAccountPanel") || !docsPage.includes("Search YNX documentation")) {
+if (!squarePage.includes("No sample posts are inserted") || !squarePage.includes("canonical wallet writes fail closed") || !squarePage.includes("SquareAccountPanel") || !docsPage.includes("docsLibrarySearch")) {
   console.error("Square truth boundary or in-site documentation is incomplete");
   process.exit(1);
 }
-for (const requiredText of ["sealSignerVault", "openSignerVault", "Connect signed session", "createPost", "disconnect({ revokeDevice: true })", "finally {", "local signing keys cleared", "Delete local copy", "Remote device state was not changed"]) {
+for (const requiredText of ["connectCanonicalProvider", "switchCanonicalProviderToYNX", "Legacy local signer data detected", "Its contents were not read", "Clear legacy browser copy", "Publishing remains unavailable", "writes fail closed"]) {
   if (!squareAccountPanel.includes(requiredText)) {
-    console.error(`Square signed account workflow is incomplete: ${requiredText}`);
+    console.error(`Square canonical provider boundary is incomplete: ${requiredText}`);
     process.exit(1);
   }
 }
-if (squareAccountPanel.includes("X-YNX-Square-Key") || squareAccountPanel.includes("X-YNX-Chat-Key")) {
-  console.error("Square browser workflow contains a server-side service credential header");
+for (const forbiddenText of ["ynx-signer", "sealSignerVault", "openSignerVault", "generateAccountSecret", "importAccountSecret", "Account private key", "X-YNX-Device-Signature"]) {
+  if (squareAccountPanel.includes(forbiddenText)) {
+    console.error(`Square production UI reaches a retired website-local signer: ${forbiddenText}`);
+    process.exit(1);
+  }
+}
+if (!walletProviderSource.includes("secretValuesRead: false") || walletProviderSource.includes("storage.getItem")) {
+  console.error("legacy signer migration must detect and clear by key name without reading secret values");
   process.exit(1);
 }
 if (appGateway.includes("/chat/") || /method:\s*["']POST["']/.test(appGateway) || !appGateway.includes("/square/feed")) {
   console.error("website app proxy must remain read-only Square-only");
   process.exit(1);
 }
-const spaFallback = vercel.rewrites?.find((rewrite) => rewrite.source === "/(.*)");
-if (!vercel.cleanUrls || spaFallback?.destination !== "/") {
+const spaFallbacks = vercel.rewrites?.filter((rewrite) => rewrite.destination === "/") || [];
+const spaFallback = spaFallbacks[0];
+// Static-path exclusions are exercised by the Vercel routing behavior tests.
+if (!vercel.cleanUrls || spaFallbacks.length !== 1 || spaFallback !== vercel.rewrites.at(-1) || typeof spaFallback.source !== "string" || !spaFallback.source) {
   console.error("Vercel SPA deep-link fallback is not configured for clean URLs");
   process.exit(1);
 }
@@ -888,9 +1162,6 @@ if (invalidDesktopInstallerClaims.some((pattern) => pattern.test(ecosystemCatalo
 for (const requiredText of [
   'web: { status: PRODUCT_STATUS.LIVE, href: "https://wallet.ynxweb4.com/"',
   'entry: { label: "Open Wallet Companion", href: "https://wallet.ynxweb4.com/", external: true }',
-  'https://downloads.ynxweb4.com/wallet/sha256-69b4fa5db7b8a9ab105af6633de44f5a5a4a9fceeaa0925a306f77b22381b044/ynx-wallet-macos-0.1.2-universal.dmg',
-  '/downloads/wallet/sha256-856b2a260efc43c25f62508dabc6bb6b74b84da71c9b477e8a02a12d17598cd7/ynx-wallet-desktop-0.1.1-x64.exe',
-  '/downloads/wallet/sha256-929315133c68eda1cabac51cec889c4aeca5e3ee1701578916bc67e096c5dc35/ynx-wallet-desktop-0.1.1-arm64.exe',
   'installerReplacement("macOS", ".dmg", "ynx-developer-testnet-preview-macos-unsigned.zip", "developer")',
   'installerReplacement("Windows", ".exe or .msix", "ynx-developer-testnet-preview-windows-x64-unsigned.zip", "developer")'
 ]) {
@@ -953,7 +1224,7 @@ if (
   configuredRedirects.get("/square/:path*")?.destination !== "/dapp/square/:path*" ||
   !Array.isArray(siteMap.dappRoutes) || siteMap.dappRoutes.length !== 30 ||
   siteMap.dappRoutes.some((route) => !route.startsWith("dapp")) ||
-  !prerender.includes("releaseRegistry.products.map((product) => product.route)")
+  !prerender.includes("coreRouteEntries.filter((entry) => entry.product).map((entry) => entry.route)")
 ) {
   console.error("DApp route hierarchy, permanent compatibility redirects, or discovery routes are incomplete");
   process.exit(1);
@@ -962,11 +1233,11 @@ const csp = vercel.headers
   ?.find((entry) => entry.source === "/(.*)")
   ?.headers?.find((header) => header.key === "Content-Security-Policy")?.value || "";
 if (!csp.includes("script-src 'self'") || !csp.includes("worker-src 'self'") || !csp.includes("connect-src 'self' https://api.ynxweb4.com https://faucet.ynxweb4.com https://rest.ynxweb4.com https://rpc.ynxweb4.com") || !csp.includes("object-src 'none'")) {
-  console.error("strict browser signer CSP is missing");
+  console.error("strict canonical wallet CSP is missing");
   process.exit(1);
 }
-if (packageJson.dependencies?.["@noble/curves"] !== "2.2.0" || packageJson.dependencies?.["@noble/hashes"] !== "2.2.0") {
-  console.error("browser signer cryptography dependencies are not exactly pinned");
+if (packageJson.dependencies?.["@noble/curves"] || packageJson.dependencies?.["@noble/hashes"]) {
+  console.error("production website still depends on duplicate local-signing cryptography");
   process.exit(1);
 }
 if (signerSource.repository !== "https://github.com/JiahaoAlbus/YNX-Chain" || signerSource.commit !== "5bab0e0") {
@@ -1001,20 +1272,12 @@ for (const invalid of ["0x1234", `Y${validYNX.slice(1)}`, `${validYNX.slice(0, -
     // Expected strict rejection.
   }
 }
-const signer = await import("../src/lib/ynx-signer/index.js");
-const signerAccountSecret = Uint8Array.from({ length: 32 }, (_, index) => index === 31 ? 1 : 0);
-const signerDeviceSecret = new Uint8Array(32).fill(0x41);
-if (signer.accountIdentity(signerAccountSecret).account !== validYNX || signer.deviceIdentifier(signerDeviceSecret) !== "web-9a92d2b54a9a5402de3e65a0") {
-  console.error("vendored browser signer vectors do not match the chain package");
-  process.exit(1);
+for (const productionSource of [header, squareAccountPanel, fs.readFileSync("src/main.jsx", "utf8")]) {
+  if (/from\s+["'][^"']*ynx-signer/u.test(productionSource)) {
+    console.error("production website imports the retired local signer");
+    process.exit(1);
+  }
 }
-const signerVault = await signer.sealSignerVault({ accountSecret: signerAccountSecret, deviceSecret: signerDeviceSecret }, "website verification password");
-const openedSignerVault = await signer.openSignerVault(signerVault, "website verification password");
-if (Buffer.from(openedSignerVault.accountSecret).toString("hex") !== Buffer.from(signerAccountSecret).toString("hex")) {
-  console.error("vendored browser signer vault did not round-trip");
-  process.exit(1);
-}
-signer.zeroize(openedSignerVault.accountSecret, openedSignerVault.deviceSecret);
 const originalFetch = globalThis.fetch;
 let requestedSquareUrl = "";
 globalThis.fetch = async (url) => {

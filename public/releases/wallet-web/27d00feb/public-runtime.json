@@ -1,0 +1,156 @@
+{
+  "schemaVersion": 1,
+  "verifiedAt": "2026-09-06T04:38:57.737Z",
+  "product": "YNX Wallet Companion",
+  "publicUrl": "https://wallet.ynxweb4.com/",
+  "sourceCommit": "27d00febcf0cb53d92eb0b44de403936c3ed0bf3",
+  "sourceTree": "f4a11a187c51da3b4d204585f2897e95ef6ff070",
+  "deploymentId": "dpl_8NCJWrJjdfUVSrQkr12HBL1dG7Fr",
+  "runtimeIdentity": {
+    "schemaVersion": 1,
+    "product": "YNX Wallet Companion",
+    "sourceCommit": "27d00febcf0cb53d92eb0b44de403936c3ed0bf3",
+    "providerAuthorityCommit": "98c6d5d784d212df8981a53b17118a511e246ad2",
+    "providerEvidenceCommit": "d3831c300560507f64a50e73117bab7b85926d9a",
+    "chainId": "0x1917"
+  },
+  "servedFilesVerified": 22,
+  "checks": {
+    "publicPageRendered": true,
+    "noProviderRecoveryRendered": true,
+    "downloadCenterLinkRendered": true,
+    "sourceArtifactMatch": true,
+    "existingBrowserProfileRefreshToNewUi": true,
+    "unconnectedTransactionControlsHidden": true,
+    "responsiveLocalWidths": [
+      390,
+      768,
+      1280
+    ],
+    "responsiveLocalLocales": [
+      "en",
+      "zh-CN",
+      "ar"
+    ]
+  },
+  "notVerified": [
+    "installed provider connection",
+    "connected transaction review, signing and transaction execution",
+    "WalletConnect pairing",
+    "native installation and mobile callbacks",
+    "installed PWA upgrade across every historical artifact",
+    "production signing or store release"
+  ],
+  "files": [
+    {
+      "path": "accessibility.css",
+      "bytes": 901,
+      "sha256": "8de0d9df0de6e5a26d3b4df47d5a4be1b6671e1620915d461558bc3a4809dc8b"
+    },
+    {
+      "path": "app.js",
+      "bytes": 28002,
+      "sha256": "01fb1c69f7735b4492c2e2b9c2f6ffe87e2913b8e382449748451c97f5f48719"
+    },
+    {
+      "path": "asset-integrity.js",
+      "bytes": 1916,
+      "sha256": "19105b96888c7fbec30bf84f8dd923c0e9853c8fe4b0a3f9308691083c8317a3"
+    },
+    {
+      "path": "build-identity.json",
+      "bytes": 267,
+      "sha256": "d7927a6a95ee19c987b2149d1f428d0c7adcb1045d16fbfa7a8d621d1d88fb98"
+    },
+    {
+      "path": "core-auth-binding.js",
+      "bytes": 880,
+      "sha256": "8e34a8f66c43b90516770be334379357265e4ea9e87417b98b1fb090646e98bf"
+    },
+    {
+      "path": "core-auth-consumer.js",
+      "bytes": 4626,
+      "sha256": "f6473ae835c18374cab7e1886416068a79fc431a1c3db74c5ef23223741a39d8"
+    },
+    {
+      "path": "i18n.js",
+      "bytes": 43429,
+      "sha256": "e7a342e2227bc36a2e81681eca21deb3c97f905a22ad59fc41cb1825535a84f6"
+    },
+    {
+      "path": "index.html",
+      "bytes": 927,
+      "sha256": "f42944cf8fcb9295d464239ac32d03f0caa385eede9389219420144465b4d851"
+    },
+    {
+      "path": "manifest.webmanifest",
+      "bytes": 632,
+      "sha256": "d2d131267483327ece949c5b8402c2dd80352bb15e791ea5571c879682ceba92"
+    },
+    {
+      "path": "mobile-wallet-routing.js",
+      "bytes": 1778,
+      "sha256": "94503f6ff08b7e3f6495add96592ccd114459dad4aac442636edcdd6b64cf7f5"
+    },
+    {
+      "path": "preferences.js",
+      "bytes": 4272,
+      "sha256": "74247dfb335734d42538dc307d2e0da2dfde6462c327ed0dbdedf73ab5f772eb"
+    },
+    {
+      "path": "provider.js",
+      "bytes": 19278,
+      "sha256": "dee972181488438d5de04f6d769bf0c6164a057d5da559e15b207b6efa007078"
+    },
+    {
+      "path": "service-worker-policy.js",
+      "bytes": 3605,
+      "sha256": "e5ec783af89a6642d04beafdf4bfe33862e290e3b692ac136795e570d0671a24"
+    },
+    {
+      "path": "standard-wallet-connect-state.js",
+      "bytes": 8294,
+      "sha256": "6be480704589b9d177a46066e4d92042612f98f4aadcb0342d593027b40449ca"
+    },
+    {
+      "path": "styles.css",
+      "bytes": 9034,
+      "sha256": "7e0469cd8d1ebde42f567d5870644d2758da0a23687048d5e1954520886211f9"
+    },
+    {
+      "path": "sw.js",
+      "bytes": 4954,
+      "sha256": "f2872fa9e8a6a00104c4706bc5d01cb660babd80ad0cd6c18420fde8b2aef118"
+    },
+    {
+      "path": "transaction-input.js",
+      "bytes": 2080,
+      "sha256": "5aa4c954b9cee81c098d31b1381f900e265a6cc5b8dbc805267b2926133c72ec"
+    },
+    {
+      "path": "wallet-web-companion-lifecycle.js",
+      "bytes": 3082,
+      "sha256": "a784917928e223d539a3be9fee2d3f4e0dbe8edb779636ee6e8f8946bee74432"
+    },
+    {
+      "path": "ynx-icon-192.png",
+      "bytes": 9838,
+      "sha256": "02bd7b202a6683d83bbe4b17c246afc969b43284ee945e97167d9606e6df04af"
+    },
+    {
+      "path": "ynx-icon-512.png",
+      "bytes": 45914,
+      "sha256": "5a6fb80c48a2047ad5632cf0b69f410ebaefd8aff0bb3da7dce28c1ce8c992c7"
+    },
+    {
+      "path": "ynx-icon-maskable-512.png",
+      "bytes": 45914,
+      "sha256": "5a6fb80c48a2047ad5632cf0b69f410ebaefd8aff0bb3da7dce28c1ce8c992c7"
+    },
+    {
+      "path": "ynx-logo.png",
+      "bytes": 172128,
+      "sha256": "38196080c2d56746fb37094abe68d1d89eabd8a2b29ab4f17bae48ac7e3effde"
+    }
+  ]
+}

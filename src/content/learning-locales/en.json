@@ -1,0 +1,226 @@
+{
+  "title": "Start here. Make your first step count.",
+  "lead": "Choose a route and follow it at your own pace. Each step tells you what to do, what to expect, and how to recover.",
+  "ui": [
+    "Beginner handbook",
+    "Choose your route",
+    "About",
+    "minutes",
+    "What to do",
+    "What you should see",
+    "If it does not work",
+    "Mark as complete",
+    "Completed",
+    "Reset progress",
+    "Your progress stays in this browser. A checked step is your own note, not network proof.",
+    "Next step",
+    "Previous step",
+    "Copy command",
+    "Copied",
+    "Copy failed. Select and copy the text.",
+    "Open this resource",
+    "Network settings",
+    "Network name",
+    "Network ID",
+    "RPC address",
+    "Symbol",
+    "Decimals",
+    "Block explorer",
+    "Only on your computer · Devnet 6425",
+    "Public Testnet · 6423",
+    "Source version",
+    "Read the documentation",
+    "API reference",
+    "Technical drafts",
+    "Browse the library",
+    "Search the documentation",
+    "No matching documents",
+    "Try a different word or clear your search.",
+    "All documents",
+    "Original source",
+    "Read",
+    "Current network",
+    "Public YNX Testnet uses an authoritative block producer and authenticated read-only followers. Public self-service validator admission, staking and block rewards are not open.",
+    "This tutorial source and the public network can run different versions.",
+    "Public requests are read-only in these examples. No account, key or signature is needed.",
+    "Method",
+    "Address",
+    "Purpose",
+    "REST status",
+    "EVM network identity",
+    "Inspect blocks and transactions",
+    "Test assets",
+    "Service status",
+    "Client checklist",
+    "Use a timeout. Show connection errors and allow a deliberate retry.",
+    "Check 6423 / 0x1917 before continuing. A responsive URL does not prove the correct network.",
+    "Keep pending, committed, failed and unknown results distinct. Look up the hash before resubmitting.",
+    "Read methods and native-transfer compatibility do not establish arbitrary EVM contract deployment.",
+    "Keep provider keys out of source, previews and screenshots. Wallet secrets belong only in the wallet.",
+    "Read first, then build",
+    "Start with network identity and status. These examples do not send transactions or imply support for every Ethereum method.",
+    "Public interfaces",
+    "JavaScript SDK from source",
+    "Python SDK from source",
+    "SDK packages are built from the repository. Publication to npm or PyPI is not established.",
+    "Read the full source reference",
+    "Platform",
+    "API response unavailable",
+    "Run locally",
+    "Network",
+    "Learn",
+    "Use YNX",
+    "Run a node",
+    "Block production",
+    "Build an app",
+    "Download source ZIP",
+    "Check the downloaded file",
+    "As an alternative to Git, download this ZIP and run the checksum command from its download folder. Compare the full SHA-256 below before extracting it. Open the extracted project folder in your terminal; the remaining node commands run there."
+  ],
+  "paths": [
+    [
+      "Use YNX for the first time",
+      "Install a wallet, set up a Testnet account and learn to verify an action before trying another.",
+      [
+        [
+          "Install YNX Wallet",
+          "Open the installation guide and choose your actual system or browser. Read the package version and signing status before installing; open the wallet after installation.",
+          "YNX Wallet opens on your device. A download alone does not mean the wallet is installed.",
+          "If your platform is unavailable, keep the guide open and check the supported choices. Do not install an unrelated wallet under the YNX name."
+        ],
+        [
+          "Create or restore your own wallet",
+          "Inside YNX Wallet, choose its own create, import or unlock flow. Record recovery material offline. Use a separate Testnet account while learning.",
+          "The account is shown inside YNX Wallet. Creating, importing and unlocking YNX Wallet never require MetaMask login.",
+          "Never enter recovery words or a private key into this website, support chat or AI. Use only the wallet's own documented recovery screen."
+        ],
+        [
+          "Add the public Testnet",
+          "In the wallet's network settings, add or select YNX Testnet using the fields below. Check the network and account before connecting an application.",
+          "The selected network is 6423 and the symbol is YNXT. An equivalent ynx1 and 0x address represent the same 20-byte identity.",
+          "If the ID differs, stop and correct the settings. Adding a network should not silently request a transaction."
+        ],
+        [
+          "Request test YNXT",
+          "Open the official Faucet, enter your Testnet address and follow the current service instructions. YNXT is a test asset with no monetary value.",
+          "A successful request includes a result you can inspect. Confirm the transaction and balance; a request ID is not proof of funding.",
+          "If maintenance or a rate limit appears, preserve the non-sensitive request details and wait. Do not repeatedly submit an unknown result."
+        ],
+        [
+          "Inspect a transaction",
+          "Open Explorer and search your address or transaction hash. Check network, recipient, amount and the displayed result. Before any later transfer, review the wallet's exact confirmation.",
+          "You can distinguish a pending action from a committed or failed result and identify its transaction hash.",
+          "If the result is unknown or Explorer is behind, check status and query again. Do not send a duplicate transfer to make the first one appear."
+        ],
+        [
+          "Connect and disconnect an application",
+          "Choose an application, inspect the requested account and permissions, and approve only what you intend. After trying it, disconnect in the app and review connected sites in the wallet.",
+          "The app identifies the wallet you actually selected. An external DApp may offer MetaMask separately; it must never label it as YNX Wallet.",
+          "If a wallet is missing or locked, return to that wallet. A fallback must not switch identities or reuse a different account without your choice."
+        ]
+      ]
+    ],
+    [
+      "Run a learning node",
+      "Start an isolated Devnet on your computer. Its blocks belong to network 6425 and do not join the public Testnet.",
+      [
+        [
+          "Prepare the tools",
+          "Install Git and Go 1.25 or later. On Windows, use a Linux environment such as WSL for this node tutorial. Open a terminal and check both tool versions.",
+          "go version reports at least Go 1.25. The Linux or macOS terminal can run git and go.",
+          "If either command is missing, complete its installation and reopen the terminal. Do not paste commands into a wallet or browser address bar."
+        ],
+        [
+          "Get a clean source checkout",
+          "Use a new folder for learning. Clone the repository and select the source version below; keep your existing projects and wallet data separate.",
+          "Your terminal is in ynx-learning and the source revision matches the displayed version.",
+          "If this revision cannot be fetched, stop and use the documentation's current source link. Do not replace it with an arbitrary binary or a different command name."
+        ],
+        [
+          "Start the local node",
+          "Run the command from the project root and leave the terminal open. It binds only to your computer and stores learning data in .local/learning-node.",
+          "The process stays running. This is YNX Devnet 6425 on 127.0.0.1:16420, not public Testnet 6423.",
+          "If the port is occupied, choose another unused local port in both commands. Do not terminate an unfamiliar process. Check the first error if compilation fails."
+        ],
+        [
+          "Watch blocks grow",
+          "Open a second terminal and read the local status. Wait several seconds and repeat the same request. Compare network, chainId and height.",
+          "The network is YNX Devnet, chainId is 6425, and height increases. The provided source was checked with a fresh local data directory.",
+          "If connection is refused, check the first terminal and matching port. Local height growth is not evidence of public synchronization or validator admission."
+        ],
+        [
+          "Stop and resume safely",
+          "In the node terminal, press Ctrl+C and wait for it to exit. Keep the learning data directory. Run the same start command again to resume.",
+          "The node stops cleanly and can reopen its existing learning data. Your wallet recovery material was never involved.",
+          "Do not run two node processes against the same directory. If restart fails, read the error and preserve the directory before trying a separate fresh one."
+        ]
+      ]
+    ],
+    [
+      "Understand public block production",
+      "Learn what is available today and what a local experiment does not grant.",
+      [
+        [
+          "Know the node roles",
+          "A producer writes authoritative blocks. Authenticated followers copy state and serve reads. A local learning node produces its own Devnet blocks.",
+          "You can separate reading public data, following a network and having permission to produce its blocks.",
+          "A status response, an open port or four local processes does not prove four public validators or permissionless participation."
+        ],
+        [
+          "Check the current access path",
+          "Public validator self-enrollment, staking admission and block rewards are not open. An operator must provide the actual configuration, access requirements and authenticated follower connection before public joining is possible.",
+          "You know which information is still required: supported host, source/configuration, endpoints, synchronization checks, recovery and exit procedure.",
+          "Do not invent genesis or peers, send a signing key to support, buy mining hardware, or pay for a guaranteed validator place."
+        ],
+        [
+          "Inspect the local consensus lab",
+          "In a source checkout, this dry-run shows the local consensus test entry. The actual lab creates temporary teaching keys; it is separate from the public network.",
+          "The dry-run points to scripts/verify/consensus-quorum-check.sh. It does not start the experiment or prove public consensus deployment.",
+          "Read the script and its requirements before running it. Never reuse its temporary keys on a public network or promise mining income from its result."
+        ]
+      ]
+    ],
+    [
+      "Build your first integration",
+      "Read real network data, then add one capability at a time with explicit wallet approval.",
+      [
+        [
+          "Choose a workspace",
+          "Open Code or use your own editor and a fresh repository checkout. Choose your language, create a small file, run it and read the output. In Code, use the server's default AI or configure your own provider in its settings.",
+          "You can edit, run and locate errors in a workspace you control. Preview, export and publish are separate actions.",
+          "If Code or a model is unavailable, use a local editor. Keep provider keys in private settings, never in project source or a public preview."
+        ],
+        [
+          "Read the network ID",
+          "Run this public read-only request in a terminal. It asks for network identity and requires no wallet, account or private key.",
+          "The JSON result contains 0x1917, which is decimal 6423. The request did not send a transaction.",
+          "If the response fails or differs, check the endpoint and status page. Do not continue with a guessed ID."
+        ],
+        [
+          "Use the SDK from the checkout",
+          "With Node.js 18 or later, run this command from the repository root. It imports the local JavaScript SDK and checks a public Testnet snapshot. Python 3.9 or later is also supported by the source SDK.",
+          "The client prints observed height and EVM network ID, or a real error. No unverified npm or PyPI package installation is required.",
+          "If the import fails, confirm the checkout contains sdk/js/index.js. Endpoint errors must remain errors; do not substitute a sample height."
+        ],
+        [
+          "Add an explicit wallet interaction",
+          "Build account connection as a user action. Show the selected provider, network and requested scope. Ask separately before signing or sending, then inspect the returned outcome.",
+          "A user can reject a request, switch accounts and disconnect. MetaMask may be a separate DApp choice, never a disguised YNX Wallet fallback.",
+          "Never request a seed phrase or private key. Treat rejection, locked wallet, wrong network and missing provider as distinct recoverable states."
+        ],
+        [
+          "Test before sharing",
+          "Run the repository's SDK checks in its documented environment. Test timeouts, wrong network, unavailable data and rejected wallet requests. Compile contracts locally only within currently supported tooling.",
+          "You have repeatable local test results. Package checks, native transfers and local compilation do not prove arbitrary contracts can deploy on the public network.",
+          "Read the failed test before changing code. Do not bypass a network or signing check to make a test look successful."
+        ],
+        [
+          "Export, review and publish deliberately",
+          "Export or package the project, inspect the files for secrets, and test its full-stack preview. Review the intended host, environment variables and permissions before a separate publishing action.",
+          "The exported project can be inspected, and a public URL is treated as usable only after its actual behavior is checked.",
+          "If a public capability is unsupported, keep the example read-only or local. A preview link or successful build is not proof of a working public integration."
+        ]
+      ]
+    ]
+  ]
+}

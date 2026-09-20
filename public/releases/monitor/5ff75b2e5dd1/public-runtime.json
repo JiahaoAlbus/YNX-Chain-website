@@ -1,0 +1,144 @@
+{
+  "schemaVersion": 1,
+  "product": "YNX Monitor",
+  "verifiedAt": "2026-09-06T15:03:36.657228+00:00",
+  "publicUrl": "https://monitor.ynxweb4.com/",
+  "sourceCommit": "5ff75b2e5dd15928da728f17567a68b16e1801fa",
+  "sourceTree": "236afca6ed332ce9ec7644250c897ca0b3e25fb0",
+  "release": "ynx-monitor-ops-security-5ff75b2e5dd1",
+  "artifactSha256": "f13ee5135426bdb899f1b5f7c12bbad324ba0eec0e1ebb3782af605c98bad393",
+  "artifactBytes": 40089194,
+  "artifactClass": "server-runtime-package; not a hosted user installer",
+  "state": "public-web-preview-incomplete",
+  "centralAccepted": false,
+  "fullProductAccepted": false,
+  "downloadHosted": false,
+  "productionSigned": false,
+  "storeReleased": false,
+  "runtimeIdentity": {
+    "schemaVersion": "ynx.monitor.version.v1",
+    "service": "ynx-monitor-control-plane",
+    "contractVersion": "ynx.monitor.integration.v1",
+    "commit": "5ff75b2e5dd15928da728f17567a68b16e1801fa",
+    "release": "ynx-monitor-ops-security-5ff75b2e5dd1",
+    "startedAt": "2026-09-06T14:52:31.929Z"
+  },
+  "checks": {
+    "actualDeployment": true,
+    "sourceBoundPublicFilesMatched": 7,
+    "publicFileReadbackAt": "2026-09-06T14:54:05.902018+00:00",
+    "publicPageRendered": true,
+    "publicLoginAndStatusOnly": true,
+    "opsAndAuthorizationNoStore": true,
+    "workerSha256": "ece3ca1326fd4e4c2f2dc53a90c2699f529984e78f15ac13ecbacae0b04efe72"
+  },
+  "publicFiles": [
+    {
+      "path": "assets/index-BhwUFu2c.js",
+      "bytes": 362675,
+      "sha256": "4b3bf1c801b1747cb1819da92338225e6fa3e34139612cdacacde59835997af3",
+      "status": 200
+    },
+    {
+      "path": "assets/index-Bpefxj1G.css",
+      "bytes": 19600,
+      "sha256": "e34d819afa7cccbd7e573767bd72fb6b5abfc5acdf5054ff604baffd5a38ac0a",
+      "status": 200
+    },
+    {
+      "path": "assets/ynx-logo-D80L-uL1.png",
+      "bytes": 104171,
+      "sha256": "df071f540f21d54e92286fd709df5293187c269058850820adb11e7c5087c12d",
+      "status": 200
+    },
+    {
+      "path": "icon.svg",
+      "bytes": 273,
+      "sha256": "8ed1d0e4fa1dc02412c01f241a12c0f88e4c2e33e7164d23dce94c6332f1111f",
+      "status": 200
+    },
+    {
+      "path": "index.html",
+      "bytes": 641,
+      "sha256": "2566ab93668be31c9bd8b7564fba21a05b8d7121ac00729ec6c642232519a2cb",
+      "status": 200
+    },
+    {
+      "path": "manifest.webmanifest",
+      "bytes": 298,
+      "sha256": "a6d036b88cd0fccdfe1bcc7a4951e31cf7ee2615e9edfc2782605ed52048d171",
+      "status": 200
+    },
+    {
+      "path": "sw.js",
+      "bytes": 2389,
+      "sha256": "ece3ca1326fd4e4c2f2dc53a90c2699f529984e78f15ac13ecbacae0b04efe72",
+      "status": 200
+    }
+  ],
+  "browserVerification": {
+    "sourceCommit": "5ff75b2e5dd15928da728f17567a68b16e1801fa",
+    "observedAt": "2026-09-06T15:02:12.336Z",
+    "scope": "Independent public login/status UI on isolated headless Chrome; read-only GET/HEAD only.",
+    "mainScript": {
+      "path": "assets/index-BhwUFu2c.js",
+      "sha256": "4b3bf1c801b1747cb1819da92338225e6fa3e34139612cdacacde59835997af3"
+    },
+    "freshServiceWorkerActivated": true,
+    "publicLoginStatusVisual": {
+      "locales": [
+        "en",
+        "zh-CN",
+        "ar"
+      ],
+      "widths": [
+        1440,
+        390
+      ],
+      "background": "#ffffff",
+      "brand": "#002fa7",
+      "arabicRTL": true,
+      "collapsedHorizontalOverflow": false,
+      "expandedHorizontalOverflow": false,
+      "passedOnRecheck": true
+    },
+    "consoleErrors": 0,
+    "pageErrors": 0,
+    "oldUserProfileUpgradeVerified": false,
+    "authenticatedOperatorViewsVerified": false,
+    "walletConnectionSigningVerified": false,
+    "concurrencyValidated": false,
+    "overallUIComplete": false
+  },
+  "notVerified": [
+    "Selector sizes and missing direct Wallet download are assigned to a separate source candidate.",
+    "One public status request timed out; revisit 200 at 6.806 seconds; separate TLS timeout recorded; root cause unresolved.",
+    "No old user-profile upgrade or Wallet sign-in is claimed.",
+    "Language and AI-language selectors: 38px high, 11px font on desktop and mobile. Public service details summary: 30–32px high, 13px font. Expanded per-service summaries: 15–17px high, 12px font. Main sign-in button: 46px high, 16px font; inputs: 44px high, 12px font.",
+    "Fresh browser without a wallet provider displays only the missing EIP-1193 provider message. No visible YNX Wallet installation/download link is offered by the public login page.",
+    "First run: public status available on desktop/mobile in all 3 locales. Refined run: mobile GET /status hit 10-second frontend deadline; ERR_ABORTED and truthful unavailable UI preserved. Single bounded mobile recheck: HTTP 200 no-store after 6.806s; 9 public service rows rendered in all 3 locales. Single direct anonymous GET: TCP connected in 0.106s, TLS connection timed out at 5.005s, no HTTP response; application/server origin cause not inferred.",
+    "Public login/status rendering and service health do not establish authenticated operations, Wallet approval, complete product acceptance, production signing or store release."
+  ],
+  "evidenceBasis": {
+    "type": "Recorded owner publication, anonymous asset readback and independent read-only public login/status browser evidence.",
+    "records": [
+      {
+        "record": "monitor-ops-security/root-publication-summary.json",
+        "sha256": "785175ad6694c39f161f9d011893359a5ab45620b448e02b2d1eb2b3db3bb838"
+      },
+      {
+        "record": "monitor-ops-security/root-release-r1/root-public-assets.json",
+        "sha256": "98d47e35c1ba1e3bfad1b822e9d816f6f4b6ed205939069f2eb81c31b2fc6aa1"
+      },
+      {
+        "record": "monitor-ops-security/root-public-browser/SUMMARY.json",
+        "sha256": "e510bdcba8ade4523139b620bd7393aaaffb2503bdbae16c927e2c5ad36f2fb8"
+      },
+      {
+        "record": "monitor-ops-security/linux-package-metadata.json",
+        "sha256": "5f93fc8d36ef4d584e5b1d32d4c05e624e5cc5727cac37b2a5f2a4bf12502734"
+      }
+    ]
+  },
+  "publicFileListSha256": "40b28905526f7b0dd54e1614a1519cae10b609a4bc6bbbb6323a4a6d06c115d5"
+}

@@ -1,0 +1,17 @@
+{
+  "schema": "ynx-faucet-runtime-publication/v1",
+  "publishedAt": "2026-08-21T15:34:00Z",
+  "environment": "testnet",
+  "service": "ynx-faucetd",
+  "publicBaseUrl": "https://faucet.ynxweb4.com",
+  "sourceCommit": "64efa498fa9982e12ffda888391d67082dc898bb",
+  "buildCommit": "64efa498fa99",
+  "release": "ynx-chain-64efa498fa99",
+  "chainId": 6423,
+  "nativeAsset": "YNXT",
+  "artifact": {"sha256": "2cd592debb78dcfa893fad56fe1bf648834211140e2fa54b8ad21557ef202089"},
+  "runtime": {"health": "https://faucet.ynxweb4.com/health", "version": "https://faucet.ynxweb4.com/version", "request": "https://faucet.ynxweb4.com/request", "topologySafe": true, "cacheControl": "no-store"},
+  "verifiedFundingTransaction": {"requestedAddress": "0x1515151515151515151515151515151515151515", "amount": 100, "nativeAsset": "YNXT", "transactionHash": "0x644d28621086f85a7e3f4de1b03859d0665a9dc0da004b40f18df23e66a4d56d", "blockNumber": 1147183, "chainRpcVerified": true, "explorerTransactionVerified": false},
+  "truth": {"daemonDeployedPublic": true, "publicHttpVerified": true, "realFundingRequestVerifiedInThisPublication": true, "explorerTransactionVerified": false, "walletPlatformFaucetVerified": false, "computerControlVerified": false, "aggregatePublicVerified": false},
+  "rollback": {"available": true, "previousBinarySha256": "3a624f6cb0a0df3956e8ab382c03cdd8b2ae156f984974df5088d518f75acaa8"}
+}

@@ -23,7 +23,10 @@ import {
   Repeat2,
   BarChart3
 } from "lucide-react";
+import { WALLET_CANONICAL_DOWNLOADS } from "../content/walletCanonicalDownloads.js";
+import { publishedDownloadPaths, publishedDownloadMetadata } from "../content/publishedDownloads.js";
 import { apiConfig } from "./api/ynxApi.js";
+import { isProductPublicSection } from "./productPublicContract.js";
 
 export const PRODUCT_STATUS = {
   LIVE: "live",
@@ -44,18 +47,24 @@ const makeDownloads = (items = {}) => ({
   ...items
 });
 
-const WEBSITE_HOSTED_ARTIFACTS = new Set();
+// This is deliberately an allow-list, not a source-tree-path guess. A file
+// becomes downloadable only when its immutable path is part of this website
+// build and registered in its release manifest.
+const WEBSITE_HOSTED_ARTIFACTS = new Set(publishedDownloadPaths);
 
-const artifactDownload = (status, artifactPath, note, href = null) => {
-  const hosted = !!href || WEBSITE_HOSTED_ARTIFACTS.has(artifactPath);
+const artifactDownload = (status, artifactPath, note, href = null, metadata = {}) => {
+  const deliveryHref = publishedDownloadMetadata[href]?.publicUrl || href;
+  const hosted = WEBSITE_HOSTED_ARTIFACTS.has(href) && WEBSITE_HOSTED_ARTIFACTS.has(deliveryHref);
   return {
     status,
     label: hosted && status === PRODUCT_STATUS.LIVE ? "Web" : undefined,
-    href: hosted ? href : null,
-    external: hosted && /^https?:\/\//.test(href || ""),
+    href: hosted ? deliveryHref : null,
+    external: hosted && /^https?:\/\//.test(deliveryHref || ""),
     downloadHosted: hosted,
     artifactPath,
-    note: hosted ? note : `${note} (not hosted on this website)`
+    note: hosted ? note : `${note} (not hosted on this website)`,
+    ...publishedDownloadMetadata[href],
+    ...metadata
   };
 };
 
@@ -145,18 +154,13 @@ const evidence = {
       href: "/releases/ecosystem-release-registry.json",
       release: "wallet-auth-v1.0.0-testnet-preview.5"
     },
-    statusNote: "Wallet Web, Android, macOS and Windows Testnet Preview artifacts are available from immutable official URLs. macOS is a universal DMG with the native com.ynxweb4.wallet.macos identity and ynxwallet callback review UI; Windows x64 and arm64 are direct NSIS EXE installers. APK/DMG/EXE are fixed-source release candidates with exact hashes, byte counts and signing classes. Desktop previews remain unsigned and are not store releases.",
+    statusNote: "The Wallet download selector keeps the current Android and desktop test previews and now points to immutable Wallet Web packages from source c93e16be. PWA, Chrome/Edge and Firefox release assets and the release manifest were rehashed; their new website paths require deployment before public-path acceptance. Browser packages remain unsigned manual-install previews, not store releases or proof of current installed-browser acceptance. AppImage remains build-only; macOS remains ad-hoc signed and not notarized.",
     downloads: {
+      ...Object.fromEntries(Object.entries(WALLET_CANONICAL_DOWNLOADS).map(([platform, artifact]) => [platform, artifactDownload(PRODUCT_STATUS.PREVIEW, artifact.artifactPath, artifact.installProof, artifact.publicUrl)])),
       web: { status: PRODUCT_STATUS.LIVE, href: "https://wallet.ynxweb4.com/", external: true, downloadHosted: false, note: "Public Wallet Companion for provider discovery, YNX Testnet setup, signing and transaction requests. The Wallet/Auth health endpoint is not a product entry." },
-      pwa: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-web-pwa-0.1.0.zip", "Unsigned PWA Testnet Preview · source a1c680982b63 · SHA-256 63d83cd2…d287 · 272,706 bytes · requires Service Worker and Web Crypto.", "/downloads/wallet-web/sha256-63d83cd20925f2d52c0f21f548fa7a857a4d056e03e5fa16244f173164a7d287/ynx-wallet-web-pwa-0.1.0.zip"),
-      chromeEdge: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-chrome-edge-0.1.0.zip", "Unsigned unpacked Chrome/Edge Testnet Preview · source a1c680982b63 · SHA-256 c733093d…e2aa · 188,846 bytes · Chrome/Edge 120+.", "/downloads/wallet-web/sha256-c733093dea47c6612c8a9d5ecea40be2227f62402f4b4966955c9e1accf4e2aa/ynx-wallet-chrome-edge-0.1.0.zip"),
-      firefox: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-firefox-0.1.0.zip", "Unsigned unpacked Firefox Testnet Preview · source a1c680982b63 · SHA-256 417d9b9e…36b3 · 188,883 bytes · Firefox 128+.", "/downloads/wallet-web/sha256-417d9b9e5babf05fdfdf8161504389eb99c636be75f94444bf4ff91a9b4536b3/ynx-wallet-firefox-0.1.0.zip"),
-      android: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-1.0.3-testnet-preview-3ab8c24c-local-test-signed.apk", "Android Testnet Preview 1.0.3 · source 3ab8c24c · SHA-256 afd68685…e0 · 78,233,954 bytes · Android API 24+ / target API 36 · direct retry after an authoritative Testnet read failure; API 36 install, two cold starts, biometric unlock and real Testnet account read verified · local test signer only, not production signed or Play Store released.", "/downloads/wallet/sha256-afd686851ef07fbb07823295d07179b79e1a4a078d1b528bc149bd619c8689e0/ynx-wallet-1.0.3-testnet-preview-3ab8c24c-local-test-signed.apk"),
+      firefox: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-firefox-0.1.1.zip", "Unsigned unpacked Firefox Testnet Preview · source c93e16be · SHA-256 6ac25641…01e0 · 547,577 bytes · Firefox 142+.", "https://www.ynxweb4.com/downloads/wallet-web/sha256-6ac256415c34b4b492dc6094be8be8c9f0acf6a40653e2e18fde64dd20f801e0/ynx-wallet-firefox-0.1.1.zip"),
       ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS project exists; simulator/launch evidence not completed on this host." },
-      macos: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-macos-0.1.2-universal.dmg", "Universal macOS Testnet Preview DMG · source 5a6b033897a1 · evidence 59e9b994ff0f · SHA-256 69b4fa5db7b8a9ab105af6633de44f5a5a4a9fceeaa0925a306f77b22381b044 · 237,777,236 bytes · x86_64 + arm64 · macOS 13+ · bundle com.ynxweb4.wallet.macos · ynxwallet callback review, reject and malformed-input fail-closed behavior verified · approval remains blocked by CANONICAL_AUTH_BRIDGE_UNAVAILABLE · unsigned and not notarized; Gatekeeper rejected; no production signing or store release claimed.", "https://downloads.ynxweb4.com/wallet/sha256-69b4fa5db7b8a9ab105af6633de44f5a5a4a9fceeaa0925a306f77b22381b044/ynx-wallet-macos-0.1.2-universal.dmg"),
       linux: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-desktop-0.1.0-x86_64.rpm", "Unsigned Linux x64 RPM candidate · evidence c2622ca2e189 · SHA-256 8cf24d83…2bea · 86,926,281 bytes · Fedora 42 x64 lifecycle verified; official hosting gate pending."),
-      windowsX64: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-desktop-0.1.1-x64.exe", "Windows x64 NSIS Testnet Preview EXE · source a8f36e4c5723 · evidence 6ec336ef7fb5 · SHA-256 856b2a260efc43c25f62508dabc6bb6b74b84da71c9b477e8a02a12d17598cd7 · 104,334,744 bytes · install, upgrade, cold launch, second launch, rollback, re-upgrade and uninstall verified on Windows Server 2025 x64 · unsigned; Authenticode NotSigned; no production signing or store release claimed.", "/downloads/wallet/sha256-856b2a260efc43c25f62508dabc6bb6b74b84da71c9b477e8a02a12d17598cd7/ynx-wallet-desktop-0.1.1-x64.exe"),
-      windowsArm64: artifactDownload(PRODUCT_STATUS.PREVIEW, "ynx-wallet-desktop-0.1.1-arm64.exe", "Windows arm64 NSIS Testnet Preview EXE · source a8f36e4c5723 · evidence 6ec336ef7fb5 · SHA-256 929315133c68eda1cabac51cec889c4aeca5e3ee1701578916bc67e096c5dc35 · 103,487,635 bytes · native Windows 11 arm64 install, cold launch, second launch, YNX Testnet fail-closed lifecycle, upgrade and uninstall verified · unsigned; Authenticode NotSigned; no production signing or store release claimed.", "/downloads/wallet/sha256-929315133c68eda1cabac51cec889c4aeca5e3ee1701578916bc67e096c5dc35/ynx-wallet-desktop-0.1.1-arm64.exe")
     }
   },
   social: {
@@ -265,17 +269,19 @@ const evidence = {
     }
   },
   explorer: {
-	commit: "8bf7716ee671a5a9b64517280743c5a281899712",
-	statusNote: "The public Explorer and canonical Indexer report release ynx-explorer-monitor-8bf7716ee671 at central source commit 8bf7716ee671a5a9b64517280743c5a281899712. Public health shows real Testnet data, four validators and explicit index lag; browser acceptance remains a separate verification state.",
+    commit: "d5eb0d9069a699155581124a2926efd887f315cc",
+    productRelease: { href: "/releases/explorer/d5eb0d9069a6/public-runtime.json", release: "ynx-explorer-native-d5eb0d9069a6" },
+    statusNote: "The public Explorer Web release d5eb0d9069a6 has seven source-bound public responses and read-only native-address, conversion and icon checks in English, Simplified Chinese and Arabic. Copy testing used a clipboard stub. This is a Web preview; installation, Wallet signing and complete product acceptance are not claimed.",
     downloads: {
-      web: { status: PRODUCT_STATUS.LIVE, href: apiConfig.explorerUrl, note: "Live public explorer deployment." }
+      web: { status: PRODUCT_STATUS.LIVE, href: apiConfig.explorerUrl, downloadHosted: false, note: "Public Explorer Web preview; no desktop or mobile installer." }
     }
   },
   monitor: {
-    commit: "8bf7716ee671a5a9b64517280743c5a281899712",
-	statusNote: "The public Monitor reports release ynx-explorer-monitor-8bf7716ee671 at central source commit 8bf7716ee671a5a9b64517280743c5a281899712. Its signed v2 public status is available and operational for the configured Testnet probes; private operations remain authorization-gated.",
+    commit: "3cae747ed897a3feec50157d3add33318a484f16",
+    productRelease: { href: "/releases/monitor/3cae747ed897/public-runtime.json", release: "ynx-monitor-controls-downloads-3cae747ed897" },
+    statusNote: "The public Monitor Web release 3cae747ed897 has fourteen source-bound files and login/status checks in six desktop/mobile browser contexts. Its Chrome/Edge ZIP link downloads YNX Wallet, not a Monitor installer. Wallet installation, login/signing, old-profile upgrades and authenticated operator actions remain unverified.",
     downloads: {
-      web: { status: PRODUCT_STATUS.LIVE, href: "https://monitor.ynxweb4.com/", external: true, downloadHosted: false, note: "Live signed Testnet status; private operator controls remain authorization-gated." }
+      web: { status: PRODUCT_STATUS.LIVE, href: "https://monitor.ynxweb4.com/", external: true, downloadHosted: false, note: "Public login/status Web preview; operator actions remain authorization-gated." }
     }
   },
   ai: {
@@ -334,25 +340,25 @@ const evidence = {
     }
   },
   video: {
-    commit: "f3a20484",
-    centralAccepted: true,
-    productRelease: { href: "/releases/ecosystem-release-registry.json", release: "video-v0.2.0-testnet-preview.1" },
-    statusNote: "The public Video Testnet Preview is live with an empty-by-default catalog, real ClamAV scanning and FFmpeg processing readiness, twelve locales, fail-closed private APIs and 100/100 Viewer plus API concurrency evidence. Central Wallet registration, production HA/object storage, licensed content, live AI/Pay/Trust integrations and native production signing remain pending.",
+    commit: "489bf23ac56fb11c5b2ed869fb2a93c2465d2b24",
+    centralAccepted: false,
+    productRelease: { href: "/releases/video/77ac093356e8/public-runtime.json", release: "video-testnet-web-20260906-77ac093356e8" },
+    statusNote: "Browse published test videos and shared links in the public Web preview. The latest Wallet session update is live; current-version browser playback, signed-in library and installed Wallet acceptance are being verified. Native downloads, complete translations and production streaming remain unfinished.",
     downloads: {
       android: artifactDownload(PRODUCT_STATUS.LOCAL, "apps/video/android/app/build/outputs/apk/debug/app-debug.apk", "Video Android debug APK."),
       ios: { status: PRODUCT_STATUS.PLANNED, note: "iOS project exists; simulator/signing evidence pending." },
-      web: { status: PRODUCT_STATUS.LIVE, href: "https://web4.ynxweb4.com/video/", external: true, note: "Public Video Web Testnet Preview; private actions require central Wallet registration." },
+      web: { status: PRODUCT_STATUS.LIVE, href: "https://video.ynxweb4.com/", external: true, note: "Public Video Web preview; guest browsing and test-media playback verified. Signed-in workflows remain under testing." },
       macos: { status: PRODUCT_STATUS.NOT_READY, note: "No published Video macOS package in this candidate." },
       windows: { status: PRODUCT_STATUS.NOT_READY, note: "No published Video Windows package in this candidate." }
     }
   },
   creatorStudio: {
-    commit: "3353bdfa",
-    centralAccepted: true,
-    productRelease: { href: "/releases/ecosystem-release-registry.json", release: "creator-studio-v0.3.0-testnet-preview.1" },
-    statusNote: "Creator Studio is publicly hosted beside Video with team RBAC, immediate revocation, source-bound rights declarations, authoritative analytics coverage, independent publication review, scheduling, unpublish and immutable version history. Its API, Viewer and Studio each passed 100/100 concurrent requests. Private operations require central Wallet registration and fail closed today; no live AI provider, Pay settlement or production creator revenue is claimed.",
+    commit: "489bf23ac56fb11c5b2ed869fb2a93c2465d2b24",
+    centralAccepted: false,
+    productRelease: { href: "/releases/creator-studio/489bf23ac56f/public-runtime.json", release: "creator-testnet-web-20260906-489bf23ac56f" },
+    statusNote: "The public Web preview supports YNX Wallet approval and return, access after refresh, and sign-out recovery after a network failure and browser reload. These current-version flows were verified with one Android emulator and Chrome. Wallet-side revocation, other platforms, account switching and the full publishing workflow still need acceptance. AI services, payouts and production creator revenue are unavailable.",
     downloads: {
-      web: { status: PRODUCT_STATUS.LIVE, href: "https://web4.ynxweb4.com/video/studio/", external: true, note: "Public Creator Studio Testnet Preview; private operations remain Wallet-gated." }
+      web: { status: PRODUCT_STATUS.LIVE, href: "https://creator.ynxweb4.com/", external: true, note: "Public Creator Studio Web preview; Android Wallet approval, refresh and sign-out retry after a network failure verified on one emulator." }
     }
   },
   cloud: {
@@ -667,22 +673,22 @@ export const getCatalog = () => [
     name: "YNX Video",
     icon: PlaySquare,
     status: PRODUCT_STATUS.LIVE,
-    detail: "A public empty-by-default Testnet video workspace with discovery, playback, comments, history, subscriptions, playlists and reports. Uploads are scanned by ClamAV and processed by FFmpeg; authenticated actions stay closed until central Wallet registration is accepted.",
-    entry: { label: "Open YNX Video", href: "https://web4.ynxweb4.com/video/", external: true },
+    detail: "Discover published test videos, open shared links, browse channels and play media in the Web preview. Signed-in history, subscriptions, playlists and comments are still undergoing Wallet acceptance testing.",
+    entry: { label: "Open YNX Video", href: "https://video.ynxweb4.com/", external: true },
     docs: { ...docsAnchor("video"), label: "Video docs" },
-    downloads: web(PRODUCT_STATUS.LIVE, "https://web4.ynxweb4.com/video/", "Public Video Testnet Preview"),
-    metrics: [["Closure", "Viewer + rights-aware creator pipeline"], ["Risk", "No central Wallet, licensed catalog or production settlement"], ["Readiness", "Public HTTPS + real scanner/transcoder + 100/100 concurrency"]]
+    downloads: web(PRODUCT_STATUS.LIVE, "https://video.ynxweb4.com/", "Public Video Testnet Preview"),
+    metrics: [["Verified", "Guest browsing, shared links and test-media playback"], ["Pending", "Signed-in library, native installers and complete translations"], ["Readiness", "Web preview; full product acceptance remains open"]]
   },
   {
     key: "creatorStudio",
     name: "Creator Studio",
     icon: Brush,
     status: PRODUCT_STATUS.LIVE,
-    detail: "A public Creator Studio Testnet workspace for channel teams, role revocation, source-bound rights, uploads, captions, independent review, scheduling, unpublish, immutable versions, reports, appeals, disputes and review-required AI/payout intents. Private operations fail closed until Wallet registration is accepted.",
-    entry: { label: "Open Creator Studio", href: "https://web4.ynxweb4.com/video/studio/", external: true },
+    detail: "A Web workspace for creators to manage test channels and publishing. Android Wallet sign-in, refresh, sign-out and session revocation have passed a scoped emulator check; the full editing and publishing workflow is still being completed.",
+    entry: { label: "Open Creator Studio", href: "https://creator.ynxweb4.com/", external: true },
     docs: { ...docsAnchor("creator"), label: "Creator docs" },
-    downloads: web(PRODUCT_STATUS.LIVE, "https://web4.ynxweb4.com/video/studio/", "Public Creator Studio Testnet Preview"),
-    metrics: [["Closure", "Team → upload → rights → independent review → scheduled publish"], ["Risk", "No live AI, Pay settlement or authoritative revenue"], ["Readiness", "API + Viewer + Studio each 100/100 concurrency"]]
+    downloads: web(PRODUCT_STATUS.LIVE, "https://creator.ynxweb4.com/", "Public Creator Studio Testnet Preview"),
+    metrics: [["Verified", "Android Wallet approval, refresh, sign-out and revocation"], ["Pending", "Other platforms, account switching and complete publishing"], ["Readiness", "Web preview; no production payouts or revenue"]]
   },
   {
     key: "cloud",
@@ -774,7 +780,17 @@ export const getCatalog = () => [
   }
 ].map(attachEvidence);
 
-export const getProductByRoute = (route) => getCatalog().find((product) => product.route === route) || null;
+export const getProductRouteMatch = (route) => {
+  for (const product of getCatalog()) {
+    if (route === product.route) return { product, sectionId: "overview" };
+    if (!route.startsWith(`${product.route}/`)) continue;
+    const sectionId = route.slice(product.route.length + 1);
+    if (isProductPublicSection(sectionId)) return { product, sectionId };
+  }
+  return null;
+};
+
+export const getProductByRoute = (route) => getProductRouteMatch(route)?.product || null;
 
 export const getLegacyDAppRedirect = (route) => {
   const product = getCatalog().find((entry) => entry.legacyRoute === route);

@@ -5,8 +5,8 @@
   "slug": "website",
   "owner": "28-website",
   "version": "1.0.0-public-candidate",
-  "branch": "codex/final-website",
-  "sourceCommit": "eaf279c9aad22059d5a832bc6455b926509d4b22",
+  "branch": "codex/audit-website-usability-20260906",
+  "sourceCommit": "30e6c187a1c62ba8424217e07540420162e0a410",
   "phase": "PUBLIC",
   "releaseStates": {
     "implementedLocal": true,
@@ -19,7 +19,20 @@
     "productionSigned": false,
     "storeReleased": false
   },
-  "publicEvidence": {
+  "knownGaps": [
+    "The full 36-domain ecosystem scope and all owner acceptance states remain open; only current scoped evidence is published.",
+    "This website release has exact public file and identity proof; fresh interactive browser acceptance remains pending.",
+    "Final product installers are still being replaced and verified per product and platform; source, hosted bytes and installed core workflows remain separate states.",
+    "Search-console, Bing, IndexNow submission receipts and independent index coverage still require verification.",
+    "A concrete prior deployment and alias rollback are recorded; this update did not execute a live rollback or disaster-recovery exercise."
+  ],
+  "routeHierarchy": {
+    "softwareBase": "/dapp",
+    "downloadCenter": "/dapp/download",
+    "square": "/dapp/square",
+    "legacyRoutesPermanentRedirect": true
+  },
+  "historicalPublicEvidence": {
     "origin": "https://www.ynxweb4.com",
     "observedRoute": "/status",
     "observedHttpStatus": 200,
@@ -29,17 +42,33 @@
     "remotePublicMetadataSourceCommit": "2e3c893c7c97e7bc713af4e9a74438ffd125289f",
     "currentSourceMismatchVerified": true
   },
-  "knownGaps": [
-    "all 35 owner branches are represented locally, but their records are not centrally accepted",
-    "exact current-source production identity is not verified",
-    "hosted product installers remain unavailable",
-    "search-console, Bing, IndexNow submission receipt and independent index coverage evidence are unavailable",
-    "production monitoring, incident, rollback, backup and accessibility regression receipts are unavailable"
-  ],
-  "routeHierarchy": {
-    "softwareBase": "/dapp",
-    "downloadCenter": "/dapp/download",
-    "square": "/dapp/square",
-    "legacyRoutesPermanentRedirect": true
+  "sourceTree": "cdd28850e7bd6803a5048b8b60c1e0ab5256f6b9",
+  "release": "website-video-creator-20260906-30e6c187a1c6",
+  "generatedAt": "2026-09-06T09:15:40.353737+00:00",
+  "publicEvidence": {
+    "origins": [
+      "https://ynxweb4.com",
+      "https://www.ynxweb4.com"
+    ],
+    "verifiedAt": [
+      "2026-09-06T09:13:20.928Z",
+      "2026-09-06T09:13:20.936Z"
+    ],
+    "exactCurrentSourceVerified": true,
+    "verificationScope": "Production identity and 50 exact source-built JS, CSS, current product records, service worker and HTML per domain; production indexing environment reproduced locally.",
+    "verifiedFilesPerDomain": 50,
+    "deploymentId": "dpl_9sRiU2emXtKR237VjtpUfoqNYggD",
+    "deploymentUrl": "https://ynx-web4-website-5el3tairy-jiahaoalbus-projects.vercel.app",
+    "rollbackDeploymentId": "dpl_Uc68Nebhe2JSzQ7Jc1pzUC5fq2r9",
+    "rollbackDeploymentUrl": "https://ynx-web4-website-d0f9r42tz-jiahaoalbus-projects.vercel.app",
+    "rollbackPrepared": true,
+    "rollbackExecuted": false,
+    "browserUIVerifiedCurrentRelease": false,
+    "fullEcosystemAccepted": false,
+    "network": "Primary host egress, ordinary public DNS and trusted HTTPS; no address pin or TLS bypass",
+    "receipts": [
+      "evidence/20260906-video-creator/apex-public-readback.json",
+      "evidence/20260906-video-creator/www-public-readback.json"
+    ]
   }
 }

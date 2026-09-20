@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { validateFaucetClaim, validateFaucetRuntime } from "../src/lib/faucetRuntime.js";
 
-const build = { commit: "d644c0821b61", release: "ynx-chain-d644c0821b61", buildTime: "2026-08-21T11:34:38Z" };
+const build = { commit: "64efa498fa99", release: "ynx-chain-64efa498fa99", buildTime: "2026-08-21T15:32:51Z" };
 const health = {
   ok: true,
   service: "ynx-faucetd",
@@ -15,11 +15,11 @@ const health = {
   startedAt: "2026-08-21T00:46:14Z",
   truthfulStatus: "rpc-backed-faucet",
 };
-const version = { service: "ynx-faucetd", build, startedAt: health.startedAt, dependencies: health.dependencies };
+const version = { service: "ynx-faucetd", build, startedAt: health.startedAt };
 
 test("accepts only the exact topology-safe Faucet runtime identity", () => {
   const result = validateFaucetRuntime(health, version);
-  assert.equal(result.version.build.commit, "d644c0821b61");
+  assert.equal(result.version.build.commit, "64efa498fa99");
   assert.ok(Object.isFrozen(result));
 });
 
@@ -36,6 +36,9 @@ test("accepts only a claim response bound to the requested address and amount", 
     truthfulStatus: "rpc-backed-faucet",
   };
   assert.equal(validateFaucetClaim(payload, address, 100).hash, payload.transaction.hash);
+  const authoritativeAddress = "0x1515151515151515151515151515151515151515";
+  const authoritativePayload = { ...payload, address: authoritativeAddress, canonicalAddress: authoritativeAddress, transaction: { ...payload.transaction, to: authoritativeAddress }, evmAddress: undefined };
+  assert.equal(validateFaucetClaim(authoritativePayload, authoritativeAddress, 100).hash, authoritativePayload.transaction.hash);
   assert.throws(() => validateFaucetClaim({ ...payload, amount: 99 }, address, 100), /No success is claimed/);
   assert.throws(() => validateFaucetClaim({ ...payload, address: "ynx1other" }, address, 100), /No success is claimed/);
 });

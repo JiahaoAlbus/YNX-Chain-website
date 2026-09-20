@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "product": "YNX Wallet",
+  "releaseId": "wallet-static-20260906-r5-android",
+  "status": "published-files-verified",
+  "distribution": "testnet-preview",
+  "hosting": "static-artifact-files-only",
+  "artifacts": [
+    {
+      "id": "android-107-08d8f67d",
+      "sourceCommit": "08d8f67ded29355c663b63114c0e640b02cbc484",
+      "sha256": "3ae55a7759bcbd610587cf018bb2de0a3a13a7a7c9100a495a36ad8d6a8dad7e",
+      "bytes": 30977000,
+      "platform": "android",
+      "architecture": "arm64",
+      "browser": null,
+      "installation": "apk",
+      "mimeType": "application/vnd.android.package-archive",
+      "labelZh": "Android 1.0.7 · ARM64 测试预览（QA 签名）",
+      "labelEn": "Android 1.0.7 · ARM64 test preview (QA signed)",
+      "limitations": [
+        "ARM64-only APK, signed with an Android Debug QA certificate. Not production-signed or a store release.",
+        "Code7 to code8 data-preserving upgrade, protected-key OS fingerprint unlock and read-only Auth inventory were verified on an independent emulator. Latest product login was not rerun on code8.",
+        "Real hardware/Pixel, upgrades from older public code4/code5, current product-session login and complete transfer E2E remain unverified.",
+        "仅 ARM64，使用 Android Debug QA 签名；不是生产签名或商店版本。",
+        "已验证独立模拟器上 code7→8 保留数据升级、受保护密钥的系统指纹解锁及只读账户清单；code8 最新产品登录未复验，真机与完整转账流程尚未完成。"
+      ],
+      "filename": "ynx-wallet-1.0.7-testnet-preview-08d8f67d-local-test-signed.apk",
+      "relativePath": "wallet/sha256-3ae55a7759bcbd610587cf018bb2de0a3a13a7a7c9100a495a36ad8d6a8dad7e/ynx-wallet-1.0.7-testnet-preview-08d8f67d-local-test-signed.apk",
+      "published": true,
+      "publicDownloadVerified": true,
+      "storeReleased": false,
+      "productionSigned": false,
+      "fullInstalledE2E": false,
+      "pwaDeployed": false,
+      "launchURL": null,
+      "limitedInstalledEvidence": {
+        "upgradeFromCode7": true,
+        "protectedKeyOSFingerprintUnlock": true,
+        "readOnlyAuthInventory": true,
+        "latestProductLoginRerun": false,
+        "realHardwareVerified": false
+      },
+      "url": "https://downloads.ynxweb4.com/wallet/sha256-3ae55a7759bcbd610587cf018bb2de0a3a13a7a7c9100a495a36ad8d6a8dad7e/ynx-wallet-1.0.7-testnet-preview-08d8f67d-local-test-signed.apk"
+    }
+  ],
+  "accessContract": {
+    "sha256": "49e0ceb7a72e769b3fd6e30e6fa93fa597e8cdaf886f47abc72767d59575b0ab",
+    "defaultWallet": "YNX Wallet",
+    "thirdPartyWallets": "Only explicit service-approved basic capabilities; never promoted to full YNX account access.",
+    "fullAccountAccess": "Auth V3 ProductSessionV2 with device-bound HTTP proof plus live revocation/control-intent and server-required scopes. Provider flags and personal_sign do not establish service authorization.",
+    "integratedAllProducts": false
+  },
+  "notes": [
+    "Independent Android1.0.7 test-preview batch. No macOS/browser/native-other-platform dependency.",
+    "Older downloads and preparations stay unchanged. This manifest contains no Firefox or browser artifact.",
+    "Static hosting does not establish product login, full transaction E2E or store release."
+  ]
+}

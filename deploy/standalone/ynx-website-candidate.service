@@ -1,0 +1,44 @@
+[Unit]
+Description=YNX website standalone candidate (loopback only)
+After=network-online.target
+Wants=network-online.target
+StartLimitIntervalSec=60
+StartLimitBurst=3
+
+[Service]
+Type=simple
+DynamicUser=yes
+WorkingDirectory=/opt/ynx-website/candidate
+Environment=HOST=127.0.0.1
+Environment=PORT=18880
+Environment=YNX_WEBSITE_IDENTITY_FILE=/opt/ynx-website/candidate/source-identity.json
+Environment=YNX_WEBSITE_ASSET_MANIFEST=/opt/ynx-website/candidate/asset-manifest.json
+Environment=YNX_WEBSITE_MAX_CONCURRENT=32
+Environment=YNX_WEBSITE_MAX_API_CONCURRENT=4
+ExecStart=/usr/bin/node --max-old-space-size=256 /opt/ynx-website/candidate/server/standalone.mjs /opt/ynx-website/candidate/dist
+Restart=on-failure
+RestartSec=3
+TimeoutStopSec=15
+MemoryHigh=384M
+MemoryMax=512M
+CPUQuota=100%
+TasksMax=32
+LimitNOFILE=256
+OOMPolicy=stop
+NoNewPrivileges=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+CapabilityBoundingSet=
+AmbientCapabilities=
+UMask=0077
+
+[Install]
+WantedBy=multi-user.target

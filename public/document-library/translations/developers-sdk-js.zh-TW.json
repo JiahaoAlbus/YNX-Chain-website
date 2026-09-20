@@ -1,0 +1,19 @@
+{
+  "documentId": "developers-sdk-js",
+  "locale": "zh-TW",
+  "sourceLocale": "en",
+  "sourceSha256": "c7cee4f778a564fc22ca6835addf65598da677447c3b6820326ca1f48495335d",
+  "translationStatus": "translated-draft",
+  "translationOfVersion": null,
+  "translationNote": "繁體中文全文譯稿。版本日期、來源狀態與證據界線均沿用英文原文；歷史來源內容不代表目前實網功能、套件發布或操作流程已通過驗證。",
+  "translatedSha256": "6ba386a4efe20c319e40b2c086c8ef0c7a38a92f29536ba06b1ffc2f19466052",
+  "markdown": "# JavaScript SDK\n\n`sdk/js` 中不依賴第三方套件的 ESM 用戶端，可讀取 YNX REST 狀態和 EVM JSON-RPC，不會修改鏈狀態。它已具備打包條件，但本文不聲稱它已發佈到 npm。\n\n```js\nimport {YNXClient, assertYNXTestnetSnapshot} from \"@ynx-chain/sdk\";\n\nconst client = new YNXClient({\n  restUrl: \"https://rpc.ynxweb4.com\",\n  evmUrl: \"https://evm.ynxweb4.com\",\n});\nconst snapshot = assertYNXTestnetSnapshot(await client.getChainSnapshot());\nconsole.log(snapshot.status.height, snapshot.evmChainId);\n```\n\nSDK 還匯出 `ensureYNXTestnet(provider)` 和 `ynxTestnetAddEthereumChainParameter()`，用於綁定網路中繼資料的 EIP-1193 自訂網路整合。輔助函式不會請求帳戶或交易，並會在新增或切換後驗證所選網路。\n\n執行 `make sdk-check`，可執行基於測試夾具的單元和打包檢查、確定性建置產物驗證，以及僅使用建置產物的隔離使用端測試。`make sdk-remote-check` 提供對公開測試網的唯讀相容性證明。規範清單及可選的擁有者提供分離簽章的邊界，見 `docs/developers/SDK_RELEASE_INTEGRITY.md`。\n",
+  "html": "<h2 id=\"developers-sdk-js-section-1\">JavaScript SDK</h2>\n<p><code>sdk/js</code> 中不依賴第三方套件的 ESM 用戶端，可讀取 YNX REST 狀態和 EVM JSON-RPC，不會修改鏈狀態。它已具備打包條件，但本文不聲稱它已發佈到 npm。</p>\n<pre><code>import {YNXClient, assertYNXTestnetSnapshot} from &quot;@ynx-chain/sdk&quot;;\n\nconst client = new YNXClient({\n  restUrl: &quot;https://rpc.ynxweb4.com&quot;,\n  evmUrl: &quot;https://evm.ynxweb4.com&quot;,\n});\nconst snapshot = assertYNXTestnetSnapshot(await client.getChainSnapshot());\nconsole.log(snapshot.status.height, snapshot.evmChainId);</code></pre>\n<p>SDK 還匯出 <code>ensureYNXTestnet(provider)</code> 和 <code>ynxTestnetAddEthereumChainParameter()</code>，用於綁定網路中繼資料的 EIP-1193 自訂網路整合。輔助函式不會請求帳戶或交易，並會在新增或切換後驗證所選網路。</p>\n<p>執行 <code>make sdk-check</code>，可執行基於測試夾具的單元和打包檢查、確定性建置產物驗證，以及僅使用建置產物的隔離使用端測試。<code>make sdk-remote-check</code> 提供對公開測試網的唯讀相容性證明。規範清單及可選的擁有者提供分離簽章的邊界，見 <code>docs/developers/SDK_RELEASE_INTEGRITY.md</code>。</p>",
+  "headings": [
+    {
+      "id": "developers-sdk-js-section-1",
+      "title": "JavaScript SDK",
+      "level": 1
+    }
+  ]
+}

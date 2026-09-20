@@ -1,0 +1,26 @@
+import assert from "node:assert/strict";
+import fs from "node:fs";
+import test from "node:test";
+
+test("secondary routes and command search are loaded on demand", () => {
+  const main = fs.readFileSync("src/main.jsx", "utf8");
+  const router = fs.readFileSync("src/pages/RoutedContent.jsx", "utf8");
+  assert.match(main, /import\("\.\/pages\/RoutedContent\.jsx"\)/);
+  assert.doesNotMatch(main, /virtual:ynx-docs-authority/);
+  const header = fs.readFileSync("src/components/SiteHeader.jsx", "utf8");
+  const packageJson = JSON.parse(fs.readFileSync("package.json", "utf8"));
+  const productionBuild = fs.readFileSync("deploy/production-build.sh", "utf8");
+
+  for (const routeModule of [
+    "AppsPage", "DownloadPage", "DocsPage", "AuthorityArticlePage", "ProductStatusPage",
+    "SquarePage", "ManualPage", "ApiPage", "FaucetPage", "WalletAuthCallbackPage", "PortalPage",
+  ]) {
+    assert.match(router, new RegExp(`lazyNamed\\(\\(\\) => import\\(\\"[^\\"]*${routeModule}\\.jsx\\"\\)`));
+    assert.doesNotMatch(main, new RegExp(`import \\{ ${routeModule}[^\\n]+from`));
+  }
+
+  assert.match(header, /lazy\(\(\) => import\("\.\/CommandPalette\.jsx"\)/);
+  assert.doesNotMatch(header, /import \{ CommandPalette \}/);
+  assert.match(packageJson.scripts.build, /production-build\.sh/);
+  assert.match(productionBuild, /verify-bundle-split\.mjs/);
+});

@@ -1,0 +1,34 @@
+{
+  "schema": "ynx-docs-locale-missing-matrix/v1",
+  "articleCount": 14,
+  "requestedLocaleCount": 12,
+  "completeLocales": [
+    "en",
+    "zh-CN",
+    "zh-TW",
+    "ja",
+    "ko",
+    "es",
+    "fr",
+    "de",
+    "pt",
+    "ru",
+    "ar",
+    "id"
+  ],
+  "incompleteLocales": [],
+  "missingMatrix": {
+    "en": [],
+    "zh-CN": [],
+    "zh-TW": [],
+    "ja": [],
+    "ko": [],
+    "es": [],
+    "fr": [],
+    "de": [],
+    "pt": [],
+    "ru": [],
+    "ar": [],
+    "id": []
+  }
+}

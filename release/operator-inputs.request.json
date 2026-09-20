@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "ynx-operator-inputs-request/v1",
+  "productId": "28",
+  "product": "YNX Website / SEO / Product Micro-sites",
+  "sourceBaseline": "5de72fcc7f472c98733146d0bbfd47ce39cc4bf0",
+  "generatedAt": "2026-09-01T00:00:00Z",
+  "secretValuesRequested": false,
+  "status": "pending",
+  "requests": [
+    {
+      "id": "website-integrated-release-authority",
+      "owner": "integration-release-control",
+      "type": "deploymentAuthority",
+      "required": true,
+      "request": "After all five Website handoffs are integrated and independently verified, provide a bounded single-use preview and production release authority with exact candidate, current target and rollback target.",
+      "valueMustNotAppearInChat": true,
+      "satisfied": false,
+      "receipt": null
+    },
+    {
+      "id": "website-search-ownership",
+      "owner": "website-search-owner",
+      "type": "propertyOwnershipReceipts",
+      "required": true,
+      "request": "Provide non-secret receipt identifiers for the official-domain Google Search Console and Bing Webmaster properties plus approved sitemap and IndexNow submission evidence.",
+      "valueMustNotAppearInChat": true,
+      "satisfied": false,
+      "receipt": null
+    },
+    {
+      "id": "website-production-observability",
+      "owner": "security-sre",
+      "type": "monitoringAndIncidentAcceptance",
+      "required": true,
+      "request": "Provide accepted production monitoring, alert routing, incident ownership, retention, support escalation and status-page receipt identifiers without exposing credentials.",
+      "valueMustNotAppearInChat": true,
+      "satisfied": false,
+      "receipt": null
+    },
+    {
+      "id": "website-load-restore-drill-target",
+      "owner": "security-sre",
+      "type": "boundedTestAuthority",
+      "required": true,
+      "request": "Provide a safe non-production target and bounded authority for capacity measurement plus backup/restore and rollback drills.",
+      "valueMustNotAppearInChat": true,
+      "satisfied": false,
+      "receipt": null
+    }
+  ]
+}

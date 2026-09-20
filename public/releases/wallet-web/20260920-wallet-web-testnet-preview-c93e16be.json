@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-09-20T17:55:00+08:00",
+  "releaseTag": "wallet-web-testnet-preview-0.1.1-c93e16be8",
+  "sourceCommit": "c93e16be81beddc957ef5f27b7bbcdfa89c28db3",
+  "releaseUrl": "https://github.com/JiahaoAlbus/YNX-Chain/releases/tag/wallet-web-testnet-preview-0.1.1-c93e16be8",
+  "artifactManifest": {
+    "url": "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-web-testnet-preview-0.1.1-c93e16be8/artifact-manifest.json",
+    "bytes": 1858,
+    "sha256": "fe3edc16c36b5307b266c66ddb1349e2146febf332eeeb21ac4070fb0c6cce0b",
+    "testedLocal": true,
+    "installedLocal": false,
+    "deployedPublic": false,
+    "productionSigned": false,
+    "storeReleased": false
+  },
+  "verification": {
+    "releaseAssetsDownloadedAndRehashed": true,
+    "artifactManifestDownloadedAndRehashed": true,
+    "installedBrowserAcceptance": false,
+    "productionSigned": false,
+    "storeReleased": false,
+    "websiteAssetsDownloadedAndRehashed": false,
+    "websiteDownloadEntriesPrepared": 3,
+    "websiteDeploymentVerified": false
+  },
+  "artifacts": [
+    {
+      "platform": "pwa-archive",
+      "filename": "ynx-wallet-web-pwa-0.1.1.zip",
+      "bytes": 312868,
+      "sha256": "6e7e6dd17e9e729a44ed915e46433124c1a3794e06a0d072c55097084cc45e13",
+      "releaseAssetUrl": "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-web-testnet-preview-0.1.1-c93e16be8/ynx-wallet-web-pwa-0.1.1.zip",
+      "websiteUrl": "https://www.ynxweb4.com/downloads/wallet-web/sha256-6e7e6dd17e9e729a44ed915e46433124c1a3794e06a0d072c55097084cc45e13/ynx-wallet-web-pwa-0.1.1.zip"
+    },
+    {
+      "platform": "chrome-edge-unpacked-extension",
+      "filename": "ynx-wallet-chrome-edge-0.1.1.zip",
+      "bytes": 547479,
+      "sha256": "09066d82a94cb6b8108120f980ab2cc40c42dc830ffce166529cbd570eb6a6b2",
+      "releaseAssetUrl": "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-web-testnet-preview-0.1.1-c93e16be8/ynx-wallet-chrome-edge-0.1.1.zip",
+      "websiteUrl": "https://www.ynxweb4.com/downloads/wallet-web/sha256-09066d82a94cb6b8108120f980ab2cc40c42dc830ffce166529cbd570eb6a6b2/ynx-wallet-chrome-edge-0.1.1.zip"
+    },
+    {
+      "platform": "firefox-unpacked-extension",
+      "filename": "ynx-wallet-firefox-0.1.1.zip",
+      "bytes": 547577,
+      "sha256": "6ac256415c34b4b492dc6094be8be8c9f0acf6a40653e2e18fde64dd20f801e0",
+      "releaseAssetUrl": "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-web-testnet-preview-0.1.1-c93e16be8/ynx-wallet-firefox-0.1.1.zip",
+      "websiteUrl": "https://www.ynxweb4.com/downloads/wallet-web/sha256-6ac256415c34b4b492dc6094be8be8c9f0acf6a40653e2e18fde64dd20f801e0/ynx-wallet-firefox-0.1.1.zip"
+    }
+  ],
+  "claims": {
+    "releaseAssetsHosted": true,
+    "websiteCodePrepared": true,
+    "websitePublicDeploymentVerified": false,
+    "productionApproved": false
+  }
+}

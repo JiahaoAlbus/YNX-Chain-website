@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "kind": "LOCAL_WEBSITE_ACCESSIBILITY_RESPONSIVE_QA",
+  "baseCommit": "5de72fcc7f472c98733146d0bbfd47ce39cc4bf0",
+  "date": "2026-09-01",
+  "scope": {
+    "route": "/blockchain?lang=en",
+    "viewport": {
+      "width": 390,
+      "height": 844,
+      "deviceScaleFactor": 1
+    },
+    "browser": "Google Chrome 151.0.7922.175",
+    "transport": "local Vite production preview",
+    "accountRequested": false,
+    "externalServiceRequired": false
+  },
+  "sourceGates": {
+    "focusableSkipDestinationAfterGlobalHeader": true,
+    "dialogLabelAndModalSemantics": true,
+    "comboboxListboxRelationship": true,
+    "dialogTabContainment": true,
+    "dialogEscapeAndFocusReturn": true,
+    "mobileNavigationEscapeAndFocusReturn": true,
+    "walletPopoverEscapeAndFocusReturnImplemented": true,
+    "forcedLtrCssRemoved": true,
+    "rtlLogicalLayoutRulesPresent": true,
+    "darkModeSurfaceCoveragePresent": true,
+    "reducedMotionGatePresent": true,
+    "canonicalColorPairsWcagAa": true
+  },
+  "localChromium": {
+    "documentClientWidth": 390,
+    "documentScrollWidth": 390,
+    "horizontalOverflow": false,
+    "visibleControlsBelow44By44": 0,
+    "dialogInitialFocus": "command-query",
+    "dialogFocusReturnedTo": "toolButton searchButton",
+    "mobileNavigationInitialFocusHref": "/blockchain",
+    "mobileNavigationFocusReturnedTo": "menuButton",
+    "landmarks": {
+      "banner": 1,
+      "navigation": 1,
+      "main": 1,
+      "contentinfo": 1
+    },
+    "unnamedButtons": 0,
+    "reducedMotion": {
+      "htmlScrollBehavior": "auto",
+      "transitionDuration": "1e-05s",
+      "animationIterations": "1"
+    },
+    "darkMode": {
+      "bodyBackground": "rgb(8, 13, 25)",
+      "bodyColor": "rgb(237, 242, 255)",
+      "cardBackground": "rgb(16, 24, 39)",
+      "cardColor": "rgb(237, 242, 255)"
+    },
+    "consoleErrorsOrWarnings": 0
+  },
+  "validation": {
+    "npmTest": "PASS_18_OF_18_PLUS_DOCS_AND_WEBSITE_VERIFIER",
+    "npmBuild": "PASS_1630_MODULES_15_PRERENDERED_AUTHORITY_ROUTES_52_INDEXNOW_URLS",
+    "largeChunkWarning": true
+  },
+  "limitations": {
+    "publicRuntimeVerified": false,
+    "lighthouseRun": false,
+    "coreWebVitalsMeasured": false,
+    "screenReaderHumanSession": false,
+    "walletProviderRuntimeExercised": false,
+    "arabicRtlRuntimeVerifiedInThisCommit": false,
+    "arabicRtlDependency": "Merge and re-run with the separate 12-locale i18n handoff before release."
+  }
+}

@@ -1,23 +1,27 @@
 import React from "react";
 import { Activity, ArrowUpRight, BookOpen, Code2, Coins, Droplets, Search } from "lucide-react";
 import { apiConfig } from "../lib/api/ynxApi.js";
+import { useLocale } from "../lib/i18n.jsx";
+import { getHomeRedesignCopy } from "../content/homeRedesignContent.js";
 
 const links = [
-  { label: "Explorer", detail: "Blocks, transactions and validators", href: apiConfig.explorerUrl, icon: Search },
-  { label: "Network Monitor", detail: "Signed service and network status", href: apiConfig.monitorUrl, icon: Activity },
-  { label: "Faucet", detail: "Request testnet YNXT", href: apiConfig.faucetUrl, icon: Droplets },
-  { label: "Developer docs", detail: "RPC, SDK and integration paths", href: apiConfig.docsUrl, icon: BookOpen },
-  { label: "Chain source", detail: "Runtime and verification code", href: "https://github.com/JiahaoAlbus/YNX-Chain", icon: Code2 },
-  { label: "Ecosystem readiness", detail: "External review package", href: apiConfig.ecosystemUrl, icon: Coins }
+  { href: apiConfig.explorerUrl, icon: Search },
+  { href: apiConfig.monitorUrl, icon: Activity },
+  { href: apiConfig.faucetUrl, icon: Droplets },
+  { href: apiConfig.docsUrl, icon: BookOpen },
+  { href: "https://github.com/JiahaoAlbus/YNX-Chain", icon: Code2 },
+  { href: apiConfig.ecosystemUrl, icon: Coins }
 ];
 
 export function LinkGrid() {
+  const { locale } = useLocale();
+  const { resourceItems } = getHomeRedesignCopy(locale);
   return (
     <div className="linkGrid">
-      {links.map(({ label, detail, href, icon: Icon }) => (
-        <a key={label} href={href} className="resourceLink" data-reveal>
+      {links.map(({ href, icon: Icon }, index) => (
+        <a key={href} href={href} className="resourceLink" data-reveal>
           <Icon size={20} />
-          <span><strong>{label}</strong><small>{detail}</small></span>
+          <span><strong>{resourceItems[index].label}</strong><small>{resourceItems[index].detail}</small></span>
           <ArrowUpRight size={17} />
         </a>
       ))}

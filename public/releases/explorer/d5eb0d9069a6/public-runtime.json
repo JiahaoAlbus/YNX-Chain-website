@@ -1,0 +1,155 @@
+{
+  "schemaVersion": 1,
+  "product": "YNX Explorer",
+  "verifiedAt": "2026-09-06T16:19:21.417Z",
+  "publicUrl": "https://explorer.ynxweb4.com",
+  "sourceCommit": "d5eb0d9069a699155581124a2926efd887f315cc",
+  "sourceTree": "bb9422247fbddef8d20c73ccc25eab314f374b87",
+  "release": "ynx-explorer-native-d5eb0d9069a6",
+  "artifactClass": "Embedded server Web UI; no hosted desktop or mobile installer",
+  "state": "public-web-preview-incomplete",
+  "centralAccepted": false,
+  "fullProductAccepted": false,
+  "downloadHosted": false,
+  "fullInstalledE2E": false,
+  "productionSigned": false,
+  "storeReleased": false,
+  "runtimeIdentity": {
+    "build": {
+      "commit": "d5eb0d9069a699155581124a2926efd887f315cc",
+      "release": "ynx-explorer-native-d5eb0d9069a6",
+      "buildTime": "2026-09-06T15:58:29Z"
+    },
+    "service": "ynx-explorerd",
+    "startedAt": "2026-09-06T16:12:39.34711748Z"
+  },
+  "currentIdentityCheck": {
+    "observedAt": "2026-09-08T02:58:06.326Z",
+    "url": "https://explorer.ynxweb4.com/version",
+    "method": "GET",
+    "status": 200,
+    "trustedTLS": true,
+    "sourceCommit": "d5eb0d9069a699155581124a2926efd887f315cc",
+    "release": "ynx-explorer-native-d5eb0d9069a6"
+  },
+  "checks": {
+    "actualDeployment": true,
+    "sourceBoundPublicFilesMatched": 7,
+    "publicPageRendered": true,
+    "publicReadOnlyUI": true
+  },
+  "publicFiles": [
+    {
+      "path": "/",
+      "bytes": 147088,
+      "sha256": "929eff2f6a3a4c9de9819ef2c5bf310f487cc1760bb2a722bbf0cf030c21bf53",
+      "contentType": "text/html; charset=utf-8",
+      "status": 200
+    },
+    {
+      "path": "/address",
+      "bytes": 5213,
+      "sha256": "352b890792cf1e491c877d8324bf26a53b990d150462c6eadc746c803971ce54",
+      "contentType": "text/html; charset=utf-8",
+      "status": 200
+    },
+    {
+      "path": "/assets/ynx-address.js",
+      "bytes": 4713,
+      "sha256": "ab5088d368c5a3a3284b1c1aec0a016bdbc6ba1f8a3a446a820ace22c4ae835e",
+      "contentType": "text/javascript; charset=utf-8",
+      "status": 200
+    },
+    {
+      "path": "/assets/ynx-address-converter.js",
+      "bytes": 13425,
+      "sha256": "321e4d67159139cb74bad9bccc03d99a85b5a1826cceaae369eba1a0fe966426",
+      "contentType": "text/javascript; charset=utf-8",
+      "status": 200
+    },
+    {
+      "path": "/favicon.ico",
+      "bytes": 1918,
+      "sha256": "98948952a502835d43db9f3d23b277bc6d5290c7d5361e609e5830c98b32c063",
+      "contentType": "image/vnd.microsoft.icon",
+      "status": 200
+    },
+    {
+      "path": "/ynx-tab-icon.png",
+      "bytes": 5286,
+      "sha256": "86450b32dba373070bbf5389661356cfd788e4bfc6761fc59d42f04daed932fa",
+      "contentType": "image/png",
+      "status": 200
+    },
+    {
+      "path": "/assets/ynx-icon.png",
+      "bytes": 41080,
+      "sha256": "bb2528fe9bfa8ce2f5c52520c251c89eddf484403fdc91a129780cd93a964dd1",
+      "contentType": "image/png",
+      "status": 200
+    }
+  ],
+  "publicFileListSha256": "71dc0fc7d11e0003a90b76836b4c6ba473ba339067d6d0c12e617093b833988d",
+  "browserVerification": {
+    "sourceCommit": "d5eb0d9069a699155581124a2926efd887f315cc",
+    "observedAt": "2026-09-06T16:19:21.417Z",
+    "scope": "Recorded fresh public read-only browser contexts; no Wallet account request or chain mutation.",
+    "mainScript": {
+      "path": "/assets/ynx-address.js",
+      "bytes": 4713,
+      "sha256": "ab5088d368c5a3a3284b1c1aec0a016bdbc6ba1f8a3a446a820ace22c4ae835e"
+    },
+    "freshContexts": 3,
+    "localeWidths": [
+      {
+        "locale": "en",
+        "width": 1440
+      },
+      {
+        "locale": "zh-CN",
+        "width": 390
+      },
+      {
+        "locale": "ar",
+        "width": 390
+      }
+    ],
+    "nativeAddressFormatsVerified": true,
+    "controlsAtLeast44px": true,
+    "opaqueWhiteVerified": true,
+    "clipboardStubOnly": true,
+    "nativeClipboardWriteVerified": false,
+    "accountRequested": false,
+    "chainMutationPerformed": false,
+    "walletConnectionSigningVerified": false,
+    "concurrencyValidated": false,
+    "overallUIComplete": false,
+    "consoleErrors": 0
+  },
+  "notVerified": [
+    "Explorer is a public Web UI, not a desktop or mobile installer. No hosted Explorer download, installation, production signing or store release is proved.",
+    "Native address display and conversion were tested in three fresh browser contexts; copying used a clipboard stub and does not prove operating-system clipboard writes.",
+    "Wallet connection/signing, authenticated actions, complete product acceptance and capacity or load are not established by the source, file readback or read-only browser proof."
+  ],
+  "evidenceBasis": {
+    "type": "Recorded deployment receipt, seven source-bound public responses and fresh read-only browser proof; current /version check only refreshes runtime identity.",
+    "records": [
+      {
+        "record": "explorer-native-current/release-r2/root-deploy-result.json",
+        "sha256": "58c5b7a586697f84c966a7f73c5d92af40aa349edd4d224ee2c81b1b568917db"
+      },
+      {
+        "record": "explorer-native-current/release-r2/root-publication-summary.json",
+        "sha256": "670ce2317f1906e50cff3760250db23de838e3c08e6363df64290df7c6b5566f"
+      },
+      {
+        "record": "explorer-native-current/release-r2/expected-static-responses.json",
+        "sha256": "0e36e94cc64a0e123ff8682aaa6a792c77e9fefc99de955149e5947a98c949c8"
+      },
+      {
+        "record": "explorer-native-current/root-browser/public-proof-d5e.json",
+        "sha256": "588f77e9fd21b09960643775171d539cc413f7743a276cc8e83ade5e858e2dff"
+      }
+    ]
+  }
+}

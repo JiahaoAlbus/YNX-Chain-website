@@ -7,5 +7,5 @@ export default async function handler(request, response) {
   }
   response.setHeader("Cache-Control", "no-store, max-age=0");
   response.setHeader("X-Content-Type-Options", "nosniff");
-  return response.status(200).json(await collectNetworkStatus());
+  return response.status(200).json(await collectNetworkStatus({ detailed: request.query?.view !== "summary" }));
 }

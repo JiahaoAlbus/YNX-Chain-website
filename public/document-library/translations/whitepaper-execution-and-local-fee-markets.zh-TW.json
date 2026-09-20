@@ -1,0 +1,109 @@
+{
+  "documentId": "whitepaper-execution-and-local-fee-markets",
+  "locale": "zh-TW",
+  "sourceLocale": "en",
+  "sourceSha256": "e1e5f03e5ea67a242a9fbe7f09658a5f38bebc10c64060463b6bfba704e85dc4",
+  "translationStatus": "translated-draft",
+  "translationOfVersion": "0.1.1-candidate",
+  "translationNote": "繁體中文全文譯稿。版本日期、草案狀態與證據界線均沿用英文原文，不代表目前實網功能已通過驗證。",
+  "translatedSha256": "30758c9529917666b83d4715ee27995d85e731c1cac068287f0cfc821833baaf",
+  "markdown": "# YNX 執行與局部費用市場\n\n| 中繼資料 | 值 |\n| --- | --- |\n| 版本 | 0.1.1-candidate |\n| 生效日期 | 2026-07-22 |\n| 來源提交 | `719e1018267ed5a53e6fae5211c5fd8a1503c35c` |\n| 已審閱的費用帳本與影子市場候選提交 | `9c2d39799b9eef0be06e3b04d4ffe2e9087cc5b8` |\n| 產品發佈狀態 | YNX Testnet 文件候選版本 |\n| 最近審閱 | 2026-07-22 |\n| 替代版本 | 無 |\n| 審閱狀態 | 工程與經濟設計草案；需獨立審閱 |\n\n## 直接回答\n\nYNX Testnet 當前通過已接受的 ABCI 狀態機執行確定性的原生轉帳和受限的已簽章應用操作。在當前整數記賬模型中，原生轉帳路徑使用精確固定費用：一個 YNXT 單位。較新的原始碼候選版本增加了已提交的固定費用事件帳本，以及預設禁用的 StreamBFT 影子實現，用於按通道劃分的局部費用市場。這兩個候選版本均未完成統一整合，也未成為已啟用的公開政策。\n\n本文區分當前實現事實與候選費用市場的設計要求。本文不承諾主網費用、驗證者收入、營收、銷毀、回購、價格或收益率。\n\n## 1. 權威執行邊界\n\n權威結果是由 AppHash 綁定的、已提交的 ABCI 應用狀態。進入交易記憶體池、Gateway 響應、Indexer 記錄、Explorer 視圖、錢包預覽或第三方 API 都不是最終權威狀態。\n\n執行生命週期如下：\n\n1. 嚴格解碼交易封套並驗證簽章；\n2. 針對已提交狀態的克隆進行無狀態和有狀態檢查；\n3. 確定性地篩選提案並按順序重放；\n4. 在區塊最終確定期間依次應用；\n5. 驗證狀態不變量並計算 AppHash；\n6. 在新狀態成為權威狀態前，以原子方式持久提交。\n\n所有交易和操作類型遇到鏈不匹配、簽署者無效、輸入格式錯誤、未授權狀態轉換、重放、過期 nonce、冪等性不一致、餘額或資源不足，以及版本不匹配時，都必須拒絕執行。\n\n## 2. 狀態模型\n\n已提交狀態的版本 7 包含：\n\n- 帳戶、可用餘額、質押餘額、nonce、資源使用量及可追溯批次；\n- AI 權限、操作和稽核記錄；\n- Pay 意圖、帳單、退款、webhook、事件和冪等性記錄；\n- Resource 報價、委託、租賃、收入、事件、贊助池及稽核；\n- 治理請求、Trust 證據、標籤、申訴、更正及透明度記錄；\n- 受限合約身份、執行階段儲存、回執、日誌及 IDE 冪等性記錄；\n- 遷移錨點和 AppHash。\n\n凡是順序會影響雜湊的集合，都必須規範化，或驗證其元素唯一且已排序。數值狀態須檢查負值及有符號 64 位整數溢出。可用 YNXT 與質押 YNXT 之和必須始終等於遷移錨定的總量。\n\n高度會持久化以支持重啟恢復，但不計入 AppHash；如果空塊沒有改變應用狀態，其 AppHash 保持不變。\n\n## 3. 原生轉帳執行\n\n有效的原生轉帳綁定鏈 ID、發送方、接收方、金額、精確費用、下一個 nonce、壓縮格式的 secp256k1 公開金鑰，以及規範的 low-S DER 簽章。其狀態轉換如下：\n\n```text\nrequire sender != recipient\nrequire amount > 0\nrequire fee == 1\nrequire nonce == sender.nonce + 1\nrequire sender.balance >= amount + fee\n\nsender.balance    := sender.balance - amount - fee\nrecipient.balance := recipient.balance + amount\nfeeRecipient      := deterministic current validator recipient\nfeeRecipient.balance := feeRecipient.balance + fee\nsender.nonce      := nonce\n```\n\n實現還會更新受限資源使用量，並確定性地移動可追溯批次。狀態驗證會拒絕任何總供應量變化。\n\n這一路徑中標為「YNXT」的整數，是當前原生模型對外提供的執行階段記帳單位。公開介面不得悄悄將其重新解釋為法幣價值，也不得聲稱存在某個兌換匯率。\n\n## 4. 應用操作執行\n\n已簽章應用操作擴展了確定性狀態，涵蓋 AI 批准、Pay、Resource、治理、Trust，以及受限開發工作流。每種操作都有特定的簽署文件與驗證規則。根據類型，操作可能綁定簽署者、帳戶、會話、作用域、用途、到期時間、對象版本、冪等鍵、證據雜湊、金額或資源上限。\n\n操作記錄不能證明超出其權威範圍的外部事件。例如：\n\n- AI 批准記錄不能證明模型呼叫成功；\n- 穩定幣意圖不會執行鑄造或銷毀；\n- 跨鏈橋協調器的最終確定記錄不能證明外部鏈轉帳；\n- 在已提交交易與 Pay 意圖匹配之前，該意圖不能證明結算完成；\n- 證據雜湊不能證明外部法律審閱或稽核已經發生。\n\n## 5. 受限合約執行\n\n當前開發路徑包含針對明確支持的合約工作流、固定構建產物的受限 EVM 子集執行。它記錄已部署位元組碼身份、原始碼雜湊、運行模式、回執、日誌、儲存、交易雜湊、區塊高度和稽核雜湊。\n\n這不代表與完整以太坊虛擬機等價。尚未支持的操作碼、無界執行、任意位元組碼假設、通用 gas 等價性，以及與所有以太坊工具相容，均不在已證明的子集範圍內。\n\n## 6. 當前費用類別\n\n| 操作 | 當前工程規則 | 發佈層面的含義 |\n| --- | --- | --- |\n| 原生簽章轉帳 | 精確費用為 `1` 個 YNXT 單位 | 已實現的受限測試網規則；不是市場報價 |\n| 本機 Devnet 合約部署 | 實用型 Devnet 路徑的精確費用為 `10` 個 YNXT 單位 | 僅用於開發；不能證明 ABCI 正式環境候選版本的最終費用政策 |\n| 已簽章應用操作 | 在已定義的地方採用類型特定的預期費用 | 必須按操作及原始碼版本披露 |\n| 第三方供應商呼叫 | 供應商成本與協議費用分開 | 必須註明供應商、費率來源、觀察時間、估算或實際類別及失敗狀態 |\n| 交易場所或託管操作 | 不推斷任何通用費用 | 需要已接受的供應商或交易場所政策及使用者批准 |\n\n費用必須在批准前展示，包含計價單位、金額、接收方或分配規則、可退還性、網路及資訊時效。服務不得隱藏價差，也不得將供應商成本轉化為未披露的協議費用。\n\n## 7. 局部費用市場的定義\n\n局部費用市場在一個受限領域內對稀缺執行或資料容量定價，而不是要求所有領域共享一次全域競價。已審閱的 StreamBFT 影子候選版本在本機實現了受限的按通道基礎費轉換和資源費用運算。它仍處於禁用狀態，不在已接受的中央基線中，且沒有治理啟用或公開證據。\n\n實現之前，每個市場都必須定義：\n\n| 維度 | 必需的決策與證據 |\n| --- | --- |\n| 資源 | 精確計量單位：位元組、步驟、儲存、頻寬、供應商呼叫或其他有版本的單位 |\n| 領域 | 在同一市場中競爭的交易或操作 |\n| 價格形成 | 基礎費、標價、拍賣、配額或混合公式 |\n| 優先級 | 排序規則及抵御操縱的方式 |\n| 限制 | 每區塊、每帳戶、每產品及全域上限 |\n| 使用者保護 | 最高授權費用、到期、取消及報價過期時的行為 |\n| 分配 | 驗證者、協議、供應商、補貼、退款及銷毀的處理 |\n| 失敗 | 拒絕、回復、逾時或結果未知時的收費處理 |\n| 擁堵 | 調整間隔、邊界及突增後的恢復 |\n| 升級 | 版本協商、舊用戶端行為、遷移、回復及治理 |\n\n## 8. 候選定價約束\n\n未來的費用函數必須基於已提交輸入進行確定性計算，或綁定具有明確到期時間的權威簽章報價。在共識執行期間，它不得依賴無版本的牆鐘時間、非確定性的供應商結果、隱藏的運營者輸入，或可變的第三方響應。\n\n如果評估基礎費設計，規範必須明確目標使用量 `T`、觀察到的父區塊使用量 `U`、之前的基礎費 `B`、調整分母 `D`，以及硬性最小值和最大值。例如，候選函數：\n\n```text\nB_next = clamp(B_min, B_max, B + trunc(B * (U - T) / (T * D)))\n```\n\n與已審閱影子候選版本的形式一致，使用經過檢查的無符號整數運算和組態邊界。它不是當前公開的 YNX 費用規則；在完成整合、模擬、對抗測試、經濟審閱、治理批准、遷移及發佈舉證之前，不得將其用於公開定價聲明。\n\n## 9. 公平排序與可提取價值\n\n當前提案者按順序篩選傳入的候選順序，不聲稱具備公開費用拍賣、加密交易記憶體池、批量拍賣、先到先得保證，或最大可提取價值防護。\n\n未來的排序政策必須公佈：\n\n- 提案者裁量範圍及可觀察的排序輸入；\n- 相同費用交易的處理；\n- 替換與取消規則；\n- 重放和重複交易處理；\n- 私有委託單流與區塊構建者的邊界；\n- 三明治攻擊、搶先交易、審查和拒絕服務的威脅模型；\n- 納入區塊及最終性的測量；\n- 監測與申訴流程。\n\n在直接取得這些規則和對抗測試結果的證據前，不得用「FairFlow」聲稱具備某種性能或公平性。\n\n## 10. 贊助資源與補貼\n\n資源模型包含受限贊助池，具備擁有者政策、允許的受益人或作用域、單次與累計上限、到期時間、唯一操作引用、暫停、恢復、撤銷、未使用資源釋放和稽核。贊助消耗獲准的資源額度；它不授權任意 YNXT 轉移，也不賦予 Gateway 簽章身份。\n\n每項補貼必須明確資金來源、預算、符合條件的操作、限額、期間、耗盡後的行為和關閉規則。補貼活動不得被報告為自然營收，也不得在單位經濟核算中隱藏。\n\n## 11. 供應商、交易場所與應用費用\n\nYNX 只能披露使用者在操作前已看到並接受的費用，例如：\n\n- 協議 gas 或資源費用；\n- 交易場所費用；\n- 供應商成本；\n- 計算或資料費用；\n- 訂閱費；\n- 管理費；\n- 使用者明確接受的受託服務中採用高水位線機制的業績報酬。\n\n披露必須註明來源、生效期間、毛額與淨額處理、包含和不包含的成本、風險、鎖定、退出、網路類別及證據 ID。業績報酬不得適用於未實現利潤，也不得重置高水位線而對同一次收益恢復重複收費。\n\n禁止隱藏價差、偽造成交量、虛假對敲交易、偽造流動性、保證收益、秘密回購、隱藏鑄造或銷毀，以及將銷毀描述為營收。\n\n## 12. 失敗與未知結果\n\n用戶端必須區分：\n\n- 提交前被拒絕；\n- Gateway 已接受，但尚未在共識中觀察到；\n- 已進入交易記憶體池；\n- 已納入區塊且成功；\n- 已納入區塊但失敗；\n- 已提交，但暫時未出現在派生索引中；\n- 已過期或被替換；\n- 因權威驗證不可用而結果未知。\n\n結果未知不得觸發盲目重複提交。恢復過程應使用已簽章交易的雜湊、發送方、nonce、預期接收方、金額和費用，對權威狀態進行有界的最終性查詢。\n\n## 13. 聲稱動態費用能力前所需的測量\n\n費用市場候選版本至少需要通過可復現的工作負載測量：\n\n- 准入、納入區塊及最終性延遲的 p50、p95、p99；\n- 有效與無效交易吞吐量；\n- 提案位元組數和執行資源飽和情況；\n- 交易記憶體池與應用佇列深度；\n- 費用波動及使用者多付的費用；\n- 提案者分配及集中度；\n- 垃圾交易成本及合法使用者被擠出的情況；\n- 狀態與索引儲存增長；\n- 損失一個驗證者及網路延遲時的行為；\n- 跨費用政策版本邊界時，舊用戶端與回復的行為。\n\n報告必須包含硬體、拓撲、資料集、持續時間、預熱、原始碼提交、組態、錯誤、原始輸出及置信度或覆蓋範圍。本機四節點測試不能外推為公開正式環境容量。\n\n## 14. 升級與相容性\n\n費用政策變更會影響共識。發佈必須包含：\n\n1. 新的政策與結構定義版本；\n2. 啟用高度及治理授權；\n3. 舊用戶端響應及交易拒絕行為；\n4. 確定性遷移及回復遷移；\n5. 錢包費用預覽相容性；\n6. Indexer、Explorer、SDK、交易所及託管更新；\n7. 監控臨界值及緊急暫停條件；\n8. 公開發佈說明及被替代政策的引用。\n\n任何運營者或 AI 系統都不得悄悄修改費用、發行量、金庫分配或風險限額。\n\n## 15. 當前證據與限制\n\n| 證據 | 當前結果 | 限制 |\n| --- | --- | --- |\n| 共識遷移檢查 | 已審閱原始碼於 2026-07-22 通過 | 本機確定性測試夾具 |\n| 簽章轉帳專項檢查 | 於 2026-07-22 通過 | 專項本機測試，不是公開轉帳證據 |\n| ABCI 測試包 | 2026-07-22 生成固定 Hardhat 構建產物後通過 | 初次乾淨檢出運行因缺少生成產物而失敗 |\n| 動態局部費用市場 | 僅在禁用的影子候選版本中實現並完成本機測試 | 未統一整合、未經治理、未啟用、未部署，也沒有公開證據 |\n| 固定費用事件帳本 | 在已審閱的費用候選版本中實現並完成本機測試 | 未統一整合、未部署、未建立公開索引，也未由獨立證據完成對帳 |\n| 主網費用政策 | 尚未確立 | 需要經濟、治理、安全和法律審閱 |\n\n## 16. 規範性原始碼索引\n\n| 關注事項 | 原始碼 |\n| --- | --- |\n| 原生交易封套與固定費用 | `internal/consensus/transaction.go` |\n| 提案與最終確定生命週期 | `internal/consensus/application.go` |\n| 狀態與 AppHash 不變量 | `internal/consensus/state.go` |\n| 當前狀態轉換 | `internal/chain/devnet.go`、`internal/consensus` 操作模組 |\n| 贊助資源授權 | `internal/chain/resource_sponsor.go`、共識資源模組 |\n| 測試網身份 | `chain-metadata/ynx-testnet.json` |\n| 專項證據命令 | `Makefile` 中的共識目標 |\n\n## 變更記錄\n\n- 0.1.1-candidate（2026-07-22）：加入較新的固定費用帳本與禁用的 StreamBFT 按通道市場，並明確標記為未統一整合的候選證據。\n- 0.1.0-candidate（2026-07-22）：記錄權威執行、當前固定費用、應用操作與受限合約邊界、局部費用市場設計要求、公平排序、贊助、故障恢復、測量及升級約束。\n",
+  "html": "<h2 id=\"whitepaper-execution-and-local-fee-markets-section-1\">YNX 執行與局部費用市場</h2>\n<div class=\"documentTable\"><table><thead><tr><th>中繼資料</th><th>值</th></tr></thead><tbody><tr><td>版本</td><td>0.1.1-candidate</td></tr><tr><td>生效日期</td><td>2026-07-22</td></tr><tr><td>來源提交</td><td><code>719e1018267ed5a53e6fae5211c5fd8a1503c35c</code></td></tr><tr><td>已審閱的費用帳本與影子市場候選提交</td><td><code>9c2d39799b9eef0be06e3b04d4ffe2e9087cc5b8</code></td></tr><tr><td>產品發佈狀態</td><td>YNX Testnet 文件候選版本</td></tr><tr><td>最近審閱</td><td>2026-07-22</td></tr><tr><td>替代版本</td><td>無</td></tr><tr><td>審閱狀態</td><td>工程與經濟設計草案；需獨立審閱</td></tr></tbody></table></div>\n<h3 id=\"whitepaper-execution-and-local-fee-markets-section-2\">直接回答</h3>\n<p>YNX Testnet 當前通過已接受的 ABCI 狀態機執行確定性的原生轉帳和受限的已簽章應用操作。在當前整數記賬模型中，原生轉帳路徑使用精確固定費用：一個 YNXT 單位。較新的原始碼候選版本增加了已提交的固定費用事件帳本，以及預設禁用的 StreamBFT 影子實現，用於按通道劃分的局部費用市場。這兩個候選版本均未完成統一整合，也未成為已啟用的公開政策。</p>\n<p>本文區分當前實現事實與候選費用市場的設計要求。本文不承諾主網費用、驗證者收入、營收、銷毀、回購、價格或收益率。</p>\n<h3 id=\"whitepaper-execution-and-local-fee-markets-section-3\">1. 權威執行邊界</h3>\n<p>權威結果是由 AppHash 綁定的、已提交的 ABCI 應用狀態。進入交易記憶體池、Gateway 響應、Indexer 記錄、Explorer 視圖、錢包預覽或第三方 API 都不是最終權威狀態。</p>\n<p>執行生命週期如下：</p>\n<ol><li>嚴格解碼交易封套並驗證簽章；</li><li>針對已提交狀態的克隆進行無狀態和有狀態檢查；</li><li>確定性地篩選提案並按順序重放；</li><li>在區塊最終確定期間依次應用；</li><li>驗證狀態不變量並計算 AppHash；</li><li>在新狀態成為權威狀態前，以原子方式持久提交。</li></ol>\n<p>所有交易和操作類型遇到鏈不匹配、簽署者無效、輸入格式錯誤、未授權狀態轉換、重放、過期 nonce、冪等性不一致、餘額或資源不足，以及版本不匹配時，都必須拒絕執行。</p>\n<h3 id=\"whitepaper-execution-and-local-fee-markets-section-4\">2. 狀態模型</h3>\n<p>已提交狀態的版本 7 包含：</p>\n<ul><li>帳戶、可用餘額、質押餘額、nonce、資源使用量及可追溯批次；</li><li>AI 權限、操作和稽核記錄；</li><li>Pay 意圖、帳單、退款、webhook、事件和冪等性記錄；</li><li>Resource 報價、委託、租賃、收入、事件、贊助池及稽核；</li><li>治理請求、Trust 證據、標籤、申訴、更正及透明度記錄；</li><li>受限合約身份、執行階段儲存、回執、日誌及 IDE 冪等性記錄；</li><li>遷移錨點和 AppHash。</li></ul>\n<p>凡是順序會影響雜湊的集合，都必須規範化，或驗證其元素唯一且已排序。數值狀態須檢查負值及有符號 64 位整數溢出。可用 YNXT 與質押 YNXT 之和必須始終等於遷移錨定的總量。</p>\n<p>高度會持久化以支持重啟恢復，但不計入 AppHash；如果空塊沒有改變應用狀態，其 AppHash 保持不變。</p>\n<h3 id=\"whitepaper-execution-and-local-fee-markets-section-5\">3. 原生轉帳執行</h3>\n<p>有效的原生轉帳綁定鏈 ID、發送方、接收方、金額、精確費用、下一個 nonce、壓縮格式的 secp256k1 公開金鑰，以及規範的 low-S DER 簽章。其狀態轉換如下：</p>\n<pre><code>require sender != recipient\nrequire amount &gt; 0\nrequire fee == 1\nrequire nonce == sender.nonce + 1\nrequire sender.balance &gt;= amount + fee\n\nsender.balance    := sender.balance - amount - fee\nrecipient.balance := recipient.balance + amount\nfeeRecipient      := deterministic current validator recipient\nfeeRecipient.balance := feeRecipient.balance + fee\nsender.nonce      := nonce</code></pre>\n<p>實現還會更新受限資源使用量，並確定性地移動可追溯批次。狀態驗證會拒絕任何總供應量變化。</p>\n<p>這一路徑中標為「YNXT」的整數，是當前原生模型對外提供的執行階段記帳單位。公開介面不得悄悄將其重新解釋為法幣價值，也不得聲稱存在某個兌換匯率。</p>\n<h3 id=\"whitepaper-execution-and-local-fee-markets-section-6\">4. 應用操作執行</h3>\n<p>已簽章應用操作擴展了確定性狀態，涵蓋 AI 批准、Pay、Resource、治理、Trust，以及受限開發工作流。每種操作都有特定的簽署文件與驗證規則。根據類型，操作可能綁定簽署者、帳戶、會話、作用域、用途、到期時間、對象版本、冪等鍵、證據雜湊、金額或資源上限。</p>\n<p>操作記錄不能證明超出其權威範圍的外部事件。例如：</p>\n<ul><li>AI 批准記錄不能證明模型呼叫成功；</li><li>穩定幣意圖不會執行鑄造或銷毀；</li><li>跨鏈橋協調器的最終確定記錄不能證明外部鏈轉帳；</li><li>在已提交交易與 Pay 意圖匹配之前，該意圖不能證明結算完成；</li><li>證據雜湊不能證明外部法律審閱或稽核已經發生。</li></ul>\n<h3 id=\"whitepaper-execution-and-local-fee-markets-section-7\">5. 受限合約執行</h3>\n<p>當前開發路徑包含針對明確支持的合約工作流、固定構建產物的受限 EVM 子集執行。它記錄已部署位元組碼身份、原始碼雜湊、運行模式、回執、日誌、儲存、交易雜湊、區塊高度和稽核雜湊。</p>\n<p>這不代表與完整以太坊虛擬機等價。尚未支持的操作碼、無界執行、任意位元組碼假設、通用 gas 等價性，以及與所有以太坊工具相容，均不在已證明的子集範圍內。</p>\n<h3 id=\"whitepaper-execution-and-local-fee-markets-section-8\">6. 當前費用類別</h3>\n<div class=\"documentTable\"><table><thead><tr><th>操作</th><th>當前工程規則</th><th>發佈層面的含義</th></tr></thead><tbody><tr><td>原生簽章轉帳</td><td>精確費用為 <code>1</code> 個 YNXT 單位</td><td>已實現的受限測試網規則；不是市場報價</td></tr><tr><td>本機 Devnet 合約部署</td><td>實用型 Devnet 路徑的精確費用為 <code>10</code> 個 YNXT 單位</td><td>僅用於開發；不能證明 ABCI 正式環境候選版本的最終費用政策</td></tr><tr><td>已簽章應用操作</td><td>在已定義的地方採用類型特定的預期費用</td><td>必須按操作及原始碼版本披露</td></tr><tr><td>第三方供應商呼叫</td><td>供應商成本與協議費用分開</td><td>必須註明供應商、費率來源、觀察時間、估算或實際類別及失敗狀態</td></tr><tr><td>交易場所或託管操作</td><td>不推斷任何通用費用</td><td>需要已接受的供應商或交易場所政策及使用者批准</td></tr></tbody></table></div>\n<p>費用必須在批准前展示，包含計價單位、金額、接收方或分配規則、可退還性、網路及資訊時效。服務不得隱藏價差，也不得將供應商成本轉化為未披露的協議費用。</p>\n<h3 id=\"whitepaper-execution-and-local-fee-markets-section-9\">7. 局部費用市場的定義</h3>\n<p>局部費用市場在一個受限領域內對稀缺執行或資料容量定價，而不是要求所有領域共享一次全域競價。已審閱的 StreamBFT 影子候選版本在本機實現了受限的按通道基礎費轉換和資源費用運算。它仍處於禁用狀態，不在已接受的中央基線中，且沒有治理啟用或公開證據。</p>\n<p>實現之前，每個市場都必須定義：</p>\n<div class=\"documentTable\"><table><thead><tr><th>維度</th><th>必需的決策與證據</th></tr></thead><tbody><tr><td>資源</td><td>精確計量單位：位元組、步驟、儲存、頻寬、供應商呼叫或其他有版本的單位</td></tr><tr><td>領域</td><td>在同一市場中競爭的交易或操作</td></tr><tr><td>價格形成</td><td>基礎費、標價、拍賣、配額或混合公式</td></tr><tr><td>優先級</td><td>排序規則及抵御操縱的方式</td></tr><tr><td>限制</td><td>每區塊、每帳戶、每產品及全域上限</td></tr><tr><td>使用者保護</td><td>最高授權費用、到期、取消及報價過期時的行為</td></tr><tr><td>分配</td><td>驗證者、協議、供應商、補貼、退款及銷毀的處理</td></tr><tr><td>失敗</td><td>拒絕、回復、逾時或結果未知時的收費處理</td></tr><tr><td>擁堵</td><td>調整間隔、邊界及突增後的恢復</td></tr><tr><td>升級</td><td>版本協商、舊用戶端行為、遷移、回復及治理</td></tr></tbody></table></div>\n<h3 id=\"whitepaper-execution-and-local-fee-markets-section-10\">8. 候選定價約束</h3>\n<p>未來的費用函數必須基於已提交輸入進行確定性計算，或綁定具有明確到期時間的權威簽章報價。在共識執行期間，它不得依賴無版本的牆鐘時間、非確定性的供應商結果、隱藏的運營者輸入，或可變的第三方響應。</p>\n<p>如果評估基礎費設計，規範必須明確目標使用量 <code>T</code>、觀察到的父區塊使用量 <code>U</code>、之前的基礎費 <code>B</code>、調整分母 <code>D</code>，以及硬性最小值和最大值。例如，候選函數：</p>\n<pre><code>B_next = clamp(B_min, B_max, B + trunc(B * (U - T) / (T * D)))</code></pre>\n<p>與已審閱影子候選版本的形式一致，使用經過檢查的無符號整數運算和組態邊界。它不是當前公開的 YNX 費用規則；在完成整合、模擬、對抗測試、經濟審閱、治理批准、遷移及發佈舉證之前，不得將其用於公開定價聲明。</p>\n<h3 id=\"whitepaper-execution-and-local-fee-markets-section-11\">9. 公平排序與可提取價值</h3>\n<p>當前提案者按順序篩選傳入的候選順序，不聲稱具備公開費用拍賣、加密交易記憶體池、批量拍賣、先到先得保證，或最大可提取價值防護。</p>\n<p>未來的排序政策必須公佈：</p>\n<ul><li>提案者裁量範圍及可觀察的排序輸入；</li><li>相同費用交易的處理；</li><li>替換與取消規則；</li><li>重放和重複交易處理；</li><li>私有委託單流與區塊構建者的邊界；</li><li>三明治攻擊、搶先交易、審查和拒絕服務的威脅模型；</li><li>納入區塊及最終性的測量；</li><li>監測與申訴流程。</li></ul>\n<p>在直接取得這些規則和對抗測試結果的證據前，不得用「FairFlow」聲稱具備某種性能或公平性。</p>\n<h3 id=\"whitepaper-execution-and-local-fee-markets-section-12\">10. 贊助資源與補貼</h3>\n<p>資源模型包含受限贊助池，具備擁有者政策、允許的受益人或作用域、單次與累計上限、到期時間、唯一操作引用、暫停、恢復、撤銷、未使用資源釋放和稽核。贊助消耗獲准的資源額度；它不授權任意 YNXT 轉移，也不賦予 Gateway 簽章身份。</p>\n<p>每項補貼必須明確資金來源、預算、符合條件的操作、限額、期間、耗盡後的行為和關閉規則。補貼活動不得被報告為自然營收，也不得在單位經濟核算中隱藏。</p>\n<h3 id=\"whitepaper-execution-and-local-fee-markets-section-13\">11. 供應商、交易場所與應用費用</h3>\n<p>YNX 只能披露使用者在操作前已看到並接受的費用，例如：</p>\n<ul><li>協議 gas 或資源費用；</li><li>交易場所費用；</li><li>供應商成本；</li><li>計算或資料費用；</li><li>訂閱費；</li><li>管理費；</li><li>使用者明確接受的受託服務中採用高水位線機制的業績報酬。</li></ul>\n<p>披露必須註明來源、生效期間、毛額與淨額處理、包含和不包含的成本、風險、鎖定、退出、網路類別及證據 ID。業績報酬不得適用於未實現利潤，也不得重置高水位線而對同一次收益恢復重複收費。</p>\n<p>禁止隱藏價差、偽造成交量、虛假對敲交易、偽造流動性、保證收益、秘密回購、隱藏鑄造或銷毀，以及將銷毀描述為營收。</p>\n<h3 id=\"whitepaper-execution-and-local-fee-markets-section-14\">12. 失敗與未知結果</h3>\n<p>用戶端必須區分：</p>\n<ul><li>提交前被拒絕；</li><li>Gateway 已接受，但尚未在共識中觀察到；</li><li>已進入交易記憶體池；</li><li>已納入區塊且成功；</li><li>已納入區塊但失敗；</li><li>已提交，但暫時未出現在派生索引中；</li><li>已過期或被替換；</li><li>因權威驗證不可用而結果未知。</li></ul>\n<p>結果未知不得觸發盲目重複提交。恢復過程應使用已簽章交易的雜湊、發送方、nonce、預期接收方、金額和費用，對權威狀態進行有界的最終性查詢。</p>\n<h3 id=\"whitepaper-execution-and-local-fee-markets-section-15\">13. 聲稱動態費用能力前所需的測量</h3>\n<p>費用市場候選版本至少需要通過可復現的工作負載測量：</p>\n<ul><li>准入、納入區塊及最終性延遲的 p50、p95、p99；</li><li>有效與無效交易吞吐量；</li><li>提案位元組數和執行資源飽和情況；</li><li>交易記憶體池與應用佇列深度；</li><li>費用波動及使用者多付的費用；</li><li>提案者分配及集中度；</li><li>垃圾交易成本及合法使用者被擠出的情況；</li><li>狀態與索引儲存增長；</li><li>損失一個驗證者及網路延遲時的行為；</li><li>跨費用政策版本邊界時，舊用戶端與回復的行為。</li></ul>\n<p>報告必須包含硬體、拓撲、資料集、持續時間、預熱、原始碼提交、組態、錯誤、原始輸出及置信度或覆蓋範圍。本機四節點測試不能外推為公開正式環境容量。</p>\n<h3 id=\"whitepaper-execution-and-local-fee-markets-section-16\">14. 升級與相容性</h3>\n<p>費用政策變更會影響共識。發佈必須包含：</p>\n<ol><li>新的政策與結構定義版本；</li><li>啟用高度及治理授權；</li><li>舊用戶端響應及交易拒絕行為；</li><li>確定性遷移及回復遷移；</li><li>錢包費用預覽相容性；</li><li>Indexer、Explorer、SDK、交易所及託管更新；</li><li>監控臨界值及緊急暫停條件；</li><li>公開發佈說明及被替代政策的引用。</li></ol>\n<p>任何運營者或 AI 系統都不得悄悄修改費用、發行量、金庫分配或風險限額。</p>\n<h3 id=\"whitepaper-execution-and-local-fee-markets-section-17\">15. 當前證據與限制</h3>\n<div class=\"documentTable\"><table><thead><tr><th>證據</th><th>當前結果</th><th>限制</th></tr></thead><tbody><tr><td>共識遷移檢查</td><td>已審閱原始碼於 2026-07-22 通過</td><td>本機確定性測試夾具</td></tr><tr><td>簽章轉帳專項檢查</td><td>於 2026-07-22 通過</td><td>專項本機測試，不是公開轉帳證據</td></tr><tr><td>ABCI 測試包</td><td>2026-07-22 生成固定 Hardhat 構建產物後通過</td><td>初次乾淨檢出運行因缺少生成產物而失敗</td></tr><tr><td>動態局部費用市場</td><td>僅在禁用的影子候選版本中實現並完成本機測試</td><td>未統一整合、未經治理、未啟用、未部署，也沒有公開證據</td></tr><tr><td>固定費用事件帳本</td><td>在已審閱的費用候選版本中實現並完成本機測試</td><td>未統一整合、未部署、未建立公開索引，也未由獨立證據完成對帳</td></tr><tr><td>主網費用政策</td><td>尚未確立</td><td>需要經濟、治理、安全和法律審閱</td></tr></tbody></table></div>\n<h3 id=\"whitepaper-execution-and-local-fee-markets-section-18\">16. 規範性原始碼索引</h3>\n<div class=\"documentTable\"><table><thead><tr><th>關注事項</th><th>原始碼</th></tr></thead><tbody><tr><td>原生交易封套與固定費用</td><td><code>internal/consensus/transaction.go</code></td></tr><tr><td>提案與最終確定生命週期</td><td><code>internal/consensus/application.go</code></td></tr><tr><td>狀態與 AppHash 不變量</td><td><code>internal/consensus/state.go</code></td></tr><tr><td>當前狀態轉換</td><td><code>internal/chain/devnet.go</code>、<code>internal/consensus</code> 操作模組</td></tr><tr><td>贊助資源授權</td><td><code>internal/chain/resource_sponsor.go</code>、共識資源模組</td></tr><tr><td>測試網身份</td><td><code>chain-metadata/ynx-testnet.json</code></td></tr><tr><td>專項證據命令</td><td><code>Makefile</code> 中的共識目標</td></tr></tbody></table></div>\n<h3 id=\"whitepaper-execution-and-local-fee-markets-section-19\">變更記錄</h3>\n<ul><li>0.1.1-candidate（2026-07-22）：加入較新的固定費用帳本與禁用的 StreamBFT 按通道市場，並明確標記為未統一整合的候選證據。</li><li>0.1.0-candidate（2026-07-22）：記錄權威執行、當前固定費用、應用操作與受限合約邊界、局部費用市場設計要求、公平排序、贊助、故障恢復、測量及升級約束。</li></ul>",
+  "headings": [
+    {
+      "id": "whitepaper-execution-and-local-fee-markets-section-1",
+      "title": "YNX 執行與局部費用市場",
+      "level": 1
+    },
+    {
+      "id": "whitepaper-execution-and-local-fee-markets-section-2",
+      "title": "直接回答",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-execution-and-local-fee-markets-section-3",
+      "title": "1. 權威執行邊界",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-execution-and-local-fee-markets-section-4",
+      "title": "2. 狀態模型",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-execution-and-local-fee-markets-section-5",
+      "title": "3. 原生轉帳執行",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-execution-and-local-fee-markets-section-6",
+      "title": "4. 應用操作執行",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-execution-and-local-fee-markets-section-7",
+      "title": "5. 受限合約執行",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-execution-and-local-fee-markets-section-8",
+      "title": "6. 當前費用類別",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-execution-and-local-fee-markets-section-9",
+      "title": "7. 局部費用市場的定義",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-execution-and-local-fee-markets-section-10",
+      "title": "8. 候選定價約束",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-execution-and-local-fee-markets-section-11",
+      "title": "9. 公平排序與可提取價值",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-execution-and-local-fee-markets-section-12",
+      "title": "10. 贊助資源與補貼",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-execution-and-local-fee-markets-section-13",
+      "title": "11. 供應商、交易場所與應用費用",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-execution-and-local-fee-markets-section-14",
+      "title": "12. 失敗與未知結果",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-execution-and-local-fee-markets-section-15",
+      "title": "13. 聲稱動態費用能力前所需的測量",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-execution-and-local-fee-markets-section-16",
+      "title": "14. 升級與相容性",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-execution-and-local-fee-markets-section-17",
+      "title": "15. 當前證據與限制",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-execution-and-local-fee-markets-section-18",
+      "title": "16. 規範性原始碼索引",
+      "level": 2
+    },
+    {
+      "id": "whitepaper-execution-and-local-fee-markets-section-19",
+      "title": "變更記錄",
+      "level": 2
+    }
+  ]
+}
