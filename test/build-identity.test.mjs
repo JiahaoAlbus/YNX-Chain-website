@@ -1,12 +1,15 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { mkdtemp, readFile, rm } from "node:fs/promises";
+import os from "node:os";
+import path from "node:path";
 import {
   BUILD_IDENTITY_SCHEMA_VERSION,
   BuildIdentityUnavailableError,
   readWebsiteBuildIdentity,
 } from "../lib/build-identity.mjs";
 import { createBuildIdentityHandler } from "../api/build-identity.js";
+import { writeBuildIdentity } from "../scripts/write-build-identity.mjs";
 
 const SOURCE_COMMIT = "a".repeat(40);
 const SOURCE_TREE = "b".repeat(40);
@@ -96,18 +99,40 @@ test("public handler returns JSON/no-store/nosniff and 503 for unavailable ident
   assert.equal(methodNotAllowed.headers.allow, "GET");
 });
 
-test("Vercel maps the exact public JSON path before the SPA fallback", async () => {
-  const configuration = JSON.parse(await readFile(new URL("../vercel.json", import.meta.url), "utf8"));
-  const identityIndex = configuration.rewrites.findIndex(
-    (rewrite) => rewrite.source === "/build-identity.json",
+test("build writes the deployment-bound identity as a static public artifact", async (t) => {
+  const directory = await mkdtemp(path.join(os.tmpdir(), "ynx-build-identity-"));
+  t.after(() => rm(directory, { recursive: true, force: true }));
+  const outputPath = path.join(directory, "build-identity.json");
+
+  assert.deepEqual(
+    await writeBuildIdentity({ environment: validEnvironment, outputPath }),
+    readWebsiteBuildIdentity(validEnvironment),
   );
+  assert.deepEqual(
+    JSON.parse(await readFile(outputPath, "utf8")),
+    readWebsiteBuildIdentity(validEnvironment),
+  );
+});
+
+test("Vercel serves the static identity with no-store headers before the SPA fallback", async () => {
+  const configuration = JSON.parse(await readFile(new URL("../vercel.json", import.meta.url), "utf8"));
   const fallbackIndex = configuration.rewrites.findIndex(
     (rewrite) => rewrite.destination === "/",
   );
+  const identityHeaders = configuration.headers.find(
+    (entry) => entry.source === "/build-identity.json",
+  );
+  const headerMap = new Map(
+    identityHeaders?.headers?.map((header) => [header.key.toLowerCase(), header.value]),
+  );
 
-  assert.notEqual(identityIndex, -1);
-  assert.equal(configuration.rewrites[identityIndex].destination, "/api/build-identity");
-  assert.ok(identityIndex < fallbackIndex);
+  assert.equal(
+    configuration.rewrites.some((rewrite) => rewrite.source === "/build-identity.json"),
+    false,
+  );
+  assert.equal(headerMap.get("content-type"), "application/json; charset=utf-8");
+  assert.equal(headerMap.get("cache-control"), "no-store, max-age=0");
+  assert.equal(headerMap.get("x-content-type-options"), "nosniff");
   assert.equal(fallbackIndex, configuration.rewrites.length - 1);
   assert.equal(new RegExp("^" + configuration.rewrites[fallbackIndex].source + "$" ).test("/build-identity.json"), false);
 });
