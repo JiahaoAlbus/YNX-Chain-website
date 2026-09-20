@@ -454,6 +454,18 @@
       "destination": "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/wallet/sha256-8cf24d83dd5da5851484eab14ce9e6cd16946c95699a7af1e11048bbd7692bea/ynx-wallet-desktop-0.1.0-x86_64.rpm"
     },
     {
+      "source": "/downloads/wallet-web/sha256-ed841dd13d04d9fe3b335c040d6859cd59326432376d4390943b573920786186/ynx-wallet-web-pwa-0.1.1.zip",
+      "destination": "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-web-testnet-preview-0.1.1-b04765f11/ynx-wallet-web-pwa-0.1.1.zip"
+    },
+    {
+      "source": "/downloads/wallet-web/sha256-6e8094cc4031aad706d930b09fcf8297cb6bd004a0352a4d9fbd984c3ad3a2bd/ynx-wallet-chrome-edge-0.1.1.zip",
+      "destination": "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-web-testnet-preview-0.1.1-b04765f11/ynx-wallet-chrome-edge-0.1.1.zip"
+    },
+    {
+      "source": "/downloads/wallet-web/sha256-ed5bdc6c195b1598900a175ff2e294c6529dbca9130ddffde980abdcf29711f5/ynx-wallet-firefox-0.1.1.zip",
+      "destination": "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-web-testnet-preview-0.1.1-b04765f11/ynx-wallet-firefox-0.1.1.zip"
+    },
+    {
       "source": "/downloads/wallet-web/sha256-4aa64152ecc80e7a6fe8186e1c3bd7710f111644f6e41d8402e58d7b582802fd/ynx-wallet-web-pwa-0.1.0.zip",
       "destination": "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-web-testnet-preview-0.1.0-8099e1937/ynx-wallet-web-pwa-0.1.0.zip"
     },

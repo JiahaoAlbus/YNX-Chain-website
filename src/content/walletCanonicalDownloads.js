@@ -139,12 +139,12 @@ const PROFILES = {
   },
   "5": {
     "architecture": "any",
-    "sourceCommit": "e76388bf613a6e94a03ae2729c7e40761c808146",
+    "sourceCommit": "b04765f112aca96cf7dff7cfa48f9b65a891166d",
     "mimeType": "application/zip",
     "observedHTTPContentType": "application/octet-stream",
     "signingClass": "unsigned test preview; no production signature or browser-store release",
-    "releaseBatch": "wallet-web-testnet-preview-0.1.0-8099e1937",
-    "previewManifest": "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-web-testnet-preview-0.1.0-8099e1937/artifact-manifest.json",
+    "releaseBatch": "wallet-web-testnet-preview-0.1.1-b04765f11",
+    "previewManifest": "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-web-testnet-preview-0.1.1-b04765f11/artifact-manifest.json",
     "publicationEvidence": "/releases/wallet-web/20260920-wallet-web-testnet-preview.json"
   }
 };
@@ -224,25 +224,25 @@ const FILES = {
   },
   "pwa": {
     "profile": 5,
-    "id": "web-pwa-e76388bf",
+    "id": "web-pwa-b04765f1",
     "installation": "zip-archive",
-    "artifactPath": "ynx-wallet-web-pwa-0.1.0.zip",
-    "sizeBytes": 310025,
-    "sha256": "4aa64152ecc80e7a6fe8186e1c3bd7710f111644f6e41d8402e58d7b582802fd",
-    "publicUrl": "https://www.ynxweb4.com/downloads/wallet-web/sha256-4aa64152ecc80e7a6fe8186e1c3bd7710f111644f6e41d8402e58d7b582802fd/ynx-wallet-web-pwa-0.1.0.zip",
-    "installProof": "Deterministically rebuilt twice from e76388bf and verified with 354 Wallet Web tests plus the package integrity gate. This is an unsigned static PWA ZIP; public bytes are verified, but installed PWA and production release acceptance remain unverified.",
+    "artifactPath": "ynx-wallet-web-pwa-0.1.1.zip",
+    "sizeBytes": 310097,
+    "sha256": "ed841dd13d04d9fe3b335c040d6859cd59326432376d4390943b573920786186",
+    "publicUrl": "https://www.ynxweb4.com/downloads/wallet-web/sha256-ed841dd13d04d9fe3b335c040d6859cd59326432376d4390943b573920786186/ynx-wallet-web-pwa-0.1.1.zip",
+    "installProof": "Deterministically rebuilt twice from b04765f1 and verified with 354 Wallet Web tests plus the package integrity gate. This is an unsigned static PWA ZIP; public bytes are verified, but installed PWA and production release acceptance remain unverified.",
     "targetPlatform": "pwa-archive"
   },
   "chromeEdge": {
     "profile": 5,
-    "id": "web-chromium-e76388bf",
+    "id": "web-chromium-b04765f1",
     "installation": "extension-unpacked",
-    "artifactPath": "ynx-wallet-chrome-edge-0.1.0.zip",
-    "sizeBytes": 546193,
-    "sha256": "c24d4939ccb1ff8110d35a1b67baf91df7316b4b77f67d95dbc428076552a634",
-    "publicUrl": "https://www.ynxweb4.com/downloads/wallet-web/sha256-c24d4939ccb1ff8110d35a1b67baf91df7316b4b77f67d95dbc428076552a634/ynx-wallet-chrome-edge-0.1.0.zip",
+    "artifactPath": "ynx-wallet-chrome-edge-0.1.1.zip",
+    "sizeBytes": 546266,
+    "sha256": "6e8094cc4031aad706d930b09fcf8297cb6bd004a0352a4d9fbd984c3ad3a2bd",
+    "publicUrl": "https://www.ynxweb4.com/downloads/wallet-web/sha256-6e8094cc4031aad706d930b09fcf8297cb6bd004a0352a4d9fbd984c3ad3a2bd/ynx-wallet-chrome-edge-0.1.1.zip",
     "sdkManifest": false,
-    "installProof": "Deterministically rebuilt twice from e76388bf and verified with 354 Wallet Web tests plus the package integrity gate. This is an unsigned unpacked Chrome/Edge extension preview, not a browser-store release; current installed-browser acceptance remains unverified.",
+    "installProof": "Deterministically rebuilt twice from b04765f1 and verified with 354 Wallet Web tests plus the package integrity gate. This is an unsigned unpacked Chrome/Edge extension preview, not a browser-store release; current installed-browser acceptance remains unverified.",
     "targetPlatform": "web-extension"
   }
 };

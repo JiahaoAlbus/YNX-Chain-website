@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
-  "observedAt": "2026-09-20T07:16:00+08:00",
-  "releaseTag": "wallet-web-testnet-preview-0.1.0-8099e1937",
-  "carrierCommit": "8099e19373b5505fe8ab0fd33071419816e5a16b",
-  "sourceCommit": "e76388bf613a6e94a03ae2729c7e40761c808146",
-  "releaseUrl": "https://github.com/JiahaoAlbus/YNX-Chain/releases/tag/wallet-web-testnet-preview-0.1.0-8099e1937",
+  "observedAt": "2026-09-20T09:10:50+08:00",
+  "releaseTag": "wallet-web-testnet-preview-0.1.1-b04765f11",
+  "carrierCommit": "8673de1deb947e5377c900636b7425eb596c1fc2",
+  "sourceCommit": "b04765f112aca96cf7dff7cfa48f9b65a891166d",
+  "releaseUrl": "https://github.com/JiahaoAlbus/YNX-Chain/releases/tag/wallet-web-testnet-preview-0.1.1-b04765f11",
   "verification": {
     "walletWebTestsPassed": 354,
     "deterministicPackagingRuns": 2,
@@ -13,44 +13,44 @@
     "installedBrowserAcceptance": false,
     "productionSigned": false,
     "storeReleased": false,
-    "websiteAssetsDownloadedAndRehashed": true,
-    "websiteDownloadEntriesVerified": 3,
-    "websiteDeploymentId": "dpl_DaVcRsdy76wyeiAikuysM6hFFcx8",
-    "websiteDeploymentUrl": "https://ynx-web4-website-7rjtbew2n-jiahaoalbus-projects.vercel.app",
+    "websiteAssetsDownloadedAndRehashed": false,
+    "websiteDownloadEntriesVerified": 0,
+    "websiteDeploymentId": null,
+    "websiteDeploymentUrl": null,
     "websiteProductionAlias": "https://ynxweb4.com",
-    "websiteRollbackDeploymentId": "dpl_9rzGYBQVwXLcyCMSoWw1urPkbfDj",
-    "websiteRollbackUrl": "https://ynx-web4-website-8ml69lerj-jiahaoalbus-projects.vercel.app"
+    "websiteRollbackDeploymentId": "dpl_Bh4yqfsHz1pMkz87j7U8skXeKGcQ",
+    "websiteRollbackUrl": null
   },
   "artifacts": [
     {
       "platform": "pwa-archive",
-      "filename": "ynx-wallet-web-pwa-0.1.0.zip",
-      "bytes": 310025,
-      "sha256": "4aa64152ecc80e7a6fe8186e1c3bd7710f111644f6e41d8402e58d7b582802fd",
-      "releaseAssetUrl": "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-web-testnet-preview-0.1.0-8099e1937/ynx-wallet-web-pwa-0.1.0.zip",
-      "websiteUrl": "https://www.ynxweb4.com/downloads/wallet-web/sha256-4aa64152ecc80e7a6fe8186e1c3bd7710f111644f6e41d8402e58d7b582802fd/ynx-wallet-web-pwa-0.1.0.zip"
+      "filename": "ynx-wallet-web-pwa-0.1.1.zip",
+      "bytes": 310097,
+      "sha256": "ed841dd13d04d9fe3b335c040d6859cd59326432376d4390943b573920786186",
+      "releaseAssetUrl": "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-web-testnet-preview-0.1.1-b04765f11/ynx-wallet-web-pwa-0.1.1.zip",
+      "websiteUrl": "https://www.ynxweb4.com/downloads/wallet-web/sha256-ed841dd13d04d9fe3b335c040d6859cd59326432376d4390943b573920786186/ynx-wallet-web-pwa-0.1.1.zip"
     },
     {
       "platform": "chrome-edge-unpacked-extension",
-      "filename": "ynx-wallet-chrome-edge-0.1.0.zip",
-      "bytes": 546193,
-      "sha256": "c24d4939ccb1ff8110d35a1b67baf91df7316b4b77f67d95dbc428076552a634",
-      "releaseAssetUrl": "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-web-testnet-preview-0.1.0-8099e1937/ynx-wallet-chrome-edge-0.1.0.zip",
-      "websiteUrl": "https://www.ynxweb4.com/downloads/wallet-web/sha256-c24d4939ccb1ff8110d35a1b67baf91df7316b4b77f67d95dbc428076552a634/ynx-wallet-chrome-edge-0.1.0.zip"
+      "filename": "ynx-wallet-chrome-edge-0.1.1.zip",
+      "bytes": 546266,
+      "sha256": "6e8094cc4031aad706d930b09fcf8297cb6bd004a0352a4d9fbd984c3ad3a2bd",
+      "releaseAssetUrl": "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-web-testnet-preview-0.1.1-b04765f11/ynx-wallet-chrome-edge-0.1.1.zip",
+      "websiteUrl": "https://www.ynxweb4.com/downloads/wallet-web/sha256-6e8094cc4031aad706d930b09fcf8297cb6bd004a0352a4d9fbd984c3ad3a2bd/ynx-wallet-chrome-edge-0.1.1.zip"
     },
     {
       "platform": "firefox-unpacked-extension",
-      "filename": "ynx-wallet-firefox-0.1.0.zip",
-      "bytes": 546293,
-      "sha256": "b30f67a87e841039f2141065a5857e425838c34ffdb98f3094eedd8abcbb81b0",
-      "releaseAssetUrl": "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-web-testnet-preview-0.1.0-8099e1937/ynx-wallet-firefox-0.1.0.zip",
-      "websiteUrl": "https://www.ynxweb4.com/downloads/wallet-web/sha256-b30f67a87e841039f2141065a5857e425838c34ffdb98f3094eedd8abcbb81b0/ynx-wallet-firefox-0.1.0.zip"
+      "filename": "ynx-wallet-firefox-0.1.1.zip",
+      "bytes": 546364,
+      "sha256": "ed5bdc6c195b1598900a175ff2e294c6529dbca9130ddffde980abdcf29711f5",
+      "releaseAssetUrl": "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-web-testnet-preview-0.1.1-b04765f11/ynx-wallet-firefox-0.1.1.zip",
+      "websiteUrl": "https://www.ynxweb4.com/downloads/wallet-web/sha256-ed5bdc6c195b1598900a175ff2e294c6529dbca9130ddffde980abdcf29711f5/ynx-wallet-firefox-0.1.1.zip"
     }
   ],
   "claims": {
     "releaseAssetsHosted": true,
     "websiteCodePrepared": true,
-    "websitePublicDeploymentVerified": true,
+    "websitePublicDeploymentVerified": false,
     "productionApproved": false
   }
 }
