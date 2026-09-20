@@ -73,7 +73,7 @@ export function verifyWalletDownloadMetadata(downloads = currentWalletDownloads,
       assert.deepEqual(item, currentWalletDownloads[slot], `${slot} current website overlay`);
       const evidence = JSON.parse(fs.readFileSync(`public${item.publicationEvidence}`));
       if (slot === 'android' || slot === 'androidUniversal') {
-        for (const key of ['id', 'version', 'versionCode', 'architecture', 'installation', 'artifactPath', 'sizeBytes', 'sha256', 'sourceCommit', 'publicUrl', 'fallbackUrl', 'releaseTag', 'publicationEvidence', 'signingClass', 'releaseBatch', 'installProof', 'mimeType', 'releaseImmutable', 'publisherCanReplaceAssets', 'downloadTimeSha256Verified', 'releaseMetadataObservedAt']) assert.equal(item[key], evidence[key], `${slot}.${key}`);
+        for (const key of ['id', 'version', 'versionCode', 'architecture', 'installation', 'artifactPath', 'sizeBytes', 'sha256', 'sourceCommit', 'publicUrl', 'fallbackUrl', 'releaseTag', 'publicationEvidence', 'signingClass', 'releaseBatch', 'installProof', 'mimeType', 'releaseImmutable', 'publisherCanReplaceAssets', 'downloadTimeSha256Verified', 'releaseMetadataObservedAt', 'walletConnectRelayE2E', 'liveChainTransferExecuted', 'installedFinanceE2E', 'previousRelease']) assert.equal(item[key], evidence[key], `${slot}.${key}`);
       } else if (['windowsX64', 'windowsArm64', 'linuxX64Deb', 'linuxArm64Deb', 'macos'].includes(slot)) {
         const asset = evidence.assets.find(candidate => candidate.filename === item.artifactPath);
         assert.ok(asset, `${slot} release asset`);
