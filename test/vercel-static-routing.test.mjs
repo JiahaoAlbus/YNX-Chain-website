@@ -157,6 +157,11 @@ test('exact remote downloads, retired 410, identity and redirects keep their con
   const redirect = await request('/wallet?lang=ja');
   assert.equal(redirect.status, 308);
   assert.equal(redirect.headers.location, '/dapp/wallet?lang=ja');
+  for (const key of ['exchange', 'quant']) {
+    const professional = await request(`/${key}?lang=ja`);
+    assert.equal(professional.status, 307);
+    assert.equal(professional.headers.location, `https://${key}.ynxweb4.com/?lang=ja`);
+  }
 });
 
 test('standalone still rejects arbitrary rewrite patterns and non-root use of the approved fallback pattern', async (t) => {
