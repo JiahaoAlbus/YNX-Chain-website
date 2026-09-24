@@ -112,7 +112,7 @@ async function collectNetwork(detailed) {
     serviceDirectory: Object.fromEntries(Object.entries(YNX_SERVICE_DIRECTORY).map(([name, service]) => [name, {
       name: service.name,
       officialUrl: service.officialUrl,
-      compatibilityUrl: service.compatibilityUrl || null,
+      compatibilityUrl: name === "rpc" ? "https://rpc.ynxweb4.com" : name === "evm" ? "https://evm.ynxweb4.com" : null,
       healthEndpoint: service.healthEndpoint,
       expectedChainId: service.expectedChainId,
       schema: service.schema,
