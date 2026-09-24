@@ -6,6 +6,8 @@ import { WALLET_MACOS_MANIFESTS } from '../../src/content/walletMacosDownloads.j
 import { WALLET_DESKTOP_MANIFESTS } from '../../src/content/walletDesktopDownloads.js';
 import { WALLET_BROWSER_MANIFESTS } from '../../src/content/walletBrowserDownloads.js';
 import { WALLET_ANDROID_MANIFESTS } from '../../src/content/walletAndroidDownloads.js';
+import { WALLET_ANDROID25 } from '../../src/content/walletAndroid25.js';
+import { WALLET_ANDROID26 } from '../../src/content/walletAndroid26.js';
 import { walletDownloadState } from '../../src/lib/walletDownloads.js';
 import { WALLET_APPIMAGE_ADVISORY, WALLET_APPIMAGE_HELD_SHA256, WALLET_DOWNLOAD_SAFETY_POLICY_PATH } from '../../src/lib/walletDownloadSafety.js';
 
@@ -99,9 +101,37 @@ const android25PublicationPins = {
   }
 };
 
+const android26PublicationPins = {
+  githubReleaseId: 392641001,
+  githubApiImmutable: false,
+  apkAssetId: 577942956,
+  apkAssetUpdatedAt: '2026-09-21T01:26:44Z',
+  releasePublishedAt: '2026-09-21T01:26:45Z',
+  releaseApiUrl: 'https://api.github.com/repos/JiahaoAlbus/YNX-Chain/releases/tags/wallet-android-testnet-preview-1.0.20-f3a12abad',
+  verificationBoundary: 'GitHub release metadata and APK URL observed; publisher may replace assets. Website does not recompute SHA-256 during download. 1.0.20 installation, PR188 login, physical transfer, Finance and Relay E2E remain NOT_VERIFIED.',
+  aab: {
+    artifactPath: 'ynx-wallet-1.0.20-testnet-preview-f3a12abad-local-test-signed.aab',
+    publicUrl: 'https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-android-testnet-preview-1.0.20-f3a12abad/ynx-wallet-1.0.20-testnet-preview-f3a12abad-local-test-signed.aab',
+    sizeBytes: 71877410,
+    sha256: '46d3f0e7f2738ac55aa5e6f24717ff4adef3b499f368ca6c3e253a7c3a4e6c4d',
+    githubAssetId: 577942957,
+    assetUpdatedAt: '2026-09-21T01:26:32Z',
+    signingClass: 'local-test-signed',
+    productionSigned: false,
+    storeReleased: false,
+    directInstallable: false
+  },
+  releaseLimits: {
+    androidInstallVerified: false, physicalDeviceVerified: false, walletConnectRelayE2E: false,
+    installedFinanceE2E: false, liveChainTransferExecuted: false, pr188LoginIncluded: false,
+    certificateFingerprintVerified: false
+  }
+};
+
 export function verifyWalletAndroidPublication(evidence) {
-  assert.deepEqual(evidence, { ...currentWalletDownloads.android, ...android25PublicationPins },
-    'Android25 publication must match the exact pinned owner evidence and release assets');
+  const old = evidence?.version === WALLET_ANDROID25.version;
+  assert.deepEqual(evidence, old ? { ...WALLET_ANDROID25, ...android25PublicationPins } : { ...WALLET_ANDROID26, ...android26PublicationPins },
+    'Android publication must match the exact pinned owner evidence and release assets');
 }
 
 const archivedManifests = [...WALLET_DESKTOP_MANIFESTS, ...WALLET_BROWSER_MANIFESTS, ...WALLET_ANDROID_MANIFESTS, ...WALLET_MACOS_MANIFESTS];

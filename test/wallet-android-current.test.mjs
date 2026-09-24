@@ -1,26 +1,27 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { WALLET_ANDROID25 } from '../src/content/walletAndroid25.js';
+import { WALLET_ANDROID26 } from '../src/content/walletAndroid26.js';
 import { walletDownloadState } from '../src/lib/walletDownloads.js';
 import { getCatalog } from '../src/lib/ecosystemCatalog.js';
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { WALLET_ANDROID24 } from '../src/content/walletAndroid24.js';
 import { verifyWalletAndroidPublication } from '../scripts/lib/verify-wallet-download-metadata.mjs';
-test('Android25 public selection uses the exact verified release and distinct installation evidence',()=>{
+test('Android26 public selection uses the exact published Testnet preview without borrowed install proof',()=>{
  const item=getCatalog().find(p=>p.key==='wallet').downloads.android;
- assert.equal(item.sha256,WALLET_ANDROID25.sha256);
- assert.equal(item.sizeBytes,116639211);
+ assert.equal(item.sha256,WALLET_ANDROID26.sha256);
+ assert.equal(item.sizeBytes,116741810);
  const state=walletDownloadState('android',item);
- assert.equal(state.available,true);assert.equal(state.installProofKey,'android25Proof');assert.equal(state.fallbackHref,WALLET_ANDROID25.fallbackUrl);
+ assert.equal(state.available,true);assert.equal(state.installProofKey,'android26Proof');assert.equal(state.fallbackHref,WALLET_ANDROID26.fallbackUrl);
  for(const patch of [{sizeBytes:1},{versionCode:21},{productionSigned:true},{storeReleased:true},{releaseImmutable:true},{publisherCanReplaceAssets:false},{downloadTimeSha256Verified:true}]) assert.equal(walletDownloadState('android',{...item,...patch}).available,false);
  for(const patch of [{href:item.href+'?other=1'},{sha256:'0'.repeat(64)},{sourceCommit:'0'.repeat(40)}]) assert.equal(walletDownloadState('android',{...item,...patch}).available,false);
  for(const patch of [{fallbackUrl:item.fallbackUrl+'?other=1'},{releaseTag:'other'}]) assert.equal(walletDownloadState('android',{...item,...patch}).available,false);
 });
 
-test('Android25 rejects a coordinated filename and fallback substitution under the same tag',()=>{
+test('Android26 rejects a coordinated filename and fallback substitution under the same tag',()=>{
  const item=getCatalog().find(p=>p.key==='wallet').downloads.android;
- const artifactPath='ynx-wallet-1.0.19-testnet-preview-d58ce00dc-local-test-signed.aab';
+ const artifactPath='ynx-wallet-1.0.20-testnet-preview-f3a12abad-local-test-signed.aab';
  const fallbackUrl=`https://github.com/JiahaoAlbus/YNX-Chain/releases/download/${item.releaseTag}/${artifactPath}`;
  for(const platform of ['android','androidUniversal']){
   const state=walletDownloadState(platform,{...item,artifactPath,fallbackUrl});
@@ -29,10 +30,11 @@ test('Android25 rejects a coordinated filename and fallback substitution under t
  }
 });
 
-test('Android25 selection rejects stale identity and promoted acceptance',()=>{
+test('Android26 selection rejects stale identity and promoted acceptance',()=>{
  const item=getCatalog().find(p=>p.key==='wallet').downloads.android;
  for(const platform of ['android','androidUniversal']){
   assert.equal(walletDownloadState(platform,WALLET_ANDROID24).available,false);
+  assert.equal(walletDownloadState(platform,WALLET_ANDROID25).available,false);
   for(const patch of [{id:WALLET_ANDROID24.id},{version:WALLET_ANDROID24.version},{publicationEvidence:WALLET_ANDROID24.publicationEvidence},{fullInstalledE2E:true},{newWalletGoalsAccepted:true}]){
    const state=walletDownloadState(platform,{...item,...patch});
    assert.equal(state.available,false);
@@ -70,11 +72,26 @@ test('Android25 manifest preserves exact AAB provenance and links the unchanged 
  }
  assert.equal(manifest.androidInstallVerified,true);
  assert.equal(manifest.androidInstallScope,'API 36 emulator only');
- assert.equal(walletDownloadState('android',{...item,androidInstallVerified:false}).available,false);
+ assert.equal(walletDownloadState('android',{...item,androidInstallVerified:true}).available,false);
  assert.equal(walletDownloadState('android',{...item,androidInstallScope:'physical device'}).available,false);
  assert.equal(manifest.limitedInstalledEvidence.androidInstall,'PASS_API36_EMULATOR_ONLY');
  assert.equal(manifest.limitedInstalledEvidence.androidColdLaunch,'PASS_API36_EMULATOR_ONLY');
  assert.equal(manifest.limitedInstalledEvidence.liveChainTransferExecuted,false);
+});
+
+test('Android26 manifest pins GitHub APK/AAB identity without promoting 1.0.19 installation evidence',()=>{
+ const manifest=JSON.parse(readFileSync(new URL('../public'+WALLET_ANDROID26.publicationEvidence,import.meta.url)));
+ verifyWalletAndroidPublication(manifest);
+ for(const [key,value] of Object.entries(WALLET_ANDROID26)) assert.deepEqual(manifest[key],value,key);
+ assert.equal(manifest.githubReleaseId,392641001);
+ assert.equal(manifest.apkAssetId,577942956);
+ assert.equal(manifest.aab.githubAssetId,577942957);
+ assert.equal(manifest.aab.sizeBytes,71877410);
+ assert.equal(manifest.aab.sha256,'46d3f0e7f2738ac55aa5e6f24717ff4adef3b499f368ca6c3e253a7c3a4e6c4d');
+ assert.equal(manifest.previousRelease,WALLET_ANDROID25.publicationEvidence);
+ for(const key of ['androidInstallVerified','physicalDeviceVerified','walletConnectRelayE2E','installedFinanceE2E','liveChainTransferExecuted','pr188LoginIncluded','certificateFingerprintVerified']) assert.equal(manifest.releaseLimits[key],false,key);
+ const forged=structuredClone(manifest);forged.releaseLimits.androidInstallVerified=true;
+ assert.throws(()=>verifyWalletAndroidPublication(forged),/exact pinned owner evidence/);
 });
 
 const publication = JSON.parse(readFileSync(new URL('../public/releases/wallet-downloads/20260921-android25.json',import.meta.url)));
