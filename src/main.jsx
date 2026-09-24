@@ -21,7 +21,6 @@ import { PageErrorBoundary } from "./components/PageErrorBoundary.jsx";
 import { getHomeCopy } from "./content/homeLocaleContent.js";
 import { getHomeRedesignCopy } from "./content/homeRedesignContent.js";
 import { getHomeEntryCopy } from "./content/homeEntryContent.js";
-import { HomeCommunity } from "./components/HomeCommunity.jsx";
 import { getContactCopy } from "./content/contactLocaleContent.js";
 import "./pages/ContactPage.css";
 import "./components/RuntimeLanguageNotice.css";
@@ -29,6 +28,7 @@ import "./styles.css";
 import "./redesign.css";
 
 const HomeExperience = lazyNamed(() => import("./components/HomeExperience.jsx"), "HomeExperience");
+const HomeCommunity = lazyNamed(() => import("./components/HomeCommunity.jsx"), "HomeCommunity");
 
 const route = window.location.pathname.replace(/\/$/, "") || "/";
 const RoutedContent = lazyNamed(() => import("./pages/RoutedContent.jsx"), "RoutedContent");
@@ -264,7 +264,7 @@ function App() {
         <nav className="homeManualLinks" aria-label={getContactCopy(locale).docs}>{["manual", "api", "docs", "whitepaper"].map(key => <a key={key} href={`/${key}?lang=${encodeURIComponent(locale)}`}>{getContactCopy(locale)[key]}<ArrowUpRight size={18}/></a>)}</nav>
         <LinkGrid />
       </section>
-      <HomeCommunity />
+      <Suspense fallback={<div className="experienceLoading" aria-busy="true" />}><HomeCommunity /></Suspense>
       </main>
       <SiteFooter />
     </>
