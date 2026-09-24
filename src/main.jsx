@@ -5,7 +5,6 @@ import {
   Database, Gauge, Landmark, Layers3, Network, Scale, Search, ShieldCheck, WalletCards
 } from "lucide-react";
 import { apiConfig, loadNetworkSnapshot, loadServiceHealth } from "./lib/api/ynxApi.js";
-import { observeBlockProgression } from "./lib/blockProgression.js";
 import { WalletDownload } from "./components/WalletDownload.jsx";
 import { HeroPortal } from "./sections/HeroPortal.jsx";
 import { StatusCard } from "./components/StatusCard.jsx";
@@ -71,7 +70,7 @@ function App() {
     const refresh = async () => {
       const next = await loadNetworkSnapshot({ detailed: networkExpanded });
       if (!active) return;
-      const observed = previousSnapshot ? observeBlockProgression(previousSnapshot, next) : next;
+      const observed = previousSnapshot ? await import("./lib/blockProgression.js").then(({ observeBlockProgression }) => observeBlockProgression(previousSnapshot, next), () => ({ ...next, ok: false, progressionVerified: false, degraded: true })) : next;
       previousSnapshot = next;
       setHeightMoved(observed.progressionVerified === true);
       setSnapshot(observed);
