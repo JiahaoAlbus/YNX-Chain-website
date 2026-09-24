@@ -5,6 +5,7 @@ import {
   Database, Gauge, Landmark, Layers3, Network, Scale, Search, ShieldCheck, WalletCards
 } from "lucide-react";
 import { apiConfig, loadNetworkSnapshot, loadServiceHealth } from "./lib/api/ynxApi.js";
+import { observeBlockProgression } from "./lib/blockProgression.js";
 import { WalletDownload } from "./components/WalletDownload.jsx";
 import { HeroPortal } from "./sections/HeroPortal.jsx";
 import { StatusCard } from "./components/StatusCard.jsx";
@@ -63,17 +64,19 @@ function App() {
     if (route !== "/") return;
     let active = true;
     let inFlight = false;
-    let previousHeight = 0;
+    let previousSnapshot = null;
+    let fastAttempts = 0;
     let networkTimer = 0;
     let lastServiceCheck = 0;
     const refresh = async () => {
       const next = await loadNetworkSnapshot({ detailed: networkExpanded });
       if (!active) return;
-      const nextHeight = Number(next.status?.height || 0);
-      setHeightMoved(previousHeight > 0 && nextHeight > previousHeight);
-      previousHeight = Math.max(previousHeight, nextHeight);
-      setSnapshot(next);
-      setConnectionState(next.error || next.status?.error ? "error" : "live");
+      const observed = previousSnapshot ? observeBlockProgression(previousSnapshot, next) : next;
+      previousSnapshot = next;
+      setHeightMoved(observed.progressionVerified === true);
+      setSnapshot(observed);
+      setConnectionState(next.error || next.status?.error ? "error" : observed.ok === true ? "live" : "loading");
+      fastAttempts = observed.ok === true ? 0 : fastAttempts + 1;
     };
     const refreshServices = async () => {
       const next = await loadServiceHealth();
@@ -88,8 +91,9 @@ function App() {
       await refresh();
       if (active && ecosystemExpanded && Date.now() - lastServiceCheck >= 120000) await refreshServices();
       } finally { inFlight = false; }
-      if (active && !document.hidden) networkTimer = window.setTimeout(cycle, networkExpanded ? 15000 : 60000);
+      if (active && !document.hidden) networkTimer = window.setTimeout(cycle, observedInterval());
     };
+    const observedInterval = () => fastAttempts <= 2 ? 10000 : networkExpanded ? 15000 : 60000;
     const onVisibility = () => {
       window.clearTimeout(networkTimer);
       if (!document.hidden) networkTimer = window.setTimeout(cycle, 1000);

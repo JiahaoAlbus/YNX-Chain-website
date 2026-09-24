@@ -20,7 +20,7 @@ test("portal distinguishes block age, collection, indexer lag and refresh failur
   const source = await readFile(new URL("../src/pages/PortalPage.jsx", import.meta.url), "utf8");
   for (const field of ["blockAgeMs", "rpcCollectionMs", "explorerCollectionMs", "indexerLagBlocks"]) assert.ok(source.includes(field));
   assert.match(source, /network\.error \? t\("liveSourceUnavailable"\)/);
-  assert.match(source, /setNetwork\(await loadNetworkSnapshot\(\)\)/);
+  assert.match(source, /collectBrowserProgression\(/);
   assert.match(source, /data-chain-verified/);
   assert.match(source, /data-indexer-verified/);
 });
