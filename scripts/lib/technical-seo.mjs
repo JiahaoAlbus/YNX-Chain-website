@@ -157,14 +157,28 @@ export function writeStatic404({ dist, baseHtml, siteUrl = SITE_URL }) {
   return html;
 }
 
+const PROFESSIONAL_REDIRECTS = new Map([
+  ["/exchange", "https://exchange.ynxweb4.com/"],
+  ["/quant", "https://quant.ynxweb4.com/"]
+]);
+
 export function validateRedirects(redirects, canonicalRoutes) {
   const exact = new Map();
   for (const redirect of redirects) {
-    if (!redirect.source?.includes(":")) exact.set(normalizeRoute(redirect.source), normalizeRoute(redirect.destination));
+    if (redirect.source?.includes(":")) continue;
+    const source = normalizeRoute(redirect.source);
+    const destination = redirect.destination;
+    if (/^https?:\/\//i.test(destination)) {
+      if (PROFESSIONAL_REDIRECTS.get(source) !== destination || redirect.permanent !== false) throw new Error(`unapproved external redirect: ${source} -> ${destination}`);
+      exact.set(source, destination);
+    } else {
+      exact.set(source, normalizeRoute(destination));
+    }
   }
   for (const source of exact.keys()) {
     const seen = new Set([source]);
     let current = exact.get(source);
+    if (PROFESSIONAL_REDIRECTS.get(source) === current) continue;
     while (exact.has(current)) {
       if (seen.has(current)) throw new Error(`redirect cycle detected at ${current}`);
       seen.add(current);
@@ -183,6 +197,7 @@ export function validateInternalLinks(documents, canonicalRoutes, redirects = ne
       if (/^(?:https?:|mailto:|tel:|data:|#)/i.test(href)) continue;
       const pathname = normalizeRoute(new URL(href, `${SITE_URL}${normalizeRoute(route)}`).pathname);
       const destination = redirects.get(pathname) || pathname;
+      if (PROFESSIONAL_REDIRECTS.get(pathname) === destination) continue;
       if (!canonicalRoutes.has(destination) && !looksLikePublicAsset(destination)) broken.push(`${route} -> ${href}`);
     }
   }

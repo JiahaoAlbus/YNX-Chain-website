@@ -76,6 +76,17 @@ test("redirect graph rejects cycles and non-canonical destinations", () => {
     { source: "/b", destination: "/a" },
   ], canonical), /redirect cycle/);
   assert.throws(() => validateRedirects([{ source: "/old", destination: "/missing" }], canonical), /not canonical/);
+  for (const [source, host] of [["/exchange", "https://exchange.ynxweb4.com/"], ["/quant", "https://quant.ynxweb4.com/"]]) {
+    const external = validateRedirects([{ source, destination: host, permanent: false }], canonical);
+    assert.equal(external.get(source), host);
+    assert.equal(validateInternalLinks([{ route: "/", html: `<a href="${source}">Terminal</a>` }], canonical, external), true);
+    assert.throws(() => validateRedirects([{ source, destination: host, permanent: true }], canonical), /unapproved external/);
+  }
+  for (const redirect of [
+    { source: "/exchange", destination: "https://attacker.invalid/", permanent: false },
+    { source: "/exchange", destination: "https://exchange.ynxweb4.com.attacker.invalid/", permanent: false },
+    { source: "/wallet", destination: "https://exchange.ynxweb4.com/", permanent: false }
+  ]) assert.throws(() => validateRedirects([redirect], canonical), /unapproved external/);
 });
 
 test("broken internal links fail while redirects and public artifacts pass", () => {
