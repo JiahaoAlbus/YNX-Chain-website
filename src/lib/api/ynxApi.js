@@ -78,7 +78,7 @@ export async function loadEvmChainId(options = {}) {
 }
 
 export async function loadNetworkSnapshot({ detailed = false } = {}) {
-  return requestJson(`${window.location.origin}/api/network/status${detailed ? "" : "?view=summary"}`, { timeoutMs: 12000 });
+  return requestJson(`${window.location.origin}/api/network/status${detailed ? "" : "?view=summary"}`, { timeoutMs: 28000 });
 }
 
 export async function loadServiceHealth() {

@@ -15,6 +15,8 @@ const endpoints = Object.freeze({
 });
 
 const inFlight = new Map();
+const collectorFailure = Symbol("collectorFailure");
+const PROGRESSION_WINDOW_MS = 10_000;
 let activeUpstream = 0;
 const upstreamQueue = [];
 
@@ -45,14 +47,17 @@ async function limited(tasks, concurrency = 2) {
   return results;
 }
 
-export function collectNetworkStatus({ detailed = true } = {}) {
-  return singleFlight(detailed ? "network-detail" : "network-summary", () => collectNetwork(detailed));
+export function collectNetworkStatus({ detailed = true, waitForProgression = ms => new Promise(resolve => setTimeout(resolve, ms)) } = {}) {
+  return singleFlight(detailed ? "network-detail" : "network-summary", () => collectNetwork(detailed, waitForProgression));
 }
 
-async function collectNetwork(detailed) {
-  const checkedAt = new Date().toISOString();
+async function collectNetwork(detailed, waitForProgression) {
   // Concurrent visitors share only the in-flight collection, never a completed
   // result. The process-wide semaphore also bounds different variants together.
+  // Two bounded REST observations prove growth without guessing a block-time SLA.
+  // A missing or inconclusive second observation is not evidence of a stopped chain.
+  const initialStatusRead = await getObservedJson(endpoints.status);
+  if (validBlockSample(initialStatusRead.body)) await waitForProgression(PROGRESSION_WINDOW_MS);
   const [statusRead, explorerRead, evmRead] = await limited([
     () => getObservedJson(endpoints.status),
     () => getObservedJson(endpoints.explorer),
@@ -60,11 +65,12 @@ async function collectNetwork(detailed) {
     method: "POST",
     headers: { "content-type": "application/json" },
     body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: "eth_chainId", params: [] })
-    })
+    }, 8000)
   ]);
   const status = statusRead.body;
   const explorer = explorerRead.body;
   const evm = evmRead.body;
+  const checkedAt = new Date().toISOString();
   const [latestBlocks, latestTransactions, validators] = detailed ? await limited([
     () => getJson(endpoints.latestBlocks),
     () => getJson(endpoints.latestTransactions),
@@ -79,21 +85,33 @@ async function collectNetwork(detailed) {
   const chainVerified = status.chainId === 6423 && status.nativeCurrencySymbol === "YNXT" && evm.result === "0x1917";
   const indexerVerified = explorer.ok === true && explorer.network?.chainId === 6423 && explorer.rpcHeight === explorer.indexedHeight && explorer.indexerOk === true && rpcAndExplorerFresh;
   const identityValid = chainVerified && indexerVerified;
+  const progressionState = blockProgression(initialStatusRead.body, status);
+  const progressionVerified = progressionState === "observed";
   const indexedHeight = explorer.indexedHeight;
-  const indexerLagBlocks = Number.isSafeInteger(rpcHeight) && Number.isSafeInteger(indexedHeight) ? Math.max(0, rpcHeight - indexedHeight) : null;
+  const indexerLagBlocks = status.chainId === 6423 && explorer.network?.chainId === 6423 && Number.isSafeInteger(rpcHeight) && rpcHeight >= 0 && Number.isSafeInteger(indexedHeight) && indexedHeight >= 0 ? Math.max(0, rpcHeight - indexedHeight) : null;
   const blockTime = Date.parse(status.latestBlockTime);
-  const blockAgeMs = Number.isFinite(blockTime) && blockTime <= Date.now() + 5000 ? Math.max(0, Date.now() - blockTime) : null;
+  const blockAgeMs = validBlockSample(status) ? Math.max(0, Date.now() - blockTime) : null;
   return {
-    ok: identityValid,
+    ok: identityValid && progressionVerified,
     checkedAt,
     status,
     chainVerified,
     indexerVerified,
+    progressionVerified,
     indexerLagBlocks,
     observations: {
       rpcCollectionMs: statusRead.collectionMs,
+      rpcReadState: statusRead.readState,
+      initialRpcCollectionMs: initialStatusRead.collectionMs,
+      initialRpcReadState: initialStatusRead.readState,
       explorerCollectionMs: explorerRead.collectionMs,
+      explorerReadState: explorerRead.readState,
       evmCollectionMs: evmRead.collectionMs,
+      evmReadState: evmRead.readState,
+      progressionState,
+      progressionWindowMs: validBlockSample(initialStatusRead.body) ? PROGRESSION_WINDOW_MS : null,
+      progressionFromHeight: validBlockSample(initialStatusRead.body) ? initialStatusRead.body.height : null,
+      progressionToHeight: validBlockSample(status) ? status.height : null,
       blockAgeMs
     },
     summary: {
@@ -121,11 +139,24 @@ async function collectNetwork(detailed) {
       degraded: service.degraded,
       lastVerifiedAt: checkedAt
     }])),
-    degraded: !identityValid,
+    degraded: !identityValid || !progressionVerified,
     degradedReason: !chainVerified ? "Public RPC and EVM chain identity are not both verified for YNX 6423."
       : !indexerVerified ? (!rpcAndExplorerFresh ? "Public RPC and Explorer are more than one block apart." : "Explorer Indexer is not verified and aligned with YNX 6423.")
+      : !progressionVerified ? "Block progression was not verified in the bounded observation window; this does not by itself prove a stopped chain."
       : undefined
   };
+}
+
+function validBlockSample(status) {
+  const blockTime = Date.parse(status.latestBlockTime);
+  return status.chainId === 6423 && status.nativeCurrencySymbol === "YNXT" && Number.isSafeInteger(status.height) && status.height > 0 && /^[0-9a-f]{64}$/i.test(status.latestBlockHash ?? "") && Number.isFinite(blockTime) && blockTime <= Date.now() + 5000;
+}
+
+function blockProgression(before, after) {
+  if (!validBlockSample(before) || !validBlockSample(after)) return "unverified";
+  if (after.height > before.height && after.latestBlockHash !== before.latestBlockHash && Date.parse(after.latestBlockTime) > Date.parse(before.latestBlockTime)) return "observed";
+  if (after.height === before.height && after.latestBlockHash === before.latestBlockHash) return "not_observed";
+  return "unverified";
 }
 
 export function collectServiceHealth() {
@@ -151,10 +182,10 @@ async function getJson(url, init = {}, timeoutMs = 3500) {
     if (!body || typeof body !== "object" || Array.isArray(body)) throw new Error("Invalid JSON object");
     return body;
   } catch (error) {
-    return {
+    return Object.defineProperty({
       error: error?.name === "AbortError" ? `Timed out after ${timeoutMs / 1000}s` : error.message,
       checkedAt: new Date().toISOString()
-    };
+    }, collectorFailure, { value: error?.name === "AbortError" ? "timeout" : "error" });
   } finally {
     clearTimeout(timeout);
     releaseUpstream();
@@ -165,5 +196,5 @@ async function getObservedJson(url, init = {}, timeoutMs = 3500) {
   const started = performance.now();
   const body = await getJson(url, init, timeoutMs);
   // Includes any wait for the bounded collector slot; not a claim about network RTT.
-  return { body, collectionMs: Math.round(performance.now() - started) };
+  return { body, collectionMs: Math.round(performance.now() - started), readState: body[collectorFailure] || "ok" };
 }
