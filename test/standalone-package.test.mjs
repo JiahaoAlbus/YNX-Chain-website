@@ -22,9 +22,12 @@ test("offline package leaves dist intact, compresses only text, and runs with no
   const installer = crypto.randomBytes(1024 * 64);
   await fs.writeFile(path.join(distRoot, "index.html"), html);
   await fs.writeFile(path.join(distRoot, "installer.exe"), installer);
+  await fs.mkdir(path.join(distRoot, ".vite"));
+  await fs.writeFile(path.join(distRoot, ".vite/manifest.json"), '{"index.html":{"file":"assets/index.js"}}');
   const summary = await packageStandalone({ distRoot, outputRoot, sourceIdentity, environment: {} });
   assert.equal(summary.compressedFiles, 2);
-  assert.deepEqual(await fs.readdir(distRoot), ["index.html", "installer.exe"]);
+  assert.deepEqual(await fs.readdir(distRoot), [".vite", "index.html", "installer.exe"]);
+  await assert.rejects(fs.stat(path.join(outputRoot, "dist/.vite/manifest.json")), { code: "ENOENT" });
   assert.deepEqual(await fs.readFile(path.join(distRoot, "index.html")), html);
   assert.deepEqual(await fs.readFile(path.join(outputRoot, "dist/installer.exe")), installer);
   assert.deepEqual(brotliDecompressSync(await fs.readFile(path.join(outputRoot, "dist/index.html.br"))), html);
@@ -58,6 +61,20 @@ test("offline package leaves dist intact, compresses only text, and runs with no
   assert.equal(unchanged.status, 304);
   assert.equal(unchanged.body.length, 0);
   assert.equal((await get({ "Accept-Encoding": "identity;q=0, *;q=0" })).status, 406);
+});
+
+test("only the exact build-only Vite manifest is excluded; other hidden content fails closed", async (t) => {
+  const root = await fs.mkdtemp(path.join(os.tmpdir(), "ynx-standalone-hidden-"));
+  t.after(() => fs.rm(root, { recursive: true, force: true }));
+  const distRoot = path.join(root, "dist");
+  await fs.mkdir(path.join(distRoot, ".vite"), { recursive: true });
+  await fs.writeFile(path.join(distRoot, "index.html"), "home");
+  await fs.writeFile(path.join(distRoot, ".vite/manifest.json"), "{}");
+  await fs.writeFile(path.join(distRoot, ".vite/private.json"), "SECRET");
+  await assert.rejects(packageStandalone({ distRoot, outputRoot: path.join(root, "bad-vite"), sourceIdentity, environment: {} }), /Unexpected Vite build manifest contents/);
+  await fs.rm(path.join(distRoot, ".vite/private.json"));
+  await fs.writeFile(path.join(distRoot, ".env"), "SECRET");
+  await assert.rejects(packageStandalone({ distRoot, outputRoot: path.join(root, "bad-hidden"), sourceIdentity, environment: {} }), /Unsupported public asset path/);
 });
 
 test("packaging rejects symlinks instead of copying private files into public dist", async (t) => {
