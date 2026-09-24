@@ -11,5 +11,5 @@ test('five exact Desktop 0.6.8 releases are selected without broadening official
   for(const patch of [{fallbackUrl:expected.fallbackUrl+'?redirect=1'},{fallbackUrl:expected.fallbackUrl.replace('github.com','example.com')},{releaseTag:'other'}]) assert.equal(walletDownloadState(platform,{...item,...patch}).available,false);
  }
  for(const platform of ['linuxX64AppImage','linuxArm64AppImage']) assert.equal(walletDownloadState(platform,wallet.downloads[platform]).available,false);
- assert.equal(wallet.downloads.android.versionCode,25);
+ assert.equal(wallet.downloads.android.versionCode,27);
 });
