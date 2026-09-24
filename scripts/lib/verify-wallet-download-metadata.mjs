@@ -8,6 +8,7 @@ import { WALLET_BROWSER_MANIFESTS } from '../../src/content/walletBrowserDownloa
 import { WALLET_ANDROID_MANIFESTS } from '../../src/content/walletAndroidDownloads.js';
 import { WALLET_ANDROID25 } from '../../src/content/walletAndroid25.js';
 import { WALLET_ANDROID26 } from '../../src/content/walletAndroid26.js';
+import { WALLET_ANDROID27 } from '../../src/content/walletAndroid27.js';
 import { walletDownloadState } from '../../src/lib/walletDownloads.js';
 import { WALLET_APPIMAGE_ADVISORY, WALLET_APPIMAGE_HELD_SHA256, WALLET_DOWNLOAD_SAFETY_POLICY_PATH } from '../../src/lib/walletDownloadSafety.js';
 
@@ -128,9 +129,36 @@ const android26PublicationPins = {
   }
 };
 
+const android27PublicationPins = {
+  githubReleaseId: 395855899,
+  githubApiImmutable: false,
+  apkAssetId: 586315576,
+  apkAssetUpdatedAt: '2026-09-24T16:08:31Z',
+  releasePublishedAt: '2026-09-24T16:08:32Z',
+  releaseApiUrl: 'https://api.github.com/repos/JiahaoAlbus/YNX-Chain/releases/tags/wallet-android-testnet-preview-1.0.21-008aa8b07',
+  ownerManifestUrl: 'https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-android-testnet-preview-1.0.21-008aa8b07/artifact-manifest.json',
+  ownerManifestSha256: '7f86bd3b041252cfdde542dc669b49e8f5fc05da388cb40f119ca762f5c3842d',
+  certificateSha256: 'd4e562610ecb4e304fa00ee07e7adae7da862ce108bda7bdfe933c28831f154e',
+  verificationBoundary: "GitHub release asset digest and owner manifest observed; publisher may replace assets and website does not rehash a user's download. API 36 emulator code26-to-27 installed upgrade and disposable biometric unlock passed; funded balance, pending outbox, physical device, Finance and Relay E2E remain NOT_VERIFIED.",
+  releaseLimits: {
+    api36ExactApkCode26To27Install: true,
+    disposableBiometricAccountRetainedAndUnlocked: true,
+    fundedBalanceRetained: false,
+    pendingOutboxRecovered: false,
+    physicalDeviceVerified: false,
+    productionSigned: false,
+    storeReleased: false,
+    walletConnectRelayE2E: false,
+    installedFinanceE2E: false,
+    liveChainTransferExecuted: false
+  }
+};
+
 export function verifyWalletAndroidPublication(evidence) {
-  const old = evidence?.version === WALLET_ANDROID25.version;
-  assert.deepEqual(evidence, old ? { ...WALLET_ANDROID25, ...android25PublicationPins } : { ...WALLET_ANDROID26, ...android26PublicationPins },
+  const expected = evidence?.version === WALLET_ANDROID25.version ? { ...WALLET_ANDROID25, ...android25PublicationPins }
+    : evidence?.version === WALLET_ANDROID26.version ? { ...WALLET_ANDROID26, ...android26PublicationPins }
+    : { ...WALLET_ANDROID27, ...android27PublicationPins };
+  assert.deepEqual(evidence, expected,
     'Android publication must match the exact pinned owner evidence and release assets');
 }
 

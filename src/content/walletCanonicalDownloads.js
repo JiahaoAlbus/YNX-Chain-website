@@ -1,5 +1,5 @@
 import { WALLET_DESKTOP068 } from "./walletDesktop068.js";
-import { WALLET_ANDROID26 } from "./walletAndroid26.js";
+import { WALLET_ANDROID27 } from "./walletAndroid27.js";
 // Compact current selections. Full source manifests and all historical bodies are served from public/releases only.
 export const WALLET_CANONICAL_MANIFESTS = [
   {
@@ -257,4 +257,4 @@ export const WALLET_PREVIOUS_CANONICAL_DOWNLOADS = Object.fromEntries(Object.ent
   }];
 }));
 
-export const WALLET_CANONICAL_DOWNLOADS = { ...WALLET_PREVIOUS_CANONICAL_DOWNLOADS, ...WALLET_DESKTOP068, android: WALLET_ANDROID26, androidUniversal: WALLET_ANDROID26 };
+export const WALLET_CANONICAL_DOWNLOADS = { ...WALLET_PREVIOUS_CANONICAL_DOWNLOADS, ...WALLET_DESKTOP068, android: WALLET_ANDROID27, androidUniversal: WALLET_ANDROID27 };
