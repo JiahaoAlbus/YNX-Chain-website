@@ -10,7 +10,7 @@ import { readWebsiteBuildIdentity } from "../lib/build-identity.mjs";
 
 const identity = readWebsiteBuildIdentity({ YNX_WEBSITE_SOURCE_COMMIT: "a".repeat(40), YNX_WEBSITE_SOURCE_TREE: "b".repeat(40), YNX_WEBSITE_RELEASE: "standalone-test-1" });
 const routingConfig = {
-  redirects: [{ source: "/wallet", destination: "/dapp/wallet", permanent: true }, { source: "/square/:path*", destination: "/dapp/square/:path*", permanent: true }],
+  redirects: [{ source: "/wallet", destination: "/dapp/wallet", permanent: true }, { source: "/square/:path*", destination: "/dapp/square/:path*", permanent: true }, { source: "/exchange", destination: "https://exchange.ynxweb4.com/", permanent: false }, { source: "/quant", destination: "https://quant.ynxweb4.com/", permanent: false }],
   rewrites: [{ source: "/downloads/approved.zip", destination: "https://downloads.ynxweb4.com/fixed.zip" }, { source: "/downloads/retired.apk", destination: "/api/retired-download" }, { source: "/(.*)", destination: "/" }],
   headers: [{ source: "/(.*)", headers: [{ key: "Content-Security-Policy", value: "default-src 'self'; img-src 'self' data:" }] }, { source: "/assets/:path*", headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }] }, { source: "/sw.js", headers: [{ key: "Cache-Control", value: "no-store" }] }],
 };
@@ -92,6 +92,12 @@ test("clean routes, fixed redirects and retired downloads preserve exact boundar
   const local = await request(port, "/square/feed?lang=ar");
   assert.equal(local.status, 308);
   assert.equal(local.headers.location, "/dapp/square/feed?lang=ar");
+  for (const [route, host] of [["exchange", "exchange"], ["quant", "quant"]]) {
+    const professional = await request(port, `/${route}?lang=ar`);
+    assert.equal(professional.status, 307);
+    assert.equal(professional.headers.location, `https://${host}.ynxweb4.com/?lang=ar`);
+    assert.match(professional.headers["cache-control"], /must-revalidate/);
+  }
   const download = await request(port, "/downloads/approved.zip?url=https://example.invalid");
   assert.equal(download.status, 302);
   assert.equal(download.headers.location, "https://downloads.ynxweb4.com/fixed.zip");
@@ -101,6 +107,19 @@ test("clean routes, fixed redirects and retired downloads preserve exact boundar
   assert.equal(JSON.parse(retired.body).automaticRedirect, false);
   assert.equal((await request(port, "/", { method: "POST" })).status, 405);
   assert.equal((await request(port, "/", { headers: { "Content-Length": "1" }, body: "x" })).status, 400);
+});
+
+test("standalone rejects every unapproved external redirect variant", async (t) => {
+  const { distRoot } = await fixture(t);
+  for (const redirect of [
+    { source: "/exchange", destination: "https://attacker.invalid/", permanent: false },
+    { source: "/exchange", destination: "https://exchange.ynxweb4.com.attacker.invalid/", permanent: false },
+    { source: "/exchange", destination: "https://exchange.ynxweb4.com/", permanent: true },
+    { source: "/wallet", destination: "https://exchange.ynxweb4.com/", permanent: false },
+    { source: "/quant", destination: "//quant.ynxweb4.com/", permanent: false }
+  ]) {
+    await assert.rejects(createStandaloneServer({ distRoot, sourceIdentity: identity, environment: {}, routingConfig: { redirects: [redirect] } }), /Only configured local redirects or exact professional entries/);
+  }
 });
 
 test("HTML revalidates, only hashed assets inherit immutable, and HEAD/ETag return no body", async (t) => {

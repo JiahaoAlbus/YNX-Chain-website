@@ -80,11 +80,17 @@ function routeMatcher(source) {
 // Match the approved Vercel SPA fallback exactly; arbitrary rewrite patterns remain rejected.
 const SPA_FALLBACK_SOURCE = "/((?!api/|downloads/|(?:assets|releases|docs-authority|document-library|learning-search|third-party)(?:/|$)|.*[.]).*)";
 const SPA_FALLBACK_PATH = new RegExp('^' + SPA_FALLBACK_SOURCE + '$');
+const PROFESSIONAL_REDIRECTS = new Map([
+  ["/exchange", "https://exchange.ynxweb4.com/"],
+  ["/quant", "https://quant.ynxweb4.com/"]
+]);
 
 function compileRouting(configuration) {
   const headers = (configuration.headers || []).map((entry) => ({ ...entry, match: routeMatcher(entry.source) }));
   const redirects = (configuration.redirects || []).map((entry) => {
-    if (!entry.destination.startsWith("/") || entry.destination.startsWith("//")) throw new Error("Only configured local redirects are supported");
+    const local = entry.destination.startsWith("/") && !entry.destination.startsWith("//");
+    const professional = PROFESSIONAL_REDIRECTS.get(entry.source) === entry.destination && entry.permanent === false;
+    if (!local && !professional) throw new Error("Only configured local redirects or exact professional entries are supported");
     return { ...entry, match: routeMatcher(entry.source) };
   });
   const rewrites = new Map();

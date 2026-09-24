@@ -43,12 +43,13 @@ export function RoutedContent({ route, copy }) {
     return page;
 }
 
-function getLegacyRouteTarget(path) {
+export function getLegacyRouteTarget(path) {
   if (path === "/apps") return "/dapp";
   if (path === "/download") return "/dapp/download";
   if (path === "/square") return "/dapp/square";
   if (path.startsWith("/square/")) return `/dapp/square/${path.slice("/square/".length)}`;
-  if (path === "/quant") return "/dapp/quant";
+  if (path === "/exchange") return "https://exchange.ynxweb4.com/";
+  if (path === "/quant") return "https://quant.ynxweb4.com/";
   if (path === "/faucet") return "/dapp/faucet";
   return getLegacyDAppRedirect(path);
 }

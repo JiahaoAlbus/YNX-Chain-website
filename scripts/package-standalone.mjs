@@ -34,6 +34,13 @@ async function canonicalOutputPath(target) {
 
 async function* filesIn(directory, relative = "") {
   for (const entry of (await fsp.readdir(directory, { withFileTypes: true })).sort((a, b) => a.name.localeCompare(b.name))) {
+    if (!relative && entry.name === ".vite") {
+      if (!entry.isDirectory()) throw new Error("Invalid Vite build manifest directory");
+      const buildOnly = await fsp.readdir(path.join(directory, entry.name), { withFileTypes: true });
+      if (buildOnly.length !== 1 || buildOnly[0].name !== "manifest.json" || !buildOnly[0].isFile()) throw new Error("Unexpected Vite build manifest contents");
+      // The prerender step consumes this build-only file; it is not a public asset.
+      continue;
+    }
     if (entry.name.startsWith(".") || /[\x00-\x20\x7f\\%]/.test(entry.name)) throw new Error(`Unsupported public asset path: ${path.join(relative, entry.name)}`);
     const name = path.join(relative, entry.name);
     if (entry.isSymbolicLink()) throw new Error(`Symlink cannot enter release package: ${name}`);

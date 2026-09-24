@@ -1208,8 +1208,8 @@ if (
 const requiredDAppRedirects = new Map([
   ["/apps", "/dapp"], ["/download", "/dapp/download"], ["/faucet", "/dapp/faucet"], ["/square", "/dapp/square"],
   ["/wallet", "/dapp/wallet"], ["/social", "/dapp/social"], ["/pay", "/dapp/pay"],
-  ["/merchant", "/dapp/merchant"], ["/card", "/dapp/card"], ["/exchange", "/dapp/exchange"],
-  ["/quant", "/dapp/quant"],
+  ["/merchant", "/dapp/merchant"], ["/card", "/dapp/card"], ["/exchange", "https://exchange.ynxweb4.com/"],
+  ["/quant", "https://quant.ynxweb4.com/"],
   ["/shop", "/dapp/shop"], ["/seller", "/dapp/seller"], ["/developer", "/dapp/developer"],
   ["/explorer", "/dapp/explorer"], ["/monitor", "/dapp/monitor"], ["/ai", "/dapp/ai"],
   ["/trust", "/dapp/trust"], ["/resource", "/dapp/resource"], ["/music", "/dapp/music"],
@@ -1220,7 +1220,7 @@ const requiredDAppRedirects = new Map([
 ]);
 const configuredRedirects = new Map((vercel.redirects || []).map((redirect) => [redirect.source, redirect]));
 if (
-  [...requiredDAppRedirects].some(([source, destination]) => configuredRedirects.get(source)?.destination !== destination || configuredRedirects.get(source)?.permanent !== true) ||
+  [...requiredDAppRedirects].some(([source, destination]) => configuredRedirects.get(source)?.destination !== destination || configuredRedirects.get(source)?.permanent !== !["/exchange", "/quant"].includes(source)) ||
   configuredRedirects.get("/square/:path*")?.destination !== "/dapp/square/:path*" ||
   !Array.isArray(siteMap.dappRoutes) || siteMap.dappRoutes.length !== 30 ||
   siteMap.dappRoutes.some((route) => !route.startsWith("dapp")) ||

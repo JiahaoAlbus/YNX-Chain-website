@@ -63,13 +63,13 @@
     },
     {
       "source": "/exchange",
-      "destination": "/dapp/exchange",
-      "permanent": true
+      "destination": "https://exchange.ynxweb4.com/",
+      "permanent": false
     },
     {
       "source": "/quant",
-      "destination": "/dapp/quant",
-      "permanent": true
+      "destination": "https://quant.ynxweb4.com/",
+      "permanent": false
     },
     {
       "source": "/shop",
