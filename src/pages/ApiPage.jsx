@@ -6,13 +6,13 @@ import { useLearningCopy } from "../lib/useLearningCopy.js";
 import { getDocumentLibraryCopy } from "../content/documentLibraryCopy.js";
 import { GuideCode } from "../components/GuideCode.jsx";
 import "./learning-guides.css";
-const python = `import sys\nsys.path.insert(0, "sdk/python")\nfrom ynx_client import YNXClient, assert_ynx_testnet_snapshot\n\nclient = YNXClient(rest_url="https://rpc.ynxweb4.com", evm_url="https://evm.ynxweb4.com")\nsnapshot = assert_ynx_testnet_snapshot(client.get_chain_snapshot())\nprint(snapshot["status"]["height"], snapshot["evmChainId"])`;
+const python = `import sys\nsys.path.insert(0, "sdk/python")\nfrom ynx_client import YNXClient, assert_ynx_testnet_snapshot\n\nclient = YNXClient(rest_url="https://rpc-testnet.ynxweb4.com", evm_url="https://rpc-testnet.ynxweb4.com")\nsnapshot = assert_ynx_testnet_snapshot(client.get_chain_snapshot())\nprint(snapshot["status"]["height"], snapshot["evmChainId"])`;
 export function ApiPage() {
   const { locale, t } = useLocale(), copy = useLearningCopy(locale);
   if (!copy) return <main className="learningPage" aria-busy="true"><p role="status">{t("checking")}</p></main>;
   if (copy.loadFailed) { const errorCopy=getDocumentLibraryCopy(locale); return <main className="learningPage" lang={locale}><p role="alert">{errorCopy.loadError}</p><button type="button" onClick={()=>window.location.reload()}>{errorCopy.retry}</button></main>; }
   const ui = guideUi(copy);
-  const endpoints = [["GET","https://rpc.ynxweb4.com/status",ui.status],["POST","https://evm.ynxweb4.com",ui.identity],["GET","https://explorer.ynxweb4.com",ui.inspect],["GET","https://faucet-testnet.ynxweb4.com",ui.assets],["GET","/status",ui.serviceStatus]];
+  const endpoints = [["GET","https://rpc-testnet.ynxweb4.com/status",ui.status],["POST","https://rpc-testnet.ynxweb4.com",ui.identity],["GET","https://explorer.ynxweb4.com",ui.inspect],["GET","https://faucet-testnet.ynxweb4.com",ui.assets],["GET","/status",ui.serviceStatus]];
   return <main className="learningPage apiLearningPage" lang={copy.bodyLocale || locale} dir={(copy.bodyLocale || locale) === "ar" ? "rtl" : "ltr"}>
     {copy.bodyLocale !== locale && <aside className="learningNetworkNote" lang={locale}><strong>{getDocumentLibraryCopy(locale).translationPending}</strong><p>{getDocumentLibraryCopy(locale).originalBodyNotice}</p></aside>}
     <header className="learningHero"><p className="sectionEyebrow">{ui.api}</p><h1>{ui.apiTitle}</h1><p>{ui.apiLead}</p><div className="learningLinks"><a href="/manual?path=develop">{ui.build}<ArrowRight size={16} /></a><a href="/docs?doc=api-api-reference">{ui.fullReference}</a></div></header>

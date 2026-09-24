@@ -1232,7 +1232,7 @@ if (
 const csp = vercel.headers
   ?.find((entry) => entry.source === "/(.*)")
   ?.headers?.find((header) => header.key === "Content-Security-Policy")?.value || "";
-if (!csp.includes("script-src 'self'") || !csp.includes("worker-src 'self'") || !csp.includes("connect-src 'self' https://api.ynxweb4.com https://faucet.ynxweb4.com https://rest.ynxweb4.com https://rpc.ynxweb4.com") || !csp.includes("object-src 'none'")) {
+if (!csp.includes("script-src 'self'") || !csp.includes("worker-src 'self'") || !csp.includes("connect-src 'self' https://api.ynxweb4.com https://faucet.ynxweb4.com https://rest.ynxweb4.com https://rpc-testnet.ynxweb4.com https://rpc.ynxweb4.com https://evm.ynxweb4.com") || !csp.includes("object-src 'none'")) {
   console.error("strict canonical wallet CSP is missing");
   process.exit(1);
 }

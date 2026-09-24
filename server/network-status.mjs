@@ -53,32 +53,49 @@ async function collectNetwork(detailed) {
   const checkedAt = new Date().toISOString();
   // Concurrent visitors share only the in-flight collection, never a completed
   // result. The process-wide semaphore also bounds different variants together.
-  const [status, explorer, evm] = await limited([
-    () => getJson(endpoints.status),
-    () => getJson(endpoints.explorer),
-    () => getJson(endpoints.evm, {
+  const [statusRead, explorerRead, evmRead] = await limited([
+    () => getObservedJson(endpoints.status),
+    () => getObservedJson(endpoints.explorer),
+    () => getObservedJson(endpoints.evm, {
     method: "POST",
     headers: { "content-type": "application/json" },
     body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: "eth_chainId", params: [] })
     })
   ]);
+  const status = statusRead.body;
+  const explorer = explorerRead.body;
+  const evm = evmRead.body;
   const [latestBlocks, latestTransactions, validators] = detailed ? await limited([
     () => getJson(endpoints.latestBlocks),
     () => getJson(endpoints.latestTransactions),
     () => getJson(endpoints.validators)
   ]) : [{}, {}, {}];
-  const rpcHeight = Number(status.height);
-  const explorerHeight = Number(explorer.rpcHeight);
+  const rpcHeight = status.height;
+  const explorerHeight = explorer.rpcHeight;
   // The two public requests are made separately, so a one-block difference can
   // occur while a new block is committed. Anything larger is surfaced as a
   // degraded status instead of being presented as a healthy network.
-  const rpcAndExplorerFresh = Number.isFinite(rpcHeight) && Number.isFinite(explorerHeight) && Math.abs(rpcHeight - explorerHeight) <= 1;
-  const rpcMatchesExplorer = explorer.ok === true && explorer.network?.chainId === 6423 && explorer.rpcHeight === explorer.indexedHeight && explorer.indexerOk === true && rpcAndExplorerFresh;
-  const identityValid = status.chainId === 6423 && status.nativeCurrencySymbol === "YNXT" && evm.result === "0x1917" && rpcMatchesExplorer;
+  const rpcAndExplorerFresh = Number.isSafeInteger(rpcHeight) && Number.isSafeInteger(explorerHeight) && Math.abs(rpcHeight - explorerHeight) <= 1;
+  const chainVerified = status.chainId === 6423 && status.nativeCurrencySymbol === "YNXT" && evm.result === "0x1917";
+  const indexerVerified = explorer.ok === true && explorer.network?.chainId === 6423 && explorer.rpcHeight === explorer.indexedHeight && explorer.indexerOk === true && rpcAndExplorerFresh;
+  const identityValid = chainVerified && indexerVerified;
+  const indexedHeight = explorer.indexedHeight;
+  const indexerLagBlocks = Number.isSafeInteger(rpcHeight) && Number.isSafeInteger(indexedHeight) ? Math.max(0, rpcHeight - indexedHeight) : null;
+  const blockTime = Date.parse(status.latestBlockTime);
+  const blockAgeMs = Number.isFinite(blockTime) && blockTime <= Date.now() + 5000 ? Math.max(0, Date.now() - blockTime) : null;
   return {
     ok: identityValid,
     checkedAt,
     status,
+    chainVerified,
+    indexerVerified,
+    indexerLagBlocks,
+    observations: {
+      rpcCollectionMs: statusRead.collectionMs,
+      explorerCollectionMs: explorerRead.collectionMs,
+      evmCollectionMs: evmRead.collectionMs,
+      blockAgeMs
+    },
     summary: {
       totalTransactions: explorer.indexedTxCount,
       indexedHeight: explorer.indexedHeight,
@@ -95,6 +112,7 @@ async function collectNetwork(detailed) {
     serviceDirectory: Object.fromEntries(Object.entries(YNX_SERVICE_DIRECTORY).map(([name, service]) => [name, {
       name: service.name,
       officialUrl: service.officialUrl,
+      compatibilityUrl: service.compatibilityUrl || null,
       healthEndpoint: service.healthEndpoint,
       expectedChainId: service.expectedChainId,
       schema: service.schema,
@@ -104,8 +122,8 @@ async function collectNetwork(detailed) {
       lastVerifiedAt: checkedAt
     }])),
     degraded: !identityValid,
-    degradedReason: !rpcMatchesExplorer
-      ? (!rpcAndExplorerFresh ? "Public RPC and Explorer are more than one block apart." : "RPC and Explorer Indexer are not both verified for YNX 6423.")
+    degradedReason: !chainVerified ? "Public RPC and EVM chain identity are not both verified for YNX 6423."
+      : !indexerVerified ? (!rpcAndExplorerFresh ? "Public RPC and Explorer are more than one block apart." : "Explorer Indexer is not verified and aligned with YNX 6423.")
       : undefined
   };
 }
@@ -141,4 +159,11 @@ async function getJson(url, init = {}, timeoutMs = 3500) {
     clearTimeout(timeout);
     releaseUpstream();
   }
+}
+
+async function getObservedJson(url, init = {}, timeoutMs = 3500) {
+  const started = performance.now();
+  const body = await getJson(url, init, timeoutMs);
+  // Includes any wait for the bounded collector slot; not a claim about network RTT.
+  return { body, collectionMs: Math.round(performance.now() - started) };
 }

@@ -32,6 +32,10 @@ test("100 simultaneous summary visitors share three reads; later requests get fr
   assert.deepEqual(stats.calls.map(call => call.url).sort(), [...identityUrls].sort());
   for (const result of results) {
     assert.equal(result, results[0]); assert.equal(result.ok, true);
+    assert.equal(result.chainVerified, true); assert.equal(result.indexerVerified, true); assert.equal(result.indexerLagBlocks, 0);
+    assert.ok(Number.isFinite(result.observations.rpcCollectionMs));
+    assert.equal(result.serviceDirectory.rpc.officialUrl, "https://rpc-testnet.ynxweb4.com");
+    assert.equal(result.serviceDirectory.rpc.compatibilityUrl, "https://rpc.ynxweb4.com");
     assert.deepEqual(result.latestBlocks, {}); assert.deepEqual(result.latestTransactions, {}); assert.deepEqual(result.validators, {});
   }
   assert.ok(stats.calls.every(call => call.init.cache === "no-store" && call.init.signal instanceof AbortSignal));
@@ -40,6 +44,18 @@ test("100 simultaneous summary visitors share three reads; later requests get fr
   height = 101;
   const fresh = await collectNetworkStatus({ detailed: false });
   assert.equal(stats.calls.length, 6); assert.equal(fresh.status.height, 101); assert.notEqual(fresh, results[0]);
+});
+
+test("chain proof remains distinct when the Explorer Indexer lags", async t => {
+  mockUpstream(t, url => url === identityUrls[1]
+    ? { ...validBody(url), indexedHeight: 98, indexerOk: false }
+    : validBody(url));
+  const result = await collectNetworkStatus({ detailed: false });
+  assert.equal(result.ok, false);
+  assert.equal(result.chainVerified, true);
+  assert.equal(result.indexerVerified, false);
+  assert.equal(result.indexerLagBlocks, 2);
+  assert.match(result.degradedReason, /Indexer/);
 });
 
 test("summary, detail and services share a global two-read limit across visitor bursts", async t => {

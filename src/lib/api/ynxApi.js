@@ -6,8 +6,10 @@ export const YNX_6423 = Object.freeze({
   nativeCurrency: Object.freeze({ name: "YNXT", symbol: "YNXT", decimals: 18 }),
   mainnet: false,
   services: Object.freeze({
-    rpc: "https://rpc.ynxweb4.com",
-    evm: "https://evm.ynxweb4.com",
+    rpc: "https://rpc-testnet.ynxweb4.com",
+    evm: "https://rpc-testnet.ynxweb4.com",
+    rpcLegacy: "https://rpc.ynxweb4.com",
+    evmLegacy: "https://evm.ynxweb4.com",
     explorer: "https://explorer.ynxweb4.com",
     faucet: "https://faucet-testnet.ynxweb4.com",
     monitor: "https://monitor.ynxweb4.com",
@@ -19,8 +21,8 @@ export const YNX_6423 = Object.freeze({
 // as executable. UI and server adapters consume this same source so a service
 // cannot silently drift to an old chain, host, cache policy, or health route.
 export const YNX_SERVICE_DIRECTORY = Object.freeze({
-  rpc: Object.freeze({ name: "Chain RPC", officialUrl: YNX_6423.services.rpc, healthEndpoint: `${YNX_6423.services.rpc}/status`, expectedChainId: 6423, schema: "ynx-rpc-status/v1", timeoutMs: 7000, cache: "no-store", degraded: "Show unavailable; do not reuse cached height.", validatorsEndpoint: `${YNX_6423.services.rpc}/validators` }),
-  evm: Object.freeze({ name: "EVM JSON-RPC", officialUrl: YNX_6423.services.evm, healthEndpoint: YNX_6423.services.evm, expectedChainId: "0x1917", schema: "JSON-RPC 2.0 eth_chainId", timeoutMs: 7000, cache: "no-store", degraded: "Show unavailable; do not claim EVM compatibility." }),
+  rpc: Object.freeze({ name: "Chain RPC", officialUrl: YNX_6423.services.rpc, compatibilityUrl: YNX_6423.services.rpcLegacy, healthEndpoint: `${YNX_6423.services.rpc}/status`, expectedChainId: 6423, schema: "ynx-rpc-status/v1", timeoutMs: 7000, cache: "no-store", degraded: "Show unavailable; do not reuse cached height.", validatorsEndpoint: `${YNX_6423.services.rpc}/validators` }),
+  evm: Object.freeze({ name: "EVM JSON-RPC", officialUrl: YNX_6423.services.evm, compatibilityUrl: YNX_6423.services.evmLegacy, healthEndpoint: YNX_6423.services.evm, expectedChainId: "0x1917", schema: "JSON-RPC 2.0 eth_chainId", timeoutMs: 7000, cache: "no-store", degraded: "Show unavailable; do not claim EVM compatibility." }),
   explorer: Object.freeze({ name: "YNX Explorer", officialUrl: YNX_6423.services.explorer, healthEndpoint: `${YNX_6423.services.explorer}/health`, expectedChainId: 6423, schema: "ynx-explorer-health/v1", timeoutMs: 7000, cache: "no-store", degraded: "Show degraded; keep full record lookup in the independent Explorer.", latestBlocksEndpoint: `${YNX_6423.services.explorer}/api/blocks/latest`, latestTransactionsEndpoint: `${YNX_6423.services.explorer}/api/txs?limit=5` }),
   faucet: Object.freeze({ name: "YNXT Faucet", officialUrl: YNX_6423.services.faucet, healthEndpoint: `${YNX_6423.services.faucet}/health`, expectedChainId: 6423, schema: "ynx-faucet-health/v1", timeoutMs: 3000, cache: "no-store", degraded: "Disable requests and explain that test assets are unavailable." }),
   monitor: Object.freeze({ name: "YNX Monitor", officialUrl: YNX_6423.services.monitor, healthEndpoint: null, expectedChainId: 6423, schema: "signed public status projection", timeoutMs: 7000, cache: "no-store", degraded: "Offer the Monitor entry without inferring private operations health." }),
