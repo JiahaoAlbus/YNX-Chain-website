@@ -397,7 +397,7 @@ for (const [locale, copy] of Object.entries(WALLET_DOWNLOAD_COPY)) {
   copy.browser013Boundary = locale === "zh-CN" ? "0.1.3 测试网预览，未上架；核对 SHA-256。"
     : locale === "zh-TW" ? "0.1.3 測試網預覽，未上架；核對 SHA-256。"
     : "0.1.3 Testnet Preview; not in stores. Check SHA-256.";
-  copy.browser013Proof = locale === "zh-CN" ? "Chrome/Edge Finance 测试通过；私有服务未验证。"
-    : locale === "zh-TW" ? "Chrome/Edge Finance 測試通過；私人服務未驗證。"
-    : "Chrome/Edge Finance QA passed; private services unverified.";
+  copy.browser013Proof = locale === "zh-CN" ? "Finance 测试通过；私有服务未验证。"
+    : locale === "zh-TW" ? "Finance 測試通過；私人服務未驗證。"
+    : "Finance QA passed in both browsers; private access unverified.";
 }
