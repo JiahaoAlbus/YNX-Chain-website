@@ -5,7 +5,16 @@ import { createHostedArtifactManifest, loadDocsAuthority } from "./scripts/lib/d
 import { loadDocsLocales } from "./scripts/lib/docs-locales.mjs";
 
 export default defineConfig({
-  build: { manifest: true },
+  build: {
+    manifest: true,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.endsWith("/src/content/walletDownloadCopy.js")) return "wallet-download-copy";
+        }
+      }
+    }
+  },
   plugins: [
     react(),
     docsAuthorityPlugin(),
