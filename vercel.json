@@ -8,6 +8,10 @@
   "functions": {
     "api/**/*.js": {
       "maxDuration": 30
+    },
+    "api/build-identity.js": {
+      "maxDuration": 30,
+      "includeFiles": "dist/build-identity.json"
     }
   },
   "redirects": [

@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { mkdtemp, readFile, rm } from "node:fs/promises";
+import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import {
@@ -8,7 +8,7 @@ import {
   BuildIdentityUnavailableError,
   readWebsiteBuildIdentity,
 } from "../lib/build-identity.mjs";
-import { createBuildIdentityHandler } from "../api/build-identity.js";
+import { createBuildIdentityHandler, readPackagedBuildIdentity } from "../api/build-identity.js";
 import { writeBuildIdentity } from "../scripts/write-build-identity.mjs";
 
 const SOURCE_COMMIT = "a".repeat(40);
@@ -79,7 +79,7 @@ test("identity validation fails closed without leaking malformed values", () => 
 
 test("public handler returns JSON/no-store/nosniff and 503 for unavailable identity", () => {
   const success = responseRecorder();
-  createBuildIdentityHandler(() => validEnvironment)({ method: "GET" }, success);
+  createBuildIdentityHandler(() => readWebsiteBuildIdentity(validEnvironment))({ method: "GET" }, success);
   assert.equal(success.statusCode, 200);
   assert.equal(success.headers["content-type"], "application/json; charset=utf-8");
   assert.equal(success.headers["cache-control"], "no-store, max-age=0");
@@ -87,7 +87,7 @@ test("public handler returns JSON/no-store/nosniff and 503 for unavailable ident
   assert.equal(success.payload.sourceCommit, SOURCE_COMMIT);
 
   const unavailable = responseRecorder();
-  createBuildIdentityHandler(() => ({}))({ method: "GET" }, unavailable);
+  createBuildIdentityHandler(() => { throw new BuildIdentityUnavailableError(["packagedIdentity:missing"]); })({ method: "GET" }, unavailable);
   assert.equal(unavailable.statusCode, 503);
   assert.equal(unavailable.payload.error, "BUILD_IDENTITY_UNAVAILABLE");
   assert.equal(JSON.stringify(unavailable.payload).includes("uncommitted"), false);
@@ -112,6 +112,18 @@ test("build writes the deployment-bound identity as a static public artifact", a
     JSON.parse(await readFile(outputPath, "utf8")),
     readWebsiteBuildIdentity(validEnvironment),
   );
+  assert.deepEqual(readPackagedBuildIdentity({ VERCEL_GIT_COMMIT_SHA: SOURCE_COMMIT }, outputPath), readWebsiteBuildIdentity(validEnvironment));
+  assert.throws(() => readPackagedBuildIdentity({ VERCEL_GIT_COMMIT_SHA: "c".repeat(40) }, outputPath), BuildIdentityUnavailableError);
+  assert.throws(() => readPackagedBuildIdentity({ YNX_WEBSITE_SOURCE_TREE: "c".repeat(40) }, outputPath), BuildIdentityUnavailableError);
+  const altered = { ...readWebsiteBuildIdentity(validEnvironment), sourceTree: "c".repeat(40) };
+  await writeFile(outputPath, `${JSON.stringify(altered)}\n`);
+  assert.throws(() => readPackagedBuildIdentity({ YNX_WEBSITE_SOURCE_TREE: SOURCE_TREE }, outputPath), BuildIdentityUnavailableError);
+  for (const mutation of [{ chainId: 1 }, { schemaVersion: "wrong" }]) {
+    await writeFile(outputPath, `${JSON.stringify({ ...readWebsiteBuildIdentity(validEnvironment), ...mutation })}\n`);
+    assert.throws(() => readPackagedBuildIdentity({}, outputPath), BuildIdentityUnavailableError);
+  }
+  await rm(outputPath);
+  assert.throws(() => readPackagedBuildIdentity({}, outputPath), /ENOENT/);
 });
 
 test("Vercel serves the static identity with no-store headers before the SPA fallback", async () => {
@@ -133,6 +145,8 @@ test("Vercel serves the static identity with no-store headers before the SPA fal
   assert.equal(headerMap.get("content-type"), "application/json; charset=utf-8");
   assert.equal(headerMap.get("cache-control"), "no-store, max-age=0");
   assert.equal(headerMap.get("x-content-type-options"), "nosniff");
+  assert.equal(configuration.functions["api/build-identity.js"].includeFiles, "dist/build-identity.json");
+  assert.equal(configuration.functions["api/**/*.js"].includeFiles, undefined);
   assert.equal(fallbackIndex, configuration.rewrites.length - 1);
   assert.equal(new RegExp("^" + configuration.rewrites[fallbackIndex].source + "$" ).test("/build-identity.json"), false);
 });
