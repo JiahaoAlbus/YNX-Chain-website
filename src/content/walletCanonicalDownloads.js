@@ -285,4 +285,23 @@ export const WALLET_WEB_013_CHROME_EDGE = {
   downloadTimeSha256Verified: false
 };
 
-export const WALLET_CANONICAL_DOWNLOADS = { ...WALLET_PREVIOUS_CANONICAL_DOWNLOADS, ...WALLET_DESKTOP068, windowsX64: WALLET_DESKTOP0610_WINDOWS_X64, android: WALLET_ANDROID27, androidUniversal: WALLET_ANDROID27, chromeEdge: WALLET_WEB_013_CHROME_EDGE };
+const WEB_014_SHA = "51a6940a0dedc84b2012e24494588b8a45205cb33da61e7e108f591fa803b089";
+const WEB_014_FILE = "ynx-wallet-chrome-edge-0.1.4.zip";
+const WEB_014_TAG = "wallet-web-testnet-preview-0.1.4-13aaa982d";
+export const WALLET_WEB_014_CHROME_EDGE = {
+  ...WALLET_WEB_013_CHROME_EDGE,
+  id: "web-chromium-13aaa982d",
+  version: "0.1.4-testnet-preview.1",
+  artifactPath: WEB_014_FILE,
+  sizeBytes: 585033,
+  sha256: WEB_014_SHA,
+  sourceCommit: "13aaa982dc46e82047fbb2232b691014795060e5",
+  publicUrl: `https://www.ynxweb4.com/downloads/wallet-web/sha256-${WEB_014_SHA}/${WEB_014_FILE}`,
+  releaseBatch: WEB_014_TAG,
+  releaseTag: WEB_014_TAG,
+  previewManifest: `https://github.com/JiahaoAlbus/YNX-Chain/releases/download/${WEB_014_TAG}/artifact-manifest.json`,
+  publicationEvidence: "/releases/wallet-web/20260925-wallet-web-testnet-preview-13aaa982d.json",
+  installProof: "Disposable Edge 153 unpacked-extension account recovery and Finance static-origin connection passed; user profiles, public Finance pairing, live private gateway, signing and transactions remain unverified."
+};
+
+export const WALLET_CANONICAL_DOWNLOADS = { ...WALLET_PREVIOUS_CANONICAL_DOWNLOADS, ...WALLET_DESKTOP068, windowsX64: WALLET_DESKTOP0610_WINDOWS_X64, android: WALLET_ANDROID27, androidUniversal: WALLET_ANDROID27, chromeEdge: WALLET_WEB_014_CHROME_EDGE };

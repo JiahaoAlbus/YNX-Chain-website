@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "productId": "wallet-web",
+  "version": "0.1.4-testnet-preview.1",
+  "sourceCommit": "13aaa982dc46e82047fbb2232b691014795060e5",
+  "implementedLocal": true,
+  "testedLocal": true,
+  "installedLocal": false,
+  "integratedCentral": false,
+  "deployedStaging": false,
+  "deployedPublic": false,
+  "downloadHosted": false,
+  "productionSigned": false,
+  "storeReleased": false,
+  "artifacts": [
+    {
+      "name": "ynx-wallet-web-pwa-0.1.4.zip",
+      "path": "candidate-artifacts/0.1.4/13aaa982dc46e82047fbb2232b691014795060e5/ynx-wallet-web-pwa-0.1.4.zip",
+      "bytes": 615190,
+      "sha256": "9895578b3a422b75ebbe6b69e0298d4a99002a4d4276dbae922e25116f0330be",
+      "minimumOS": "modern browser with Service Worker and Web Crypto support",
+      "signingClass": "unsigned-web-bundle",
+      "browsers": [
+        "PWA"
+      ],
+      "installedLocal": false,
+      "productionSigned": false,
+      "storeReleased": false
+    },
+    {
+      "name": "ynx-wallet-chrome-edge-0.1.4.zip",
+      "path": "candidate-artifacts/0.1.4/13aaa982dc46e82047fbb2232b691014795060e5/ynx-wallet-chrome-edge-0.1.4.zip",
+      "bytes": 585033,
+      "sha256": "51a6940a0dedc84b2012e24494588b8a45205cb33da61e7e108f591fa803b089",
+      "minimumOS": "Chrome 120 / Edge 120",
+      "signingClass": "unsigned-unpacked-extension",
+      "browsers": [
+        "Chrome",
+        "Edge"
+      ],
+      "installedLocal": false,
+      "productionSigned": false,
+      "storeReleased": false
+    },
+    {
+      "name": "ynx-wallet-firefox-0.1.4.zip",
+      "path": "candidate-artifacts/0.1.4/13aaa982dc46e82047fbb2232b691014795060e5/ynx-wallet-firefox-0.1.4.zip",
+      "bytes": 585131,
+      "sha256": "46bc21eceea9be0e2250b36a80647cdb71f1b47533a053a49e45cf225c14dc21",
+      "minimumOS": "Firefox 142 desktop",
+      "signingClass": "unsigned-unpacked-extension",
+      "browsers": [
+        "Firefox"
+      ],
+      "installedLocal": false,
+      "productionSigned": false,
+      "storeReleased": false
+    }
+  ]
+}

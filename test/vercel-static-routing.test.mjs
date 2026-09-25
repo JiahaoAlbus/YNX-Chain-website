@@ -42,9 +42,9 @@ test('Vercel uses the lockfile-exact install without bypassing source identity g
   assert.doesNotMatch(identityGate, /git (?:reset|clean|checkout)/);
 });
 
-test('current Wallet Web paths promote only exact Chrome/Edge 0.1.3 and retain 0.1.2 and 0.1.1 rollback paths', () => {
+test('current Wallet Web paths promote only exact Chrome/Edge 0.1.4 and retain 0.1.3, 0.1.2 and 0.1.1 rollback paths', () => {
   const current = [
-    ['5c6ff4c16805965aa86febdc6a9f7a812ea2d1e9c8fa556611dafeadfb2e707b', 'ynx-wallet-chrome-edge-0.1.3.zip'],
+    ['51a6940a0dedc84b2012e24494588b8a45205cb33da61e7e108f591fa803b089', 'ynx-wallet-chrome-edge-0.1.4.zip'],
   ];
   const retained = [
     ['6e7e6dd17e9e729a44ed915e46433124c1a3794e06a0d072c55097084cc45e13', 'ynx-wallet-web-pwa-0.1.1.zip'],
@@ -59,8 +59,9 @@ test('current Wallet Web paths promote only exact Chrome/Edge 0.1.3 and retain 0
   const bySource = new Map(configuration.rewrites.map((rewrite) => [rewrite.source, rewrite.destination]));
   for (const [sha256, filename] of current) assert.equal(
     bySource.get(`/downloads/wallet-web/sha256-${sha256}/${filename}`),
-    `https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-web-testnet-preview-0.1.3-31f3ef16d/${filename}`,
+    `https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-web-testnet-preview-0.1.4-13aaa982d/${filename}`,
   );
+  assert.equal(bySource.get('/downloads/wallet-web/sha256-5c6ff4c16805965aa86febdc6a9f7a812ea2d1e9c8fa556611dafeadfb2e707b/ynx-wallet-chrome-edge-0.1.3.zip'), 'https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-web-testnet-preview-0.1.3-31f3ef16d/ynx-wallet-chrome-edge-0.1.3.zip');
   assert.equal(bySource.get('/downloads/wallet-web/sha256-35a1755777ab0c7472c1a81910f9e127f81d19d5e387238a7e0ef6afc1f1cafb/ynx-wallet-chrome-edge-0.1.2.zip'), 'https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-web-testnet-preview-0.1.2-767a05d56/ynx-wallet-chrome-edge-0.1.2.zip');
   for (const [sha256, filename] of retained) assert.equal(
     bySource.get(`/downloads/wallet-web/sha256-${sha256}/${filename}`),

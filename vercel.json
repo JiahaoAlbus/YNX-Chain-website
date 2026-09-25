@@ -456,6 +456,10 @@
   ],
   "rewrites": [
     {
+      "source": "/downloads/wallet-web/sha256-51a6940a0dedc84b2012e24494588b8a45205cb33da61e7e108f591fa803b089/ynx-wallet-chrome-edge-0.1.4.zip",
+      "destination": "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-web-testnet-preview-0.1.4-13aaa982d/ynx-wallet-chrome-edge-0.1.4.zip"
+    },
+    {
       "source": "/downloads/wallet-web/sha256-5c6ff4c16805965aa86febdc6a9f7a812ea2d1e9c8fa556611dafeadfb2e707b/ynx-wallet-chrome-edge-0.1.3.zip",
       "destination": "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-web-testnet-preview-0.1.3-31f3ef16d/ynx-wallet-chrome-edge-0.1.3.zip"
     },
