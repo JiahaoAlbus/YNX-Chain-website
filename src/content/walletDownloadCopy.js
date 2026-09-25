@@ -381,8 +381,8 @@ for (const [locale, copy] of Object.entries(WALLET_DOWNLOAD_COPY)) {
 for (const [locale, copy] of Object.entries(WALLET_DOWNLOAD_COPY)) copy.desktop068MacSignature = locale === "zh-CN" ? "ad-hoc 测试签名；未取得 Developer ID 签名或公证。" : locale === "zh-TW" ? "ad-hoc 測試簽名；未取得 Developer ID 簽名或公證。" : "Ad-hoc test signature; no Developer ID signing or notarization.";
 
 for (const [locale, copy] of Object.entries(WALLET_DOWNLOAD_COPY)) {
- copy.desktop069Boundary = locale === "zh-CN" ? "Windows x64 测试网预览版，未进行 Authenticode 签名。系统重启、用户实机、SmartScreen、Defender 与真实交易端到端仍未验证。" : locale === "zh-TW" ? "Windows x64 測試網預覽版，未進行 Authenticode 簽章。系統重啟、使用者實機、SmartScreen、Defender 與真實交易端到端仍未驗證。" : "Windows x64 Testnet preview, unsigned. OS reboot, user hardware, SmartScreen, Defender and live transaction E2E remain unverified.";
- copy.desktop069Proof = locale === "zh-CN" ? "原包首次 Windows CI 验证离线账户、备份恢复及 0.6.8 升级；第二次复核建户和应用重启；第三次以非提升权限 token 验证安装、锁解及应用重启，并非独立普通 OS 用户。" : locale === "zh-TW" ? "原包首次 Windows CI 驗證離線帳戶、備份還原及 0.6.8 升級；第二次複核建戶和應用重啟；第三次以非提升權限 token 驗證安裝、鎖解及應用重啟，並非獨立一般 OS 使用者。" : "Original installer: initial native Windows CI checked offline accounts, backup/restore and 0.6.8 upgrade; the second rechecked account creation and app restart; the third used a non-elevated token for install, lock/unlock and app restart, not a separate standard OS user.";
+ copy.desktop069Boundary = locale === "zh-CN" ? "Windows x64 无签名测试预览；系统重启、实机、SmartScreen/Defender、真实交易未验证。" : locale === "zh-TW" ? "Windows x64 無簽章測試預覽；系統重啟、實機、SmartScreen/Defender、真實交易未驗證。" : "Unsigned x64 Testnet preview; OS reboot, user device, SmartScreen/Defender and live transfers unverified.";
+ copy.desktop069Proof = locale === "zh-CN" ? "原包 CI：首次离线账户、备份恢复、0.6.8 升级；二次建户及应用重启；三次非提升 token 安装、锁解和应用重启，非独立普通 OS 用户。" : locale === "zh-TW" ? "原包 CI：首次離線帳戶、備份還原、0.6.8 升級；二次建戶及應用重啟；三次非提升 token 安裝、鎖解和應用重啟，非獨立一般 OS 使用者。" : "Original installer CI: offline accounts, backup and 0.6.8 upgrade; same-installer account/restart; non-elevated-token install/lock/restart, not a separate standard OS user.";
 }
 
 for (const [locale, copy] of Object.entries(WALLET_DOWNLOAD_COPY)) {
