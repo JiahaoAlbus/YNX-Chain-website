@@ -51,7 +51,7 @@ test("the compact page retains all 26 products and the release-gated Wallet surf
     assert.match(html, /data-wallet-safety-hold="GHSA-7g7r-gx96-252g"/);
     assert.match(html, /class="downloadHubWebLink"/);
     assert.ok(!html.includes('class="downloadHubSecondary"'), "public web is part of the platform choices, not a duplicate side action");
-    assert.ok(!html.includes("ynx-wallet-desktop-0.6.10"), "unverified Desktop candidate is not a public download");
+    assert.ok(html.includes("ynx-wallet-desktop-0.6.10-x64.exe"), "only the exact published Windows x64 Testnet preview is selectable");
   } finally {
     await server.close();
   }

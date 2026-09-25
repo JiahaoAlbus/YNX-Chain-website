@@ -383,6 +383,8 @@ for (const [locale, copy] of Object.entries(WALLET_DOWNLOAD_COPY)) copy.desktop0
 for (const [locale, copy] of Object.entries(WALLET_DOWNLOAD_COPY)) {
  copy.desktop069Boundary = locale === "zh-CN" ? "Windows x64 无签名测试预览；系统重启、实机、SmartScreen/Defender、真实交易未验证。" : locale === "zh-TW" ? "Windows x64 無簽章測試預覽；系統重啟、實機、SmartScreen/Defender、真實交易未驗證。" : "Unsigned x64 Testnet preview; OS reboot, user device, SmartScreen/Defender and live transfers unverified.";
  copy.desktop069Proof = locale === "zh-CN" ? "原包 CI：首次离线账户、备份恢复、0.6.8 升级；二次建户及应用重启；三次非提升 token 安装、锁解和应用重启，非独立普通 OS 用户。" : locale === "zh-TW" ? "原包 CI：首次離線帳戶、備份還原、0.6.8 升級；二次建戶及應用重啟；三次非提升 token 安裝、鎖解和應用重啟，非獨立一般 OS 使用者。" : "Original installer CI: offline accounts, backup and 0.6.8 upgrade; same-installer account/restart; non-elevated-token install/lock/restart, not a separate standard OS user.";
+ copy.desktop0610Boundary = locale === "zh-CN" ? "Windows x64 0.6.10 无签名测试预览；系统重启、用户实机、SmartScreen/Defender、已失败档案恢复和真实交易未验证。" : locale === "zh-TW" ? "Windows x64 0.6.10 無簽章測試預覽；系統重啟、使用者實機、SmartScreen/Defender、已失敗資料恢復及真實交易未驗證。" : "Unsigned Windows x64 0.6.10 Testnet preview; OS reboot, user device, SmartScreen/Defender, failed-profile recovery and live transfers unverified.";
+ copy.desktop0610Proof = locale === "zh-CN" ? "原始 0.6.10 安装包在 Windows CI 中通过从 0.6.8 与 0.6.9 升级，地址和加密钱包文件哈希保持不变；不代表你的电脑已验收。" : locale === "zh-TW" ? "原始 0.6.10 安裝包在 Windows CI 中通過從 0.6.8 與 0.6.9 升級，地址與加密錢包檔案雜湊保持不變；不代表你的電腦已驗收。" : "Original 0.6.10 installer passed Windows CI upgrades from 0.6.8 and 0.6.9 with address and encrypted vault hash preserved; your own PC is not yet accepted.";
 }
 
 for (const [locale, copy] of Object.entries(WALLET_DOWNLOAD_COPY)) {

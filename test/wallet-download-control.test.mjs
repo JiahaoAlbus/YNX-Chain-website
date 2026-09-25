@@ -2,10 +2,10 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { walletDownloadState, walletDownloadOptions } from "../src/lib/walletDownloads.js";
 import { WALLET_DOWNLOAD_COPY } from "../src/content/walletDownloadCopy.js";
-import { WALLET_DESKTOP069_WINDOWS_X64 } from "../src/content/walletDesktop069.js";
+import { WALLET_DESKTOP0610_WINDOWS_X64 } from "../src/content/walletDesktop0610.js";
 import { publishedDownloadMetadata } from "../src/content/publishedDownloads.js";
 
-const metadata = WALLET_DESKTOP069_WINDOWS_X64;
+const metadata = WALLET_DESKTOP0610_WINDOWS_X64;
 const href = metadata.publicUrl;
 const released = { ...metadata, href, downloadHosted: true };
 

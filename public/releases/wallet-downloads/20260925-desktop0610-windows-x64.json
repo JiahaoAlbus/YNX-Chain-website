@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "product": "YNX Wallet Desktop",
+  "version": "0.6.10",
+  "sourceCommit": "ffaf3ca0d85f81622e6b1ba20c7648abb09a2574",
+  "releaseTag": "wallet-desktop-testnet-preview-0.6.10-ffaf3ca0",
+  "distribution": "Windows x64 Testnet preview",
+  "assets": [
+    {
+      "filename": "ynx-wallet-desktop-0.6.10-x64.exe",
+      "githubUrl": "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-desktop-testnet-preview-0.6.10-ffaf3ca0/ynx-wallet-desktop-0.6.10-x64.exe",
+      "bytes": 121050861,
+      "sha256": "c7f76121988f58e88979e049f820514bc352c039850e8251b86ae10badefb4f8"
+    }
+  ],
+  "originalArtifact": {
+    "run": "https://github.com/JiahaoAlbus/YNX-Chain/actions/runs/36106645368",
+    "artifactId": 10851168846,
+    "zipBytes": 121073653,
+    "zipSHA256": "d5bfd9c08eb4e1e705f081e7e3f403ad47189f4ae23fef0c167da0391677bd4c",
+    "releaseManifestSHA256": "514b1900739c333df184eee697d30b4c30cb117788349908f13a839405b3d028"
+  },
+  "verification": {
+    "nativeWindowsRun": "https://github.com/JiahaoAlbus/YNX-Chain/actions/runs/36126374210",
+    "upgradeFrom068And069PreservedAddressAndEncryptedVaultHash": true,
+    "osRebootVerified": false,
+    "alreadyFailedProfileRecoveryVerified": false,
+    "userMachineVerified": false,
+    "smartScreenVerified": false,
+    "defenderVerified": false,
+    "productionSigned": false,
+    "arm64PromotedWithThisRelease": false,
+    "liveTransactionE2EVerified": false
+  },
+  "previousWindowsX64Release": "/releases/wallet-downloads/20260925-desktop069-windows-x64.json",
+  "publicDownloadVerified": true,
+  "downloadVerification": {
+    "vantage": "independent macOS client to public TLS hostname and origin-host loopback TLS vhost",
+    "httpStatus": 200,
+    "fullGETBytes": 121050861,
+    "fullGETSHA256": "c7f76121988f58e88979e049f820514bc352c039850e8251b86ae10badefb4f8",
+    "independentExternalClientVerified": true
+  }
+}

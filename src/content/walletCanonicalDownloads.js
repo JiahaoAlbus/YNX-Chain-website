@@ -1,5 +1,5 @@
 import { WALLET_DESKTOP068 } from "./walletDesktop068.js";
-import { WALLET_DESKTOP069_WINDOWS_X64 } from "./walletDesktop069.js";
+import { WALLET_DESKTOP0610_WINDOWS_X64 } from "./walletDesktop0610.js";
 import { WALLET_ANDROID27 } from "./walletAndroid27.js";
 // Compact current selections. Full source manifests and all historical bodies are served from public/releases only.
 export const WALLET_CANONICAL_MANIFESTS = [
@@ -285,4 +285,4 @@ export const WALLET_WEB_013_CHROME_EDGE = {
   downloadTimeSha256Verified: false
 };
 
-export const WALLET_CANONICAL_DOWNLOADS = { ...WALLET_PREVIOUS_CANONICAL_DOWNLOADS, ...WALLET_DESKTOP068, windowsX64: WALLET_DESKTOP069_WINDOWS_X64, android: WALLET_ANDROID27, androidUniversal: WALLET_ANDROID27, chromeEdge: WALLET_WEB_013_CHROME_EDGE };
+export const WALLET_CANONICAL_DOWNLOADS = { ...WALLET_PREVIOUS_CANONICAL_DOWNLOADS, ...WALLET_DESKTOP068, windowsX64: WALLET_DESKTOP0610_WINDOWS_X64, android: WALLET_ANDROID27, androidUniversal: WALLET_ANDROID27, chromeEdge: WALLET_WEB_013_CHROME_EDGE };
