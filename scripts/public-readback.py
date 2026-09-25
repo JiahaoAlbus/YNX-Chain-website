@@ -18,6 +18,7 @@ SOURCE_TREE = os.environ.get("EXPECTED_SOURCE_TREE", "")
 ENTRY = os.environ.get("EXPECTED_ENTRY", "")
 COPY_SHA256 = os.environ.get("EXPECTED_COPY_SHA256", "")
 WORKFLOW_SHA = os.environ.get("WORKFLOW_SHA", "")
+PREVIEW_URL = os.environ.get("PREVIEW_DEPLOYMENT_URL", "")
 CHROME_SHA256 = "51a6940a0dedc84b2012e24494588b8a45205cb33da61e7e108f591fa803b089"
 CHROME_BYTES = 585033
 COPY_CHUNK = "/assets/wallet-download-copy-Bjo3r5AS.js"
@@ -29,10 +30,15 @@ RESULT_PATH = Path("public-readback-result.json")
 class StrictRedirect(urllib.request.HTTPRedirectHandler):
     def redirect_request(self, request, fp, code, msg, headers, newurl):
         parsed = urllib.parse.urlparse(newurl)
-        allowed = parsed.hostname in {
-            "www.ynxweb4.com", "ynxweb4.com", "github.com",
-            "release-assets.githubusercontent.com", "objects.githubusercontent.com",
-        }
+        if PREVIEW_URL:
+            origin = urllib.parse.urlparse(PREVIEW_URL)
+            allowed = (parsed.hostname == origin.hostname and not parsed.port and parsed.path == "/api/build-identity"
+                       and not parsed.query and not parsed.fragment and not parsed.username and not parsed.password)
+        else:
+            allowed = parsed.hostname in {
+                "www.ynxweb4.com", "ynxweb4.com", "github.com",
+                "release-assets.githubusercontent.com", "objects.githubusercontent.com",
+            }
         if parsed.scheme != "https" or not allowed:
             raise ValueError("UNAPPROVED_REDIRECT")
         return super().redirect_request(request, fp, code, msg, headers, newurl)
@@ -47,6 +53,7 @@ result = {
     "expectedEntry": ENTRY,
     "expectedCopySha256": COPY_SHA256,
     "expectedChromeSha256": CHROME_SHA256,
+    "mode": "preview-identity" if PREVIEW_URL else "production-public",
     "checks": [],
 }
 
@@ -146,6 +153,10 @@ def main():
         result["checks"].append({"name": "input-validation", "passed": False, "error": {"kind": "WORKFLOW_COMMIT_MISMATCH"}})
     elif not re.fullmatch(r"index-[A-Za-z0-9_-]{8}\.js", ENTRY) or not re.fullmatch(r"[0-9a-f]{64}", COPY_SHA256):
         result["checks"].append({"name": "input-validation", "passed": False, "error": {"kind": "INVALID_ASSET_IDENTITY"}})
+    elif PREVIEW_URL and not valid_preview_url(PREVIEW_URL):
+        result["checks"].append({"name": "input-validation", "passed": False, "error": {"kind": "INVALID_PREVIEW_TARGET"}})
+    elif PREVIEW_URL:
+        run("preview-build-identity", f"{PREVIEW_URL.rstrip('/')}/api/build-identity", identity)
     else:
         run("www-build-identity", f"{BASE}/api/build-identity", identity)
         run("root-build-identity", "https://ynxweb4.com/api/build-identity", identity)
@@ -156,6 +167,18 @@ def main():
     RESULT_PATH.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print("PUBLIC_READBACK_JSON:" + json.dumps(result, ensure_ascii=False, separators=(",", ":")))
     return 0 if result["passed"] else 1
+
+
+def valid_preview_url(url):
+    try:
+        parsed = urllib.parse.urlparse(url)
+        return (parsed.scheme == "https"
+                and bool(re.fullmatch(r"ynx-web4-website-[a-z0-9]+-jiahaoalbus-projects\.vercel\.app", parsed.hostname or ""))
+                and parsed.path in ("", "/")
+                and not parsed.port and not parsed.username and not parsed.password
+                and not parsed.query and not parsed.fragment)
+    except ValueError:
+        return False
 
 
 if __name__ == "__main__":

@@ -19,6 +19,10 @@ on:
         description: SHA-256 of the reviewed wallet-download-copy JS chunk
         required: true
         type: string
+      preview_deployment_url:
+        description: Optional exact YNX Vercel preview origin; checks identity only
+        required: false
+        type: string
 
 permissions:
   contents: read
@@ -43,6 +47,7 @@ jobs:
           EXPECTED_SOURCE_TREE: ${{ inputs.expected_source_tree }}
           EXPECTED_ENTRY: ${{ inputs.expected_entry }}
           EXPECTED_COPY_SHA256: ${{ inputs.expected_copy_sha256 }}
+          PREVIEW_DEPLOYMENT_URL: ${{ inputs.preview_deployment_url }}
           WORKFLOW_SHA: ${{ github.sha }}
         run: python3 scripts/public-readback.py
       - name: Preserve machine-readable result
