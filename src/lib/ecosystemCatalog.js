@@ -198,8 +198,8 @@ const evidence = {
     }
   },
   card: {
-    commit: "358fb555",
-    statusNote: "The public YNX Card sandbox preview is live for Testnet UX review. It does not represent an issued card, banking relationship, card-network partnership, credit product or production payment instrument.",
+    commit: "e95fcf443228d0db97c139dfa5e8ad6fbb7aa675",
+    statusNote: "The public YNX Card Testnet simulation UI and Card v1/v2 routes are deployed from source e95fcf443. Unauthenticated private requests are rejected; a real Wallet approval, funding, provider-issued Sandbox card, banking relationship, card-network partnership and production payment remain unverified.",
     downloads: {
       web: { status: PRODUCT_STATUS.LIVE, href: "https://card.ynxweb4.com/", external: true, downloadHosted: false, note: "Public sandbox UI; no real card issuance or production card transaction is available." }
     }
@@ -540,12 +540,12 @@ export const getCatalog = () => [
     key: "card",
     name: "YNX Card",
     icon: CreditCard,
-    status: PRODUCT_STATUS.PLANNED,
-    detail: "Card is a sandbox product candidate for Pay-linked authorization and review. No issuing, network, banking, or production-card capability is claimed.",
+    status: PRODUCT_STATUS.LIVE,
+    detail: "Public Testnet Card simulation for review; private Wallet approval, provider-issued cards, funding and real payments are not verified.",
     entry: { label: "Card status", href: "/card" },
     docs: { ...docsAnchor("card"), label: "Card docs" },
     downloads: makeDownloads(),
-    metrics: [["Closure", "Sandbox authorization candidate"], ["Risk", "Issuer and regulatory approval absent"], ["Readiness", "No public Card product"]]
+    metrics: [["Surface", "Public Testnet simulation UI and v1/v2 API routes"], ["Risk", "Wallet approval, provider and issuer evidence absent"], ["Boundary", "No real card or production payment"]]
   },
   {
     key: "exchange",

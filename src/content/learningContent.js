@@ -18,17 +18,17 @@ export const LEARNING_COMMANDS = {
   source: `git clone https://github.com/JiahaoAlbus/YNX-Chain.git ynx-learning\ncd ynx-learning\ngit checkout --detach ${LEARNING_SOURCE}`,
   node: "go run ./cmd/ynx-chaind -network devnet -http 127.0.0.1:16420 -data-dir ./.local/learning-node",
   localStatus: "curl --connect-timeout 5 --max-time 12 --fail --show-error http://127.0.0.1:16420/status",
-  publicStatus: "curl --connect-timeout 5 --max-time 12 --fail --show-error https://rpc.ynxweb4.com/status",
-  chainId: `curl --connect-timeout 5 --max-time 12 --fail --show-error https://evm.ynxweb4.com -H 'Content-Type: application/json' --data '{"jsonrpc":"2.0","id":1,"method":"eth_chainId","params":[]}'`,
-  sdk: `node --input-type=module -e 'import {YNXClient, assertYNXTestnetSnapshot} from "./sdk/js/index.js"; const c = new YNXClient({restUrl:"https://rpc.ynxweb4.com",evmUrl:"https://evm.ynxweb4.com"}); const s = assertYNXTestnetSnapshot(await c.getChainSnapshot()); console.log(s.status.height, s.evmChainId);'`,
+  publicStatus: "curl --connect-timeout 5 --max-time 12 --fail --show-error https://rpc-testnet.ynxweb4.com/status",
+  chainId: `curl --connect-timeout 5 --max-time 12 --fail --show-error https://rpc-testnet.ynxweb4.com -H 'Content-Type: application/json' --data '{"jsonrpc":"2.0","id":1,"method":"eth_chainId","params":[]}'`,
+  sdk: `node --input-type=module -e 'import {YNXClient, assertYNXTestnetSnapshot} from "./sdk/js/index.js"; const c = new YNXClient({restUrl:"https://rpc-testnet.ynxweb4.com",evmUrl:"https://rpc-testnet.ynxweb4.com"}); const s = assertYNXTestnetSnapshot(await c.getChainSnapshot()); console.log(s.status.height, s.evmChainId);'`,
   sdkTest: "make sdk-check",
   consensus: "make -n consensus-quorum-check",
 };
 
 export const LEARNING_WINDOWS_COMMANDS = {
   localStatus: "Invoke-RestMethod -TimeoutSec 12 -Uri 'http://127.0.0.1:16420/status'",
-  publicStatus: "Invoke-RestMethod -TimeoutSec 12 -Uri 'https://rpc.ynxweb4.com/status'",
-  chainId: `$body = '{"jsonrpc":"2.0","id":1,"method":"eth_chainId","params":[]}'\nInvoke-RestMethod -TimeoutSec 12 -Method Post -Uri 'https://evm.ynxweb4.com' -ContentType 'application/json' -Body $body`,
+  publicStatus: "Invoke-RestMethod -TimeoutSec 12 -Uri 'https://rpc-testnet.ynxweb4.com/status'",
+  chainId: `$body = '{"jsonrpc":"2.0","id":1,"method":"eth_chainId","params":[]}'\nInvoke-RestMethod -TimeoutSec 12 -Method Post -Uri 'https://rpc-testnet.ynxweb4.com' -ContentType 'application/json' -Body $body`,
 };
 
 export const LEARNING_PATHS = [

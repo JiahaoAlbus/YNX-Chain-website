@@ -75,6 +75,20 @@ test("unverified public and download actions stay disabled with an explicit reas
   }
 });
 
+test("Card exposes only its verified Testnet web simulation, not a provider or installer", () => {
+  const card = catalog.find((product) => product.key === "card");
+  const contract = getProductPublicContract(card);
+  const receipt = JSON.parse(fs.readFileSync("public/releases/card/e95fcf443/public-runtime.json", "utf8"));
+  assert.equal(contract.publicEntry.href, "https://card.ynxweb4.com/");
+  assert.equal(contract.registryCommit, receipt.sourceCommit);
+  assert.equal(contract.centralAccepted, false);
+  assert.equal(contract.downloads.status, "unavailable");
+  assert.equal(receipt.authenticatedOwnerFlowVerified, false);
+  assert.equal(receipt.officialProviderSandboxVerified, false);
+  assert.equal(receipt.providerIssuedCardVerified, false);
+  assert.equal(receipt.productionRealPayments, false);
+});
+
 test("every contract link is an absolute HTTPS URL or a same-origin route", () => {
   for (const product of catalog) {
     const contract = getProductPublicContract(product);

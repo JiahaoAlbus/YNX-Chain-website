@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "product": "YNX Wallet Desktop",
+  "version": "0.6.9",
+  "sourceCommit": "3045436395fe636c91be417f41fc1e4ed2bc7515",
+  "releaseTag": "wallet-desktop-testnet-preview-0.6.9-3045436",
+  "distribution": "Windows x64 Testnet preview",
+  "assets": [
+    {
+      "filename": "ynx-wallet-desktop-0.6.9-x64.exe",
+      "githubUrl": "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-desktop-testnet-preview-0.6.9-3045436/ynx-wallet-desktop-0.6.9-x64.exe",
+      "bytes": 120980075,
+      "sha256": "0df01cecc47c4af179d651892623b7936ac6dac52a5d9961212bed90eccde7e1"
+    }
+  ],
+  "verification": {
+    "originalInstallerReusedAcrossNativeRuns": true,
+    "initialWindowsNativeRun": "https://github.com/JiahaoAlbus/YNX-Chain/actions/runs/36095340351",
+    "sameInstallerRecheckRun": "https://github.com/JiahaoAlbus/YNX-Chain/actions/runs/36096665455",
+    "nonElevatedTokenRun": "https://github.com/JiahaoAlbus/YNX-Chain/actions/runs/36097707496",
+    "initialOfflineAccountBackupRestoreAnd068Upgrade": true,
+    "secondAccountAndAppRestartRecheck": true,
+    "thirdNonElevatedTokenInstallLockUnlockAndAppRestart": true,
+    "separateStandardOSUserVerified": false,
+    "osRebootVerified": false,
+    "userMachineVerified": false,
+    "smartScreenVerified": false,
+    "defenderVerified": false,
+    "productionSigned": false,
+    "arm64PromotedWithThisRelease": false,
+    "liveTransactionE2EVerified": false
+  },
+  "previousWindowsX64Release": "/releases/wallet-downloads/20260912-desktop068.json",
+  "publicDownloadVerified": true,
+  "downloadVerification": {
+    "vantage": "origin-host request to public TLS hostname",
+    "httpStatus": 200,
+    "fullGETBytes": 120980075,
+    "fullGETSHA256": "0df01cecc47c4af179d651892623b7936ac6dac52a5d9961212bed90eccde7e1",
+    "independentExternalClientVerified": false
+  }
+}

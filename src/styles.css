@@ -294,6 +294,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .portalLiveValues { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); border-left:1px solid var(--line); }
 .portalLiveValues span { min-width:0; padding:13px 16px; border-right:1px solid var(--line); }.portalLiveValues span:last-child { border-right:0; }
 .portalLiveValues small,.portalConfigRow > span { display:block; color:var(--muted); font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.04em; }.portalLiveValues strong { display:block; margin-top:8px; overflow-wrap:anywhere; font-size:18px; }
+.portalLiveValues strong + small { margin-top:9px; }.portalLiveValues small + small { margin-top:5px; }
+.portalRefresh { margin-top:12px; padding:7px 11px; border:1px solid var(--line); border-radius:7px; background:var(--surface); color:var(--text); cursor:pointer; font:inherit; font-size:12px; }.portalRefresh:disabled { cursor:wait; opacity:.65; }
 .portalLayout { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:24px; }.portalFacts,.portalConfig { padding:28px; border:1px solid var(--line); border-radius:12px; background:#fff; }
 .portalFacts ul { display:grid; gap:17px; margin:22px 0 0; padding:0; list-style:none; }.portalFacts li { display:grid; grid-template-columns:19px minmax(0,1fr); gap:10px; color:#33405a; line-height:1.5; font-size:14px; }.portalFacts li svg { width:18px; color:var(--green); }
 .portalConfigHead { display:flex; gap:12px; align-items:flex-start; padding-bottom:14px; border-bottom:1px solid var(--line); }.portalConfigHead > svg { width:24px; height:24px; color:var(--blue); }.portalConfigHead h2 { margin:0; }.portalConfigRow { display:grid; grid-template-columns:72px minmax(0,1fr) 36px; gap:10px; align-items:center; min-height:55px; border-bottom:1px solid var(--line); }.portalConfigRow:last-child { border-bottom:0; }.portalConfigRow code { overflow-wrap:anywhere; color:var(--blue); font-size:12px; }.copyMini { width:32px; height:32px; display:inline-flex; align-items:center; justify-content:center; border:1px solid var(--line); border-radius:7px; color:var(--blue); background:#fff; cursor:pointer; }.copyMini svg { width:15px; }
@@ -421,6 +423,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .downloadCard > a:hover { text-decoration: underline; }
 .downloadHeader { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
 .downloadHeader strong { font-size: 20px; }
+.productHealth { display: block; color: var(--muted); font-size: 11px; }
 .productStatusPage { width: min(1240px, calc(100% - 48px)); min-height: 78svh; margin: 0 auto; padding: 76px 0 110px; }
 .productStatusHero { min-height: 230px; display: grid; grid-template-columns: 64px minmax(0,1fr) auto; gap: 24px; align-items: start; padding: 34px 0 46px; border-bottom: 1px solid var(--blue); }
 .productStatusHero h1 { margin: 0; color: var(--blue); font-size: 58px; line-height: 1.04; letter-spacing: 0; }

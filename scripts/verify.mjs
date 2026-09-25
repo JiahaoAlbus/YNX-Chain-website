@@ -19,6 +19,7 @@ const required = [
   "public/ynx-icon-maskable-512.png",
   "public/ynx-favicon-48.png",
   "public/releases/ecosystem-release-registry.json",
+  "public/releases/card/e95fcf443/public-runtime.json",
   "public/releases/installer-replacement-matrix.json",
   "public/releases/wallet-desktop/5a6b033897a1/macos-native-callback-dmg-publication.json",
   "public/releases/wallet-desktop/a8f36e4c5723/windows-x64-exe-publication.json",
@@ -205,6 +206,7 @@ const indexHtml = fs.readFileSync("index.html", "utf8");
 const serviceWorker = fs.readFileSync("public/sw.js", "utf8");
 const manifest = JSON.parse(fs.readFileSync("public/manifest.webmanifest", "utf8"));
 const releaseRegistry = JSON.parse(fs.readFileSync("public/releases/ecosystem-release-registry.json", "utf8"));
+const cardPublicRuntime = JSON.parse(fs.readFileSync("public/releases/card/e95fcf443/public-runtime.json", "utf8"));
 const walletLinuxRpmCandidate = JSON.parse(fs.readFileSync("public/releases/wallet-linux-x64-rpm-candidate.json", "utf8"));
 const ownerRecordIndex = JSON.parse(fs.readFileSync("public/releases/owner-record-index.json", "utf8"));
 const exchangeReleaseRoot = "public/releases/exchange/fc2276e1ce4c";
@@ -865,9 +867,10 @@ if (
   registryByKey.get("wallet")?.publicWeb !== "https://wallet.ynxweb4.com/" ||
   registryByKey.get("wallet")?.publicWebRelease !== "/releases/wallet-web/2f1822ef/public-runtime.json" ||
   registryByKey.get("wallet")?.publicWebSourceCommit !== "2f1822ef268e825f14274d87c912b6b863bbaca3" ||
-  registryByKey.get("wallet")?.webDownloadManifest?.sha256 !== "fe3edc16c36b5307b266c66ddb1349e2146febf332eeeb21ac4070fb0c6cce0b" ||
-  registryByKey.get("wallet")?.webDownloadManifest?.bytes !== 1858 ||
-  registryByKey.get("wallet")?.webDownloadRelease !== "/releases/wallet-web/20260920-wallet-web-testnet-preview-c93e16be.json" ||
+  registryByKey.get("wallet")?.webDownloadManifest?.sha256 !== "e64fe77c0b4c28faaa33331e7e37896638696538a4d95f98d683bb2867f7f19a" ||
+  registryByKey.get("wallet")?.webDownloadManifest?.bytes !== 2015 ||
+  registryByKey.get("wallet")?.webDownloadRelease !== "/releases/wallet-web/20260925-wallet-web-testnet-preview-31f3ef16d.json" ||
+  registryByKey.get("wallet")?.webDownloadPreviousRelease !== "/releases/wallet-web/20260925-wallet-web-testnet-preview-767a05d56.json" ||
   videoRegistry?.publicWeb !== "https://video.ynxweb4.com/" ||
   videoRegistry?.publicWebSourceCommit !== "77ac093356e8517e16d6280c8a01a598791d2d0d" ||
   videoRegistry?.centralAccepted !== false ||
@@ -876,8 +879,24 @@ if (
   creatorRegistry?.publicWebSourceCommit !== "489bf23ac56fb11c5b2ed869fb2a93c2465d2b24" ||
   creatorRegistry?.centralAccepted !== false ||
   creatorRegistry?.fullProductAccepted !== false ||
-  cardRegistry?.state !== "candidate-incomplete" ||
+  cardRegistry?.state !== "public-web-preview-incomplete" ||
+  cardRegistry?.commit !== "e95fcf443228d0db97c139dfa5e8ad6fbb7aa675" ||
+  cardRegistry?.publicWeb !== "https://card.ynxweb4.com/" ||
+  cardRegistry?.publicWebRelease !== "/releases/card/e95fcf443/public-runtime.json" ||
+  cardRegistry?.downloadHosted !== false ||
+  cardRegistry?.fullProductAccepted !== false ||
   cardRegistry?.centralAccepted !== false ||
+  cardPublicRuntime?.sourceCommit !== cardRegistry.commit ||
+  cardPublicRuntime?.publicWeb !== cardRegistry.publicWeb ||
+  cardPublicRuntime?.evmChainId !== 6423 ||
+  cardPublicRuntime?.paymentNetwork !== "simulation" ||
+  cardPublicRuntime?.publicUiVerified !== true ||
+  cardPublicRuntime?.walletCallbackCompleted !== false ||
+  cardPublicRuntime?.authenticatedOwnerFlowVerified !== false ||
+  cardPublicRuntime?.runtimeFundingVerified !== false ||
+  cardPublicRuntime?.officialProviderSandboxVerified !== false ||
+  cardPublicRuntime?.providerIssuedCardVerified !== false ||
+  cardPublicRuntime?.productionRealPayments !== false ||
   releaseRegistry.products.some((product) => typeof product.route !== "string" || !product.route.startsWith("/")) ||
   releaseRegistry.rules?.localArtifactIsDownload !== false ||
   releaseRegistry.rules?.publicHealthIsProductUi !== false
@@ -1232,7 +1251,7 @@ if (
 const csp = vercel.headers
   ?.find((entry) => entry.source === "/(.*)")
   ?.headers?.find((header) => header.key === "Content-Security-Policy")?.value || "";
-if (!csp.includes("script-src 'self'") || !csp.includes("worker-src 'self'") || !csp.includes("connect-src 'self' https://api.ynxweb4.com https://faucet.ynxweb4.com https://rest.ynxweb4.com https://rpc.ynxweb4.com") || !csp.includes("object-src 'none'")) {
+if (!csp.includes("script-src 'self'") || !csp.includes("worker-src 'self'") || !csp.includes("connect-src 'self' https://api.ynxweb4.com https://faucet.ynxweb4.com https://rest.ynxweb4.com https://rpc-testnet.ynxweb4.com https://rpc.ynxweb4.com https://evm.ynxweb4.com") || !csp.includes("object-src 'none'")) {
   console.error("strict canonical wallet CSP is missing");
   process.exit(1);
 }

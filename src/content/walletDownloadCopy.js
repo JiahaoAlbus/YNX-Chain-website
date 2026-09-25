@@ -381,8 +381,22 @@ for (const [locale, copy] of Object.entries(WALLET_DOWNLOAD_COPY)) {
 for (const [locale, copy] of Object.entries(WALLET_DOWNLOAD_COPY)) copy.desktop068MacSignature = locale === "zh-CN" ? "ad-hoc 测试签名；未取得 Developer ID 签名或公证。" : locale === "zh-TW" ? "ad-hoc 測試簽名；未取得 Developer ID 簽名或公證。" : "Ad-hoc test signature; no Developer ID signing or notarization.";
 
 for (const [locale, copy] of Object.entries(WALLET_DOWNLOAD_COPY)) {
+ copy.desktop069Boundary = locale === "zh-CN" ? "Windows x64 无签名测试预览；系统重启、实机、SmartScreen/Defender、真实交易未验证。" : locale === "zh-TW" ? "Windows x64 無簽章測試預覽；系統重啟、實機、SmartScreen/Defender、真實交易未驗證。" : "Unsigned x64 Testnet preview; OS reboot, user device, SmartScreen/Defender and live transfers unverified.";
+ copy.desktop069Proof = locale === "zh-CN" ? "原包 CI：首次离线账户、备份恢复、0.6.8 升级；二次建户及应用重启；三次非提升 token 安装、锁解和应用重启，非独立普通 OS 用户。" : locale === "zh-TW" ? "原包 CI：首次離線帳戶、備份還原、0.6.8 升級；二次建戶及應用重啟；三次非提升 token 安裝、鎖解和應用重啟，非獨立一般 OS 使用者。" : "Original installer CI: offline accounts, backup and 0.6.8 upgrade; same-installer account/restart; non-elevated-token install/lock/restart, not a separate standard OS user.";
+}
+
+for (const [locale, copy] of Object.entries(WALLET_DOWNLOAD_COPY)) {
  copy.android26Boundary = locale === "zh-CN" ? "1.0.20 测试网预览版，仅本地测试签名、未上架；不包含尚未合并的 PR188 登录改动。发布者可替换 GitHub 文件，下载时网站不重算 SHA-256，请自行核对摘要。" : locale === "zh-TW" ? "1.0.20 測試網預覽版，僅本地測試簽名、未上架；不包含尚未合併的 PR188 登入改動。發布者可替換 GitHub 檔案，網站下載時不重算 SHA-256，請自行核對摘要。" : "1.0.20 Testnet Preview; locally test signed, not store released and does not contain the unmerged PR188 login work. GitHub assets are publisher-replaceable; verify SHA-256 after download.";
  copy.android26Proof = locale === "zh-CN" ? "已核对 GitHub APK/AAB 发布元数据；1.0.20 安装、登录、真机、转账、Finance、Relay 与 Sandbox 端到端均未验证。1.0.19 模拟器证明不适用于此版本。" : locale === "zh-TW" ? "已核對 GitHub APK/AAB 發布中繼資料；1.0.20 安裝、登入、實機、轉帳、Finance、Relay 與 Sandbox 端到端均未驗證。1.0.19 模擬器證明不適用於此版本。" : "GitHub APK/AAB release metadata checked; 1.0.20 install, login, physical device, transfer, Finance, Relay and Sandbox E2E are unverified. The 1.0.19 emulator proof does not apply.";
  copy.android27Boundary = locale === "zh-CN" ? "1.0.21 测试网 APK；仅 Debug 测试签名，未上架。GitHub 文件可被发布者替换；下载后请核对 SHA-256。" : locale === "zh-TW" ? "1.0.21 測試網 APK；僅 Debug 測試簽名，未上架。GitHub 檔案可被發布者替換；下載後請核對 SHA-256。" : "1.0.21 Testnet APK; Debug test-signed, not store released. GitHub assets can change; verify SHA-256 after download.";
  copy.android27Proof = locale === "zh-CN" ? "API 36 模拟器已验证发布 APK 从 code26 升至 27，保留并解锁一次性账户。已充值余额、待发交易、真机、Finance 与 Relay 端到端未验证。" : locale === "zh-TW" ? "API 36 模擬器已驗證發布 APK 從 code26 升至 27，保留並解鎖一次性帳戶。已充值餘額、待發交易、實機、Finance 與 Relay 端到端未驗證。" : "Published APK passed code26-to-27 upgrade and disposable account unlock on API 36 emulator. Funded balance, outbox, real device, Finance and Relay E2E remain unverified.";
+}
+
+for (const [locale, copy] of Object.entries(WALLET_DOWNLOAD_COPY)) {
+  copy.browser013Boundary = locale === "zh-CN" ? "0.1.3 测试网预览，未上架；核对 SHA-256。"
+    : locale === "zh-TW" ? "0.1.3 測試網預覽，未上架；核對 SHA-256。"
+    : "0.1.3 Testnet Preview; not in stores. Check SHA-256.";
+  copy.browser013Proof = locale === "zh-CN" ? "Finance 测试通过；私有未验证。"
+    : locale === "zh-TW" ? "Finance 測試通過；私人未驗證。"
+    : "Finance QA passed; private access unverified.";
 }

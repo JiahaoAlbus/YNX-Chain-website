@@ -29,7 +29,7 @@ function render(path,locale="en") { host.locale=locale;host.window.location=new 
 test("each supported platform has a read-only identity request and a real package checksum command",()=>{
   for(const platform of ["windows","macos","linux"]){
     const request=learning.learningCommandFor(platform,"chainId");
-    assert.match(request,/eth_chainId/);assert.match(request,/https:\/\/evm\.ynxweb4\.com/);
+    assert.match(request,/eth_chainId/);assert.match(request,/https:\/\/rpc-testnet\.ynxweb4\.com/);
     assert.doesNotMatch(request,/eth_send|personal_|requestAccounts|create-validator/);
     assert.match(learning.LEARNING_HASH_COMMANDS[platform],new RegExp(learning.LEARNING_SOURCE_DOWNLOAD.filename.replaceAll(".","\\.")));
     assert.match(request,platform==="windows"?/-TimeoutSec 12/:/--connect-timeout 5 --max-time 12/);

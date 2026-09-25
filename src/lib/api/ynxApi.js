@@ -6,8 +6,8 @@ export const YNX_6423 = Object.freeze({
   nativeCurrency: Object.freeze({ name: "YNXT", symbol: "YNXT", decimals: 18 }),
   mainnet: false,
   services: Object.freeze({
-    rpc: "https://rpc.ynxweb4.com",
-    evm: "https://evm.ynxweb4.com",
+    rpc: "https://rpc-testnet.ynxweb4.com",
+    evm: "https://rpc-testnet.ynxweb4.com",
     explorer: "https://explorer.ynxweb4.com",
     faucet: "https://faucet-testnet.ynxweb4.com",
     monitor: "https://monitor.ynxweb4.com",
@@ -78,7 +78,7 @@ export async function loadEvmChainId(options = {}) {
 }
 
 export async function loadNetworkSnapshot({ detailed = false } = {}) {
-  return requestJson(`${window.location.origin}/api/network/status${detailed ? "" : "?view=summary"}`, { timeoutMs: 12000 });
+  return requestJson(`${window.location.origin}/api/network/status${detailed ? "" : "?view=summary"}`, { timeoutMs: 16000 });
 }
 
 export async function loadServiceHealth() {

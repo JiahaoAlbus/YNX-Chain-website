@@ -69,18 +69,26 @@ test("Wallet product-package and Companion source identities stay separately bou
   assert.notEqual(wallet.commit, wallet.publicWebSourceCommit);
 });
 
-test("Wallet Web package manifest binds the exact immutable c93 release and all three current files", () => {
-  assert.equal(wallet.webDownloadRelease, "/releases/wallet-web/20260920-wallet-web-testnet-preview-c93e16be.json");
-  assert.equal(wallet.webDownloadManifest.url, "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-web-testnet-preview-0.1.1-c93e16be8/artifact-manifest.json");
+test("Wallet Web manifest binds 0.1.3 Chrome/Edge while PWA and Firefox remain 0.1.1", () => {
+  assert.equal(wallet.webDownloadRelease, "/releases/wallet-web/20260925-wallet-web-testnet-preview-31f3ef16d.json");
+  assert.equal(wallet.webDownloadPreviousRelease, "/releases/wallet-web/20260925-wallet-web-testnet-preview-767a05d56.json");
+  assert.equal(wallet.webDownloadManifest.url, "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-web-testnet-preview-0.1.3-31f3ef16d/artifact-manifest.json");
   assert.equal(webDownloadManifestBytes.length, wallet.webDownloadManifest.bytes);
   assert.equal(crypto.createHash("sha256").update(webDownloadManifestBytes).digest("hex"), wallet.webDownloadManifest.sha256);
-  assert.equal(webDownloadManifest.sourceCommit, "c93e16be81beddc957ef5f27b7bbcdfa89c28db3");
+  assert.equal(webDownloadManifest.sourceCommit, "31f3ef16d3812870e0c3d23350565fd592482227");
   assert.notEqual(webDownloadManifest.sourceCommit, wallet.publicWebSourceCommit);
   assert.deepEqual(webDownloadManifest.artifacts.map(({ name, bytes, sha256 }) => ({ name, bytes, sha256 })), [
-    { name: "ynx-wallet-web-pwa-0.1.1.zip", bytes: 312868, sha256: "6e7e6dd17e9e729a44ed915e46433124c1a3794e06a0d072c55097084cc45e13" },
-    { name: "ynx-wallet-chrome-edge-0.1.1.zip", bytes: 547479, sha256: "09066d82a94cb6b8108120f980ab2cc40c42dc830ffce166529cbd570eb6a6b2" },
-    { name: "ynx-wallet-firefox-0.1.1.zip", bytes: 547577, sha256: "6ac256415c34b4b492dc6094be8be8c9f0acf6a40653e2e18fde64dd20f801e0" },
+    { name: "ynx-wallet-web-pwa-0.1.3.zip", bytes: 315715, sha256: "478e155646f7e269e7b075666362b904b57ad949ae101c3d5319f48aca76d5eb" },
+    { name: "ynx-wallet-chrome-edge-0.1.3.zip", bytes: 584777, sha256: "5c6ff4c16805965aa86febdc6a9f7a812ea2d1e9c8fa556611dafeadfb2e707b" },
+    { name: "ynx-wallet-firefox-0.1.3.zip", bytes: 584875, sha256: "1e3d6403f98318745a44cc034439dedc1c6bf804f4afe8f552ae27bfc7485acf" },
   ]);
+  const publication = JSON.parse(fs.readFileSync(`public${wallet.webDownloadRelease}`, "utf8"));
+  assert.deepEqual(publication.artifacts.map(({ filename }) => filename), ["ynx-wallet-chrome-edge-0.1.3.zip"]);
+  assert.equal(publication.releaseImmutable, false);
+  assert.equal(publication.verification.chromeAndEdgeTemporaryUnpackedLifecycle, true);
+  assert.equal(publication.verification.livePrivateGatewaySession, false);
+  assert.equal(publication.verification.publicFinanceStandardWalletEdgeLifecycle, true);
+  assert.equal(publication.unpromotedReleaseAssets.length, 2);
 });
 
 test("Historical Android24 website activation binds the first public build and bounded read-only evidence", () => {

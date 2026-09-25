@@ -4,39 +4,8 @@ import { getCatalog, STATUS_CONFIG, DOWNLOAD_LABELS, PRODUCT_STATUS } from "../l
 import { getProductPublicContract, getProductPublicDisplayStatus, productSectionRoute } from "../lib/productPublicContract.js";
 import { useLocale } from "../lib/i18n.jsx";
 import { getAppsCopy } from "../content/businessLocaleContent.js";
-
-const categories = [
-  {
-    id: "commerce",
-    label: "Money & commerce",
-    description: "Payments, markets, merchant operations, finance, and exchange workflows.",
-    keys: ["pay", "merchantConsole", "card", "exchange", "quant", "shop", "sellerConsole", "finance", "dex"],
-  },
-  {
-    id: "community",
-    label: "Identity & community",
-    description: "Account custody, communication, identity-aware collaboration, and scheduling.",
-    keys: ["wallet", "social", "mail", "calendar"],
-  },
-  {
-    id: "builders",
-    label: "Build & operate",
-    description: "Developer, observability, chain-data, documentation, browser, and discovery tools.",
-    keys: ["developer", "explorer", "monitor", "docs", "browser", "search"],
-  },
-  {
-    id: "media",
-    label: "AI, media & data",
-    description: "AI-assisted workflows, content, storage, playback, and creator surfaces.",
-    keys: ["ai", "music", "video", "creatorStudio", "cloud"],
-  },
-  {
-    id: "trust",
-    label: "Trust & infrastructure",
-    description: "Evidence, governance, appeals, resource quotes, and settlement boundaries.",
-    keys: ["trust", "resource"],
-  },
-];
+import { localizeCardProduct } from "../content/cardPublicCopy.js";
+import { ECOSYSTEM_CATEGORIES, ECOSYSTEM_CATEGORY_BY_PRODUCT } from "../lib/ecosystemCategories.js";
 
 function renderProductLink({ label, href, external }, notReady = "Not ready") {
   if (!href) {
@@ -56,16 +25,17 @@ function renderProductLink({ label, href, external }, notReady = "Not ready") {
 export function AppsPage() {
   const { locale } = useLocale();
   const copy = getAppsCopy(locale);
-  const catalog = useMemo(() => getCatalog().map((product) => {
+  const catalog = useMemo(() => getCatalog().map((source) => {
+    const product = localizeCardProduct(source, locale);
     const publicContract = getProductPublicContract(product);
     return { ...product, publicContract, publicStatus: getProductPublicDisplayStatus(publicContract) };
-  }), []);
+  }), [locale]);
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("all");
   const [status, setStatus] = useState("all");
-  const localizedCategories = useMemo(() => categories.map((group, index) => ({ ...group, label: copy.categories[index][0], description: copy.categories[index][1] })), [copy]);
+  const localizedCategories = useMemo(() => ECOSYSTEM_CATEGORIES.map((group, index) => ({ ...group, label: copy.categories[index][0], description: copy.categories[index][1] })), [copy]);
   const statusFilters = copy.statusFilters;
-  const categoryByProduct = useMemo(() => new Map(categories.flatMap((group) => group.keys.map((key) => [key, group.id]))), []);
+  const categoryByProduct = ECOSYSTEM_CATEGORY_BY_PRODUCT;
   const visibleGroups = useMemo(() => {
     const needle = query.trim().toLowerCase();
     return localizedCategories.map((group) => ({

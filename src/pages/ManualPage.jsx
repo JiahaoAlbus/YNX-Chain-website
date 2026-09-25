@@ -47,4 +47,4 @@ export function ManualPage() {
     </section><aside className="learningNetworkNote"><strong>{ui.current}</strong><p>{ui.networkNotice}</p><p>{ui.sourceNotice}</p><small>{ui.source}: <code dir="ltr">{LEARNING_SOURCE}</code></small></aside>
   </main>;
 }
-export function NetworkSettings({ ui }) { return <dl className="learningNetworkSettings">{[[ui.networkName,"YNX Testnet"],[ui.networkId,"6423 / 0x1917"],[ui.rpc,"https://evm.ynxweb4.com"],[ui.symbol,"YNXT"],[ui.decimals,"18"],[ui.explorer,"https://explorer.ynxweb4.com"]].map(([label,value]) => <div key={label}><dt>{label}</dt><dd><code dir="ltr">{value}</code></dd></div>)}</dl>; }
+export function NetworkSettings({ ui }) { return <dl className="learningNetworkSettings">{[[ui.networkName,"YNX Testnet"],[ui.networkId,"6423 / 0x1917"],[ui.rpc,"https://rpc-testnet.ynxweb4.com"],[ui.symbol,"YNXT"],[ui.decimals,"18"],[ui.explorer,"https://explorer.ynxweb4.com"]].map(([label,value]) => <div key={label}><dt>{label}</dt><dd><code dir="ltr">{value}</code></dd></div>)}</dl>; }

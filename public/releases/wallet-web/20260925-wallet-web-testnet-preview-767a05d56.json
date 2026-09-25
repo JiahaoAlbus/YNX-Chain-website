@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-09-25T11:27:38+08:00",
+  "releaseTag": "wallet-web-testnet-preview-0.1.2-767a05d56",
+  "sourceCommit": "40c2814d6e87e19ce2762737356c4f9d1128a69d",
+  "qaEvidenceCommit": "767a05d56878b19297afc1bdd0748d204a2ca542",
+  "releaseUrl": "https://github.com/JiahaoAlbus/YNX-Chain/releases/tag/wallet-web-testnet-preview-0.1.2-767a05d56",
+  "releaseImmutable": false,
+  "publisherCanReplaceAssets": true,
+  "artifactManifest": {
+    "url": "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-web-testnet-preview-0.1.2-767a05d56/artifact-manifest.json",
+    "bytes": 1844,
+    "sha256": "871ae6f63048b9d93f7d01951bcfd12d070b4a3ad2a0b05584c650eb0058c2a5",
+    "sourceFieldsDescribePrepublicationBuild": true,
+    "productionSigned": false,
+    "storeReleased": false
+  },
+  "verification": {
+    "chromeEdgeReleaseAssetDownloadedAndRehashed": true,
+    "artifactManifestDownloadedAndRehashed": true,
+    "chromeAndEdgeTemporaryUnpackedLifecycle": true,
+    "publicFinanceStandardWalletChromeLifecycle": true,
+    "privateFinanceOrBrokerAuthorization": false,
+    "transactionSubmitted": false,
+    "productionSigned": false,
+    "storeReleased": false,
+    "websiteAssetsDownloadedAndRehashed": true,
+    "websiteDeploymentVerified": true,
+    "previousChromeEdgeBytesPreserved": true
+  },
+  "firstVerifiedWebsiteDeployment": {
+    "id": "dpl_4WCH2JSV3LesJRL3tJP2GzJ9LLkR",
+    "sourceCommit": "42075718434a3c134b53f6c5bc5d480127bb3798",
+    "projectId": "prj_tPB0KDTFohQ9FXZAzq25mYFWkbNa",
+    "aliases": ["https://ynxweb4.com", "https://www.ynxweb4.com"],
+    "newChromeEdgeBytes": 551365,
+    "oldChromeEdgeBytes": 547479
+  },
+  "artifacts": [{
+    "platform": "chrome-edge-unpacked-extension",
+    "filename": "ynx-wallet-chrome-edge-0.1.2.zip",
+    "bytes": 551365,
+    "sha256": "35a1755777ab0c7472c1a81910f9e127f81d19d5e387238a7e0ef6afc1f1cafb",
+    "releaseAssetUrl": "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-web-testnet-preview-0.1.2-767a05d56/ynx-wallet-chrome-edge-0.1.2.zip",
+    "websiteUrl": "https://www.ynxweb4.com/downloads/wallet-web/sha256-35a1755777ab0c7472c1a81910f9e127f81d19d5e387238a7e0ef6afc1f1cafb/ynx-wallet-chrome-edge-0.1.2.zip"
+  }],
+  "unpromotedReleaseAssets": [
+    {
+      "filename": "ynx-wallet-web-pwa-0.1.2.zip",
+      "bytes": 315700,
+      "sha256": "0acd71a2e3bb445fc0c0deaa2ecc021ad6db4d2aeab0e2a6334800dc18e9639e",
+      "reason": "Static archive only; deployed or installed PWA not verified."
+    },
+    {
+      "filename": "ynx-wallet-firefox-0.1.2.zip",
+      "bytes": 551463,
+      "sha256": "b0b3ff272ce4c58c342cd62fa09f9ef4028cded899d7188c2b7bc7271a84df79",
+      "reason": "Exact archive installed Firefox lifecycle not verified."
+    }
+  ],
+  "qaEvidence": {
+    "chrome": "https://github.com/JiahaoAlbus/YNX-Chain/blob/767a05d56878b19297afc1bdd0748d204a2ca542/apps/wallet-web/evidence/runtime/approval-local-archive-chromium.json",
+    "edge": "https://github.com/JiahaoAlbus/YNX-Chain/blob/767a05d56878b19297afc1bdd0748d204a2ca542/apps/wallet-web/evidence/runtime/approval-local-archive-edge.json",
+    "financePublicChrome": "https://github.com/JiahaoAlbus/YNX-Chain/blob/767a05d56878b19297afc1bdd0748d204a2ca542/apps/wallet-web/evidence/runtime/finance-public-chromium-20260925.json"
+  },
+  "rollback": {
+    "previousWebsiteRelease": "/releases/wallet-web/20260920-wallet-web-testnet-preview-c93e16be.json",
+    "previousChromeEdgeUrl": "https://www.ynxweb4.com/downloads/wallet-web/sha256-09066d82a94cb6b8108120f980ab2cc40c42dc830ffce166529cbd570eb6a6b2/ynx-wallet-chrome-edge-0.1.1.zip",
+    "removeNewAssets": false
+  },
+  "claims": {
+    "releaseAssetsHosted": true,
+    "websiteChromeEdgeEntryPrepared": true,
+    "websitePublicDeploymentVerified": true,
+    "productionApproved": false
+  }
+}

@@ -1,4 +1,5 @@
 import { WALLET_DESKTOP068 } from "./walletDesktop068.js";
+import { WALLET_DESKTOP069_WINDOWS_X64 } from "./walletDesktop069.js";
 import { WALLET_ANDROID27 } from "./walletAndroid27.js";
 // Compact current selections. Full source manifests and all historical bodies are served from public/releases only.
 export const WALLET_CANONICAL_MANIFESTS = [
@@ -257,4 +258,31 @@ export const WALLET_PREVIOUS_CANONICAL_DOWNLOADS = Object.fromEntries(Object.ent
   }];
 }));
 
-export const WALLET_CANONICAL_DOWNLOADS = { ...WALLET_PREVIOUS_CANONICAL_DOWNLOADS, ...WALLET_DESKTOP068, android: WALLET_ANDROID27, androidUniversal: WALLET_ANDROID27 };
+const WEB_013_SHA = "5c6ff4c16805965aa86febdc6a9f7a812ea2d1e9c8fa556611dafeadfb2e707b";
+const WEB_013_FILE = "ynx-wallet-chrome-edge-0.1.3.zip";
+const WEB_013_TAG = "wallet-web-testnet-preview-0.1.3-31f3ef16d";
+export const WALLET_WEB_013_CHROME_EDGE = {
+  ...WALLET_PREVIOUS_CANONICAL_DOWNLOADS.chromeEdge,
+  id: "web-chromium-31f3ef16d",
+  version: "0.1.3-testnet-preview.1",
+  artifactPath: WEB_013_FILE,
+  sizeBytes: 584777,
+  sha256: WEB_013_SHA,
+  sourceCommit: "31f3ef16d3812870e0c3d23350565fd592482227",
+  publicUrl: `https://www.ynxweb4.com/downloads/wallet-web/sha256-${WEB_013_SHA}/${WEB_013_FILE}`,
+  releaseBatch: WEB_013_TAG,
+  releaseTag: WEB_013_TAG,
+  previewManifest: `https://github.com/JiahaoAlbus/YNX-Chain/releases/download/${WEB_013_TAG}/artifact-manifest.json`,
+  publicationEvidence: "/releases/wallet-web/20260925-wallet-web-testnet-preview-31f3ef16d.json",
+  installProof: "Chrome/Edge Finance QA passed; private access unverified.",
+  signingClass: "unsigned unpacked Chrome/Edge extension; not browser-store released",
+  fullInstalledE2E: false,
+  newWalletGoalsAccepted: false,
+  productionSigned: false,
+  storeReleased: false,
+  releaseImmutable: false,
+  publisherCanReplaceAssets: true,
+  downloadTimeSha256Verified: false
+};
+
+export const WALLET_CANONICAL_DOWNLOADS = { ...WALLET_PREVIOUS_CANONICAL_DOWNLOADS, ...WALLET_DESKTOP068, windowsX64: WALLET_DESKTOP069_WINDOWS_X64, android: WALLET_ANDROID27, androidUniversal: WALLET_ANDROID27, chromeEdge: WALLET_WEB_013_CHROME_EDGE };

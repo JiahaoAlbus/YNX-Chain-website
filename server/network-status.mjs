@@ -15,6 +15,7 @@ const endpoints = Object.freeze({
 });
 
 const inFlight = new Map();
+const collectorFailure = Symbol("collectorFailure");
 let activeUpstream = 0;
 const upstreamQueue = [];
 
@@ -50,35 +51,61 @@ export function collectNetworkStatus({ detailed = true } = {}) {
 }
 
 async function collectNetwork(detailed) {
-  const checkedAt = new Date().toISOString();
   // Concurrent visitors share only the in-flight collection, never a completed
   // result. The process-wide semaphore also bounds different variants together.
-  const [status, explorer, evm] = await limited([
-    () => getJson(endpoints.status),
-    () => getJson(endpoints.explorer),
-    () => getJson(endpoints.evm, {
+  // A single serverless snapshot cannot prove block growth. The page may pair
+  // two independent snapshots asynchronously; this response never claims it.
+  const [statusRead, explorerRead, evmRead] = await limited([
+    () => getObservedJson(endpoints.status),
+    () => getObservedJson(endpoints.explorer),
+    () => getObservedJson(endpoints.evm, {
     method: "POST",
     headers: { "content-type": "application/json" },
     body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: "eth_chainId", params: [] })
-    })
+    }, 8000)
   ]);
+  const status = statusRead.body;
+  const explorer = explorerRead.body;
+  const evm = evmRead.body;
+  const checkedAt = new Date().toISOString();
   const [latestBlocks, latestTransactions, validators] = detailed ? await limited([
     () => getJson(endpoints.latestBlocks),
     () => getJson(endpoints.latestTransactions),
     () => getJson(endpoints.validators)
   ]) : [{}, {}, {}];
-  const rpcHeight = Number(status.height);
-  const explorerHeight = Number(explorer.rpcHeight);
+  const rpcHeight = status.height;
+  const explorerHeight = explorer.rpcHeight;
   // The two public requests are made separately, so a one-block difference can
   // occur while a new block is committed. Anything larger is surfaced as a
   // degraded status instead of being presented as a healthy network.
-  const rpcAndExplorerFresh = Number.isFinite(rpcHeight) && Number.isFinite(explorerHeight) && Math.abs(rpcHeight - explorerHeight) <= 1;
-  const rpcMatchesExplorer = explorer.ok === true && explorer.network?.chainId === 6423 && explorer.rpcHeight === explorer.indexedHeight && explorer.indexerOk === true && rpcAndExplorerFresh;
-  const identityValid = status.chainId === 6423 && status.nativeCurrencySymbol === "YNXT" && evm.result === "0x1917" && rpcMatchesExplorer;
+  const rpcAndExplorerFresh = Number.isSafeInteger(rpcHeight) && Number.isSafeInteger(explorerHeight) && Math.abs(rpcHeight - explorerHeight) <= 1;
+  const chainVerified = status.chainId === 6423 && status.nativeCurrencySymbol === "YNXT" && evm.result === "0x1917";
+  const indexerVerified = explorer.ok === true && explorer.network?.chainId === 6423 && explorer.rpcHeight === explorer.indexedHeight && explorer.indexerOk === true && rpcAndExplorerFresh;
+  const indexedHeight = explorer.indexedHeight;
+  const indexerLagBlocks = status.chainId === 6423 && explorer.network?.chainId === 6423 && Number.isSafeInteger(rpcHeight) && rpcHeight >= 0 && Number.isSafeInteger(indexedHeight) && indexedHeight >= 0 ? Math.max(0, rpcHeight - indexedHeight) : null;
+  const blockTime = Date.parse(status.latestBlockTime);
+  const blockAgeMs = validBlockSample(status) ? Math.max(0, Date.now() - blockTime) : null;
   return {
-    ok: identityValid,
+    ok: false,
     checkedAt,
     status,
+    chainVerified,
+    indexerVerified,
+    progressionVerified: false,
+    indexerLagBlocks,
+    observations: {
+      rpcCollectionMs: statusRead.collectionMs,
+      rpcReadState: statusRead.readState,
+      explorerCollectionMs: explorerRead.collectionMs,
+      explorerReadState: explorerRead.readState,
+      evmCollectionMs: evmRead.collectionMs,
+      evmReadState: evmRead.readState,
+      progressionState: "unverified",
+      progressionWindowMs: null,
+      progressionFromHeight: null,
+      progressionToHeight: null,
+      blockAgeMs
+    },
     summary: {
       totalTransactions: explorer.indexedTxCount,
       indexedHeight: explorer.indexedHeight,
@@ -95,6 +122,7 @@ async function collectNetwork(detailed) {
     serviceDirectory: Object.fromEntries(Object.entries(YNX_SERVICE_DIRECTORY).map(([name, service]) => [name, {
       name: service.name,
       officialUrl: service.officialUrl,
+      compatibilityUrl: name === "rpc" ? "https://rpc.ynxweb4.com" : name === "evm" ? "https://evm.ynxweb4.com" : null,
       healthEndpoint: service.healthEndpoint,
       expectedChainId: service.expectedChainId,
       schema: service.schema,
@@ -103,12 +131,18 @@ async function collectNetwork(detailed) {
       degraded: service.degraded,
       lastVerifiedAt: checkedAt
     }])),
-    degraded: !identityValid,
-    degradedReason: !rpcMatchesExplorer
-      ? (!rpcAndExplorerFresh ? "Public RPC and Explorer are more than one block apart." : "RPC and Explorer Indexer are not both verified for YNX 6423.")
-      : undefined
+    degraded: true,
+    degradedReason: !chainVerified ? "Public RPC and EVM chain identity are not both verified for YNX 6423."
+      : !indexerVerified ? (!rpcAndExplorerFresh ? "Public RPC and Explorer are more than one block apart." : "Explorer Indexer is not verified and aligned with YNX 6423.")
+      : "Block progression requires a separate bounded second observation; this snapshot alone cannot prove it."
   };
 }
+
+function validBlockSample(status) {
+  const blockTime = Date.parse(status.latestBlockTime);
+  return status.chainId === 6423 && status.nativeCurrencySymbol === "YNXT" && Number.isSafeInteger(status.height) && status.height > 0 && /^[0-9a-f]{64}$/i.test(status.latestBlockHash ?? "") && Number.isFinite(blockTime) && blockTime <= Date.now() + 5000;
+}
+
 
 export function collectServiceHealth() {
   return singleFlight("services", collectServices);
@@ -133,12 +167,19 @@ async function getJson(url, init = {}, timeoutMs = 3500) {
     if (!body || typeof body !== "object" || Array.isArray(body)) throw new Error("Invalid JSON object");
     return body;
   } catch (error) {
-    return {
+    return Object.defineProperty({
       error: error?.name === "AbortError" ? `Timed out after ${timeoutMs / 1000}s` : error.message,
       checkedAt: new Date().toISOString()
-    };
+    }, collectorFailure, { value: error?.name === "AbortError" ? "timeout" : "error" });
   } finally {
     clearTimeout(timeout);
     releaseUpstream();
   }
+}
+
+async function getObservedJson(url, init = {}, timeoutMs = 3500) {
+  const started = performance.now();
+  const body = await getJson(url, init, timeoutMs);
+  // Includes any wait for the bounded collector slot; not a claim about network RTT.
+  return { body, collectionMs: Math.round(performance.now() - started), readState: body[collectorFailure] || "ok" };
 }

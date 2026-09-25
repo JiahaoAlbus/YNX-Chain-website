@@ -1,14 +1,14 @@
 import React, { Suspense, lazy, useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import {
-  Activity, ArrowUpRight, ChevronDown, Bot, Box, Braces, CheckCircle2, CircleDollarSign, Clock3, Code2, Coins,
-  Database, Gauge, Landmark, Layers3, Network, Scale, Search, ShieldCheck, WalletCards
+  Activity, ArrowUpRight, ChevronDown, Box, CheckCircle2, Clock3, Code2, Coins,
+  Database, Gauge, Layers3, Network, Scale, Search, WalletCards
 } from "lucide-react";
 import { apiConfig, loadNetworkSnapshot, loadServiceHealth } from "./lib/api/ynxApi.js";
+import { networkConnectionState } from "./lib/networkConnectionState.js";
 import { WalletDownload } from "./components/WalletDownload.jsx";
 import { HeroPortal } from "./sections/HeroPortal.jsx";
 import { StatusCard } from "./components/StatusCard.jsx";
-import { ProductPanel } from "./components/ProductPanel.jsx";
 import { LinkGrid } from "./components/LinkGrid.jsx";
 import { SiteHeader } from "./components/SiteHeader.jsx";
 import { SiteFooter } from "./components/SiteFooter.jsx";
@@ -21,7 +21,6 @@ import { PageErrorBoundary } from "./components/PageErrorBoundary.jsx";
 import { getHomeCopy } from "./content/homeLocaleContent.js";
 import { getHomeRedesignCopy } from "./content/homeRedesignContent.js";
 import { getHomeEntryCopy } from "./content/homeEntryContent.js";
-import { HomeCommunity } from "./components/HomeCommunity.jsx";
 import { getContactCopy } from "./content/contactLocaleContent.js";
 import "./pages/ContactPage.css";
 import "./components/RuntimeLanguageNotice.css";
@@ -29,6 +28,8 @@ import "./styles.css";
 import "./redesign.css";
 
 const HomeExperience = lazyNamed(() => import("./components/HomeExperience.jsx"), "HomeExperience");
+const HomeCommunity = lazyNamed(() => import("./components/HomeCommunity.jsx"), "HomeCommunity");
+const HomeEcosystemPanels = lazyNamed(() => import("./components/HomeEcosystemPanels.jsx"), "HomeEcosystemPanels");
 
 const route = window.location.pathname.replace(/\/$/, "") || "/";
 const RoutedContent = lazyNamed(() => import("./pages/RoutedContent.jsx"), "RoutedContent");
@@ -63,17 +64,20 @@ function App() {
     if (route !== "/") return;
     let active = true;
     let inFlight = false;
-    let previousHeight = 0;
+    let previousSnapshot = null;
+    let fastAttempts = 0;
     let networkTimer = 0;
     let lastServiceCheck = 0;
     const refresh = async () => {
       const next = await loadNetworkSnapshot({ detailed: networkExpanded });
       if (!active) return;
-      const nextHeight = Number(next.status?.height || 0);
-      setHeightMoved(previousHeight > 0 && nextHeight > previousHeight);
-      previousHeight = Math.max(previousHeight, nextHeight);
-      setSnapshot(next);
-      setConnectionState(next.error || next.status?.error ? "error" : "live");
+      const awaitingSecondSample = previousSnapshot === null;
+      const observed = previousSnapshot ? await import("./lib/blockProgression.js").then(({ observeBlockProgression }) => observeBlockProgression(previousSnapshot, next), () => ({ ...next, ok: false, progressionVerified: false, degraded: true })) : next;
+      previousSnapshot = next;
+      setHeightMoved(observed.progressionVerified === true);
+      setSnapshot(observed);
+      setConnectionState(networkConnectionState(observed, awaitingSecondSample));
+      fastAttempts = observed.ok === true ? 0 : fastAttempts + 1;
     };
     const refreshServices = async () => {
       const next = await loadServiceHealth();
@@ -88,8 +92,9 @@ function App() {
       await refresh();
       if (active && ecosystemExpanded && Date.now() - lastServiceCheck >= 120000) await refreshServices();
       } finally { inFlight = false; }
-      if (active && !document.hidden) networkTimer = window.setTimeout(cycle, networkExpanded ? 15000 : 60000);
+      if (active && !document.hidden) networkTimer = window.setTimeout(cycle, observedInterval());
     };
+    const observedInterval = () => fastAttempts <= 2 ? 10000 : networkExpanded ? 15000 : 60000;
     const onVisibility = () => {
       window.clearTimeout(networkTimer);
       if (!document.hidden) networkTimer = window.setTimeout(cycle, 1000);
@@ -155,7 +160,6 @@ function App() {
   const { status = {}, summary = {}, validators = {}, evm = {} } = snapshot;
   const validatorRows = Array.isArray(validators.validators) ? validators.validators : [];
   const buildRelease = status.build?.release || t("checking");
-  const serviceState = (name) => services[name]?.ok === true ? "live" : services[name]?.error ? "status unavailable" : "checking";
 
   return (
     <>
@@ -178,7 +182,7 @@ function App() {
         })}</div>
         <details className="homeDisclosure ecosystemDirectory" onToggle={event => setEcosystemExpanded(event.currentTarget.open)}><summary>{copy.ecosystem.title}<ChevronDown size={20}/></summary>
         <div className="productGrid">
-          {[Layers3, Coins, Search, Bot, CircleDollarSign, ShieldCheck, Gauge, Braces, WalletCards, Landmark].map((Icon, index) => <ProductPanel key={copy.ecosystem.products[index].title} icon={<Icon />} {...copy.ecosystem.products[index]} status={index === 3 ? serviceState("ai") : index === 4 ? serviceState("pay") : index === 5 ? serviceState("trust") : index === 6 ? serviceState("resource") : index < 3 ? (snapshot.ok === true ? "live" : connectionState === "loading" ? "checking" : "status unavailable") : "reference"} href={[`${apiConfig.apiBase}/status`, "/testnet", apiConfig.explorerUrl, "/dapp/ai", "/dapp/pay", "/dapp/trust", "/dapp/resource", "/docs", "/#address", apiConfig.exchangeUrl][index]} />)}
+          <Suspense fallback={<p aria-busy="true">{t("checking")}</p>}><HomeEcosystemPanels items={copy.ecosystem.products} networkStatus={connectionState === "live" ? "live" : connectionState === "loading" ? "checking" : "status unavailable"} services={services} /></Suspense>
         </div>
         </details>
       </section>
@@ -261,7 +265,7 @@ function App() {
         <nav className="homeManualLinks" aria-label={getContactCopy(locale).docs}>{["manual", "api", "docs", "whitepaper"].map(key => <a key={key} href={`/${key}?lang=${encodeURIComponent(locale)}`}>{getContactCopy(locale)[key]}<ArrowUpRight size={18}/></a>)}</nav>
         <LinkGrid />
       </section>
-      <HomeCommunity />
+      <Suspense fallback={<div className="experienceLoading" aria-busy="true" />}><HomeCommunity /></Suspense>
       </main>
       <SiteFooter />
     </>

@@ -1,0 +1,99 @@
+.downloadHub.downloadPage { width: min(1314px, calc(100% - 48px)); padding: 24px 0 96px; }
+.downloadHubHeader { margin-bottom: 20px; }
+.downloadHubCrumb { display: flex; align-items: center; gap: 12px; margin: 0 0 25px; color: var(--muted); font-size: 12px; }
+.downloadHubCrumb a { color: var(--blue); text-decoration: none; }
+.downloadHubHeader h1 { margin: 0; color: var(--blue); font-size: clamp(34px, 3.1vw, 48px); font-weight: 770; letter-spacing: -.035em; line-height: 1.08; }
+.downloadHubHeader > p:last-child { margin: 8px 0 0; color: var(--muted); font-size: 16px; line-height: 1.55; }
+.downloadHubDiscovery { position: relative; margin-bottom: 18px; }
+.downloadHubSearch { min-height: 48px; display: flex; align-items: center; gap: 13px; padding: 0 16px; border: 1px solid rgba(0,47,167,.35); border-radius: 5px; color: var(--blue); background: var(--surface); }
+.downloadHubSearch:focus-within { outline: 2px solid var(--blue); outline-offset: 2px; }
+.downloadHubSearch input { flex: 1; width: 100%; min-width: 0; height: 46px; border: 0; outline: 0; color: var(--ink); background: transparent; font: inherit; font-size: 14px; }
+.downloadHubSearch input::placeholder { color: var(--muted); }
+.downloadHubCategories { display: flex; align-items: stretch; gap: 10px; margin-top: 14px; border-bottom: 1px solid rgba(0,47,167,.28); overflow-x: auto; scrollbar-width: thin; }
+.downloadHubCategories button { position: relative; flex: 0 0 auto; min-height: 50px; padding: 10px 15px; border: 0; color: var(--muted); background: transparent; font-size: 14px; font-weight: 700; white-space: nowrap; cursor: pointer; }
+.downloadHubCategories button:first-child { padding-inline-start: 12px; }
+.downloadHubCategories button.active, .downloadHubCategories button:hover { color: var(--blue); }
+.downloadHubCategories button.active::after { content: ""; position: absolute; inset-inline: 0; bottom: 0; height: 3px; background: var(--blue); }
+.downloadHubCategories span { margin-inline-start: 3px; }
+.downloadHubRefine { position: absolute; inset-inline-end: 0; bottom: 1px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; min-height: 49px; padding: 5px 0 0 8px; background: var(--surface); }
+.downloadHubRefine select { min-height: 33px; max-width: 118px; padding: 5px 22px 5px 8px; border: 1px solid var(--line); border-radius: 5px; color: var(--blue); background: var(--surface); font: 700 11px/1.2 inherit; }
+.downloadHubRefine p { margin: 0 0 0 auto; color: var(--muted); font-size: 12px; }
+.downloadHubRefine p strong { color: var(--blue); }
+.downloadHubRefine button { min-height: 33px; padding: 6px 10px; border: 1px solid var(--line); border-radius: 5px; color: var(--blue); background: var(--surface); font-size: 12px; font-weight: 700; cursor: pointer; }
+.downloadHubFeature { min-height: 122px; display: grid; grid-template-columns: minmax(240px, 1.02fr) minmax(320px, 1.7fr) 188px; gap: 0; align-items: center; padding: 14px 16px; border: 1px solid rgba(0,47,167,.27); border-radius: 5px; color: var(--ink); background: var(--surface); box-shadow: 0 4px 18px rgba(0,47,167,.035); }
+.downloadHubFeatureIdentity { min-width: 0; display: grid; grid-template-columns: 70px minmax(0,1fr); align-items: center; gap: 16px; padding-inline-end: 18px; }
+.downloadHubFeatureIcon { width: 70px; height: 70px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 13px; color: var(--blue); background: var(--surface-raised); }
+.downloadHubFeatureIdentity .appState { font-size: 10px; }
+.downloadHubFeatureIdentity h2 { margin: 3px 0; color: var(--blue); font-size: 22px; line-height: 1.15; }
+.downloadHubFeatureIdentity p { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; margin: 4px 0 0; color: var(--muted); font-size: 12px; line-height: 1.45; }
+.downloadHubFeatureChoices { min-width: 0; padding: 4px 24px; border-inline: 1px solid var(--line); }
+.downloadHubFeatureChoices > strong { display: block; margin-bottom: 7px; color: var(--muted); font-size: 12px; font-weight: 700; }
+.downloadHubFeatureChoices > p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.5; }
+.downloadHubPackageLinks { display: flex; flex-wrap: wrap; gap: 6px; }
+.downloadHubPackageLinks a { min-height: 35px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 7px 9px; border: 1px solid rgba(0,47,167,.3); border-radius: 4px; color: var(--blue); background: var(--surface); font-size: 11px; font-weight: 700; text-decoration: none; white-space: nowrap; }
+.downloadHubPackageLinks a:hover { border-color: var(--blue); background: var(--soft); }
+.downloadHubPackageLinks .downloadHubWebLink { border-color: var(--blue); color: var(--blue); background: var(--soft); }
+.downloadHubPackageLinks svg { flex: 0 0 auto; }
+.downloadHubFeatureActions { display: grid; gap: 7px; padding-inline-start: 16px; }
+.downloadHubFeatureActions a { min-height: 39px; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 8px 9px; border: 1px solid var(--blue); border-radius: 4px; color: var(--blue); background: var(--surface); font-size: 11px; font-weight: 750; text-align: center; text-decoration: none; }
+.downloadHubFeatureActions .downloadHubPrimary { color: white; background: var(--blue); }
+.downloadHubFeatureActions a:hover { background: var(--soft); }
+.downloadHubFeatureActions .downloadHubPrimary:hover { background: var(--blue-dark); }
+.downloadHubGrid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); margin-top: 16px; border-top: 1px solid var(--line); border-inline-start: 1px solid var(--line); }
+.downloadHubTile { min-width: 0; min-height: 114px; display: grid; grid-template-rows: 36px auto auto; align-content: center; justify-items: start; gap: 2px; padding: 13px 18px; border: 0; border-inline-end: 1px solid var(--line); border-bottom: 1px solid var(--line); color: var(--blue); background: var(--surface); text-align: start; cursor: pointer; }
+.downloadHubTile:hover, .downloadHubTile.selected { background: var(--soft); }
+.downloadHubTile.selected { box-shadow: inset 0 -3px var(--blue); }
+.downloadHubTile svg { width: 31px; height: 31px; }
+.downloadHubTile strong { max-width: 100%; overflow: hidden; text-overflow: ellipsis; color: var(--blue); font-size: 14px; line-height: 1.2; white-space: nowrap; }
+.downloadHubTile span { width: 100%; overflow: hidden; color: var(--muted); font-size: 11px; line-height: 1.35; text-overflow: ellipsis; white-space: nowrap; }
+.downloadHubNoResults { min-height: 160px; display: grid; justify-items: center; align-content: center; gap: 6px; padding: 20px; border: 1px solid var(--line); text-align: center; }
+.downloadHubNoResults :is(h2,p) { margin: 0; }
+.downloadHubNoResults svg { color: var(--blue); }
+.downloadHubNoResults h2 { font-size: 19px; }
+.downloadHubNoResults p { color: var(--muted); font-size: 13px; }
+.downloadHubNoResults button { margin-top: 6px; min-height: 40px; border: 1px solid var(--blue); border-radius: 5px; color: var(--blue); background: var(--surface); cursor: pointer; }
+.downloadHubDetails { margin-top: 20px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.downloadHubDetails > summary { min-height: 52px; display: flex; align-items: center; justify-content: space-between; gap: 12px; color: var(--blue); font-size: 13px; font-weight: 750; cursor: pointer; list-style: none; }
+.downloadHubDetails > summary::-webkit-details-marker { display: none; }
+.downloadHubDetails > summary svg { transition: transform .2s; }
+.downloadHubDetails[open] > summary svg { transform: rotate(90deg); }
+.downloadHubDetailsBody { padding: 0 0 20px; }
+.downloadHubDetailsBody > p { margin: 0 0 14px; color: var(--muted); font-size: 13px; }
+.downloadHubDetailsBody .downloadList { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; padding: 0; list-style: none; }
+.downloadHubDetailsBody .downloadItem { min-width: 0; }
+.downloadHubDetailsBody > .textLink { display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; color: var(--blue); }
+.downloadHub[dir="rtl"] .downloadHubRefine p { margin-inline-start: auto; margin-inline-end: 0; }
+@media (max-width: 1350px) {
+  .downloadHubRefine { position: static; padding: 8px 0 0; }
+}
+@media (max-width: 1100px) {
+  .downloadHubRefine select { max-width: 170px; }
+  .downloadHubFeature { grid-template-columns: minmax(210px, 1fr) minmax(260px, 1.4fr); }
+  .downloadHubFeatureActions { grid-column: 1 / -1; grid-template-columns: repeat(2, minmax(0,1fr)); padding: 12px 0 0; }
+  .downloadHubGrid { grid-template-columns: repeat(4, minmax(0,1fr)); }
+}
+@media (max-width: 720px) {
+  .downloadHub.downloadPage { width: calc(100% - 36px); padding-top: 18px; }
+  .downloadHubCrumb { margin-bottom: 20px; }
+  .downloadHubHeader > p:last-child { font-size: 14px; }
+  .downloadHubCategories { flex-wrap: wrap; gap: 3px; overflow: visible; }
+  .downloadHubCategories button { min-height: 45px; padding-inline: 10px; font-size: 12px; }
+  .downloadHubRefine { align-items: stretch; }
+  .downloadHubRefine label { flex: 1 1 130px; }
+  .downloadHubRefine select { width: 100%; max-width: none; }
+  .downloadHubRefine p { order: 3; width: 100%; margin: 0; }
+  .downloadHubFeature { grid-template-columns: 1fr; padding: 14px; }
+  .downloadHubFeatureIdentity { padding-inline-end: 0; }
+  .downloadHubFeatureChoices { margin-top: 14px; padding: 14px 0; border-inline: 0; border-block: 1px solid var(--line); }
+  .downloadHubFeatureActions { grid-column: 1; }
+  .downloadHubGrid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .downloadHubTile { min-height: 108px; padding: 12px; }
+  .downloadHubDetailsBody .downloadList { grid-template-columns: 1fr; }
+}
+@media (max-width: 410px) {
+  .downloadHubFeatureIdentity { grid-template-columns: 52px minmax(0,1fr); gap: 10px; }
+  .downloadHubFeatureIcon { width: 52px; height: 52px; }
+  .downloadHubFeatureIcon svg { width: 27px; }
+  .downloadHubFeatureActions { grid-template-columns: 1fr; }
+  .downloadHubTile span { white-space: normal; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+}
