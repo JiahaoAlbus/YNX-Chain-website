@@ -257,20 +257,23 @@ export const WALLET_PREVIOUS_CANONICAL_DOWNLOADS = Object.fromEntries(Object.ent
   }];
 }));
 
+const WEB_013_SHA = "5c6ff4c16805965aa86febdc6a9f7a812ea2d1e9c8fa556611dafeadfb2e707b";
+const WEB_013_FILE = "ynx-wallet-chrome-edge-0.1.3.zip";
+const WEB_013_TAG = "wallet-web-testnet-preview-0.1.3-31f3ef16d";
 export const WALLET_WEB_013_CHROME_EDGE = {
   ...WALLET_PREVIOUS_CANONICAL_DOWNLOADS.chromeEdge,
   id: "web-chromium-31f3ef16d",
   version: "0.1.3-testnet-preview.1",
-  artifactPath: "ynx-wallet-chrome-edge-0.1.3.zip",
+  artifactPath: WEB_013_FILE,
   sizeBytes: 584777,
-  sha256: "5c6ff4c16805965aa86febdc6a9f7a812ea2d1e9c8fa556611dafeadfb2e707b",
+  sha256: WEB_013_SHA,
   sourceCommit: "31f3ef16d3812870e0c3d23350565fd592482227",
-  publicUrl: "https://www.ynxweb4.com/downloads/wallet-web/sha256-5c6ff4c16805965aa86febdc6a9f7a812ea2d1e9c8fa556611dafeadfb2e707b/ynx-wallet-chrome-edge-0.1.3.zip",
-  releaseBatch: "wallet-web-testnet-preview-0.1.3-31f3ef16d",
-  releaseTag: "wallet-web-testnet-preview-0.1.3-31f3ef16d",
-  previewManifest: "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-web-testnet-preview-0.1.3-31f3ef16d/artifact-manifest.json",
+  publicUrl: `https://www.ynxweb4.com/downloads/wallet-web/sha256-${WEB_013_SHA}/${WEB_013_FILE}`,
+  releaseBatch: WEB_013_TAG,
+  releaseTag: WEB_013_TAG,
+  previewManifest: `https://github.com/JiahaoAlbus/YNX-Chain/releases/download/${WEB_013_TAG}/artifact-manifest.json`,
   publicationEvidence: "/releases/wallet-web/20260925-wallet-web-testnet-preview-31f3ef16d.json",
-  installProof: "This ZIP passed public Finance wallet connection, rejection, disconnect, refresh and revoke in Chrome and Edge. Private Gateway and store release remain unverified.",
+  installProof: "Chrome and Edge passed public Finance wallet QA with this ZIP. Private Gateway and store release remain unverified.",
   signingClass: "unsigned unpacked Chrome/Edge extension; not browser-store released",
   fullInstalledE2E: false,
   newWalletGoalsAccepted: false,

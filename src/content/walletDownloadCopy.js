@@ -394,10 +394,10 @@ for (const [locale, copy] of Object.entries(WALLET_DOWNLOAD_COPY)) {
   copy.browser012Proof = locale === "zh-CN" ? "同一 ZIP 已在隔离环境的 Chrome 151 与 Edge 153 通过连接、拒绝、刷新和撤销；Chrome 对公开 Finance 的标准钱包连接、断开及撤销亦通过。不代表商店安装或完整 Wallet 验收。"
     : locale === "zh-TW" ? "同一 ZIP 已在隔離環境的 Chrome 151 與 Edge 153 通過連線、拒絕、重新整理和撤銷；Chrome 對公開 Finance 的標準錢包連線、斷開及撤銷亦通過。不代表商店安裝或完整 Wallet 驗收。"
     : "The same ZIP passed isolated Chrome 151 and Edge 153 connect, reject, refresh and revoke checks; public Finance standard Wallet connect, disconnect and revoke also passed in Chrome. No store install or complete Wallet acceptance is claimed.";
-  copy.browser013Boundary = locale === "zh-CN" ? "Chrome/Edge 0.1.3 测试网预览版，需手动安装，未上架商店。请核对 SHA-256；真实私有授权未验证。"
-    : locale === "zh-TW" ? "Chrome/Edge 0.1.3 測試網預覽版，需手動安裝，未上架商店。請核對 SHA-256；真實私人授權未驗證。"
-    : "Chrome/Edge 0.1.3 Testnet Preview; manual install, not in stores. Verify SHA-256. Live private authorization is unverified.";
-  copy.browser013Proof = locale === "zh-CN" ? "同一 ZIP 在 Chrome 和 Edge 均通过公开 Finance 的连接、拒绝、断开、刷新和撤权测试；不代表真实私有服务可用。"
-    : locale === "zh-TW" ? "同一 ZIP 在 Chrome 和 Edge 均通過公開 Finance 的連線、拒絕、斷開、重新整理和撤權測試；不代表真實私人服務可用。"
-    : "The same ZIP passed public Finance connect, reject, disconnect, refresh and revoke in Chrome and Edge. Live private services are unverified.";
+  copy.browser013Boundary = locale === "zh-CN" ? "Chrome/Edge 0.1.3 测试网预览版，未上架商店；请核对 SHA-256。"
+    : locale === "zh-TW" ? "Chrome/Edge 0.1.3 測試網預覽版，未上架商店；請核對 SHA-256。"
+    : "Chrome/Edge 0.1.3 Testnet Preview, not in stores. Verify SHA-256.";
+  copy.browser013Proof = locale === "zh-CN" ? "Chrome 和 Edge 的公开 Finance 钱包测试已通过；真实私有授权未验证。"
+    : locale === "zh-TW" ? "Chrome 和 Edge 的公開 Finance 錢包測試已通過；真實私人授權未驗證。"
+    : "Public Finance wallet QA passed in Chrome and Edge; live private authorization is unverified.";
 }
