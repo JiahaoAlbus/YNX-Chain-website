@@ -72,6 +72,20 @@ async function networkFirst(request, reload = false) {
     }
     return response;
   } catch {
-    return (await ownCachedResponse(request)).response || Response.error();
+    const cached = (await ownCachedResponse(request)).response;
+    if (!cached) return Response.error();
+    return request.mode === "navigate" ? markCachedNavigation(cached) : cached;
   }
+}
+
+async function markCachedNavigation(response) {
+  const html = await response.text();
+  const marker = '<meta name="ynx-cached-navigation" content="true">';
+  const marked = /<head(?:\s[^>]*)?>/i.test(html)
+    ? html.replace(/<head(?:\s[^>]*)?>/i, match => `${match}${marker}`)
+    : `${marker}${html}`;
+  const headers = new Headers(response.headers);
+  for (const key of ["content-length", "content-encoding", "etag", "last-modified"]) headers.delete(key);
+  headers.set("X-YNX-Cached-Navigation", "1");
+  return new Response(marked, { status: response.status, statusText: response.statusText, headers });
 }

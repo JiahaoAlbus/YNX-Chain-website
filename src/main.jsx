@@ -22,6 +22,8 @@ import { getHomeCopy } from "./content/homeLocaleContent.js";
 import { getHomeRedesignCopy } from "./content/homeRedesignContent.js";
 import { getHomeEntryCopy } from "./content/homeEntryContent.js";
 import { getContactCopy } from "./content/contactLocaleContent.js";
+import { getCachedNavigationCopy } from "./content/cachedNavigationCopy.js";
+import { isCachedNavigation } from "./lib/cachedNavigation.js";
 import "./pages/ContactPage.css";
 import "./components/RuntimeLanguageNotice.css";
 import "./styles.css";
@@ -150,10 +152,12 @@ function App() {
 
   const loadingNotice = getRuntimeLoadingNotice(locale);
   const languageNotice = copyLoadFailed ? <aside className="runtimeLanguageNotice" role="status"><p>{loadingNotice[0]}</p><button type="button" className="button secondary" onClick={() => window.location.reload()}>{loadingNotice[1]}</button></aside> : null;
+  const cachedNavigationCopy = getCachedNavigationCopy(locale);
+  const cachedNavigationNotice = isCachedNavigation() ? <aside className="cachedNavigationNotice" role="status" aria-live="polite"><div><strong>{cachedNavigationCopy[0]}</strong><p>{cachedNavigationCopy[1]}</p></div><button type="button" className="button secondary" onClick={() => window.location.reload()}>{cachedNavigationCopy[2]}</button></aside> : null;
 
   if (route !== "/") {
     const page = <RoutedContent route={route} copy={copy} />;
-    return <><SiteHeader /><div id="main-content" tabIndex={-1}>{languageNotice}<Suspense fallback={<RouteLoading copy={copy.utility.loading} />}>{page}</Suspense></div><SiteFooter /></>;
+    return <><SiteHeader /><div id="main-content" tabIndex={-1}>{cachedNavigationNotice}{languageNotice}<Suspense fallback={<RouteLoading copy={copy.utility.loading} />}>{page}</Suspense></div><SiteFooter /></>;
   }
 
   const design = getHomeRedesignCopy(locale);
@@ -165,6 +169,7 @@ function App() {
     <>
       <SiteHeader networkRequest={networkRequest} />
       <main id="main-content" tabIndex={-1}>
+      {cachedNavigationNotice}
       {languageNotice}
       <HeroPortal snapshot={snapshot} connectionState={connectionState} onAddNetwork={() => setNetworkRequest((request) => request + 1)} />
 

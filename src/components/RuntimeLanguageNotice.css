@@ -2,3 +2,8 @@
 .runtimeLanguageNotice p { margin: 0; font-size: 12px; line-height: 1.5; }
 .runtimeLanguageNotice .button { flex: 0 0 auto; min-height: 44px; font-size: 12px; background: #fff; color: #002fa7; border-color: #002fa7; }
 @media (max-width: 640px) { .runtimeLanguageNotice { flex-wrap: wrap; gap: 8px; padding: 12px; } }
+.cachedNavigationNotice { display: flex; align-items: center; justify-content: space-between; gap: 16px; width: min(1160px, calc(100% - 32px)); margin: 24px auto 0; padding: 14px 16px; border: 1px solid #002fa75c; border-radius: 8px; background: #f2f6ff; color: #002779; }
+.cachedNavigationNotice strong { display: block; font-size: 13px; }
+.cachedNavigationNotice p { margin: 4px 0 0; font-size: 12px; line-height: 1.5; }
+.cachedNavigationNotice .button { flex: 0 0 auto; min-height: 44px; font-size: 12px; background: #fff; color: #002fa7; border-color: #002fa7; }
+@media (max-width: 640px) { .cachedNavigationNotice { flex-wrap: wrap; gap: 8px; padding: 12px; } }
