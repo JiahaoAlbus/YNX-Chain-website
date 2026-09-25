@@ -4,6 +4,7 @@ import { getCatalog, STATUS_CONFIG, DOWNLOAD_LABELS, PRODUCT_STATUS } from "../l
 import { getProductPublicContract, getProductPublicDisplayStatus, productSectionRoute } from "../lib/productPublicContract.js";
 import { useLocale } from "../lib/i18n.jsx";
 import { getAppsCopy } from "../content/businessLocaleContent.js";
+import { localizeCardProduct } from "../content/cardPublicCopy.js";
 
 const categories = [
   {
@@ -56,10 +57,11 @@ function renderProductLink({ label, href, external }, notReady = "Not ready") {
 export function AppsPage() {
   const { locale } = useLocale();
   const copy = getAppsCopy(locale);
-  const catalog = useMemo(() => getCatalog().map((product) => {
+  const catalog = useMemo(() => getCatalog().map((source) => {
+    const product = localizeCardProduct(source, locale);
     const publicContract = getProductPublicContract(product);
     return { ...product, publicContract, publicStatus: getProductPublicDisplayStatus(publicContract) };
-  }), []);
+  }), [locale]);
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("all");
   const [status, setStatus] = useState("all");

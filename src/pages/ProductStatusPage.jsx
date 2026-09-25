@@ -18,6 +18,7 @@ import { PRODUCT_UI_COPY, PRODUCT_SECTION_LABEL_KEYS } from "../content/productU
 import { ProductDownloads } from "../components/ProductDownloads.jsx";
 import { WALLET_DOWNLOAD_PLATFORMS, walletDownloadLabel, walletDownloadState } from "../lib/walletDownloads.js";
 import { WALLET_DOWNLOAD_COPY } from "../content/walletDownloadCopy.js";
+import { localizeCardProduct } from "../content/cardPublicCopy.js";
 
 const platformOrder = ["web", "pwa", "chromeEdge", "firefox", "android", "ios", "macos", "windows", "windowsX64", "windowsArm64", "linux"];
 
@@ -92,6 +93,7 @@ function SectionPage({ product, contract, sectionId, guide, copy, locale }) {
 
 export function ProductStatusPage({ product, sectionId = "overview", article, artifact }) {
   const { locale } = useLocale();
+  product = localizeCardProduct(product, locale);
   const copy = PRODUCT_UI_COPY[locale] || PRODUCT_UI_COPY.en;
   const localeState = useLocalizedDocs(locale);
   const localizedArticle = article ? localeState.articles.find((candidate) => candidate.route === article.route) : null;

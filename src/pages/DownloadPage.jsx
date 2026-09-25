@@ -11,6 +11,7 @@ import { getDownloadDirectoryProduct } from "../lib/downloadDirectory.js";
 import { WALLET_DOWNLOAD_PLATFORMS, walletDownloadLabel, walletDownloadState } from "../lib/walletDownloads.js";
 import { PRODUCT_UI_COPY } from "../content/productUiCopy.js";
 import { WALLET_DOWNLOAD_COPY } from "../content/walletDownloadCopy.js";
+import { localizeCardProduct } from "../content/cardPublicCopy.js";
 
 function formatBytes(bytes, locale) {
   if (!Number.isFinite(Number(bytes))) return null;
@@ -62,7 +63,7 @@ export function DownloadPage() {
   const [query, setQuery] = useState("");
   const [availability, setAvailability] = useState("all");
   const filterCopy = copy.filters;
-  const catalog = getCatalog().map(getDownloadDirectoryProduct).filter(product =>
+  const catalog = getCatalog().map(product => getDownloadDirectoryProduct(localizeCardProduct(product, locale))).filter(product =>
     product.name.toLowerCase().includes(query.trim().toLowerCase()) &&
     (availability === "all" || (availability === "web" ? Boolean(product.downloads.web?.href) : product.hasDownload))
   );
