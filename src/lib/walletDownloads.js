@@ -35,7 +35,7 @@ export function walletDownloadState(platform, item, registryAllowsDownloads = tr
   const macosPreview = item?.releaseBatch === "wallet-static-20260906-r6-macos";
   const androidUniversal = item?.releaseBatch === "wallet-static-20260906-r7-android-universal";
   const androidPreview = item?.releaseBatch === "wallet-static-20260906-r5-android";
-  const browserPreview = ["wallet-static-20260906-r4c-browser", "wallet-web-testnet-preview-0.1.1-c93e16be8"].includes(item?.releaseBatch);
+  const browserPreview = ["wallet-static-20260906-r4c-browser", "wallet-web-testnet-preview-0.1.1-c93e16be8", "wallet-web-testnet-preview-0.1.2-767a05d56"].includes(item?.releaseBatch);
   const desktopPreview = item?.releaseBatch === "wallet-static-20260906-r9-desktop-065";
   const requirements = desktop068 && platform === "macos" ? "macOS 13+ · Apple Silicon / Intel · DMG" : androidCurrent ? "Android · 4 ABI · standalone APK" : androidUniversal ? "Android · arm64-v8a / armeabi-v7a / x86 / x86_64 · APK" : macosPreview ? "macOS · Apple Silicon / Intel · DMG" : androidPreview ? "Android · ARM64 · APK" : browserPreview ? platform === "pwa" ? "ZIP" : "Chrome / Edge · Chromium" : {
     android: "Android 7.0+ (API 24)", macos: "macOS 13+ · Apple Silicon / Intel",

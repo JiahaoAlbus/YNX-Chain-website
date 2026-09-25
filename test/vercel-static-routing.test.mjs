@@ -42,11 +42,14 @@ test('Vercel uses the lockfile-exact install without bypassing source identity g
   assert.doesNotMatch(identityGate, /git (?:reset|clean|checkout)/);
 });
 
-test('current Wallet Web content paths bind c93 release assets while prior paths remain available for rollback', () => {
+test('current Wallet Web paths promote only exact Chrome/Edge 0.1.2 and retain 0.1.1 rollback paths', () => {
   const current = [
+    ['35a1755777ab0c7472c1a81910f9e127f81d19d5e387238a7e0ef6afc1f1cafb', 'ynx-wallet-chrome-edge-0.1.2.zip'],
+  ];
+  const retained = [
     ['6e7e6dd17e9e729a44ed915e46433124c1a3794e06a0d072c55097084cc45e13', 'ynx-wallet-web-pwa-0.1.1.zip'],
     ['09066d82a94cb6b8108120f980ab2cc40c42dc830ffce166529cbd570eb6a6b2', 'ynx-wallet-chrome-edge-0.1.1.zip'],
-    ['6ac256415c34b4b492dc6094be8be8c9f0acf6a40653e2e18fde64dd20f801e0', 'ynx-wallet-firefox-0.1.1.zip'],
+    ['6ac256415c34b4b492dc6094be8be8c9f0acf6a40653e2e18fde64dd20f801e0', 'ynx-wallet-firefox-0.1.1.zip']
   ];
   const previous = [
     ['ed841dd13d04d9fe3b335c040d6859cd59326432376d4390943b573920786186', 'ynx-wallet-web-pwa-0.1.1.zip'],
@@ -55,6 +58,10 @@ test('current Wallet Web content paths bind c93 release assets while prior paths
   ];
   const bySource = new Map(configuration.rewrites.map((rewrite) => [rewrite.source, rewrite.destination]));
   for (const [sha256, filename] of current) assert.equal(
+    bySource.get(`/downloads/wallet-web/sha256-${sha256}/${filename}`),
+    `https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-web-testnet-preview-0.1.2-767a05d56/${filename}`,
+  );
+  for (const [sha256, filename] of retained) assert.equal(
     bySource.get(`/downloads/wallet-web/sha256-${sha256}/${filename}`),
     `https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-web-testnet-preview-0.1.1-c93e16be8/${filename}`,
   );

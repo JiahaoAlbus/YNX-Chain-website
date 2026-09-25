@@ -468,6 +468,10 @@
       "destination": "https://dyggjsbxsiew8l6u.public.blob.vercel-storage.com/downloads/wallet/sha256-8cf24d83dd5da5851484eab14ce9e6cd16946c95699a7af1e11048bbd7692bea/ynx-wallet-desktop-0.1.0-x86_64.rpm"
     },
     {
+      "source": "/downloads/wallet-web/sha256-35a1755777ab0c7472c1a81910f9e127f81d19d5e387238a7e0ef6afc1f1cafb/ynx-wallet-chrome-edge-0.1.2.zip",
+      "destination": "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-web-testnet-preview-0.1.2-767a05d56/ynx-wallet-chrome-edge-0.1.2.zip"
+    },
+    {
       "source": "/downloads/wallet-web/sha256-6e7e6dd17e9e729a44ed915e46433124c1a3794e06a0d072c55097084cc45e13/ynx-wallet-web-pwa-0.1.1.zip",
       "destination": "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-web-testnet-preview-0.1.1-c93e16be8/ynx-wallet-web-pwa-0.1.1.zip"
     },

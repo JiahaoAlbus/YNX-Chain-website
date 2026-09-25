@@ -1,8 +1,9 @@
-import { WALLET_CANONICAL_DOWNLOADS } from "./walletCanonicalDownloads.js";
+import { WALLET_CANONICAL_DOWNLOADS, WALLET_PREVIOUS_CANONICAL_DOWNLOADS } from "./walletCanonicalDownloads.js";
 
 // Immutable published artifacts. Historical previews are not current Wallet acceptance.
 export const publishedDownloadPaths = [
   ...Object.values(WALLET_CANONICAL_DOWNLOADS).map(artifact => artifact.publicUrl),
+  WALLET_PREVIOUS_CANONICAL_DOWNLOADS.chromeEdge.publicUrl,
   "https://www.ynxweb4.com/downloads/wallet-web/sha256-6ac256415c34b4b492dc6094be8be8c9f0acf6a40653e2e18fde64dd20f801e0/ynx-wallet-firefox-0.1.1.zip",
   "/downloads/wallet/sha256-21db36f1c80d4e88520918de141a7f71921817799270ff671db88179023b5591/ynx-wallet-cli-darwin-arm64.gz",
   "/downloads/wallet/sha256-43dfe20665c62f0c963f0d06dc6fca9800d49543b613678a76988879537924c5/ynx-wallet-1.0.0-testnet-preview-8e8d5644-local-test-signed.apk",
@@ -27,6 +28,12 @@ export const publishedDownloadPaths = [
 
 export const publishedDownloadMetadata = {
   ...Object.fromEntries(Object.values(WALLET_CANONICAL_DOWNLOADS).map(artifact => [artifact.publicUrl, artifact])),
+  [WALLET_PREVIOUS_CANONICAL_DOWNLOADS.chromeEdge.publicUrl]: {
+    ...WALLET_PREVIOUS_CANONICAL_DOWNLOADS.chromeEdge,
+    canonicalDownload: false,
+    historicalPreview: true,
+    downloadApproved: false
+  },
   "https://www.ynxweb4.com/downloads/wallet-web/sha256-6ac256415c34b4b492dc6094be8be8c9f0acf6a40653e2e18fde64dd20f801e0/ynx-wallet-firefox-0.1.1.zip": {
     "publicUrl": "https://www.ynxweb4.com/downloads/wallet-web/sha256-6ac256415c34b4b492dc6094be8be8c9f0acf6a40653e2e18fde64dd20f801e0/ynx-wallet-firefox-0.1.1.zip",
     "version": "0.1.1-testnet-preview.1",
