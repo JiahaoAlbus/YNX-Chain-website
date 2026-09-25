@@ -3,6 +3,7 @@ import importlib.util
 import json
 import tempfile
 import unittest
+import urllib.request
 from pathlib import Path
 from unittest.mock import patch
 
@@ -22,6 +23,7 @@ class PublicReadbackTests(unittest.TestCase):
         readback.ENTRY = "index-AbCdEf12.js"
         readback.COPY_SHA256 = "c" * 64
         readback.WORKFLOW_SHA = self.source
+        readback.PREVIEW_URL = ""
         readback.result["checks"] = []
 
     def response(self, body, content_type):
@@ -75,6 +77,53 @@ class PublicReadbackTests(unittest.TestCase):
                 self.assertEqual(readback.main(), 1)
                 saved = json.loads((Path(directory) / "result.json").read_text())
         self.assertEqual(saved["checks"][0]["error"]["kind"], "INVALID_SOURCE_IDENTITY")
+
+    def test_preview_target_is_exact_and_rejects_credentials_or_other_hosts(self):
+        good = "https://ynx-web4-website-d0t0a0d7u-jiahaoalbus-projects.vercel.app"
+        self.assertTrue(readback.valid_preview_url(good))
+        for bad in [
+            "http://ynx-web4-website-d0t0a0d7u-jiahaoalbus-projects.vercel.app",
+            "https://ynx-web4-website-d0t0a0d7u-jiahaoalbus-projects.vercel.app.evil.test",
+            "https://user:pass@ynx-web4-website-d0t0a0d7u-jiahaoalbus-projects.vercel.app",
+            "https://ynx-web4-website-d0t0a0d7u-jiahaoalbus-projects.vercel.app/api/other",
+            "https://ynx-web4-website-d0t0a0d7u-jiahaoalbus-projects.vercel.app/?token=secret",
+            "https://ynx-web4-website-d0t0a0d7u-jiahaoalbus-projects.vercel.app:bad",
+        ]:
+            self.assertFalse(readback.valid_preview_url(bad))
+
+    def test_preview_redirect_cannot_leave_exact_identity_endpoint(self):
+        host = "https://ynx-web4-website-d0t0a0d7u-jiahaoalbus-projects.vercel.app"
+        readback.PREVIEW_URL = host
+        handler = readback.StrictRedirect()
+        request = urllib.request.Request(host + "/api/build-identity")
+        with self.assertRaisesRegex(ValueError, "UNAPPROVED_REDIRECT"):
+            handler.redirect_request(request, None, 302, "Found", {}, "https://www.ynxweb4.com/api/build-identity")
+        with self.assertRaisesRegex(ValueError, "UNAPPROVED_REDIRECT"):
+            handler.redirect_request(request, None, 302, "Found", {}, host + "/other")
+        self.assertEqual(handler.redirect_request(request, None, 302, "Found", {}, host + "/api/build-identity").full_url,
+                         host + "/api/build-identity")
+
+    def test_preview_mode_performs_only_one_identity_check(self):
+        host = "https://ynx-web4-website-d0t0a0d7u-jiahaoalbus-projects.vercel.app"
+        readback.PREVIEW_URL = host
+        body = json.dumps({"schemaVersion": "ynx.website.build-identity.v1", "sourceCommit": self.source,
+                           "sourceTree": self.tree, "chainId": 6423}).encode()
+        with tempfile.TemporaryDirectory() as directory:
+            with patch.object(readback, "RESULT_PATH", Path(directory) / "result.json"), \
+                 patch.object(readback, "get", return_value=self.response(body, "application/json")) as getter:
+                self.assertEqual(readback.main(), 0)
+                saved = json.loads((Path(directory) / "result.json").read_text())
+        self.assertEqual([check["name"] for check in saved["checks"]], ["preview-build-identity"])
+        getter.assert_called_once_with(host + "/api/build-identity", 16384)
+
+    def test_malformed_preview_port_writes_failure_without_network(self):
+        readback.PREVIEW_URL = "https://ynx-web4-website-d0t0a0d7u-jiahaoalbus-projects.vercel.app:bad"
+        with tempfile.TemporaryDirectory() as directory:
+            with patch.object(readback, "RESULT_PATH", Path(directory) / "result.json"), \
+                 patch.object(readback, "get", side_effect=AssertionError("network attempted")):
+                self.assertEqual(readback.main(), 1)
+                saved = json.loads((Path(directory) / "result.json").read_text())
+        self.assertEqual(saved["checks"][0]["error"]["kind"], "INVALID_PREVIEW_TARGET")
 
 
 if __name__ == "__main__":
