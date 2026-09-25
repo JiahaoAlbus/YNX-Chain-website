@@ -394,10 +394,10 @@ for (const [locale, copy] of Object.entries(WALLET_DOWNLOAD_COPY)) {
   copy.browser012Proof = locale === "zh-CN" ? "同一 ZIP 已在隔离环境的 Chrome 151 与 Edge 153 通过连接、拒绝、刷新和撤销；Chrome 对公开 Finance 的标准钱包连接、断开及撤销亦通过。不代表商店安装或完整 Wallet 验收。"
     : locale === "zh-TW" ? "同一 ZIP 已在隔離環境的 Chrome 151 與 Edge 153 通過連線、拒絕、重新整理和撤銷；Chrome 對公開 Finance 的標準錢包連線、斷開及撤銷亦通過。不代表商店安裝或完整 Wallet 驗收。"
     : "The same ZIP passed isolated Chrome 151 and Edge 153 connect, reject, refresh and revoke checks; public Finance standard Wallet connect, disconnect and revoke also passed in Chrome. No store install or complete Wallet acceptance is claimed.";
-  copy.browser013Boundary = locale === "zh-CN" ? "Chrome/Edge 0.1.3 测试网预览，未上架；核对 SHA-256。"
-    : locale === "zh-TW" ? "Chrome/Edge 0.1.3 測試網預覽，未上架；核對 SHA-256。"
-    : "Chrome/Edge 0.1.3 Testnet Preview, not in stores. Check SHA-256.";
-  copy.browser013Proof = locale === "zh-CN" ? "Chrome/Edge Finance 测试通过；私有授权未验证。"
-    : locale === "zh-TW" ? "Chrome/Edge Finance 測試通過；私人授權未驗證。"
-    : "Finance wallet QA passed in Chrome and Edge; private access unverified.";
+  copy.browser013Boundary = locale === "zh-CN" ? "0.1.3 测试网预览，未上架；核对 SHA-256。"
+    : locale === "zh-TW" ? "0.1.3 測試網預覽，未上架；核對 SHA-256。"
+    : "0.1.3 Testnet Preview; not in stores. Check SHA-256.";
+  copy.browser013Proof = locale === "zh-CN" ? "Chrome/Edge Finance 测试通过；私有服务未验证。"
+    : locale === "zh-TW" ? "Chrome/Edge Finance 測試通過；私人服務未驗證。"
+    : "Chrome/Edge Finance QA passed; private services unverified.";
 }

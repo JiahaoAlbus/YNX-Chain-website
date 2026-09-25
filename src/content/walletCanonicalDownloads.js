@@ -273,7 +273,7 @@ export const WALLET_WEB_013_CHROME_EDGE = {
   releaseTag: WEB_013_TAG,
   previewManifest: `https://github.com/JiahaoAlbus/YNX-Chain/releases/download/${WEB_013_TAG}/artifact-manifest.json`,
   publicationEvidence: "/releases/wallet-web/20260925-wallet-web-testnet-preview-31f3ef16d.json",
-  installProof: "Chrome and Edge passed public Finance wallet QA. Private Gateway and store release are unverified.",
+  installProof: "Chrome/Edge public Finance QA passed; private Gateway and stores unverified.",
   signingClass: "unsigned unpacked Chrome/Edge extension; not browser-store released",
   fullInstalledE2E: false,
   newWalletGoalsAccepted: false,
