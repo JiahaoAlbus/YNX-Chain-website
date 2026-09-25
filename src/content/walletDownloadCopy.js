@@ -386,3 +386,12 @@ for (const [locale, copy] of Object.entries(WALLET_DOWNLOAD_COPY)) {
  copy.android27Boundary = locale === "zh-CN" ? "1.0.21 测试网 APK；仅 Debug 测试签名，未上架。GitHub 文件可被发布者替换；下载后请核对 SHA-256。" : locale === "zh-TW" ? "1.0.21 測試網 APK；僅 Debug 測試簽名，未上架。GitHub 檔案可被發布者替換；下載後請核對 SHA-256。" : "1.0.21 Testnet APK; Debug test-signed, not store released. GitHub assets can change; verify SHA-256 after download.";
  copy.android27Proof = locale === "zh-CN" ? "API 36 模拟器已验证发布 APK 从 code26 升至 27，保留并解锁一次性账户。已充值余额、待发交易、真机、Finance 与 Relay 端到端未验证。" : locale === "zh-TW" ? "API 36 模擬器已驗證發布 APK 從 code26 升至 27，保留並解鎖一次性帳戶。已充值餘額、待發交易、實機、Finance 與 Relay 端到端未驗證。" : "Published APK passed code26-to-27 upgrade and disposable account unlock on API 36 emulator. Funded balance, outbox, real device, Finance and Relay E2E remain unverified.";
 }
+
+for (const [locale, copy] of Object.entries(WALLET_DOWNLOAD_COPY)) {
+  copy.browser012Boundary = locale === "zh-CN" ? "Chrome/Edge 0.1.2 手动安装测试预览版；未上架浏览器商店。GitHub 文件可被发布者替换，下载后请核对 SHA-256；私有证券授权及真实交易未验证。"
+    : locale === "zh-TW" ? "Chrome/Edge 0.1.2 手動安裝測試預覽版；未上架瀏覽器商店。GitHub 檔案可被發布者替換，下載後請核對 SHA-256；私人證券授權及真實交易未驗證。"
+    : "Chrome/Edge 0.1.2 manual-install Testnet Preview; not store released. GitHub assets can be replaced, so verify SHA-256 after download. Private brokerage authorization and real trades are unverified.";
+  copy.browser012Proof = locale === "zh-CN" ? "同一 ZIP 已在隔离环境的 Chrome 151 与 Edge 153 通过连接、拒绝、刷新和撤销；Chrome 对公开 Finance 的标准钱包连接、断开及撤销亦通过。不代表商店安装或完整 Wallet 验收。"
+    : locale === "zh-TW" ? "同一 ZIP 已在隔離環境的 Chrome 151 與 Edge 153 通過連線、拒絕、重新整理和撤銷；Chrome 對公開 Finance 的標準錢包連線、斷開及撤銷亦通過。不代表商店安裝或完整 Wallet 驗收。"
+    : "The same ZIP passed isolated Chrome 151 and Edge 153 connect, reject, refresh and revoke checks; public Finance standard Wallet connect, disconnect and revoke also passed in Chrome. No store install or complete Wallet acceptance is claimed.";
+}

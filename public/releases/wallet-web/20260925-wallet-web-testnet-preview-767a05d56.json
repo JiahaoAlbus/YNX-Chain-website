@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "observedAt": "2026-09-25T11:20:00+08:00",
+  "observedAt": "2026-09-25T11:27:38+08:00",
   "releaseTag": "wallet-web-testnet-preview-0.1.2-767a05d56",
   "sourceCommit": "40c2814d6e87e19ce2762737356c4f9d1128a69d",
   "qaEvidenceCommit": "767a05d56878b19297afc1bdd0748d204a2ca542",
@@ -24,8 +24,17 @@
     "transactionSubmitted": false,
     "productionSigned": false,
     "storeReleased": false,
-    "websiteAssetsDownloadedAndRehashed": false,
-    "websiteDeploymentVerified": false
+    "websiteAssetsDownloadedAndRehashed": true,
+    "websiteDeploymentVerified": true,
+    "previousChromeEdgeBytesPreserved": true
+  },
+  "firstVerifiedWebsiteDeployment": {
+    "id": "dpl_4WCH2JSV3LesJRL3tJP2GzJ9LLkR",
+    "sourceCommit": "42075718434a3c134b53f6c5bc5d480127bb3798",
+    "projectId": "prj_tPB0KDTFohQ9FXZAzq25mYFWkbNa",
+    "aliases": ["https://ynxweb4.com", "https://www.ynxweb4.com"],
+    "newChromeEdgeBytes": 551365,
+    "oldChromeEdgeBytes": 547479
   },
   "artifacts": [{
     "platform": "chrome-edge-unpacked-extension",
@@ -62,7 +71,7 @@
   "claims": {
     "releaseAssetsHosted": true,
     "websiteChromeEdgeEntryPrepared": true,
-    "websitePublicDeploymentVerified": false,
+    "websitePublicDeploymentVerified": true,
     "productionApproved": false
   }
 }
