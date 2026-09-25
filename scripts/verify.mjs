@@ -19,6 +19,7 @@ const required = [
   "public/ynx-icon-maskable-512.png",
   "public/ynx-favicon-48.png",
   "public/releases/ecosystem-release-registry.json",
+  "public/releases/card/e95fcf443/public-runtime.json",
   "public/releases/installer-replacement-matrix.json",
   "public/releases/wallet-desktop/5a6b033897a1/macos-native-callback-dmg-publication.json",
   "public/releases/wallet-desktop/a8f36e4c5723/windows-x64-exe-publication.json",
@@ -205,6 +206,7 @@ const indexHtml = fs.readFileSync("index.html", "utf8");
 const serviceWorker = fs.readFileSync("public/sw.js", "utf8");
 const manifest = JSON.parse(fs.readFileSync("public/manifest.webmanifest", "utf8"));
 const releaseRegistry = JSON.parse(fs.readFileSync("public/releases/ecosystem-release-registry.json", "utf8"));
+const cardPublicRuntime = JSON.parse(fs.readFileSync("public/releases/card/e95fcf443/public-runtime.json", "utf8"));
 const walletLinuxRpmCandidate = JSON.parse(fs.readFileSync("public/releases/wallet-linux-x64-rpm-candidate.json", "utf8"));
 const ownerRecordIndex = JSON.parse(fs.readFileSync("public/releases/owner-record-index.json", "utf8"));
 const exchangeReleaseRoot = "public/releases/exchange/fc2276e1ce4c";
@@ -877,8 +879,24 @@ if (
   creatorRegistry?.publicWebSourceCommit !== "489bf23ac56fb11c5b2ed869fb2a93c2465d2b24" ||
   creatorRegistry?.centralAccepted !== false ||
   creatorRegistry?.fullProductAccepted !== false ||
-  cardRegistry?.state !== "candidate-incomplete" ||
+  cardRegistry?.state !== "public-web-preview-incomplete" ||
+  cardRegistry?.commit !== "e95fcf443228d0db97c139dfa5e8ad6fbb7aa675" ||
+  cardRegistry?.publicWeb !== "https://card.ynxweb4.com/" ||
+  cardRegistry?.publicWebRelease !== "/releases/card/e95fcf443/public-runtime.json" ||
+  cardRegistry?.downloadHosted !== false ||
+  cardRegistry?.fullProductAccepted !== false ||
   cardRegistry?.centralAccepted !== false ||
+  cardPublicRuntime?.sourceCommit !== cardRegistry.commit ||
+  cardPublicRuntime?.publicWeb !== cardRegistry.publicWeb ||
+  cardPublicRuntime?.evmChainId !== 6423 ||
+  cardPublicRuntime?.paymentNetwork !== "simulation" ||
+  cardPublicRuntime?.publicUiVerified !== true ||
+  cardPublicRuntime?.walletCallbackCompleted !== false ||
+  cardPublicRuntime?.authenticatedOwnerFlowVerified !== false ||
+  cardPublicRuntime?.runtimeFundingVerified !== false ||
+  cardPublicRuntime?.officialProviderSandboxVerified !== false ||
+  cardPublicRuntime?.providerIssuedCardVerified !== false ||
+  cardPublicRuntime?.productionRealPayments !== false ||
   releaseRegistry.products.some((product) => typeof product.route !== "string" || !product.route.startsWith("/")) ||
   releaseRegistry.rules?.localArtifactIsDownload !== false ||
   releaseRegistry.rules?.publicHealthIsProductUi !== false
