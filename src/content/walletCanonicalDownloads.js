@@ -257,33 +257,8 @@ export const WALLET_PREVIOUS_CANONICAL_DOWNLOADS = Object.fromEntries(Object.ent
   }];
 }));
 
-export const WALLET_WEB_012_CHROME_EDGE = {
-  ...WALLET_PREVIOUS_CANONICAL_DOWNLOADS.chromeEdge,
-  id: "web-chromium-40c2814d",
-  version: "0.1.2-testnet-preview.1",
-  artifactPath: "ynx-wallet-chrome-edge-0.1.2.zip",
-  sizeBytes: 551365,
-  sha256: "35a1755777ab0c7472c1a81910f9e127f81d19d5e387238a7e0ef6afc1f1cafb",
-  sourceCommit: "40c2814d6e87e19ce2762737356c4f9d1128a69d",
-  publicUrl: "https://www.ynxweb4.com/downloads/wallet-web/sha256-35a1755777ab0c7472c1a81910f9e127f81d19d5e387238a7e0ef6afc1f1cafb/ynx-wallet-chrome-edge-0.1.2.zip",
-  releaseBatch: "wallet-web-testnet-preview-0.1.2-767a05d56",
-  releaseTag: "wallet-web-testnet-preview-0.1.2-767a05d56",
-  previewManifest: "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-web-testnet-preview-0.1.2-767a05d56/artifact-manifest.json",
-  publicationEvidence: "/releases/wallet-web/20260925-wallet-web-testnet-preview-767a05d56.json",
-  installProof: "The exact 551365-byte ZIP passed temporary unpacked-extension lifecycle checks in Chrome for Testing 151 and Microsoft Edge 153, including connect, reject, refresh and revoke. The same ZIP passed standard Wallet connect, reject, disconnect, refresh and revoke against public Finance in Chrome. This is not a browser-store install or private Broker authorization.",
-  sourceBinding: "Frozen Wallet Web source 40c2814d6e87e19ce2762737356c4f9d1128a69d, QA commit 767a05d56878b19297afc1bdd0748d204a2ca542, exact release ZIP digest and public download readback.",
-  signingClass: "unsigned unpacked Chrome/Edge extension; not browser-store released",
-  fullInstalledE2E: false,
-  newWalletGoalsAccepted: false,
-  productionSigned: false,
-  storeReleased: false,
-  releaseImmutable: false,
-  publisherCanReplaceAssets: true,
-  downloadTimeSha256Verified: false
-};
-
 export const WALLET_WEB_013_CHROME_EDGE = {
-  ...WALLET_WEB_012_CHROME_EDGE,
+  ...WALLET_PREVIOUS_CANONICAL_DOWNLOADS.chromeEdge,
   id: "web-chromium-31f3ef16d",
   version: "0.1.3-testnet-preview.1",
   artifactPath: "ynx-wallet-chrome-edge-0.1.3.zip",
@@ -296,7 +271,15 @@ export const WALLET_WEB_013_CHROME_EDGE = {
   previewManifest: "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-web-testnet-preview-0.1.3-31f3ef16d/artifact-manifest.json",
   publicationEvidence: "/releases/wallet-web/20260925-wallet-web-testnet-preview-31f3ef16d.json",
   installProof: "The exact unsigned ZIP passed isolated Chrome and Edge private-request fixtures and public Finance standard Wallet discovery, rejection, connection, disconnect, refresh and revoke in both browsers. This does not prove a live private Gateway session, browser-store installation or real trading.",
-  sourceBinding: "Frozen Wallet Web product source 31f3ef16d3812870e0c3d23350565fd592482227, distinct evidence-only commit b31d80aeea155a053454a4291c8b031435614b72, exact ZIP digest and public download readback."
+  sourceBinding: "Frozen Wallet Web product source 31f3ef16d3812870e0c3d23350565fd592482227, distinct evidence-only commit b31d80aeea155a053454a4291c8b031435614b72, exact ZIP digest and public download readback.",
+  signingClass: "unsigned unpacked Chrome/Edge extension; not browser-store released",
+  fullInstalledE2E: false,
+  newWalletGoalsAccepted: false,
+  productionSigned: false,
+  storeReleased: false,
+  releaseImmutable: false,
+  publisherCanReplaceAssets: true,
+  downloadTimeSha256Verified: false
 };
 
 export const WALLET_CANONICAL_DOWNLOADS = { ...WALLET_PREVIOUS_CANONICAL_DOWNLOADS, ...WALLET_DESKTOP068, android: WALLET_ANDROID27, androidUniversal: WALLET_ANDROID27, chromeEdge: WALLET_WEB_013_CHROME_EDGE };
