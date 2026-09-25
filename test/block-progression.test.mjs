@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { collectBrowserProgression, observeBlockProgression, PROGRESSION_WAIT_MS } from "../src/lib/blockProgression.js";
+import { networkConnectionState } from "../src/lib/networkConnectionState.js";
 
 const at = "2026-09-25T02:00:00.000Z";
 function snapshot({ height = 100, hash = "a".repeat(64), blockTime = "2026-09-25T01:59:58.000Z", checkedAt = at, chainVerified = true, indexerVerified = true } = {}) {
@@ -55,4 +56,16 @@ test("invalid first snapshot does not schedule a second request", async () => {
   });
   assert.equal(calls, 1); assert.equal(waited, false);
   assert.equal(value.chainVerified, true);
+});
+
+test("network badge checks only while a valid first sample awaits comparison", () => {
+  assert.equal(networkConnectionState(first, true), "loading");
+  assert.equal(networkConnectionState({ ...first, ok: true }, true), "loading", "server status alone does not prove browser-observed growth");
+  assert.equal(networkConnectionState({ ...first, chainVerified: false }, true), "error");
+  assert.equal(networkConnectionState({ ...first, indexerVerified: false }, true), "error");
+  assert.equal(networkConnectionState({ error: "timeout" }, true), "error");
+  assert.equal(networkConnectionState(observeBlockProgression(first, progressed), false), "live");
+  assert.equal(networkConnectionState(observeBlockProgression(first, snapshot({ checkedAt: "2026-09-25T02:00:10.000Z" })), false), "error", "bounded no-growth outcome is unavailable, not a perpetual spinner");
+  assert.equal(networkConnectionState(observeBlockProgression(first, { ...progressed, indexerVerified: false }), false), "error");
+  assert.equal(networkConnectionState({ ...progressed, degraded: true, ok: false }, false), "error");
 });

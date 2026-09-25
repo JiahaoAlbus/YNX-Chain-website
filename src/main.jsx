@@ -5,6 +5,7 @@ import {
   Database, Gauge, Layers3, Network, Scale, Search, WalletCards
 } from "lucide-react";
 import { apiConfig, loadNetworkSnapshot, loadServiceHealth } from "./lib/api/ynxApi.js";
+import { networkConnectionState } from "./lib/networkConnectionState.js";
 import { WalletDownload } from "./components/WalletDownload.jsx";
 import { HeroPortal } from "./sections/HeroPortal.jsx";
 import { StatusCard } from "./components/StatusCard.jsx";
@@ -70,11 +71,12 @@ function App() {
     const refresh = async () => {
       const next = await loadNetworkSnapshot({ detailed: networkExpanded });
       if (!active) return;
+      const awaitingSecondSample = previousSnapshot === null;
       const observed = previousSnapshot ? await import("./lib/blockProgression.js").then(({ observeBlockProgression }) => observeBlockProgression(previousSnapshot, next), () => ({ ...next, ok: false, progressionVerified: false, degraded: true })) : next;
       previousSnapshot = next;
       setHeightMoved(observed.progressionVerified === true);
       setSnapshot(observed);
-      setConnectionState(next.error || next.status?.error ? "error" : observed.ok === true ? "live" : "loading");
+      setConnectionState(networkConnectionState(observed, awaitingSecondSample));
       fastAttempts = observed.ok === true ? 0 : fastAttempts + 1;
     };
     const refreshServices = async () => {
@@ -180,7 +182,7 @@ function App() {
         })}</div>
         <details className="homeDisclosure ecosystemDirectory" onToggle={event => setEcosystemExpanded(event.currentTarget.open)}><summary>{copy.ecosystem.title}<ChevronDown size={20}/></summary>
         <div className="productGrid">
-          <Suspense fallback={<p aria-busy="true">{t("checking")}</p>}><HomeEcosystemPanels items={copy.ecosystem.products} networkStatus={snapshot.ok === true ? "live" : connectionState === "loading" ? "checking" : "status unavailable"} services={services} /></Suspense>
+          <Suspense fallback={<p aria-busy="true">{t("checking")}</p>}><HomeEcosystemPanels items={copy.ecosystem.products} networkStatus={connectionState === "live" ? "live" : connectionState === "loading" ? "checking" : "status unavailable"} services={services} /></Suspense>
         </div>
         </details>
       </section>
