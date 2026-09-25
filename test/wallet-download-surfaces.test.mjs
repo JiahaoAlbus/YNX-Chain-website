@@ -92,7 +92,7 @@ test("all Wallet download surfaces enforce the same file eligibility without cha
       for (const [surface, html] of Object.entries({ chooser: localizedChooser, product: localizedProduct })) {
         assert.equal(bySource(fileAnchors(html), "official").length, expected.length, locale + surface);
         assert.equal(bySource(fileAnchors(html), "github-fallback").length, 6, locale + surface + " fallbacks");
-        for (const key of ["desktop068Boundary", "desktop068Proof", "appImageNotInstalled", "unsignedPreview", "browser013Boundary", "browser013Proof", "browserPreviewBoundary", "manualExtension", "pwaArchiveOnly", "android27Boundary", "android27Proof", "qaSignedPreview", "desktop068MacSignature", "androidUniversalLabel", "downloadHistory", "githubFallback", "fallbackManual"]) {
+        for (const key of ["desktop068Boundary", "desktop068Proof", "desktop069Boundary", "desktop069Proof", "appImageNotInstalled", "unsignedPreview", "browser013Boundary", "browser013Proof", "browserPreviewBoundary", "manualExtension", "pwaArchiveOnly", "android27Boundary", "android27Proof", "qaSignedPreview", "desktop068MacSignature", "androidUniversalLabel", "downloadHistory", "githubFallback", "fallbackManual"]) {
           assert.ok(localized[key], locale + key);
           assert.ok(html.includes(escaped(localized[key])), locale + surface + key);
         }
