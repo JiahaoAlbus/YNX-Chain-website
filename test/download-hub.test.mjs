@@ -7,7 +7,7 @@ import { DOWNLOAD_EXPERIENCE_LOCALES, getDownloadCategoryLabels, getDownloadExpe
 import { DOWNLOAD_TILE_KEYS, DOWNLOAD_TILE_LOCALES, getDownloadTileSummary } from "../src/content/downloadTileSummaries.js";
 import { getCatalog } from "../src/lib/ecosystemCatalog.js";
 import { getDownloadDirectoryProduct } from "../src/lib/downloadDirectory.js";
-import { getEligiblePackageEntries } from "../src/lib/downloadActions.js";
+import { getEligiblePackageEntries, hasEligibleWebEntry } from "../src/lib/downloadActions.js";
 import { filterDownloadProducts } from "../src/lib/downloadFilters.js";
 
 async function markup(element) {
@@ -49,10 +49,18 @@ test("the compact page retains all 26 products and the release-gated Wallet surf
     assert.match(html, /data-product="wallet"/);
     assert.match(html, /data-product="resource"/);
     assert.match(html, /data-wallet-safety-hold="GHSA-7g7r-gx96-252g"/);
+    assert.match(html, /class="downloadHubWebLink"/);
+    assert.ok(!html.includes('class="downloadHubSecondary"'), "public web is part of the platform choices, not a duplicate side action");
     assert.ok(!html.includes("ynx-wallet-desktop-0.6.10"), "unverified Desktop candidate is not a public download");
   } finally {
     await server.close();
   }
+});
+
+test("a verified web-only product is eligible without inventing an installer", () => {
+  const card = getDownloadDirectoryProduct(getCatalog().find(product => product.key === "card"));
+  assert.equal(hasEligibleWebEntry(card), true);
+  assert.equal(getEligiblePackageEntries(card).length, 0);
 });
 
 test("top actions and package filters reject paused or incomplete Wallet file evidence", () => {
