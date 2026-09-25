@@ -35,6 +35,8 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           persist-credentials: false
+      - name: Check readback fail-closed behavior
+        run: python3 -m unittest discover -s test -p public_readback_test.py
       - name: Verify fixed public endpoints once
         env:
           EXPECTED_SOURCE_COMMIT: ${{ inputs.expected_source_commit }}
