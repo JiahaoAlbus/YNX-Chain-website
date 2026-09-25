@@ -1,0 +1,53 @@
+name: website-public-readback
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_source_commit:
+        description: Exact 40-hex commit reported by the READY production deployment
+        required: true
+        type: string
+      expected_source_tree:
+        description: Exact 40-hex tree of that commit
+        required: true
+        type: string
+      expected_entry:
+        description: Exact index-*.js entry from that deployment's build log
+        required: true
+        type: string
+      expected_copy_sha256:
+        description: SHA-256 of the reviewed wallet-download-copy JS chunk
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: website-public-readback
+  cancel-in-progress: false
+
+jobs:
+  readback:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Verify fixed public endpoints once
+        env:
+          EXPECTED_SOURCE_COMMIT: ${{ inputs.expected_source_commit }}
+          EXPECTED_SOURCE_TREE: ${{ inputs.expected_source_tree }}
+          EXPECTED_ENTRY: ${{ inputs.expected_entry }}
+          EXPECTED_COPY_SHA256: ${{ inputs.expected_copy_sha256 }}
+          WORKFLOW_SHA: ${{ github.sha }}
+        run: python3 scripts/public-readback.py
+      - name: Preserve machine-readable result
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: website-public-readback-${{ github.run_id }}
+          path: public-readback-result.json
+          if-no-files-found: error
+          retention-days: 14
