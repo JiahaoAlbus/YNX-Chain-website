@@ -865,10 +865,10 @@ if (
   registryByKey.get("wallet")?.publicWeb !== "https://wallet.ynxweb4.com/" ||
   registryByKey.get("wallet")?.publicWebRelease !== "/releases/wallet-web/2f1822ef/public-runtime.json" ||
   registryByKey.get("wallet")?.publicWebSourceCommit !== "2f1822ef268e825f14274d87c912b6b863bbaca3" ||
-  registryByKey.get("wallet")?.webDownloadManifest?.sha256 !== "871ae6f63048b9d93f7d01951bcfd12d070b4a3ad2a0b05584c650eb0058c2a5" ||
-  registryByKey.get("wallet")?.webDownloadManifest?.bytes !== 1844 ||
-  registryByKey.get("wallet")?.webDownloadRelease !== "/releases/wallet-web/20260925-wallet-web-testnet-preview-767a05d56.json" ||
-  registryByKey.get("wallet")?.webDownloadPreviousRelease !== "/releases/wallet-web/20260920-wallet-web-testnet-preview-c93e16be.json" ||
+  registryByKey.get("wallet")?.webDownloadManifest?.sha256 !== "e64fe77c0b4c28faaa33331e7e37896638696538a4d95f98d683bb2867f7f19a" ||
+  registryByKey.get("wallet")?.webDownloadManifest?.bytes !== 2015 ||
+  registryByKey.get("wallet")?.webDownloadRelease !== "/releases/wallet-web/20260925-wallet-web-testnet-preview-31f3ef16d.json" ||
+  registryByKey.get("wallet")?.webDownloadPreviousRelease !== "/releases/wallet-web/20260925-wallet-web-testnet-preview-767a05d56.json" ||
   videoRegistry?.publicWeb !== "https://video.ynxweb4.com/" ||
   videoRegistry?.publicWebSourceCommit !== "77ac093356e8517e16d6280c8a01a598791d2d0d" ||
   videoRegistry?.centralAccepted !== false ||
