@@ -423,6 +423,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .downloadCard > a:hover { text-decoration: underline; }
 .downloadHeader { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
 .downloadHeader strong { font-size: 20px; }
+.productHealth { display: block; color: var(--muted); font-size: 11px; }
 .productStatusPage { width: min(1240px, calc(100% - 48px)); min-height: 78svh; margin: 0 auto; padding: 76px 0 110px; }
 .productStatusHero { min-height: 230px; display: grid; grid-template-columns: 64px minmax(0,1fr) auto; gap: 24px; align-items: start; padding: 34px 0 46px; border-bottom: 1px solid var(--blue); }
 .productStatusHero h1 { margin: 0; color: var(--blue); font-size: 58px; line-height: 1.04; letter-spacing: 0; }

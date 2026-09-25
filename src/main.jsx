@@ -1,14 +1,13 @@
 import React, { Suspense, lazy, useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import {
-  Activity, ArrowUpRight, ChevronDown, Bot, Box, Braces, CheckCircle2, CircleDollarSign, Clock3, Code2, Coins,
-  Database, Gauge, Landmark, Layers3, Network, Scale, Search, ShieldCheck, WalletCards
+  Activity, ArrowUpRight, ChevronDown, Box, CheckCircle2, Clock3, Code2, Coins,
+  Database, Gauge, Layers3, Network, Scale, Search, WalletCards
 } from "lucide-react";
 import { apiConfig, loadNetworkSnapshot, loadServiceHealth } from "./lib/api/ynxApi.js";
 import { WalletDownload } from "./components/WalletDownload.jsx";
 import { HeroPortal } from "./sections/HeroPortal.jsx";
 import { StatusCard } from "./components/StatusCard.jsx";
-import { ProductPanel } from "./components/ProductPanel.jsx";
 import { LinkGrid } from "./components/LinkGrid.jsx";
 import { SiteHeader } from "./components/SiteHeader.jsx";
 import { SiteFooter } from "./components/SiteFooter.jsx";
@@ -29,6 +28,7 @@ import "./redesign.css";
 
 const HomeExperience = lazyNamed(() => import("./components/HomeExperience.jsx"), "HomeExperience");
 const HomeCommunity = lazyNamed(() => import("./components/HomeCommunity.jsx"), "HomeCommunity");
+const HomeEcosystemPanels = lazyNamed(() => import("./components/HomeEcosystemPanels.jsx"), "HomeEcosystemPanels");
 
 const route = window.location.pathname.replace(/\/$/, "") || "/";
 const RoutedContent = lazyNamed(() => import("./pages/RoutedContent.jsx"), "RoutedContent");
@@ -158,7 +158,6 @@ function App() {
   const { status = {}, summary = {}, validators = {}, evm = {} } = snapshot;
   const validatorRows = Array.isArray(validators.validators) ? validators.validators : [];
   const buildRelease = status.build?.release || t("checking");
-  const serviceState = (name) => services[name]?.ok === true ? "live" : services[name]?.error ? "status unavailable" : "checking";
 
   return (
     <>
@@ -181,7 +180,7 @@ function App() {
         })}</div>
         <details className="homeDisclosure ecosystemDirectory" onToggle={event => setEcosystemExpanded(event.currentTarget.open)}><summary>{copy.ecosystem.title}<ChevronDown size={20}/></summary>
         <div className="productGrid">
-          {[Layers3, Coins, Search, Bot, CircleDollarSign, ShieldCheck, Gauge, Braces, WalletCards, Landmark].map((Icon, index) => <ProductPanel key={copy.ecosystem.products[index].title} icon={<Icon />} {...copy.ecosystem.products[index]} status={index === 3 ? serviceState("ai") : index === 4 ? serviceState("pay") : index === 5 ? serviceState("trust") : index === 6 ? serviceState("resource") : index < 3 ? (snapshot.ok === true ? "live" : connectionState === "loading" ? "checking" : "status unavailable") : "reference"} href={[`${apiConfig.apiBase}/status`, "/testnet", apiConfig.explorerUrl, "/dapp/ai", "/dapp/pay", "/dapp/trust", "/dapp/resource", "/docs", "/#address", apiConfig.exchangeUrl][index]} />)}
+          <Suspense fallback={<p aria-busy="true">{t("checking")}</p>}><HomeEcosystemPanels items={copy.ecosystem.products} networkStatus={snapshot.ok === true ? "live" : connectionState === "loading" ? "checking" : "status unavailable"} services={services} /></Suspense>
         </div>
         </details>
       </section>
