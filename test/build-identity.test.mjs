@@ -147,6 +147,7 @@ test("Vercel serves the static identity with no-store headers before the SPA fal
   assert.equal(headerMap.get("x-content-type-options"), "nosniff");
   assert.equal(configuration.functions["api/build-identity.js"].includeFiles, "dist/build-identity.json");
   assert.equal(configuration.functions["api/**/*.js"].includeFiles, undefined);
+  assert.deepEqual(Object.keys(configuration.functions), ["api/build-identity.js", "api/**/*.js"]);
   assert.equal(fallbackIndex, configuration.rewrites.length - 1);
   assert.equal(new RegExp("^" + configuration.rewrites[fallbackIndex].source + "$" ).test("/build-identity.json"), false);
 });

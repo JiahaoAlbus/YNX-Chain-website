@@ -6,12 +6,12 @@
   "framework": "vite",
   "cleanUrls": true,
   "functions": {
-    "api/**/*.js": {
-      "maxDuration": 30
-    },
     "api/build-identity.js": {
       "maxDuration": 30,
       "includeFiles": "dist/build-identity.json"
+    },
+    "api/**/*.js": {
+      "maxDuration": 30
     }
   },
   "redirects": [
