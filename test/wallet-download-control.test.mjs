@@ -44,5 +44,9 @@ test("download chooser has native text for all twelve website locales", () => {
   assert.deepEqual(Object.keys(WALLET_DOWNLOAD_COPY).sort(), ["zh-CN", "zh-TW", "en", "ja", "ko", "es", "fr", "de", "pt", "ru", "ar", "id"].sort());
   for (const [locale, copy] of Object.entries(WALLET_DOWNLOAD_COPY)) {
     for (const key of ["downloadWallet", "close", "otherPlatforms", "releasePending", "historicalPreview", "historicalBoundary", "githubFallback", "fallbackManual"]) assert.ok(copy[key]?.length, `${locale}.${key}`);
+    for (const key of ["desktop0610Boundary", "desktop0610Proof"]) {
+      assert.ok(copy[key]?.length, `${locale}.${key}`);
+      if (locale !== "en") assert.notEqual(copy[key], WALLET_DOWNLOAD_COPY.en[key], `${locale}.${key} must be localized`);
+    }
   }
 });
