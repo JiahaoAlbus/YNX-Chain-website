@@ -9,7 +9,7 @@ const source = await readFile(new URL('../public/sw.js', import.meta.url), 'utf8
 function worker(fetcher, { putFails = false } = {}) {
   const handlers = {}, stored = new Map();
   const context = {
-    URL, Response, fetch: fetcher,
+    URL, Headers, Response, fetch: fetcher,
     self: { location: { origin: 'https://ynxweb4.com' }, addEventListener: (name, fn) => { handlers[name] = fn; } },
     caches: {
       open: async (name) => {
@@ -70,10 +70,20 @@ test('runtime identity, API and explicit no-store requests always bypass the she
 });
 test('cacheable shell navigation is network first and retains an offline shell fallback',async()=>{
  let offline=false;
- const w=worker(async()=>{if(offline) throw Error('offline'); return page('new homepage');});
- assert.equal(await (await w.dispatch('/')).text(),'new homepage');
+ const html='<!doctype html><html><head><title>Current page</title></head><body>new homepage</body></html>';
+ const w=worker(async()=>{if(offline) throw Error('offline'); return page(html);});
+ const online=await w.dispatch('/');
+ assert.equal(await online.text(),html);
+ assert.equal(online.headers.get('x-ynx-cached-navigation'),null);
  offline=true;
- assert.equal(await (await w.dispatch('/')).text(),'new homepage');
+ const cached=await w.dispatch('/');
+ assert.equal(cached.headers.get('x-ynx-cached-navigation'),'1');
+ assert.equal(await cached.text(),html.replace('<head>','<head><meta name="ynx-cached-navigation" content="true">'));
+ offline=false;
+ const recovered=await w.dispatch('/');
+ assert.equal(await recovered.text(),html);
+ assert.equal(recovered.headers.get('x-ynx-cached-navigation'),null);
+ assert.equal(await w.stored.get('https://ynxweb4.com/').text(),html,'fallback must not modify the saved page');
 });
 test('no-store response is served but never written to CacheStorage',async()=>{
  const w=worker(async()=>page('private response',{'cache-control':'no-store, max-age=0'}));
