@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "product": "YNX Web Wallet",
+  "publicUrl": "https://wallet.ynxweb4.com/",
+  "sourceCommit": "012a2158d4bde9c95b93daaf5db413400c64b868",
+  "sourceTree": "ff1b0ec676389a00f06a2732474c5e9a2567905a",
+  "deploymentId": "wallet-web-0.1.14-012a2158d",
+  "runtimeIdentity": {
+    "sourceCommit": "012a2158d4bde9c95b93daaf5db413400c64b868"
+  },
+  "checks": {
+    "actualDeployment": true,
+    "publicPageRendered": true,
+    "buildIdentityReadback": true,
+    "sourceCommitMatched": true,
+    "sourceTreeResolvedFromGitCommit": true,
+    "sourceTreePublicReadback": false
+  },
+  "files": {
+    "index.html": {
+      "bytes": 10009,
+      "sha256": "92679fcbe829627acb748bf7555c94aedcde64ebd398ffe4bf7a29387b7288f7"
+    },
+    "app.js": {
+      "bytes": 36202,
+      "sha256": "3ea5f71efa423b8bf58706bd7aabbf3bce613cae61d40551cbf57923bf0e748a"
+    },
+    "build-identity.json": {
+      "bytes": 619,
+      "sha256": "c90d0f01e674609b9eec6f57eb8c752dafb75a5d940fae267895270f92a8cd67"
+    },
+    "hosted/index.html": {
+      "bytes": 7099,
+      "sha256": "bf08c903e365a59fda4945245d06f05ed76778fad0df236c5aeb9db69e15cb1c"
+    },
+    "hosted/app.js": {
+      "bytes": 586025,
+      "sha256": "0bf57798f1de943188392260f7d02d3ace8303e28539c8d2887285201e2648f1"
+    },
+    "hosted/adapter.js": {
+      "bytes": 14590,
+      "sha256": "eeccd1326e1b4b22a7f81f34b297bb3a71e1e8cd106b72ad65afefef6fa14ea4"
+    },
+    "hosted/hosted-wallet.css": {
+      "bytes": 3716,
+      "sha256": "7542ee0e84c6f274529bf62636a32d5d08460a2f65a48aad2d403fc02b34c48b"
+    },
+    "hosted/ynx-logo.png": {
+      "bytes": 172128,
+      "sha256": "38196080c2d56746fb37094abe68d1d89eabd8a2b29ab4f17bae48ac7e3effde"
+    }
+  },
+  "notVerified": [
+    "Complete private ecosystem journeys on every platform",
+    "Real phone Relay pairing",
+    "MONSTER black-box acceptance",
+    "Production signing and store release"
+  ],
+  "warmUpgrade": {
+    "initialCachedPageMayBePreviousCompanion": true,
+    "ordinaryReloadObservedNewRoot": true,
+    "accountDataCleared": false
+  }
+}

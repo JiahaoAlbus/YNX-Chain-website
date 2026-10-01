@@ -60,35 +60,27 @@ test("Wallet product-package and Companion source identities stay separately bou
   assert.equal(publicProductMetadata.status.storeAccepted, false);
 
   assert.equal(wallet.publicWeb, "https://wallet.ynxweb4.com/");
-  assert.equal(wallet.publicWebSourceCommit, "2f1822ef268e825f14274d87c912b6b863bbaca3");
+  assert.equal(wallet.publicWebSourceCommit, "012a2158d4bde9c95b93daaf5db413400c64b868");
   assert.equal(webRuntime.sourceCommit, wallet.publicWebSourceCommit);
   assert.equal(webRuntime.runtimeIdentity.sourceCommit, wallet.publicWebSourceCommit);
-  assert.equal(webRuntime.deploymentId, "dpl_7dqxihBYrWXqsqd87oAbfsuMkqcP");
+  assert.equal(webRuntime.deploymentId, "wallet-web-0.1.14-012a2158d");
   assert.equal(webRuntime.checks.buildIdentityReadback, true);
   assert.equal(webRuntime.checks.sourceTreePublicReadback, false);
   assert.notEqual(wallet.commit, wallet.publicWebSourceCommit);
 });
 
-test("Wallet Web manifest binds 0.1.4 Chrome/Edge while PWA and Firefox remain 0.1.1", () => {
-  assert.equal(wallet.webDownloadRelease, "/releases/wallet-web/20260925-wallet-web-testnet-preview-13aaa982d.json");
-  assert.equal(wallet.webDownloadPreviousRelease, "/releases/wallet-web/20260925-wallet-web-testnet-preview-31f3ef16d.json");
-  assert.equal(wallet.webDownloadManifest.url, "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-web-testnet-preview-0.1.4-13aaa982d/artifact-manifest.json");
+test("Wallet Web 0.1.14 manifest binds all three publicly verified packages without promoting platform journeys", () => {
+  assert.equal(wallet.webDownloadRelease, "/releases/wallet-web/20261001-wallet-web-014.json");
+  assert.equal(wallet.webDownloadPreviousRelease, "/releases/wallet-web/20260925-wallet-web-testnet-preview-13aaa982d.json");
+  assert.equal(wallet.webDownloadManifest.url, "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-web-testnet-preview-0.1.14-012a2158d/artifact-manifest.json");
   assert.equal(webDownloadManifestBytes.length, wallet.webDownloadManifest.bytes);
   assert.equal(crypto.createHash("sha256").update(webDownloadManifestBytes).digest("hex"), wallet.webDownloadManifest.sha256);
-  assert.equal(webDownloadManifest.sourceCommit, "13aaa982dc46e82047fbb2232b691014795060e5");
-  assert.notEqual(webDownloadManifest.sourceCommit, wallet.publicWebSourceCommit);
-  assert.deepEqual(webDownloadManifest.artifacts.map(({ name, bytes, sha256 }) => ({ name, bytes, sha256 })), [
-    { name: "ynx-wallet-web-pwa-0.1.4.zip", bytes: 615190, sha256: "9895578b3a422b75ebbe6b69e0298d4a99002a4d4276dbae922e25116f0330be" },
-    { name: "ynx-wallet-chrome-edge-0.1.4.zip", bytes: 585033, sha256: "51a6940a0dedc84b2012e24494588b8a45205cb33da61e7e108f591fa803b089" },
-    { name: "ynx-wallet-firefox-0.1.4.zip", bytes: 585131, sha256: "46bc21eceea9be0e2250b36a80647cdb71f1b47533a053a49e45cf225c14dc21" },
-  ]);
+  assert.equal(webDownloadManifest.sourceCommit, "012a2158d4bde9c95b93daaf5db413400c64b868");
+  assert.equal(webDownloadManifest.sourceCommit, wallet.publicWebSourceCommit);
   const publication = JSON.parse(fs.readFileSync(`public${wallet.webDownloadRelease}`, "utf8"));
-  assert.deepEqual(publication.artifacts.map(({ filename }) => filename), ["ynx-wallet-chrome-edge-0.1.4.zip"]);
-  assert.equal(publication.releaseImmutable, false);
-  assert.equal(publication.verification.isolatedDisposableEdge153AccountRecoveryAndFinanceStaticOriginReconnect, true);
-  assert.equal(publication.verification.livePrivateGatewaySession, false);
-  assert.equal(publication.verification.publicFinanceFinalPairingVerified, false);
-  assert.equal(publication.unpromotedBuildArtifacts.length, 2);
+  assert.deepEqual(webDownloadManifest.artifacts.map(({name,bytes,sha256})=>({filename:name,bytes,sha256})), publication.artifacts.map(({filename,bytes,sha256})=>({filename,bytes,sha256})));
+  assert.equal(publication.artifacts.length,3);
+  for(const key of ['fullInstalledE2E','productionSigned','storeReleased']) assert.equal(publication[key],false,key);
 });
 
 test("Historical Android24 website activation binds the first public build and bounded read-only evidence", () => {

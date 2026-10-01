@@ -8,6 +8,7 @@ import { WALLET_BROWSER_MANIFESTS } from '../../src/content/walletBrowserDownloa
 import { WALLET_ANDROID_MANIFESTS } from '../../src/content/walletAndroidDownloads.js';
 import { WALLET_ANDROID25 } from '../../src/content/walletAndroid25.js';
 import { WALLET_ANDROID26 } from '../../src/content/walletAndroid26.js';
+import { WALLET_ANDROID34 } from '../../src/content/walletAndroid34.js';
 import { WALLET_ANDROID27 } from '../../src/content/walletAndroid27.js';
 import { walletDownloadState } from '../../src/lib/walletDownloads.js';
 import { WALLET_APPIMAGE_ADVISORY, WALLET_APPIMAGE_HELD_SHA256, WALLET_DOWNLOAD_SAFETY_POLICY_PATH } from '../../src/lib/walletDownloadSafety.js';
@@ -155,7 +156,8 @@ const android27PublicationPins = {
 };
 
 export function verifyWalletAndroidPublication(evidence) {
-  const expected = evidence?.version === WALLET_ANDROID25.version ? { ...WALLET_ANDROID25, ...android25PublicationPins }
+  const expected = evidence?.version === WALLET_ANDROID34.version ? { ...WALLET_ANDROID34, certificateSha256: 'd4e562610ecb4e304fa00ee07e7adae7da862ce108bda7bdfe933c28831f154e', independentPublicByteReceipt: '/releases/wallet-downloads/20261001-public-byte-verification.json', installedQAReceipt: '/releases/wallet-downloads/20261001-android34-installed-qa.json' }
+    : evidence?.version === WALLET_ANDROID25.version ? { ...WALLET_ANDROID25, ...android25PublicationPins }
     : evidence?.version === WALLET_ANDROID26.version ? { ...WALLET_ANDROID26, ...android26PublicationPins }
     : { ...WALLET_ANDROID27, ...android27PublicationPins };
   assert.deepEqual(evidence, expected,
@@ -185,8 +187,8 @@ const safetyPins = [
 ];
 // Select explicit release IDs; array order, dates and lexical commit order are not selection rules.
 const expectedKeys = ['android', 'androidUniversal', 'windowsX64', 'windowsArm64', 'linuxX64Deb', 'linuxX64AppImage',
-  'linuxArm64Deb', 'linuxArm64AppImage', 'macos', 'chromeEdge', 'pwa'];
-const overlayKeys = new Set(['android', 'androidUniversal', 'windowsX64', 'windowsArm64', 'linuxX64Deb', 'linuxArm64Deb', 'macos', 'chromeEdge', 'pwa']);
+  'linuxArm64Deb', 'linuxArm64AppImage', 'macos', 'chromeEdge', 'pwa', 'firefox'];
+const overlayKeys = new Set(['android', 'androidUniversal', 'windowsX64', 'windowsArm64', 'linuxX64Deb', 'linuxArm64Deb', 'macos', 'chromeEdge', 'pwa', 'firefox']);
 const legacySlots = {
   linuxX64AppImage: 'linux-x64-appimage-065-4e7023c4',
   linuxArm64AppImage: 'linux-arm64-appimage-065-4e7023c4'
@@ -305,13 +307,13 @@ export function verifyWalletDownloadMetadata(downloads = currentWalletDownloads,
   assert.deepEqual(safetyPolicy.historicalHeldSHA256, safetyPins.slice(2));
   assert.deepEqual(safetyPolicy.upstreamManifests, WALLET_CANONICAL_MANIFESTS.map(({ url, sha256, bytes }) => ({ url, sha256, bytes })));
   const websiteChoices = Object.entries(downloads).filter(([platform, item]) => walletDownloadState(platform, { ...item, href: item.publicUrl, downloadHosted: true }).available);
-  assert.equal(websiteChoices.length, 9);
-  assert.equal(new Set(websiteChoices.map(([, item]) => item.publicUrl)).size, 8, 'Android and Android Universal intentionally share one universal APK');
+  assert.equal(websiteChoices.length, 10);
+  assert.equal(new Set(websiteChoices.map(([, item]) => item.publicUrl)).size, 9, 'Android and Android Universal intentionally share one universal APK');
   for (const artifact of history.artifacts.filter(item => safetyPins.includes(item.sha256))) {
     const selection = walletDownloadState('linuxX64AppImage', { ...artifact, href: artifact.url, canonicalDownload: true, historicalPreview: false, downloadApproved: true, downloadHosted: true, sizeBytes: artifact.bytes, publicationEvidence: WALLET_CANONICAL_MANIFESTS[1].localPath, signingClass: 'preview' });
     assert.equal(selection.available, false, `${artifact.id} cannot be re-promoted`);
     assert.equal(selection.safetyHold?.id, WALLET_APPIMAGE_ADVISORY.id);
     assert.equal(selection.filename, null);
   }
-  return { files: 11, manifests: 2, publishedHistory: 17, superseded: 6, websiteSelectable: 9, securityPaused: 2 };
+  return { files: 12, manifests: 2, publishedHistory: 17, superseded: 6, websiteSelectable: 10, securityPaused: 2 };
 }

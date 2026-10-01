@@ -5,8 +5,8 @@ import { walletDownloadState } from '../src/lib/walletDownloads.js';
 
 const clone = () => structuredClone(currentWalletDownloads);
 
-test('eleven current packages are bound to two canonical public manifests and keep installed acceptance separate', () => {
-  assert.deepEqual(verifyWalletDownloadMetadata(), { files: 11, manifests: 2, publishedHistory: 17, superseded: 6, websiteSelectable: 9, securityPaused: 2 });
+test('twelve current selections are bound to two canonical public manifests and keep installed acceptance separate', () => {
+  assert.deepEqual(verifyWalletDownloadMetadata(), { files: 12, manifests: 2, publishedHistory: 17, superseded: 6, websiteSelectable: 10, securityPaused: 2 });
   for (const [platform, item] of Object.entries(currentWalletDownloads)) {
     const state = walletDownloadState(platform, { ...item, href: item.publicUrl, downloadHosted: true });
     const held = ['linuxX64AppImage', 'linuxArm64AppImage'].includes(platform);

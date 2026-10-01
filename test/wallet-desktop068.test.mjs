@@ -26,5 +26,5 @@ test('Desktop 0.6.8 and 0.6.9 remain immutable while only Windows x64 selects ex
  assert.equal(walletDownloadState('windowsX64',item).installProofKey,'desktop0610Proof');
  for(const patch of [{href:current.publicUrl+'?other=1'},{sha256:'0'.repeat(64)},{sizeBytes:1},{sourceCommit:'0'.repeat(40)}]) assert.equal(walletDownloadState('windowsX64',{...item,...patch}).available,false);
  for(const platform of ['linuxX64AppImage','linuxArm64AppImage']) assert.equal(walletDownloadState(platform,wallet.downloads[platform]).available,false);
- assert.equal(wallet.downloads.android.versionCode,27);
+ assert.equal(wallet.downloads.android.versionCode,34);
 });

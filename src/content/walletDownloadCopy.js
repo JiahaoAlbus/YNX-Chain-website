@@ -436,3 +436,69 @@ for (const [locale, copy] of Object.entries(WALLET_DOWNLOAD_COPY)) {
     : locale === "zh-TW" ? "Finance 測試通過；私人未驗證。"
     : "Finance QA passed; private access unverified.";
 }
+
+const CURRENT_WALLET_RELEASE_COPY = {
+  "zh-CN": [
+    "1.0.28 测试网 APK，测试签名、未上架。请核对下载摘要。",
+    "模拟器升级、原账户恢复与键盘布局通过；真机、手机配对及生态服务完整旅程未验证。",
+    "0.1.14 无签名手动安装预览；未上架。升级时保留原扩展目录与账户数据。"
+  ],
+  "zh-TW": [
+    "1.0.28 測試網 APK，測試簽章、未上架。請核對下載摘要。",
+    "模擬器升級、原帳戶復原與鍵盤版面通過；實機、手機配對及生態服務完整流程未驗證。",
+    "0.1.14 無簽章手動安裝預覽；未上架。升級時保留原擴充目錄與帳戶資料。"
+  ],
+  "en": [
+    "1.0.28 Testnet APK, test signed and not in stores. Verify the download hash.",
+    "Emulator upgrades, account restoration and keyboard layouts passed; real devices, mobile pairing and complete service journeys remain unverified.",
+    "Unsigned 0.1.14 manual-install preview, not in stores. Keep the original extension directory and account data when upgrading."
+  ],
+  "ja": [
+    "1.0.28 Testnet APK。テスト署名、ストア未公開。ダウンロードのハッシュを確認してください。",
+    "エミュレーターの更新、アカウント復元、キーボード表示は確認済み。実機、モバイル接続、サービス全体の検証は未完了です。",
+    "未署名の0.1.14手動インストール版。更新時は元の拡張機能フォルダーとアカウントデータを保持してください。"
+  ],
+  "ko": [
+    "1.0.28 테스트넷 APK, 테스트 서명, 스토어 미출시. 다운로드 해시를 확인하세요.",
+    "에뮬레이터 업그레이드, 계정 복원, 키보드 레이아웃을 확인했습니다. 실제 기기, 모바일 연결, 전체 서비스 사용은 미검증입니다.",
+    "서명 없는 0.1.14 수동 설치 미리보기입니다. 업그레이드 시 기존 확장 폴더와 계정 데이터를 유지하세요."
+  ],
+  "es": [
+    "APK Testnet 1.0.28 con firma de prueba, no publicado en tiendas. Verifica el hash.",
+    "Actualización, recuperación de cuentas y teclado verificados en emuladores; dispositivos reales, vinculación móvil y servicios completos sin verificar.",
+    "Vista previa 0.1.14 sin firma para instalación manual. Conserva la carpeta original de la extensión y sus datos al actualizar."
+  ],
+  "fr": [
+    "APK Testnet 1.0.28 signé pour les tests, hors boutique. Vérifiez le hash.",
+    "Mise à niveau, restauration et clavier vérifiés sur émulateur ; appareils réels, connexion mobile et parcours complets non vérifiés.",
+    "Aperçu 0.1.14 non signé, à installer manuellement. Conservez le dossier original de l’extension et ses données lors de la mise à niveau."
+  ],
+  "de": [
+    "Testnet-APK 1.0.28 mit Testsignatur, nicht im Store. Download-Hash prüfen.",
+    "Emulator-Upgrade, Kontowiederherstellung und Tastaturlayout geprüft; echte Geräte, mobile Kopplung und vollständige Dienste nicht verifiziert.",
+    "Unsignierte 0.1.14-Vorschau zur manuellen Installation. Beim Upgrade ursprünglichen Erweiterungsordner und Kontodaten behalten."
+  ],
+  "pt": [
+    "APK Testnet 1.0.28 com assinatura de teste, fora das lojas. Verifique o hash.",
+    "Atualização, recuperação de conta e teclado verificados em emuladores; aparelhos reais, conexão móvel e serviços completos não verificados.",
+    "Prévia 0.1.14 sem assinatura, para instalação manual. Mantenha a pasta original da extensão e os dados da conta ao atualizar."
+  ],
+  "ru": [
+    "Testnet APK 1.0.28 с тестовой подписью, не в магазине. Проверьте хеш загрузки.",
+    "Обновление, восстановление аккаунта и клавиатура проверены на эмуляторе; реальные устройства, мобильное подключение и полный цикл сервисов не проверены.",
+    "Неподписанная версия 0.1.14 для ручной установки. При обновлении сохраните исходную папку расширения и данные аккаунта."
+  ],
+  "ar": [
+    "APK لشبكة الاختبار 1.0.28 بتوقيع اختبار، غير متاح في المتاجر. تحقق من بصمة التنزيل.",
+    "تم التحقق من الترقية واستعادة الحساب ولوحة المفاتيح في المحاكي؛ الأجهزة الفعلية والربط المحمول والخدمات الكاملة غير متحققة.",
+    "معاينة 0.1.14 غير موقعة للتثبيت اليدوي. احتفظ بمجلد الإضافة الأصلي وبيانات الحساب عند الترقية."
+  ],
+  "id": [
+    "APK Testnet 1.0.28 bertanda tangan uji, tidak di toko. Periksa hash unduhan.",
+    "Peningkatan emulator, pemulihan akun dan tata letak keyboard lulus; perangkat nyata, pairing seluler dan layanan lengkap belum diverifikasi.",
+    "Pratinjau 0.1.14 tanpa tanda tangan untuk instalasi manual. Pertahankan folder ekstensi asli dan data akun saat memperbarui."
+  ]
+};
+for (const [locale, copy] of Object.entries(WALLET_DOWNLOAD_COPY)) {
+  [copy.android34Boundary, copy.android34Proof, copy.browserCurrentBoundary] = CURRENT_WALLET_RELEASE_COPY[locale];
+}

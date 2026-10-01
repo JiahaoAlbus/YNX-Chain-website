@@ -28,9 +28,9 @@ test('all four affected AppImages remain paused even when old bytes are re-promo
   }
 });
 
-test('the exact safety hold leaves nine current choices and does not certify other or rebuilt files', () => {
+test('the exact safety hold leaves ten current choices and does not certify other or rebuilt files', () => {
   const choices = Object.entries(WALLET_CANONICAL_DOWNLOADS).filter(([platform, item]) => walletDownloadState(platform, { ...item, href: item.publicUrl, downloadHosted: true }).available);
-  assert.deepEqual(choices.map(([platform]) => platform).sort(), ['android', 'androidUniversal', 'windowsX64', 'windowsArm64', 'linuxX64Deb', 'linuxArm64Deb', 'macos', 'chromeEdge', 'pwa'].sort());
+  assert.deepEqual(choices.map(([platform]) => platform).sort(), ['android', 'androidUniversal', 'windowsX64', 'windowsArm64', 'linuxX64Deb', 'linuxArm64Deb', 'macos', 'chromeEdge', 'pwa', 'firefox'].sort());
   for (const [, item] of choices) assert.equal(walletDownloadSafetyHold(item), null);
   assert.equal(walletDownloadSafetyHold({ installation: 'appimage', version: '0.6.5', sha256: 'a'.repeat(64) }), null, 'an unknown replacement is not a known affected identity');
   assert.equal(walletDownloadState('linuxX64AppImage', { installation: 'appimage', sha256: 'a'.repeat(64) }).available, false, 'not being held is insufficient publication evidence');
@@ -38,12 +38,13 @@ test('the exact safety hold leaves nine current choices and does not certify oth
 
 test('current Wallet Web choices bind the rebuilt source, immutable website path and exact bytes', () => {
   const expected = {
-    pwa: ['6e7e6dd17e9e729a44ed915e46433124c1a3794e06a0d072c55097084cc45e13', 312868, 'ynx-wallet-web-pwa-0.1.1.zip'],
-    chromeEdge: ['51a6940a0dedc84b2012e24494588b8a45205cb33da61e7e108f591fa803b089', 585033, 'ynx-wallet-chrome-edge-0.1.4.zip']
+    pwa: ['a9f635111e82bf86174ebe6b59d3866378acac3dab98f9fff8bd4f37cde8c12e', 867996, 'ynx-wallet-web-pwa-0.1.14.zip'],
+    chromeEdge: ['d9370fcee29e15fbcec34a14b3bbb2e58f6d818a03bebe205a9bd15fd4a0289f', 665637, 'ynx-wallet-chrome-edge-0.1.14.zip'],
+    firefox: ['b2304f640f35d4ea584636d2765006c00364855c4e1a58ef5788c32c58bbc2b5', 665735, 'ynx-wallet-firefox-0.1.14.zip']
   };
   for (const [platform, [sha256, sizeBytes, filename]] of Object.entries(expected)) {
     const item = WALLET_CANONICAL_DOWNLOADS[platform];
-    assert.equal(item.sourceCommit, platform === 'chromeEdge' ? '13aaa982dc46e82047fbb2232b691014795060e5' : 'c93e16be81beddc957ef5f27b7bbcdfa89c28db3');
+    assert.equal(item.sourceCommit, '012a2158d4bde9c95b93daaf5db413400c64b868');
     assert.equal(item.sha256, sha256);
     assert.equal(item.sizeBytes, sizeBytes);
     assert.equal(item.artifactPath, filename);

@@ -47,7 +47,7 @@ test("all Wallet download surfaces enforce the same file eligibility without cha
     const expected = helpers.walletDownloadOptions(wallet, contract.downloadHostedVerified)
       .filter(option => option.available).map(option => option.item.href).sort();
     assert.equal(expected.length, 10, "two current AppImages are paused and the separately released Firefox preview is available");
-    assert.deepEqual(expected, [...Object.entries(currentWalletDownloads).filter(([platform]) => !['linuxX64AppImage', 'linuxArm64AppImage'].includes(platform)).map(([, item]) => item.publicUrl), wallet.downloads.firefox.href].sort());
+    assert.deepEqual(expected, [...Object.entries(currentWalletDownloads).filter(([platform]) => !['linuxX64AppImage', 'linuxArm64AppImage'].includes(platform)).map(([, item]) => item.publicUrl)].sort());
     assert.deepEqual(contract.downloads.items.map(item => item.href).sort(), expected, "the public download contract excludes withheld and historical packages");
     const [trigger, chooser, details, directory, overview] = await Promise.all([
       markup(React.createElement(WalletDownload)),
@@ -92,7 +92,7 @@ test("all Wallet download surfaces enforce the same file eligibility without cha
       for (const [surface, html] of Object.entries({ chooser: localizedChooser, product: localizedProduct })) {
         assert.equal(bySource(fileAnchors(html), "official").length, expected.length, locale + surface);
         assert.equal(bySource(fileAnchors(html), "github-fallback").length, 6, locale + surface + " fallbacks");
-        for (const key of ["desktop068Boundary", "desktop068Proof", "desktop0610Boundary", "desktop0610Proof", "appImageNotInstalled", "unsignedPreview", "browser014Boundary", "browser014Proof", "browserPreviewBoundary", "manualExtension", "pwaArchiveOnly", "android27Boundary", "android27Proof", "qaSignedPreview", "desktop068MacSignature", "androidUniversalLabel", "downloadHistory", "githubFallback", "fallbackManual"]) {
+        for (const key of ["desktop068Boundary", "desktop068Proof", "desktop0610Boundary", "desktop0610Proof", "appImageNotInstalled", "unsignedPreview", "browserCurrentBoundary", "manualExtension", "pwaArchiveOnly", "android34Boundary", "android34Proof", "qaSignedPreview", "desktop068MacSignature", "androidUniversalLabel", "downloadHistory", "githubFallback", "fallbackManual"]) {
           assert.ok(localized[key], locale + key);
           assert.ok(html.includes(escaped(localized[key])), locale + surface + key);
         }

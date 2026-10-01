@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { WALLET_ANDROID25 } from '../src/content/walletAndroid25.js';
 import { WALLET_ANDROID26 } from '../src/content/walletAndroid26.js';
+import { WALLET_ANDROID34 } from '../src/content/walletAndroid34.js';
 import { WALLET_ANDROID27 } from '../src/content/walletAndroid27.js';
 import { walletDownloadState } from '../src/lib/walletDownloads.js';
 import { getCatalog } from '../src/lib/ecosystemCatalog.js';
@@ -9,18 +10,18 @@ import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { WALLET_ANDROID24 } from '../src/content/walletAndroid24.js';
 import { verifyWalletAndroidPublication } from '../scripts/lib/verify-wallet-download-metadata.mjs';
-test('Android27 public selection uses the exact published Testnet preview with bounded emulator proof',()=>{
+test('Android34 public selection uses the exact published Testnet preview with bounded emulator proof',()=>{
  const item=getCatalog().find(p=>p.key==='wallet').downloads.android;
- assert.equal(item.sha256,WALLET_ANDROID27.sha256);
- assert.equal(item.sizeBytes,116815538);
+ assert.equal(item.sha256,WALLET_ANDROID34.sha256);
+ assert.equal(item.sizeBytes,117057650);
  const state=walletDownloadState('android',item);
- assert.equal(state.available,true);assert.equal(state.installProofKey,'android27Proof');assert.equal(state.fallbackHref,WALLET_ANDROID27.fallbackUrl);
- for(const patch of [{sizeBytes:1},{versionCode:21},{productionSigned:true},{storeReleased:true},{releaseImmutable:true},{publisherCanReplaceAssets:false},{downloadTimeSha256Verified:true},{androidInstallVerified:false},{androidInstallScope:'physical device'}]) assert.equal(walletDownloadState('android',{...item,...patch}).available,false);
+ assert.equal(state.available,true);assert.equal(state.installProofKey,'android34Proof');assert.equal(state.fallbackHref,WALLET_ANDROID34.fallbackUrl);
+ for(const patch of [{sizeBytes:1},{versionCode:21},{productionSigned:true},{storeReleased:true},{releaseImmutable:true},{publisherCanReplaceAssets:false},{downloadTimeSha256Verified:false},{androidInstallVerified:false},{androidInstallScope:'physical device'}]) assert.equal(walletDownloadState('android',{...item,...patch}).available,false);
  for(const patch of [{href:item.href+'?other=1'},{sha256:'0'.repeat(64)},{sourceCommit:'0'.repeat(40)}]) assert.equal(walletDownloadState('android',{...item,...patch}).available,false);
  for(const patch of [{fallbackUrl:item.fallbackUrl+'?other=1'},{releaseTag:'other'}]) assert.equal(walletDownloadState('android',{...item,...patch}).available,false);
 });
 
-test('Android27 rejects a coordinated filename and fallback substitution under the same tag',()=>{
+test('Android34 rejects a coordinated filename and fallback substitution under the same tag',()=>{
  const item=getCatalog().find(p=>p.key==='wallet').downloads.android;
  const artifactPath='ynx-wallet-1.0.21-testnet-preview-008aa8b07-local-test-signed.aab';
  const fallbackUrl=`https://github.com/JiahaoAlbus/YNX-Chain/releases/download/${item.releaseTag}/${artifactPath}`;
@@ -31,7 +32,7 @@ test('Android27 rejects a coordinated filename and fallback substitution under t
  }
 });
 
-test('Android27 selection rejects stale identity and promoted acceptance',()=>{
+test('Android34 selection rejects stale identity and promoted acceptance',()=>{
  const item=getCatalog().find(p=>p.key==='wallet').downloads.android;
  for(const platform of ['android','androidUniversal']){
   assert.equal(walletDownloadState(platform,WALLET_ANDROID24).available,false);

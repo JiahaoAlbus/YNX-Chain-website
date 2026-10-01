@@ -1,0 +1,201 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-10-01T07:04:53.017Z",
+  "status": "RUNTIME_CHECKS_PASS_HUMAN_SETUP_AND_PIXEL_ACCEPTANCE_PENDING",
+  "candidate": {
+    "sourceCommit": "a9fff0d84fe0e4b67a520136ab9c8d4721f6c23e",
+    "applicationId": "com.ynxweb4.wallet",
+    "version": "1.0.28-testnet-preview",
+    "versionCode": 34,
+    "sha256": "78c7221821add4cba78ece2069fea05a98b7c15cc3ba3e93a25fc0b0214f8509",
+    "bytes": 117057650,
+    "certificateSHA256": "d4e562610ecb4e304fa00ee07e7adae7da862ce108bda7bdfe933c28831f154e",
+    "signatureVerified": true,
+    "alignmentVerified": true,
+    "productionSigned": false,
+    "installedQA": "NOT_RUN",
+    "publicReleased": false,
+    "nativeBarrierAppliedCheckedTested": true
+  },
+  "independentHashCertificatePackageVerified": true,
+  "install": {
+    "emulator5580": "NORMAL_INSTALL_R_FROM_127",
+    "emulator5582": "NORMAL_INSTALL_R_FROM_127",
+    "noClearOrUninstall": true
+  },
+  "backupGeometry": [
+    {
+      "locale": "EN",
+      "font": "1.0",
+      "viewport": "360dp",
+      "keyboardTitle": "[44,104][564,166]",
+      "keyboardClose": "[588,91][676,179]",
+      "keyboardSave": "[44,551][676,651]",
+      "before": {
+        "title": "[44,151][564,213]",
+        "close": "[588,138][676,226]"
+      },
+      "imeShown": true,
+      "imeVisibilityEvidence": [
+        "mInputShown=true"
+      ],
+      "saveEnabled": "true",
+      "previous127TitleCloseSaveCompressionReproduced": false,
+      "titleCloseSavePositiveBoundsAndSaveEnabled": true,
+      "actualSaveTapWithKeyboard": false
+    },
+    {
+      "locale": "EN",
+      "font": "1.3",
+      "viewport": "360dp",
+      "keyboardTitle": "[44,100][564,170]",
+      "keyboardClose": "[588,91][676,179]",
+      "keyboardSave": "[44,542][676,651]",
+      "before": {
+        "title": "[44,147][564,217]",
+        "close": "[588,138][676,226]"
+      },
+      "imeShown": true,
+      "imeVisibilityEvidence": [
+        "mInputShown=true"
+      ],
+      "saveEnabled": "true",
+      "previous127TitleCloseSaveCompressionReproduced": false,
+      "titleCloseSavePositiveBoundsAndSaveEnabled": true,
+      "actualSaveTapWithKeyboard": false
+    },
+    {
+      "locale": "zh",
+      "font": "1.0",
+      "viewport": "360dp",
+      "keyboardTitle": "[44,101][564,169]",
+      "keyboardClose": "[588,91][676,179]",
+      "keyboardSave": "[44,551][676,651]",
+      "before": {
+        "title": "[44,148][564,216]",
+        "close": "[588,138][676,226]"
+      },
+      "imeShown": true,
+      "imeVisibilityEvidence": [
+        "mInputShown=true"
+      ],
+      "saveEnabled": "true",
+      "previous127TitleCloseSaveCompressionReproduced": false,
+      "titleCloseSavePositiveBoundsAndSaveEnabled": true,
+      "actualSaveTapWithKeyboard": false
+    },
+    {
+      "locale": "zh",
+      "font": "1.3",
+      "viewport": "360dp",
+      "keyboardTitle": "[44,97][564,173]",
+      "keyboardClose": "[588,91][676,179]",
+      "keyboardSave": "[44,537][676,651]",
+      "before": {
+        "title": "[44,144][564,220]",
+        "close": "[588,138][676,226]"
+      },
+      "imeShown": true,
+      "imeVisibilityEvidence": [
+        "mInputShown=true"
+      ],
+      "saveEnabled": "true",
+      "previous127TitleCloseSaveCompressionReproduced": false,
+      "titleCloseSavePositiveBoundsAndSaveEnabled": true,
+      "actualSaveTapWithKeyboard": false
+    }
+  ],
+  "lifecycle128": {
+    "cancelledBiometricsLeavesLocked": true,
+    "retryUnlock": true,
+    "accounts": [
+      {
+        "name": "Account 1",
+        "addressSha256": "7efe6071879e0ff50fd17b08ea0f822ff32e7cfed10b9bdb886b246cf7350dd8",
+        "upgradePreserved": true,
+        "coldLockedAndSame": true,
+        "warmLockedAndSame": true
+      },
+      {
+        "name": "Account 2",
+        "addressSha256": "b01586cf15c5bb12984455675ceb756e03f5feade4f5a5cf78606038b495bdbb",
+        "upgradePreserved": true,
+        "coldLockedAndSame": true,
+        "warmLockedAndSame": true
+      }
+    ]
+  },
+  "recovery128": {
+    "qaBackupCreatedIn127ReusedFor128Restore": true,
+    "ordinaryImportBlockedProtectedKeyOverwrite": true,
+    "explicitExistingAccountRestore128": true,
+    "postRestoreLocked": true,
+    "postRestoreBiometricUnlock": true,
+    "addressSha256": "b01586cf15c5bb12984455675ceb756e03f5feade4f5a5cf78606038b495bdbb",
+    "addressSame": true,
+    "retainedAccounts": [
+      "Account Account 1",
+      "Account Account 2"
+    ],
+    "finalAccount1SelectedLocked": true,
+    "replacementDeviceRecovery": false
+  },
+  "noBiometrics5582": {
+    "createProtectionGateBeforeKeyUi": true,
+    "continueWithoutEnrollmentStaysAtGate": true,
+    "normalSystemSettingsRoundtrip": true,
+    "returnDoesNotCreateAutomatically": true,
+    "explicitContinueStillAtGate": true,
+    "finalState": "CHOOSE_SCREEN_LOCK_WAITING_TRUSTED_HUMAN",
+    "agentCredentialChanges": false,
+    "humanSetReturnExplicitContinue": "NOT_VERIFIED"
+  },
+  "branding": {
+    "headerYNXLogoImageNotLiteralY": true,
+    "walletTextEnglishChineseObserved": true,
+    "launcherVisualInspection": "ORIGINAL_YNX_LOGO_AND_COMPLETE_LABEL_OBSERVED_PIXEL_LAUNCHER_CIRCLE_MASK",
+    "protectedWalletPixelAcceptance": "NOT_VERIFIED_FLAG_SECURE_NO_BYPASS"
+  },
+  "reuse": {
+    "accounts1And2CreatedBefore128": true,
+    "qaBackupFrom127UsedIn128ExplicitRestore": true,
+    "checksMarked128WereRerunInstalled128": true,
+    "newPersistedAccountCreatedIn128": false,
+    "backupGeometryDraftsCancelledWithoutSave": true
+  },
+  "boundaries": {
+    "runtimeOnly": true,
+    "sourceEdited": false,
+    "builtByQaOwner": false,
+    "deployedByQaOwner": false,
+    "secretsOrQrOutput": false,
+    "flagSecureBypass": false,
+    "physicalAndroid": "NOT_RUN",
+    "MONSTER": "NOT_RUN",
+    "replacementDeviceRecovery": "NOT_VERIFIED",
+    "pairBusinessJourney": "NOT_VERIFIED",
+    "candidatePublished": false,
+    "publicPass": false,
+    "dotPass": false,
+    "fullAcceptance": false
+  },
+  "finalDeviceState": {
+    "emulator5580": "ACCOUNT1_SELECTED_LOCKED_ACCOUNT2_RETAINED",
+    "size": "1080x2424_RESTORED",
+    "density": "420_RESTORED",
+    "fontScale": "1.0_RESTORED",
+    "language": "English",
+    "emulator5582": "VISIBLE_CHOOSE_SCREEN_LOCK_HUMAN_PENDING"
+  },
+  "originalAccountFinal128": {
+    "originalAccount1AfterQaRestorePreserved": true,
+    "addressSha256": "7efe6071879e0ff50fd17b08ea0f822ff32e7cfed10b9bdb886b246cf7350dd8",
+    "finalWalletLocked": true
+  },
+  "installedPackageVersionBothDevices": {
+    "versionCode": 34,
+    "versionName": "1.0.28-testnet-preview",
+    "verifiedViaDumpsysPackage": true
+  },
+  "candidateReceiptNote": "Builder receipt installedQA NOT_RUN is its build-time record; installed QA was subsequently performed here. No publication was performed here."
+}
