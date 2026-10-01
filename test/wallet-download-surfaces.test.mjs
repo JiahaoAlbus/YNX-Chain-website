@@ -93,14 +93,14 @@ test("all Wallet download surfaces enforce the same file eligibility without cha
       for (const [surface, html] of Object.entries({ chooser: localizedChooser, product: localizedProduct })) {
         assert.equal(bySource(fileAnchors(html), "official").length, expected.length, locale + surface);
         assert.equal(bySource(fileAnchors(html), "github-fallback").length, 6, locale + surface + " fallbacks");
-        for (const key of ["desktop068Boundary", "desktop068Proof", "desktop0618Boundary", "desktop0618Proof", "appImageNotInstalled", "unsignedPreview", "browserCurrentBoundary", "manualExtension", "pwaCurrentProof", "firefoxManualExtension", "android34Boundary", "android34Proof", "qaSignedPreview", "desktop068MacSignature", "androidUniversalLabel", "downloadHistory", "githubFallback", "fallbackManual"]) {
+        for (const key of ["desktop068Boundary", "desktop068Proof", "desktop0618Boundary", "desktop0618Proof", "appImageNotInstalled", "unsignedPreview", "browserCurrentBoundary", "web015Proof", "android34Boundary", "android34Proof", "qaSignedPreview", "desktop068MacSignature", "androidUniversalLabel", "downloadHistory", "githubFallback", "fallbackManual"]) {
           assert.ok(localized[key], locale + key);
           assert.ok(html.includes(escaped(localized[key])), locale + surface + key);
         }
         assert.ok(html.includes("Android · 4 ABI · standalone APK"));
         assert.ok(!html.includes("Android 7.0+"), "current Android has no inferred minimum OS");
       }
-      assert.ok(localizedChooser.includes(escaped(localized.manualExtension)));
+      assert.ok(localizedChooser.includes(escaped(localized.web015Proof)));
       assert.ok(localizedChooser.includes('href="/manual?path=wallet&amp;lang=' + locale + '"'));
       const previousWindow = globalThis.window;
       let localizedDirectory, localizedOverview;

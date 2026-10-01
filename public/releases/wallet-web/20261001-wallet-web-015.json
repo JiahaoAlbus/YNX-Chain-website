@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "productId": "wallet-web",
+  "version": "0.1.15",
+  "sourceCommit": "661c4daee8af638e16eaf6fb1ba8fa9ff10012ed",
+  "releaseTag": "wallet-web-testnet-preview-0.1.15-661c4daee",
+  "fullInstalledE2E": false,
+  "newWalletGoalsAccepted": false,
+  "productionSigned": false,
+  "storeReleased": false,
+  "publicDownloadVerified": true,
+  "MONSTER": false,
+  "readback": {
+    "passed": true,
+    "sourceCommit": "661c4daee8af638e16eaf6fb1ba8fa9ff10012ed",
+    "observedAt": "2026-10-01T11:04:05.092Z",
+    "results": [
+      {
+        "filename": "ynx-wallet-web-pwa-0.1.15.zip",
+        "status": 200,
+        "bytes": 867602,
+        "sha256": "0afb5a3a623fb9ddbcd82519114e669736c3670c261759182fefeec7a02d7773",
+        "matched": true
+      },
+      {
+        "filename": "ynx-wallet-chrome-edge-0.1.15.zip",
+        "status": 200,
+        "bytes": 665236,
+        "sha256": "9d86f0f9505c428218190d4e3b0ef7ceb9a15b2d6e81e292c1f0136f44b9658e",
+        "matched": true
+      },
+      {
+        "filename": "ynx-wallet-firefox-0.1.15.zip",
+        "status": 200,
+        "bytes": 665335,
+        "sha256": "ec1b5b48b732b568aa43ec2da7b25bedc28bc1c33e2dee7280a5da27c4f508c5",
+        "matched": true
+      },
+      {
+        "path": "index.html",
+        "status": 200,
+        "bytes": 10009,
+        "sha256": "6ce466ba8d73f62b101abafec1f7902f79017b44d925fea9ba186e3f66f43bed",
+        "matched": true
+      },
+      {
+        "path": "companion.html",
+        "status": 200,
+        "bytes": 821,
+        "sha256": "2df10866a35b074a6fb366439197646dd4e979bc83bdae3aba0ba6db3802986c",
+        "matched": true
+      },
+      {
+        "path": "app.js",
+        "status": 200,
+        "bytes": 34538,
+        "sha256": "c7bbc52347066e9fa76e3bad46ae91be14de5c61168ab651629ff2f1b3b70039",
+        "matched": true
+      },
+      {
+        "path": "build-identity.json",
+        "status": 200,
+        "bytes": 619,
+        "sha256": "78d512e85c31d4ff687430725e728850946f01e4befd53a7e5f71826f7910bc0",
+        "matched": true
+      },
+      {
+        "path": "sw.js",
+        "status": 200,
+        "bytes": 6207,
+        "sha256": "183968e1e6aab016b9123c96868eae22a237dedc20afa4f46cc1709656c20242",
+        "matched": true
+      },
+      {
+        "path": "asset-integrity.js",
+        "status": 200,
+        "bytes": 2633,
+        "sha256": "168a97f62bf6486b782ef46668cd0f6971dafb8ee7e5163d2967fc9665ef221b",
+        "matched": true
+      }
+    ],
+    "publicBusinessVerified": false,
+    "installedE2EVerified": false,
+    "MONSTER": false
+  },
+  "artifacts": [
+    {
+      "filename": "ynx-wallet-web-pwa-0.1.15.zip",
+      "bytes": 867602,
+      "sha256": "0afb5a3a623fb9ddbcd82519114e669736c3670c261759182fefeec7a02d7773",
+      "websiteUrl": "https://www.ynxweb4.com/downloads/wallet-web/sha256-0afb5a3a623fb9ddbcd82519114e669736c3670c261759182fefeec7a02d7773/ynx-wallet-web-pwa-0.1.15.zip",
+      "githubUrl": "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-web-testnet-preview-0.1.15-661c4daee/ynx-wallet-web-pwa-0.1.15.zip"
+    },
+    {
+      "filename": "ynx-wallet-chrome-edge-0.1.15.zip",
+      "bytes": 665236,
+      "sha256": "9d86f0f9505c428218190d4e3b0ef7ceb9a15b2d6e81e292c1f0136f44b9658e",
+      "websiteUrl": "https://www.ynxweb4.com/downloads/wallet-web/sha256-9d86f0f9505c428218190d4e3b0ef7ceb9a15b2d6e81e292c1f0136f44b9658e/ynx-wallet-chrome-edge-0.1.15.zip",
+      "githubUrl": "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-web-testnet-preview-0.1.15-661c4daee/ynx-wallet-chrome-edge-0.1.15.zip"
+    },
+    {
+      "filename": "ynx-wallet-firefox-0.1.15.zip",
+      "bytes": 665335,
+      "sha256": "ec1b5b48b732b568aa43ec2da7b25bedc28bc1c33e2dee7280a5da27c4f508c5",
+      "websiteUrl": "https://www.ynxweb4.com/downloads/wallet-web/sha256-ec1b5b48b732b568aa43ec2da7b25bedc28bc1c33e2dee7280a5da27c4f508c5/ynx-wallet-firefox-0.1.15.zip",
+      "githubUrl": "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-web-testnet-preview-0.1.15-661c4daee/ynx-wallet-firefox-0.1.15.zip"
+    }
+  ]
+}
