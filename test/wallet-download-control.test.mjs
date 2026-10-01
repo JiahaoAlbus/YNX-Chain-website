@@ -2,10 +2,10 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { walletDownloadState, walletDownloadOptions } from "../src/lib/walletDownloads.js";
 import { WALLET_DOWNLOAD_COPY } from "../src/content/walletDownloadCopy.js";
-import { WALLET_DESKTOP0610_WINDOWS_X64 } from "../src/content/walletDesktop0610.js";
+import { WALLET_DESKTOP0618_WINDOWS_X64 } from "../src/content/walletDesktop0618.js";
 import { publishedDownloadMetadata } from "../src/content/publishedDownloads.js";
 
-const metadata = WALLET_DESKTOP0610_WINDOWS_X64;
+const metadata = WALLET_DESKTOP0618_WINDOWS_X64;
 const href = metadata.publicUrl;
 const released = { ...metadata, href, downloadHosted: true };
 
@@ -44,7 +44,7 @@ test("download chooser has native text for all twelve website locales", () => {
   assert.deepEqual(Object.keys(WALLET_DOWNLOAD_COPY).sort(), ["zh-CN", "zh-TW", "en", "ja", "ko", "es", "fr", "de", "pt", "ru", "ar", "id"].sort());
   for (const [locale, copy] of Object.entries(WALLET_DOWNLOAD_COPY)) {
     for (const key of ["downloadWallet", "close", "otherPlatforms", "releasePending", "historicalPreview", "historicalBoundary", "githubFallback", "fallbackManual"]) assert.ok(copy[key]?.length, `${locale}.${key}`);
-    for (const key of ["desktop0610Boundary", "desktop0610Proof"]) {
+    for (const key of ["desktop0618Boundary", "desktop0618Proof"]) {
       assert.ok(copy[key]?.length, `${locale}.${key}`);
       if (locale !== "en") assert.notEqual(copy[key], WALLET_DOWNLOAD_COPY.en[key], `${locale}.${key} must be localized`);
     }

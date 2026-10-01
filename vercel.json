@@ -460,6 +460,10 @@
   ],
   "rewrites": [
     {
+      "source": "/downloads/wallet/sha256-c4c3882d3693854def331a136200a5ed76be091591ba3c4e180b4e2cf89ad60f/ynx-wallet-desktop-0.6.18-x64.exe",
+      "destination": "https://downloads.ynxweb4.com/wallet/sha256-c4c3882d3693854def331a136200a5ed76be091591ba3c4e180b4e2cf89ad60f/ynx-wallet-desktop-0.6.18-x64.exe"
+    },
+    {
       "source": "/downloads/wallet-web/sha256-b2304f640f35d4ea584636d2765006c00364855c4e1a58ef5788c32c58bbc2b5/ynx-wallet-firefox-0.1.14.zip",
       "destination": "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-web-testnet-preview-0.1.14-012a2158d/ynx-wallet-firefox-0.1.14.zip"
     },

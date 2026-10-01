@@ -403,6 +403,24 @@ for (const [locale, copy] of Object.entries(WALLET_DOWNLOAD_COPY)) {
   [copy.desktop0610Boundary, copy.desktop0610Proof] = DESKTOP_0610_COPY[locale];
 }
 
+const DESKTOP_0618_COPY = {
+  "zh-CN": ["Windows x64 0.6.18 无签名测试预览；系统重启、用户设备、SmartScreen/Defender、已失败档案恢复和真实交易未验证。", "原始 0.6.18 安装包在 Windows CI 中通过从 0.6.8 升级，地址和加密钱包文件哈希保持不变；尚未在你的设备验证。"],
+  "zh-TW": ["Windows x64 0.6.18 無簽章測試預覽；系統重啟、使用者裝置、SmartScreen/Defender、已失敗資料恢復及真實交易未驗證。", "原始 0.6.18 安裝包在 Windows CI 中通過從 0.6.8 升級，地址與加密錢包檔案雜湊保持不變；尚未在你的裝置驗證。"],
+  en: ["Unsigned Windows x64 0.6.18 Testnet preview; OS reboot, user device, SmartScreen/Defender, failed-profile recovery and live transfers remain unverified.", "The original 0.6.18 installer passed Windows CI upgrades from 0.6.8 with the address and encrypted vault hash preserved; it has not yet been verified on your device."],
+  ja: ["Windows x64 0.6.18 は署名されていないテストネットプレビューです。OS 再起動、利用者の端末、SmartScreen/Defender、失敗したプロファイルの復旧、実際の送金は未検証です。", "元の 0.6.18 インストーラーは Windows CI で 0.6.8 からの更新に成功し、アドレスと暗号化されたウォレットファイルのハッシュは維持されました。お使いの端末ではまだ検証されていません。"],
+  ko: ["Windows x64 0.6.18은 서명되지 않은 테스트넷 미리보기입니다. OS 재시작, 사용자 기기, SmartScreen/Defender, 실패한 프로필 복구 및 실제 전송은 검증되지 않았습니다.", "원본 0.6.18 설치 프로그램은 Windows CI에서 0.6.8에서의 업그레이드를 통과했으며 주소와 암호화된 지갑 파일 해시가 유지되었습니다. 사용자의 기기에서는 아직 검증되지 않았습니다."],
+  es: ["Vista previa de Testnet 0.6.18 para Windows x64 sin firma. No se han verificado el reinicio del sistema, el dispositivo del usuario, SmartScreen/Defender, la recuperación de un perfil fallido ni las transferencias reales.", "El instalador original 0.6.18 superó en CI de Windows las actualizaciones desde 0.6.8, conservando la dirección y el hash del archivo cifrado de la cartera. Aún no se ha verificado en tu dispositivo."],
+  fr: ["Aperçu Testnet 0.6.18 pour Windows x64 non signé. Le redémarrage du système, l'appareil de l'utilisateur, SmartScreen/Defender, la récupération d'un profil en échec et les transferts réels ne sont pas vérifiés.", "L'installateur original 0.6.18 a réussi en CI Windows les mises à niveau depuis 0.6.8, en conservant l'adresse et le hash du fichier chiffré du portefeuille. Il n'a pas encore été vérifié sur votre appareil."],
+  de: ["Unsignierte Testnet-Vorschau 0.6.18 für Windows x64. Neustart des Betriebssystems, Nutzergerät, SmartScreen/Defender, Wiederherstellung eines fehlgeschlagenen Profils und echte Übertragungen sind nicht verifiziert.", "Der ursprüngliche Installer 0.6.18 bestand in der Windows-CI Upgrades von 0.6.8; Adresse und Hash der verschlüsselten Wallet-Datei blieben erhalten. Auf Ihrem Gerät wurde er noch nicht verifiziert."],
+  pt: ["Prévia da Testnet 0.6.18 para Windows x64 sem assinatura. Reinicialização do sistema, dispositivo do usuário, SmartScreen/Defender, recuperação de perfil com falha e transferências reais não foram verificados.", "O instalador original 0.6.18 passou nos upgrades de 0.6.8 na CI do Windows, preservando o endereço e o hash do arquivo criptografado da carteira. Ainda não foi verificado no seu dispositivo."],
+  ru: ["Неподписанная тестовая версия 0.6.18 для Windows x64. Перезагрузка ОС, устройство пользователя, SmartScreen/Defender, восстановление повреждённого профиля и реальные переводы не проверены.", "Исходный установщик 0.6.18 прошёл в Windows CI обновление с 0.6.8 с сохранением адреса и хеша зашифрованного файла кошелька. На вашем устройстве он ещё не проверен."],
+  ar: ["معاينة شبكة الاختبار 0.6.18 لنظام Windows x64 غير موقّعة. لم يُتحقق من إعادة تشغيل النظام أو جهاز المستخدم أو SmartScreen/Defender أو استعادة ملف تعريف فاشل أو التحويلات الفعلية.", "اجتاز المثبّت الأصلي 0.6.18 ترقيات Windows CI من 0.6.8 مع بقاء العنوان وتجزئة ملف المحفظة المشفّر دون تغيير. لم يُتحقق منه بعد على جهازك."],
+  id: ["Pratinjau Testnet 0.6.18 untuk Windows x64 tanpa tanda tangan. Mulai ulang OS, perangkat pengguna, SmartScreen/Defender, pemulihan profil yang gagal, dan transfer nyata belum diverifikasi.", "Penginstal asli 0.6.18 lulus peningkatan dari 0.6.8 di CI Windows dengan alamat dan hash berkas dompet terenkripsi tetap sama. Belum diverifikasi pada perangkat Anda."]
+};
+for (const [locale, copy] of Object.entries(WALLET_DOWNLOAD_COPY)) {
+  [copy.desktop0618Boundary, copy.desktop0618Proof] = DESKTOP_0618_COPY[locale];
+}
+
 const BROWSER_014_COPY = {
   "zh-CN": ["Chrome/Edge 0.1.4 无签名手动安装测试网预览；未上架。真实用户档案、公开 Finance 完整连接、签名和交易未验证。", "隔离 Edge 153 一次性档案通过空钱包恢复、新建测试账户及 Finance 静态同源重连；未使用真实凭证。"],
   "zh-TW": ["Chrome/Edge 0.1.4 無簽章手動安裝測試網預覽；未上架。真實使用者資料、公開 Finance 完整連線、簽章與交易未驗證。", "隔離 Edge 153 一次性資料通過空錢包復原、新建測試帳戶及 Finance 靜態同源重連；未使用真實憑證。"],

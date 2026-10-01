@@ -87,12 +87,13 @@ test("all Wallet download surfaces enforce the same file eligibility without cha
     assert.ok(!chooser.includes('data-platform="linux"'), "specific Linux packages replace the aggregate unavailable row");
     const escaped = value => value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#x27;");
     for (const [locale, localized] of Object.entries(WALLET_DOWNLOAD_COPY)) {
+      assert.ok(localized.desktop0610Boundary && localized.desktop0610Proof, locale + " immutable historical copy");
       const localizedChooser = await markup(React.createElement(WalletDownloadSheet, { locale }));
       const localizedProduct = await markup(React.createElement(ProductDownloads, { product: wallet, contract, copy: copy.PRODUCT_UI_COPY[locale], locale }));
       for (const [surface, html] of Object.entries({ chooser: localizedChooser, product: localizedProduct })) {
         assert.equal(bySource(fileAnchors(html), "official").length, expected.length, locale + surface);
         assert.equal(bySource(fileAnchors(html), "github-fallback").length, 6, locale + surface + " fallbacks");
-        for (const key of ["desktop068Boundary", "desktop068Proof", "desktop0610Boundary", "desktop0610Proof", "appImageNotInstalled", "unsignedPreview", "browserCurrentBoundary", "manualExtension", "pwaCurrentProof", "firefoxManualExtension", "android34Boundary", "android34Proof", "qaSignedPreview", "desktop068MacSignature", "androidUniversalLabel", "downloadHistory", "githubFallback", "fallbackManual"]) {
+        for (const key of ["desktop068Boundary", "desktop068Proof", "desktop0618Boundary", "desktop0618Proof", "appImageNotInstalled", "unsignedPreview", "browserCurrentBoundary", "manualExtension", "pwaCurrentProof", "firefoxManualExtension", "android34Boundary", "android34Proof", "qaSignedPreview", "desktop068MacSignature", "androidUniversalLabel", "downloadHistory", "githubFallback", "fallbackManual"]) {
           assert.ok(localized[key], locale + key);
           assert.ok(html.includes(escaped(localized[key])), locale + surface + key);
         }
