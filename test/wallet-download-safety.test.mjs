@@ -38,13 +38,13 @@ test('the exact safety hold leaves ten current choices and does not certify othe
 
 test('current Wallet Web choices bind the rebuilt source, immutable website path and exact bytes', () => {
   const expected = {
-    pwa: ['ec4197a885165355ade35e439142f4af7cbdc6d80ee8617885fa9752a6d20003', 895597, 'ynx-wallet-web-pwa-0.1.17.zip'],
-    chromeEdge: ['cf8558f16d431dca0910765ddbc8c268fb289d296839a181504ab59359851433', 667828, 'ynx-wallet-chrome-edge-0.1.17.zip'],
-    firefox: ['663e6cdcc5186cd995dbd7146325a2200f2692bd2f9f1312a471557dbcd8598d', 667926, 'ynx-wallet-firefox-0.1.17.zip']
+    pwa: ['331abe6875a0cd91f09a28dd66b47c47de21de62eb76b30e6ee31adaad927b79', 895782, 'ynx-wallet-web-pwa-0.1.18.zip'],
+    chromeEdge: ['7f84bd686e9596cabd2d13eb78ce1f386724eb8f7a0d873f9b3050858108c059', 667825, 'ynx-wallet-chrome-edge-0.1.18.zip'],
+    firefox: ['e0413ee9f63352153b1f918bd666b164ad9f127a13247954a539001fb4c4a6dc', 667923, 'ynx-wallet-firefox-0.1.18.zip']
   };
   for (const [platform, [sha256, sizeBytes, filename]] of Object.entries(expected)) {
     const item = WALLET_CANONICAL_DOWNLOADS[platform];
-    assert.equal(item.sourceCommit, '4b9588b0ff3f900810c09c21d1fc4537e4a04d57');
+    assert.equal(item.sourceCommit, 'd87b86a76686a6e07eaf2afb57593a750bd433b7');
     assert.equal(item.sha256, sha256);
     assert.equal(item.sizeBytes, sizeBytes);
     assert.equal(item.artifactPath, filename);

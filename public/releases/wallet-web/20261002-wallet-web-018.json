@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "productId": "wallet-web",
+  "version": "0.1.18",
+  "sourceCommit": "d87b86a76686a6e07eaf2afb57593a750bd433b7",
+  "releaseTag": "wallet-web-testnet-preview-0.1.18-d87b86a76",
+  "fullInstalledE2E": false,
+  "newWalletGoalsAccepted": false,
+  "productionSigned": false,
+  "storeReleased": false,
+  "publicDownloadVerified": true,
+  "MONSTER": false,
+  "readback": {
+    "source": "d87b86a76686a6e07eaf2afb57593a750bd433b7",
+    "results": [
+      {
+        "file": "ynx-wallet-chrome-edge-0.1.18.zip",
+        "url": "https://downloads.ynxweb4.com/wallet/sha256-7f84bd686e9596cabd2d13eb78ce1f386724eb8f7a0d873f9b3050858108c059/ynx-wallet-chrome-edge-0.1.18.zip",
+        "status": 200,
+        "bytes": 667825,
+        "sha256": "7f84bd686e9596cabd2d13eb78ce1f386724eb8f7a0d873f9b3050858108c059",
+        "pass": true
+      },
+      {
+        "file": "ynx-wallet-firefox-0.1.18.zip",
+        "url": "https://downloads.ynxweb4.com/wallet/sha256-e0413ee9f63352153b1f918bd666b164ad9f127a13247954a539001fb4c4a6dc/ynx-wallet-firefox-0.1.18.zip",
+        "status": 200,
+        "bytes": 667923,
+        "sha256": "e0413ee9f63352153b1f918bd666b164ad9f127a13247954a539001fb4c4a6dc",
+        "pass": true
+      },
+      {
+        "file": "ynx-wallet-web-pwa-0.1.18.zip",
+        "url": "https://downloads.ynxweb4.com/wallet/sha256-331abe6875a0cd91f09a28dd66b47c47de21de62eb76b30e6ee31adaad927b79/ynx-wallet-web-pwa-0.1.18.zip",
+        "status": 200,
+        "bytes": 895782,
+        "sha256": "331abe6875a0cd91f09a28dd66b47c47de21de62eb76b30e6ee31adaad927b79",
+        "pass": true
+      }
+    ],
+    "passed": true,
+    "installedVerified": false
+  },
+  "artifacts": [
+    {
+      "filename": "ynx-wallet-web-pwa-0.1.18.zip",
+      "bytes": 895782,
+      "sha256": "331abe6875a0cd91f09a28dd66b47c47de21de62eb76b30e6ee31adaad927b79",
+      "websiteUrl": "https://www.ynxweb4.com/downloads/wallet-web/sha256-331abe6875a0cd91f09a28dd66b47c47de21de62eb76b30e6ee31adaad927b79/ynx-wallet-web-pwa-0.1.18.zip",
+      "githubUrl": "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-web-testnet-preview-0.1.18-d87b86a76/ynx-wallet-web-pwa-0.1.18.zip"
+    },
+    {
+      "filename": "ynx-wallet-chrome-edge-0.1.18.zip",
+      "bytes": 667825,
+      "sha256": "7f84bd686e9596cabd2d13eb78ce1f386724eb8f7a0d873f9b3050858108c059",
+      "websiteUrl": "https://www.ynxweb4.com/downloads/wallet-web/sha256-7f84bd686e9596cabd2d13eb78ce1f386724eb8f7a0d873f9b3050858108c059/ynx-wallet-chrome-edge-0.1.18.zip",
+      "githubUrl": "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-web-testnet-preview-0.1.18-d87b86a76/ynx-wallet-chrome-edge-0.1.18.zip"
+    },
+    {
+      "filename": "ynx-wallet-firefox-0.1.18.zip",
+      "bytes": 667923,
+      "sha256": "e0413ee9f63352153b1f918bd666b164ad9f127a13247954a539001fb4c4a6dc",
+      "websiteUrl": "https://www.ynxweb4.com/downloads/wallet-web/sha256-e0413ee9f63352153b1f918bd666b164ad9f127a13247954a539001fb4c4a6dc/ynx-wallet-firefox-0.1.18.zip",
+      "githubUrl": "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-web-testnet-preview-0.1.18-d87b86a76/ynx-wallet-firefox-0.1.18.zip"
+    }
+  ]
+}
