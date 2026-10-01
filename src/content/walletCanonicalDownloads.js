@@ -1,7 +1,7 @@
 import { WALLET_DESKTOP068 } from "./walletDesktop068.js";
 import { WALLET_DESKTOP0618_WINDOWS_X64, WALLET_DESKTOP0618_WINDOWS_ARM64 } from "./walletDesktop0618.js";
 import { WALLET_ANDROID34 } from "./walletAndroid34.js";
-import { WALLET_WEB015 } from "./walletWeb015.js";
+import { WALLET_WEB016 } from "./walletWeb016.js";
 // Compact current selections. Full source manifests and all historical bodies are served from public/releases only.
 export const WALLET_CANONICAL_MANIFESTS = [
   {
@@ -305,4 +305,4 @@ export const WALLET_WEB_014_CHROME_EDGE = {
   installProof: "Disposable Edge 153 unpacked-extension account recovery and Finance static-origin connection passed; user profiles, public Finance pairing, live private gateway, signing and transactions remain unverified."
 };
 
-export const WALLET_CANONICAL_DOWNLOADS = { ...WALLET_PREVIOUS_CANONICAL_DOWNLOADS, ...WALLET_DESKTOP068, windowsX64: WALLET_DESKTOP0618_WINDOWS_X64, windowsArm64: WALLET_DESKTOP0618_WINDOWS_ARM64, android: WALLET_ANDROID34, androidUniversal: WALLET_ANDROID34, ...WALLET_WEB015 };
+export const WALLET_CANONICAL_DOWNLOADS = { ...WALLET_PREVIOUS_CANONICAL_DOWNLOADS, ...WALLET_DESKTOP068, windowsX64: WALLET_DESKTOP0618_WINDOWS_X64, windowsArm64: WALLET_DESKTOP0618_WINDOWS_ARM64, android: WALLET_ANDROID34, androidUniversal: WALLET_ANDROID34, ...WALLET_WEB016 };

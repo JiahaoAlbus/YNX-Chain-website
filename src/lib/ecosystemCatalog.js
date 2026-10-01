@@ -154,7 +154,7 @@ const evidence = {
       href: "/releases/ecosystem-release-registry.json",
       release: "wallet-auth-v1.0.0-testnet-preview.5"
     },
-    statusNote: "Android 1.0.28 and Web/Chromium/Firefox 0.1.15 public artifacts are SHA-256 verified. Android emulator upgrades, retained accounts and keyboard layouts passed; physical-device, Relay and complete ecosystem journeys remain unverified. Browser packages are unsigned manual-install previews. Desktop links retain their existing release evidence.",
+    statusNote: "Android 1.0.28 and Web/Chromium/Firefox 0.1.16 public artifacts are SHA-256 verified. Android emulator upgrades, retained accounts and keyboard layouts passed; physical-device, Relay and complete ecosystem journeys remain unverified. Browser packages are unsigned manual-install previews. Desktop links retain their existing release evidence.",
     downloads: {
       ...Object.fromEntries(Object.entries(WALLET_CANONICAL_DOWNLOADS).map(([platform, artifact]) => [platform, artifactDownload(PRODUCT_STATUS.PREVIEW, artifact.artifactPath, artifact.installProof, artifact.publicUrl)])),
       web: { status: PRODUCT_STATUS.LIVE, href: "https://wallet.ynxweb4.com/", external: true, downloadHosted: false, note: "Web Wallet account, assets, encrypted backup and explicit request review. Installed-wallet Companion remains a separate route." },

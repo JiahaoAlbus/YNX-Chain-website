@@ -459,62 +459,62 @@ const CURRENT_WALLET_RELEASE_COPY = {
   "zh-CN": [
     "1.0.28 测试网 APK，测试签名、未上架。请核对下载摘要。",
     "模拟器升级、原账户恢复与键盘布局通过；真机、手机配对及生态服务完整旅程未验证。",
-    "0.1.15 无签名手动安装预览；未上架。升级时保留原扩展目录与账户数据。"
+    "0.1.16 无签名手动安装预览；未上架。升级时保留原扩展目录与账户数据。"
   ],
   "zh-TW": [
     "1.0.28 測試網 APK，測試簽章、未上架。請核對下載摘要。",
     "模擬器升級、原帳戶復原與鍵盤版面通過；實機、手機配對及生態服務完整流程未驗證。",
-    "0.1.15 無簽章手動安裝預覽；未上架。升級時保留原擴充目錄與帳戶資料。"
+    "0.1.16 無簽章手動安裝預覽；未上架。升級時保留原擴充目錄與帳戶資料。"
   ],
   "en": [
     "1.0.28 Testnet APK, test signed and not in stores. Verify the download hash.",
     "Emulator upgrades, account restoration and keyboard layouts passed; real devices, mobile pairing and complete service journeys remain unverified.",
-    "Unsigned 0.1.15 manual-install preview, not in stores. Keep the original extension directory and account data when upgrading."
+    "Unsigned 0.1.16 manual-install preview, not in stores. Keep the original extension directory and account data when upgrading."
   ],
   "ja": [
     "1.0.28 Testnet APK。テスト署名、ストア未公開。ダウンロードのハッシュを確認してください。",
     "エミュレーターの更新、アカウント復元、キーボード表示は確認済み。実機、モバイル接続、サービス全体の検証は未完了です。",
-    "未署名の0.1.15手動インストール版。更新時は元の拡張機能フォルダーとアカウントデータを保持してください。"
+    "未署名の0.1.16手動インストール版。更新時は元の拡張機能フォルダーとアカウントデータを保持してください。"
   ],
   "ko": [
     "1.0.28 테스트넷 APK, 테스트 서명, 스토어 미출시. 다운로드 해시를 확인하세요.",
     "에뮬레이터 업그레이드, 계정 복원, 키보드 레이아웃을 확인했습니다. 실제 기기, 모바일 연결, 전체 서비스 사용은 미검증입니다.",
-    "서명 없는 0.1.15 수동 설치 미리보기입니다. 업그레이드 시 기존 확장 폴더와 계정 데이터를 유지하세요."
+    "서명 없는 0.1.16 수동 설치 미리보기입니다. 업그레이드 시 기존 확장 폴더와 계정 데이터를 유지하세요."
   ],
   "es": [
     "APK Testnet 1.0.28 con firma de prueba, no publicado en tiendas. Verifica el hash.",
     "Actualización, recuperación de cuentas y teclado verificados en emuladores; dispositivos reales, vinculación móvil y servicios completos sin verificar.",
-    "Vista previa 0.1.15 sin firma para instalación manual. Conserva la carpeta original de la extensión y sus datos al actualizar."
+    "Vista previa 0.1.16 sin firma para instalación manual. Conserva la carpeta original de la extensión y sus datos al actualizar."
   ],
   "fr": [
     "APK Testnet 1.0.28 signé pour les tests, hors boutique. Vérifiez le hash.",
     "Mise à niveau, restauration et clavier vérifiés sur émulateur ; appareils réels, connexion mobile et parcours complets non vérifiés.",
-    "Aperçu 0.1.15 non signé, à installer manuellement. Conservez le dossier original de l’extension et ses données lors de la mise à niveau."
+    "Aperçu 0.1.16 non signé, à installer manuellement. Conservez le dossier original de l’extension et ses données lors de la mise à niveau."
   ],
   "de": [
     "Testnet-APK 1.0.28 mit Testsignatur, nicht im Store. Download-Hash prüfen.",
     "Emulator-Upgrade, Kontowiederherstellung und Tastaturlayout geprüft; echte Geräte, mobile Kopplung und vollständige Dienste nicht verifiziert.",
-    "Unsignierte 0.1.15-Vorschau zur manuellen Installation. Beim Upgrade ursprünglichen Erweiterungsordner und Kontodaten behalten."
+    "Unsignierte 0.1.16-Vorschau zur manuellen Installation. Beim Upgrade ursprünglichen Erweiterungsordner und Kontodaten behalten."
   ],
   "pt": [
     "APK Testnet 1.0.28 com assinatura de teste, fora das lojas. Verifique o hash.",
     "Atualização, recuperação de conta e teclado verificados em emuladores; aparelhos reais, conexão móvel e serviços completos não verificados.",
-    "Prévia 0.1.15 sem assinatura, para instalação manual. Mantenha a pasta original da extensão e os dados da conta ao atualizar."
+    "Prévia 0.1.16 sem assinatura, para instalação manual. Mantenha a pasta original da extensão e os dados da conta ao atualizar."
   ],
   "ru": [
     "Testnet APK 1.0.28 с тестовой подписью, не в магазине. Проверьте хеш загрузки.",
     "Обновление, восстановление аккаунта и клавиатура проверены на эмуляторе; реальные устройства, мобильное подключение и полный цикл сервисов не проверены.",
-    "Неподписанная версия 0.1.15 для ручной установки. При обновлении сохраните исходную папку расширения и данные аккаунта."
+    "Неподписанная версия 0.1.16 для ручной установки. При обновлении сохраните исходную папку расширения и данные аккаунта."
   ],
   "ar": [
     "APK لشبكة الاختبار 1.0.28 بتوقيع اختبار، غير متاح في المتاجر. تحقق من بصمة التنزيل.",
     "تم التحقق من الترقية واستعادة الحساب ولوحة المفاتيح في المحاكي؛ الأجهزة الفعلية والربط المحمول والخدمات الكاملة غير متحققة.",
-    "معاينة 0.1.15 غير موقعة للتثبيت اليدوي. احتفظ بمجلد الإضافة الأصلي وبيانات الحساب عند الترقية."
+    "معاينة 0.1.16 غير موقعة للتثبيت اليدوي. احتفظ بمجلد الإضافة الأصلي وبيانات الحساب عند الترقية."
   ],
   "id": [
     "APK Testnet 1.0.28 bertanda tangan uji, tidak di toko. Periksa hash unduhan.",
     "Peningkatan emulator, pemulihan akun dan tata letak keyboard lulus; perangkat nyata, pairing seluler dan layanan lengkap belum diverifikasi.",
-    "Pratinjau 0.1.15 tanpa tanda tangan untuk instalasi manual. Pertahankan folder ekstensi asli dan data akun saat memperbarui."
+    "Pratinjau 0.1.16 tanpa tanda tangan untuk instalasi manual. Pertahankan folder ekstensi asli dan data akun saat memperbarui."
   ]
 };
 for (const [locale, copy] of Object.entries(WALLET_DOWNLOAD_COPY)) {
@@ -524,73 +524,73 @@ for (const [locale, copy] of Object.entries(WALLET_DOWNLOAD_COPY)) {
 const CURRENT_PLATFORM_COPY = {
   "zh-CN": [
     "网页版可直接管理本地账户、资产与请求审批，无需先连接另一个钱包。",
-    "0.1.15 网页版与 PWA 静态包已发布，PWA 安装及完整 Auth 流程仍未验证。",
+    "0.1.16 网页版与 PWA 静态包已发布，PWA 安装及完整 Auth 流程仍未验证。",
     "Firefox ZIP 需手动安装，尚未上架 Firefox Add-ons。",
     "当前提供 {total} 个下载选项，其中 {available} 个可用。原始文件与发布历史均保留。"
   ],
   "zh-TW": [
     "網頁版可直接管理本機帳戶、資產與請求審閱，無需先連接另一個錢包。",
-    "0.1.15 網頁版與 PWA 靜態套件已發布，PWA 安裝及完整 Auth 流程仍未驗證。",
+    "0.1.16 網頁版與 PWA 靜態套件已發布，PWA 安裝及完整 Auth 流程仍未驗證。",
     "Firefox ZIP 需手動安裝，尚未上架 Firefox Add-ons。",
     "目前提供 {total} 個下載選項，其中 {available} 個可用。原始檔案與發布歷史均保留。"
   ],
   "en": [
     "The Web Wallet manages local accounts, assets and request review directly; no other wallet is required.",
-    "Web Wallet and the 0.1.15 PWA archive are published. Installed PWA and the complete Auth flow remain unverified.",
+    "Web Wallet and the 0.1.16 PWA archive are published. Installed PWA and the complete Auth flow remain unverified.",
     "Manual-install Firefox ZIP; not published on Firefox Add-ons.",
     "There are {total} current download choices; {available} are available. Original files and release history are preserved."
   ],
   "ja": [
     "Web Walletでローカルアカウント、資産、リクエストを直接管理できます。別のウォレットへの接続は不要です。",
-    "Web Walletと0.1.15 PWAアーカイブは公開済みです。PWAインストールとAuth全体の検証は未完了です。",
+    "Web Walletと0.1.16 PWAアーカイブは公開済みです。PWAインストールとAuth全体の検証は未完了です。",
     "Firefox ZIPは手動インストール用です。Firefox Add-onsでは未公開です。",
     "現在のダウンロード選択肢は{total}件、利用可能なのは{available}件です。元のファイルと履歴は保持されています。"
   ],
   "ko": [
     "Web Wallet에서 로컬 계정, 자산, 요청 검토를 직접 관리합니다. 다른 지갑에 먼저 연결할 필요가 없습니다.",
-    "Web Wallet과 0.1.15 PWA 파일이 공개되었습니다. PWA 설치 및 전체 Auth 흐름은 미검증입니다.",
+    "Web Wallet과 0.1.16 PWA 파일이 공개되었습니다. PWA 설치 및 전체 Auth 흐름은 미검증입니다.",
     "Firefox ZIP 수동 설치용이며 Firefox Add-ons에 미출시입니다.",
     "현재 다운로드 선택은 {total}개이며 {available}개를 사용할 수 있습니다. 원본 파일과 기록은 보존됩니다."
   ],
   "es": [
     "Web Wallet gestiona cuentas locales, activos y solicitudes directamente, sin conectar otra cartera.",
-    "Web Wallet y el archivo PWA 0.1.15 están publicados. La instalación PWA y el flujo Auth completo no están verificados.",
+    "Web Wallet y el archivo PWA 0.1.16 están publicados. La instalación PWA y el flujo Auth completo no están verificados.",
     "ZIP de Firefox para instalación manual; no publicado en Firefox Add-ons.",
     "Hay {total} opciones actuales y {available} disponibles. Se conservan los archivos originales y el historial."
   ],
   "fr": [
     "Web Wallet gère directement les comptes locaux, les actifs et les demandes, sans autre portefeuille.",
-    "Web Wallet et l’archive PWA 0.1.15 sont publiés. L’installation PWA et le parcours Auth complet restent non vérifiés.",
+    "Web Wallet et l’archive PWA 0.1.16 sont publiés. L’installation PWA et le parcours Auth complet restent non vérifiés.",
     "ZIP Firefox à installer manuellement ; non publié sur Firefox Add-ons.",
     "{total} choix actuels, dont {available} disponibles. Les fichiers d’origine et l’historique sont conservés."
   ],
   "de": [
     "Web Wallet verwaltet lokale Konten, Vermögen und Anfragen direkt, ohne eine weitere Wallet.",
-    "Web Wallet und das PWA-Archiv 0.1.15 sind veröffentlicht. PWA-Installation und vollständiger Auth-Ablauf bleiben ungeprüft.",
+    "Web Wallet und das PWA-Archiv 0.1.16 sind veröffentlicht. PWA-Installation und vollständiger Auth-Ablauf bleiben ungeprüft.",
     "Firefox-ZIP zur manuellen Installation; nicht bei Firefox Add-ons veröffentlicht.",
     "{total} aktuelle Downloadoptionen, davon {available} verfügbar. Originaldateien und Verlauf bleiben erhalten."
   ],
   "pt": [
     "Web Wallet gerencia contas locais, ativos e solicitações diretamente, sem outra carteira.",
-    "Web Wallet e o arquivo PWA 0.1.15 estão publicados. Instalação PWA e fluxo Auth completo não verificados.",
+    "Web Wallet e o arquivo PWA 0.1.16 estão publicados. Instalação PWA e fluxo Auth completo não verificados.",
     "ZIP Firefox para instalação manual; não publicado no Firefox Add-ons.",
     "São {total} opções atuais, com {available} disponíveis. Arquivos originais e histórico preservados."
   ],
   "ru": [
     "Web Wallet напрямую управляет локальными аккаунтами, активами и запросами без другого кошелька.",
-    "Web Wallet и архив PWA 0.1.15 опубликованы. Установка PWA и полный процесс Auth не проверены.",
+    "Web Wallet и архив PWA 0.1.16 опубликованы. Установка PWA и полный процесс Auth не проверены.",
     "ZIP Firefox для ручной установки; не опубликован в Firefox Add-ons.",
     "Текущих вариантов загрузки: {total}, доступно: {available}. Исходные файлы и история сохранены."
   ],
   "ar": [
     "تدير Web Wallet الحسابات المحلية والأصول ومراجعة الطلبات مباشرة، دون الحاجة إلى محفظة أخرى.",
-    "نُشرت Web Wallet وأرشيف PWA 0.1.15. لم يُتحقق من تثبيت PWA ومسار Auth الكامل.",
+    "نُشرت Web Wallet وأرشيف PWA 0.1.16. لم يُتحقق من تثبيت PWA ومسار Auth الكامل.",
     "ملف Firefox ZIP للتثبيت اليدوي، غير منشور في Firefox Add-ons.",
     "يوجد {total} خيار تنزيل حالي، منها {available} متاح. الملفات الأصلية وسجل الإصدارات محفوظة."
   ],
   "id": [
     "Web Wallet mengelola akun lokal, aset dan permintaan langsung, tanpa dompet lain.",
-    "Web Wallet dan arsip PWA 0.1.15 telah diterbitkan. Instalasi PWA dan alur Auth lengkap belum diverifikasi.",
+    "Web Wallet dan arsip PWA 0.1.16 telah diterbitkan. Instalasi PWA dan alur Auth lengkap belum diverifikasi.",
     "ZIP Firefox untuk instalasi manual, belum dirilis di Firefox Add-ons.",
     "Ada {total} pilihan unduhan saat ini; {available} tersedia. File asli dan riwayat dipertahankan."
   ]
@@ -600,7 +600,7 @@ for (const [locale, copy] of Object.entries(WALLET_DOWNLOAD_COPY)) {
   copy.pwaCurrentBoundary = copy.pwaCurrentProof;
 }
 
-const web015ProofCopy={"en":"Public 0.1.15 ZIP bytes and manifest verified; current installer selection uses the official catalog. Full installed ecosystem journeys remain unverified.","zh-CN":"0.1.15 公开 ZIP 字节与清单已核验；安装选项使用官网当前目录。最终安装版完整生态流程仍未验证。","zh-Hant":"0.1.15 公開 ZIP 位元與清單已核驗；安裝選項使用官網目前目錄。最終安裝版完整生態流程仍未驗證。","ja":"0.1.15 公開ZIPとマニフェストを検証済み。配布選択は公式の最新一覧を使用します。インストール後の全製品フローは未検証です。","ko":"0.1.15 공개 ZIP과 매니페스트를 검증했습니다. 설치 선택은 공식 최신 목록을 사용합니다. 설치 후 전체 생태계 흐름은 미검증입니다.","es":"ZIP y manifiesto públicos 0.1.15 verificados. La selección usa el catálogo oficial actual. Los recorridos completos instalados no están verificados.","fr":"ZIP public et manifeste 0.1.15 vérifiés. La sélection utilise le catalogue officiel actuel. Les parcours installés complets restent non vérifiés.","de":"Öffentliches ZIP und Manifest 0.1.15 geprüft. Die Auswahl nutzt den aktuellen offiziellen Katalog. Vollständige installierte Abläufe bleiben ungeprüft.","pt":"ZIP público e manifesto 0.1.15 verificados. A seleção usa o catálogo oficial atual. Os fluxos instalados completos não foram verificados.","ru":"Публичный ZIP и манифест 0.1.15 проверены. Выбор использует актуальный официальный каталог. Полные установленные сценарии не проверены.","ar":"تم التحقق من ZIP العام وبيان 0.1.15. يستخدم اختيار التثبيت الكتالوج الرسمي الحالي. لم تُتحقق المسارات المثبتة الكاملة.","id":"ZIP publik dan manifes 0.1.15 terverifikasi. Pilihan instalasi memakai katalog resmi terkini. Alur terpasang lengkap belum terverifikasi."};
+const web015ProofCopy={"en":"Public 0.1.16 ZIP bytes and manifest verified; current installer selection uses the official catalog. Full installed ecosystem journeys remain unverified.","zh-CN":"0.1.16 公开 ZIP 字节与清单已核验；安装选项使用官网当前目录。最终安装版完整生态流程仍未验证。","zh-Hant":"0.1.16 公開 ZIP 位元與清單已核驗；安裝選項使用官網目前目錄。最終安裝版完整生態流程仍未驗證。","ja":"0.1.16 公開ZIPとマニフェストを検証済み。配布選択は公式の最新一覧を使用します。インストール後の全製品フローは未検証です。","ko":"0.1.16 공개 ZIP과 매니페스트를 검증했습니다. 설치 선택은 공식 최신 목록을 사용합니다. 설치 후 전체 생태계 흐름은 미검증입니다.","es":"ZIP y manifiesto públicos 0.1.16 verificados. La selección usa el catálogo oficial actual. Los recorridos completos instalados no están verificados.","fr":"ZIP public et manifeste 0.1.16 vérifiés. La sélection utilise le catalogue officiel actuel. Les parcours installés complets restent non vérifiés.","de":"Öffentliches ZIP und Manifest 0.1.16 geprüft. Die Auswahl nutzt den aktuellen offiziellen Katalog. Vollständige installierte Abläufe bleiben ungeprüft.","pt":"ZIP público e manifesto 0.1.16 verificados. A seleção usa o catálogo oficial atual. Os fluxos instalados completos não foram verificados.","ru":"Публичный ZIP и манифест 0.1.16 проверены. Выбор использует актуальный официальный каталог. Полные установленные сценарии не проверены.","ar":"تم التحقق من ZIP العام وبيان 0.1.16. يستخدم اختيار التثبيت الكتالوج الرسمي الحالي. لم تُتحقق المسارات المثبتة الكاملة.","id":"ZIP publik dan manifes 0.1.16 terverifikasi. Pilihan instalasi memakai katalog resmi terkini. Alur terpasang lengkap belum terverifikasi."};
 for(const [locale,value] of Object.entries(web015ProofCopy)) WALLET_DOWNLOAD_COPY[locale==='zh-Hant'?'zh-TW':locale].web015Proof=value;
 
 const DESKTOP_0618_ARM_COPY = {
