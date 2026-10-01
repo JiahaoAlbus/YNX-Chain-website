@@ -502,3 +502,82 @@ const CURRENT_WALLET_RELEASE_COPY = {
 for (const [locale, copy] of Object.entries(WALLET_DOWNLOAD_COPY)) {
   [copy.android34Boundary, copy.android34Proof, copy.browserCurrentBoundary] = CURRENT_WALLET_RELEASE_COPY[locale];
 }
+
+const CURRENT_PLATFORM_COPY = {
+  "zh-CN": [
+    "网页版可直接管理本地账户、资产与请求审批，无需先连接另一个钱包。",
+    "0.1.14 网页版与 PWA 静态包已发布，PWA 安装及完整 Auth 流程仍未验证。",
+    "Firefox ZIP 需手动安装，尚未上架 Firefox Add-ons。",
+    "当前提供 {total} 个下载选项，其中 {available} 个可用。原始文件与发布历史均保留。"
+  ],
+  "zh-TW": [
+    "網頁版可直接管理本機帳戶、資產與請求審閱，無需先連接另一個錢包。",
+    "0.1.14 網頁版與 PWA 靜態套件已發布，PWA 安裝及完整 Auth 流程仍未驗證。",
+    "Firefox ZIP 需手動安裝，尚未上架 Firefox Add-ons。",
+    "目前提供 {total} 個下載選項，其中 {available} 個可用。原始檔案與發布歷史均保留。"
+  ],
+  "en": [
+    "The Web Wallet manages local accounts, assets and request review directly; no other wallet is required.",
+    "Web Wallet and the 0.1.14 PWA archive are published. Installed PWA and the complete Auth flow remain unverified.",
+    "Manual-install Firefox ZIP; not published on Firefox Add-ons.",
+    "There are {total} current download choices; {available} are available. Original files and release history are preserved."
+  ],
+  "ja": [
+    "Web Walletでローカルアカウント、資産、リクエストを直接管理できます。別のウォレットへの接続は不要です。",
+    "Web Walletと0.1.14 PWAアーカイブは公開済みです。PWAインストールとAuth全体の検証は未完了です。",
+    "Firefox ZIPは手動インストール用です。Firefox Add-onsでは未公開です。",
+    "現在のダウンロード選択肢は{total}件、利用可能なのは{available}件です。元のファイルと履歴は保持されています。"
+  ],
+  "ko": [
+    "Web Wallet에서 로컬 계정, 자산, 요청 검토를 직접 관리합니다. 다른 지갑에 먼저 연결할 필요가 없습니다.",
+    "Web Wallet과 0.1.14 PWA 파일이 공개되었습니다. PWA 설치 및 전체 Auth 흐름은 미검증입니다.",
+    "Firefox ZIP 수동 설치용이며 Firefox Add-ons에 미출시입니다.",
+    "현재 다운로드 선택은 {total}개이며 {available}개를 사용할 수 있습니다. 원본 파일과 기록은 보존됩니다."
+  ],
+  "es": [
+    "Web Wallet gestiona cuentas locales, activos y solicitudes directamente, sin conectar otra cartera.",
+    "Web Wallet y el archivo PWA 0.1.14 están publicados. La instalación PWA y el flujo Auth completo no están verificados.",
+    "ZIP de Firefox para instalación manual; no publicado en Firefox Add-ons.",
+    "Hay {total} opciones actuales y {available} disponibles. Se conservan los archivos originales y el historial."
+  ],
+  "fr": [
+    "Web Wallet gère directement les comptes locaux, les actifs et les demandes, sans autre portefeuille.",
+    "Web Wallet et l’archive PWA 0.1.14 sont publiés. L’installation PWA et le parcours Auth complet restent non vérifiés.",
+    "ZIP Firefox à installer manuellement ; non publié sur Firefox Add-ons.",
+    "{total} choix actuels, dont {available} disponibles. Les fichiers d’origine et l’historique sont conservés."
+  ],
+  "de": [
+    "Web Wallet verwaltet lokale Konten, Vermögen und Anfragen direkt, ohne eine weitere Wallet.",
+    "Web Wallet und das PWA-Archiv 0.1.14 sind veröffentlicht. PWA-Installation und vollständiger Auth-Ablauf bleiben ungeprüft.",
+    "Firefox-ZIP zur manuellen Installation; nicht bei Firefox Add-ons veröffentlicht.",
+    "{total} aktuelle Downloadoptionen, davon {available} verfügbar. Originaldateien und Verlauf bleiben erhalten."
+  ],
+  "pt": [
+    "Web Wallet gerencia contas locais, ativos e solicitações diretamente, sem outra carteira.",
+    "Web Wallet e o arquivo PWA 0.1.14 estão publicados. Instalação PWA e fluxo Auth completo não verificados.",
+    "ZIP Firefox para instalação manual; não publicado no Firefox Add-ons.",
+    "São {total} opções atuais, com {available} disponíveis. Arquivos originais e histórico preservados."
+  ],
+  "ru": [
+    "Web Wallet напрямую управляет локальными аккаунтами, активами и запросами без другого кошелька.",
+    "Web Wallet и архив PWA 0.1.14 опубликованы. Установка PWA и полный процесс Auth не проверены.",
+    "ZIP Firefox для ручной установки; не опубликован в Firefox Add-ons.",
+    "Текущих вариантов загрузки: {total}, доступно: {available}. Исходные файлы и история сохранены."
+  ],
+  "ar": [
+    "تدير Web Wallet الحسابات المحلية والأصول ومراجعة الطلبات مباشرة، دون الحاجة إلى محفظة أخرى.",
+    "نُشرت Web Wallet وأرشيف PWA 0.1.14. لم يُتحقق من تثبيت PWA ومسار Auth الكامل.",
+    "ملف Firefox ZIP للتثبيت اليدوي، غير منشور في Firefox Add-ons.",
+    "يوجد {total} خيار تنزيل حالي، منها {available} متاح. الملفات الأصلية وسجل الإصدارات محفوظة."
+  ],
+  "id": [
+    "Web Wallet mengelola akun lokal, aset dan permintaan langsung, tanpa dompet lain.",
+    "Web Wallet dan arsip PWA 0.1.14 telah diterbitkan. Instalasi PWA dan alur Auth lengkap belum diverifikasi.",
+    "ZIP Firefox untuk instalasi manual, belum dirilis di Firefox Add-ons.",
+    "Ada {total} pilihan unduhan saat ini; {available} tersedia. File asli dan riwayat dipertahankan."
+  ]
+};
+for (const [locale, copy] of Object.entries(WALLET_DOWNLOAD_COPY)) {
+  [copy.walletOwnWeb, copy.pwaCurrentProof, copy.firefoxManualExtension] = CURRENT_PLATFORM_COPY[locale];
+  copy.pwaCurrentBoundary = copy.pwaCurrentProof;
+}

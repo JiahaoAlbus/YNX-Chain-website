@@ -26,7 +26,7 @@ export function ProductDownloads({ product, contract, copy, locale }) {
   return <div className="productDownloads">
     <div className="productBrowserEntry">
       <Globe aria-hidden="true" />
-      <div><h3>{copy.openInBrowser}</h3><p>{product.key === "wallet" ? copy.walletProviderRequired : copy.testnetPreview}</p></div>
+      <div><h3>{copy.openInBrowser}</h3><p>{product.key === "wallet" ? downloadCopy.walletOwnWeb : copy.testnetPreview}</p></div>
       {contract.publicEntry.status === "available"
         ? <a className="button primary" href={contract.publicEntry.href} rel="noopener">{copy.openInBrowser}<ArrowUpRight size={16} /></a>
         : <span className="downloadUnavailable">{copy.noWebVersion}</span>}

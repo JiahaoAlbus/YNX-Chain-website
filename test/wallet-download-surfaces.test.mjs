@@ -72,7 +72,7 @@ test("all Wallet download surfaces enforce the same file eligibility without cha
       assert.equal((html.match(/data-wallet-safety-hold="GHSA-7g7r-gx96-252g"/g) || []).length, 2, `${surface} retains both paused rows`);
       assert.ok(!hrefs(anchors).some(href => href.endsWith('.AppImage')), `${surface} has no held file action`);
       assert.match(html, /href="https:\/\/github.com\/electron-userland\/electron-builder\/security\/advisories\/GHSA-7g7r-gx96-252g"/, `${surface} links the official notice`);
-      assert.match(html, /upstream-11-available-9/, `${surface} separates publication and website eligibility counts`);
+      assert.match(html, /current-12-available-10/, `${surface} separates publication and website eligibility counts`);
       assert.match(html, /AppImage build and hash only|built and hashed only|AppImage was built/i, `${surface} preserves the uninstalled AppImage boundary`);
     }
     assert.equal((chooser.split('<details class="walletDownloadOtherPlatforms">')[0].match(/data-wallet-safety-hold=/g) || []).length, 2, 'paused current files remain visible in the main list');
@@ -92,7 +92,7 @@ test("all Wallet download surfaces enforce the same file eligibility without cha
       for (const [surface, html] of Object.entries({ chooser: localizedChooser, product: localizedProduct })) {
         assert.equal(bySource(fileAnchors(html), "official").length, expected.length, locale + surface);
         assert.equal(bySource(fileAnchors(html), "github-fallback").length, 6, locale + surface + " fallbacks");
-        for (const key of ["desktop068Boundary", "desktop068Proof", "desktop0610Boundary", "desktop0610Proof", "appImageNotInstalled", "unsignedPreview", "browserCurrentBoundary", "manualExtension", "pwaArchiveOnly", "android34Boundary", "android34Proof", "qaSignedPreview", "desktop068MacSignature", "androidUniversalLabel", "downloadHistory", "githubFallback", "fallbackManual"]) {
+        for (const key of ["desktop068Boundary", "desktop068Proof", "desktop0610Boundary", "desktop0610Proof", "appImageNotInstalled", "unsignedPreview", "browserCurrentBoundary", "manualExtension", "pwaCurrentProof", "firefoxManualExtension", "android34Boundary", "android34Proof", "qaSignedPreview", "desktop068MacSignature", "androidUniversalLabel", "downloadHistory", "githubFallback", "fallbackManual"]) {
           assert.ok(localized[key], locale + key);
           assert.ok(html.includes(escaped(localized[key])), locale + surface + key);
         }
@@ -117,7 +117,7 @@ test("all Wallet download surfaces enforce the same file eligibility without cha
         assert.deepEqual(hrefs(bySource(fileAnchors(html), "official")).sort(), expected, `${locale}:${surface}:ten exact primary files`);
         assert.equal(bySource(fileAnchors(html), "github-fallback").length, 6, `${locale}:${surface}:six explicit fallbacks`);
         assert.equal((html.match(/data-wallet-safety-hold=/g) || []).length, 2, `${locale}:${surface}:two visible holds`);
-        for (const [key, value] of Object.entries(WALLET_SAFETY_COPY[locale])) assert.ok(html.includes(escaped(value)), `${locale}:${surface}:${key}`);
+        for (const [key, value] of Object.entries(WALLET_SAFETY_COPY[locale])) assert.ok(html.includes(escaped(key === "inventoryNote" ? value.replace("{total}","12").replace("{available}","10") : value)), `${locale}:${surface}:${key}`);
       }
     }
 

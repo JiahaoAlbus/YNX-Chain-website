@@ -1,4 +1,6 @@
 import React from "react";
+import { WALLET_CANONICAL_DOWNLOADS } from "../content/walletCanonicalDownloads.js";
+import { walletDownloadState } from "../lib/walletDownloads.js";
 import { getWalletSafetyCopy } from "../content/walletSafetyCopy.js";
 import { WALLET_DOWNLOAD_SAFETY_POLICY_PATH, WALLET_APPIMAGE_ADVISORY } from "../lib/walletDownloadSafety.js";
 
@@ -9,5 +11,8 @@ export function WalletDownloadSafetyNotice({ locale, hold }) {
 }
 
 export function WalletDownloadInventoryNotice({ locale }) {
-  return <p className="downloadInstallNotice" data-wallet-download-inventory="upstream-11-available-9">{getWalletSafetyCopy(locale).inventoryNote}{" "}<a href={WALLET_DOWNLOAD_SAFETY_POLICY_PATH} style={{ display: "inline-flex", alignItems: "center", minHeight: 44 }}>{WALLET_APPIMAGE_ADVISORY.id}</a></p>;
+  const entries=Object.entries(WALLET_CANONICAL_DOWNLOADS);
+  const available=entries.filter(([platform,item])=>walletDownloadState(platform,{...item,href:item.publicUrl,downloadHosted:true}).available).length;
+  const inventory=getWalletSafetyCopy(locale).inventoryNote.replace('{total}',String(entries.length)).replace('{available}',String(available));
+  return <p className="downloadInstallNotice" data-wallet-download-inventory={`current-${entries.length}-available-${available}`}>{inventory}{" "}<a href={WALLET_DOWNLOAD_SAFETY_POLICY_PATH} style={{ display: "inline-flex", alignItems: "center", minHeight: 44 }}>{WALLET_APPIMAGE_ADVISORY.id}</a></p>;
 }

@@ -73,6 +73,22 @@ export const WALLET_SAFETY_COPY = {
   }
 };
 
+const CURRENT_INVENTORY_COPY = {
+  "zh-CN": "当前提供 {total} 个下载选项，其中 {available} 个可用。原始文件与发布历史均保留。",
+  "zh-TW": "目前提供 {total} 個下載選項，其中 {available} 個可用。原始檔案與發布歷史均保留。",
+  "en": "There are {total} current download choices; {available} are available. Original files and release history are preserved.",
+  "ja": "現在のダウンロード選択肢は{total}件、利用可能なのは{available}件です。元のファイルと履歴は保持されています。",
+  "ko": "현재 다운로드 선택은 {total}개이며 {available}개를 사용할 수 있습니다. 원본 파일과 기록은 보존됩니다.",
+  "es": "Hay {total} opciones actuales y {available} disponibles. Se conservan los archivos originales y el historial.",
+  "fr": "{total} choix actuels, dont {available} disponibles. Les fichiers d’origine et l’historique sont conservés.",
+  "de": "{total} aktuelle Downloadoptionen, davon {available} verfügbar. Originaldateien und Verlauf bleiben erhalten.",
+  "pt": "São {total} opções atuais, com {available} disponíveis. Arquivos originais e histórico preservados.",
+  "ru": "Текущих вариантов загрузки: {total}, доступно: {available}. Исходные файлы и история сохранены.",
+  "ar": "يوجد {total} خيار تنزيل حالي، منها {available} متاح. الملفات الأصلية وسجل الإصدارات محفوظة.",
+  "id": "Ada {total} pilihan unduhan saat ini; {available} tersedia. File asli dan riwayat dipertahankan."
+};
+for(const [locale,copy] of Object.entries(WALLET_SAFETY_COPY)) copy.inventoryNote=CURRENT_INVENTORY_COPY[locale];
+
 export function getWalletSafetyCopy(locale) {
   return Object.hasOwn(WALLET_SAFETY_COPY, locale) ? WALLET_SAFETY_COPY[locale] : WALLET_SAFETY_COPY.en;
 }
