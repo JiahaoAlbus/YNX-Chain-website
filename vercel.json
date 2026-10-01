@@ -460,6 +460,18 @@
   ],
   "rewrites": [
     {
+      "source": "/downloads/wallet-web/sha256-663e6cdcc5186cd995dbd7146325a2200f2692bd2f9f1312a471557dbcd8598d/ynx-wallet-firefox-0.1.17.zip",
+      "destination": "https://downloads.ynxweb4.com/wallet/sha256-663e6cdcc5186cd995dbd7146325a2200f2692bd2f9f1312a471557dbcd8598d/ynx-wallet-firefox-0.1.17.zip"
+    },
+    {
+      "source": "/downloads/wallet-web/sha256-cf8558f16d431dca0910765ddbc8c268fb289d296839a181504ab59359851433/ynx-wallet-chrome-edge-0.1.17.zip",
+      "destination": "https://downloads.ynxweb4.com/wallet/sha256-cf8558f16d431dca0910765ddbc8c268fb289d296839a181504ab59359851433/ynx-wallet-chrome-edge-0.1.17.zip"
+    },
+    {
+      "source": "/downloads/wallet-web/sha256-ec4197a885165355ade35e439142f4af7cbdc6d80ee8617885fa9752a6d20003/ynx-wallet-web-pwa-0.1.17.zip",
+      "destination": "https://downloads.ynxweb4.com/wallet/sha256-ec4197a885165355ade35e439142f4af7cbdc6d80ee8617885fa9752a6d20003/ynx-wallet-web-pwa-0.1.17.zip"
+    },
+    {
       "source": "/downloads/wallet/sha256-daa8b8489dd116a24b006df3f7e0412a7269cd5a1c35564f9080a9c089ff4558/ynx-wallet-desktop-0.6.18-arm64.exe",
       "destination": "https://downloads.ynxweb4.com/wallet/sha256-daa8b8489dd116a24b006df3f7e0412a7269cd5a1c35564f9080a9c089ff4558/ynx-wallet-desktop-0.6.18-arm64.exe"
     },
