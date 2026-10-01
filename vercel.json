@@ -460,6 +460,10 @@
   ],
   "rewrites": [
     {
+      "source": "/downloads/wallet/sha256-daa8b8489dd116a24b006df3f7e0412a7269cd5a1c35564f9080a9c089ff4558/ynx-wallet-desktop-0.6.18-arm64.exe",
+      "destination": "https://downloads.ynxweb4.com/wallet/sha256-daa8b8489dd116a24b006df3f7e0412a7269cd5a1c35564f9080a9c089ff4558/ynx-wallet-desktop-0.6.18-arm64.exe"
+    },
+    {
       "source": "/downloads/wallet/sha256-c4c3882d3693854def331a136200a5ed76be091591ba3c4e180b4e2cf89ad60f/ynx-wallet-desktop-0.6.18-x64.exe",
       "destination": "https://downloads.ynxweb4.com/wallet/sha256-c4c3882d3693854def331a136200a5ed76be091591ba3c4e180b4e2cf89ad60f/ynx-wallet-desktop-0.6.18-x64.exe"
     },

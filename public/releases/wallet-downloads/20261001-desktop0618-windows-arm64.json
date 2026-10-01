@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "product": "YNX Wallet Desktop",
+  "version": "0.6.18",
+  "sourceCommit": "1dd948e986ef63e0b57374e9f08f45a0abad5141",
+  "releaseTag": "wallet-desktop-testnet-preview-0.6.18-1dd948e98",
+  "distribution": "Windows ARM64 Testnet preview",
+  "assets": [
+    {
+      "filename": "ynx-wallet-desktop-0.6.18-arm64.exe",
+      "githubUrl": "https://github.com/JiahaoAlbus/YNX-Chain/releases/download/wallet-desktop-testnet-preview-0.6.18-1dd948e98/ynx-wallet-desktop-0.6.18-arm64.exe",
+      "bytes": 114734729,
+      "sha256": "daa8b8489dd116a24b006df3f7e0412a7269cd5a1c35564f9080a9c089ff4558"
+    }
+  ],
+  "originalReleaseManifestSHA256": "9454555afd4ad9b6b927d761df54f3ba4af4913db035f90fb4c246c15a9c924c",
+  "ciEvidence": {
+    "schemaVersion": "ynx-wallet-release-ci-evidence/v1",
+    "sourceCommit": "1dd948e986ef63e0b57374e9f08f45a0abad5141",
+    "version": "0.6.18",
+    "architecture": "arm64",
+    "file": "ynx-wallet-desktop-0.6.18-arm64.exe",
+    "bytes": 114734729,
+    "sha256": "daa8b8489dd116a24b006df3f7e0412a7269cd5a1c35564f9080a9c089ff4558",
+    "embeddedSignature": "ABSENT",
+    "ciRun": "https://github.com/JiahaoAlbus/YNX-Chain/actions/runs/36823522822",
+    "reports": {
+      "windows-old-profile.json": {
+        "present": false
+      },
+      "windows-upgrade-lifecycle.json": {
+        "present": false
+      },
+      "windows-failed-create-recovery.json": {
+        "present": false
+      },
+      "windows-password-lifecycle.json": {
+        "present": true,
+        "osRebootVerified": false,
+        "samePublicAddressAfterRestart": true,
+        "userMachineVerified": false,
+        "signed": false,
+        "installedPasswordSetup": true,
+        "importedAccountAfterRestart": true,
+        "vaultCiphertextUnchangedByUnlock": true,
+        "accountCreated": true,
+        "originalAndPriorAccountsRetained": true,
+        "wrongPasswordRejected": true
+      },
+      "windows-installer-result.json": {
+        "present": true,
+        "exited": true,
+        "successfulExit": true
+      }
+    },
+    "originalManifestBytesUnchanged": true,
+    "publicDownloadVerified": false,
+    "fullInstalledE2E": false,
+    "MONSTERVerified": false,
+    "PairVerified": false,
+    "osRebootVerified": false,
+    "SmartScreenVerified": false,
+    "DefenderVerified": false,
+    "old068UpgradeVerified": false
+  },
+  "publicDownloadVerified": true,
+  "productionSigned": false,
+  "storeReleased": false,
+  "fullInstalledE2E": false,
+  "osRebootVerified": false,
+  "walletConnectPairVerified": false,
+  "MONSTER": false,
+  "downloadVerification": {
+    "publicDownloadVerified": true,
+    "httpStatus": 200,
+    "fullGETBytes": 114734729,
+    "fullGETSHA256": "daa8b8489dd116a24b006df3f7e0412a7269cd5a1c35564f9080a9c089ff4558",
+    "url": "https://downloads.ynxweb4.com/wallet/sha256-daa8b8489dd116a24b006df3f7e0412a7269cd5a1c35564f9080a9c089ff4558/ynx-wallet-desktop-0.6.18-arm64.exe",
+    "observedAt": "2026-10-01T12:06:15Z",
+    "verificationMethod": "complete HTTPS streamed GET on deployment host; SHA matched original final installer"
+  },
+  "previousWindowsARM64Release": "/releases/wallet-downloads/20260912-desktop068.json",
+  "old068UpgradeVerified": false
+}

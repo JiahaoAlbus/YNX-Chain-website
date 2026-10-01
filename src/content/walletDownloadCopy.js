@@ -602,3 +602,55 @@ for (const [locale, copy] of Object.entries(WALLET_DOWNLOAD_COPY)) {
 
 const web015ProofCopy={"en":"Public 0.1.15 ZIP bytes and manifest verified; current installer selection uses the official catalog. Full installed ecosystem journeys remain unverified.","zh-CN":"0.1.15 公开 ZIP 字节与清单已核验；安装选项使用官网当前目录。最终安装版完整生态流程仍未验证。","zh-Hant":"0.1.15 公開 ZIP 位元與清單已核驗；安裝選項使用官網目前目錄。最終安裝版完整生態流程仍未驗證。","ja":"0.1.15 公開ZIPとマニフェストを検証済み。配布選択は公式の最新一覧を使用します。インストール後の全製品フローは未検証です。","ko":"0.1.15 공개 ZIP과 매니페스트를 검증했습니다. 설치 선택은 공식 최신 목록을 사용합니다. 설치 후 전체 생태계 흐름은 미검증입니다.","es":"ZIP y manifiesto públicos 0.1.15 verificados. La selección usa el catálogo oficial actual. Los recorridos completos instalados no están verificados.","fr":"ZIP public et manifeste 0.1.15 vérifiés. La sélection utilise le catalogue officiel actuel. Les parcours installés complets restent non vérifiés.","de":"Öffentliches ZIP und Manifest 0.1.15 geprüft. Die Auswahl nutzt den aktuellen offiziellen Katalog. Vollständige installierte Abläufe bleiben ungeprüft.","pt":"ZIP público e manifesto 0.1.15 verificados. A seleção usa o catálogo oficial atual. Os fluxos instalados completos não foram verificados.","ru":"Публичный ZIP и манифест 0.1.15 проверены. Выбор использует актуальный официальный каталог. Полные установленные сценарии не проверены.","ar":"تم التحقق من ZIP العام وبيان 0.1.15. يستخدم اختيار التثبيت الكتالوج الرسمي الحالي. لم تُتحقق المسارات المثبتة الكاملة.","id":"ZIP publik dan manifes 0.1.15 terverifikasi. Pilihan instalasi memakai katalog resmi terkini. Alur terpasang lengkap belum terverifikasi."};
 for(const [locale,value] of Object.entries(web015ProofCopy)) WALLET_DOWNLOAD_COPY[locale==='zh-Hant'?'zh-TW':locale].web015Proof=value;
+
+const DESKTOP_0618_ARM_COPY = {
+  "zh-CN": [
+    "Windows ARM64 0.6.18 无签名测试预览；设备、系统重启、SmartScreen/Defender、Pair 和 MONSTER 未验证。",
+    "原安装包通过 Windows ARM64 CI 密码、备份恢复和同账户重启；未验证从 0.6.8 升级。"
+  ],
+  "zh-TW": [
+    "Windows ARM64 0.6.18 無簽章測試預覽；裝置、系統重啟、SmartScreen/Defender、Pair 與 MONSTER 未驗證。",
+    "原安裝包通過 Windows ARM64 CI 密碼、備份還原和同帳戶重啟；未驗證從 0.6.8 升級。"
+  ],
+  "en": [
+    "Unsigned Windows ARM64 0.6.18 Testnet preview; device, OS reboot, SmartScreen/Defender, Pair and MONSTER remain unverified.",
+    "The original installer passed Windows ARM64 CI password, backup/import and same-account restart. Upgrade from 0.6.8 was not tested."
+  ],
+  "ja": [
+    "Windows ARM64 0.6.18 は未署名のテストネット版です。実機、OS再起動、SmartScreen/Defender、Pair、MONSTERは未検証です。",
+    "元のインストーラーでパスワード、バックアップ復元、同一アカウントの再起動をCI検証しました。0.6.8からの更新は未検証です。"
+  ],
+  "ko": [
+    "Windows ARM64 0.6.18은 서명 없는 테스트넷 버전입니다. 기기, OS 재시작, SmartScreen/Defender, Pair, MONSTER는 미검증입니다.",
+    "원본 설치 프로그램의 암호, 백업 복원, 동일 계정 재시작을 CI에서 검증했습니다. 0.6.8 업그레이드는 미검증입니다."
+  ],
+  "es": [
+    "Vista previa de Testnet Windows ARM64 0.6.18 sin firma; dispositivo, reinicio, SmartScreen/Defender, Pair y MONSTER no verificados.",
+    "El instalador original pasó CI de contraseña, restauración y reinicio con la misma cuenta. No se probó actualizar desde 0.6.8."
+  ],
+  "fr": [
+    "Aperçu Testnet Windows ARM64 0.6.18 non signé ; appareil, redémarrage, SmartScreen/Defender, Pair et MONSTER non vérifiés.",
+    "Le programme original a validé en CI le mot de passe, la restauration et le redémarrage du même compte. La mise à niveau depuis 0.6.8 reste non testée."
+  ],
+  "de": [
+    "Unsignierte Testnet-Version Windows ARM64 0.6.18; Gerät, OS-Neustart, SmartScreen/Defender, Pair und MONSTER nicht verifiziert.",
+    "Der Originalinstaller bestand Passwort-, Backup- und Neustarttests mit demselben Konto in der CI. Ein Upgrade von 0.6.8 wurde nicht getestet."
+  ],
+  "pt": [
+    "Prévia Testnet Windows ARM64 0.6.18 sem assinatura; dispositivo, reinício, SmartScreen/Defender, Pair e MONSTER não verificados.",
+    "O instalador original passou testes CI de senha, restauração e reinício com a mesma conta. A atualização de 0.6.8 não foi testada."
+  ],
+  "ru": [
+    "Неподписанная тестовая версия Windows ARM64 0.6.18. Устройство, перезагрузка ОС, SmartScreen/Defender, Pair и MONSTER не проверены.",
+    "Исходный установщик прошёл CI пароля, восстановления и перезапуска того же аккаунта. Обновление с 0.6.8 не проверялось."
+  ],
+  "ar": [
+    "معاينة Windows ARM64 0.6.18 لشبكة الاختبار بلا توقيع؛ الجهاز وإعادة التشغيل وSmartScreen/Defender وPair وMONSTER غير متحققة.",
+    "اجتاز المثبّت الأصلي اختبارات CI لكلمة المرور والاستعادة وإعادة التشغيل للحساب نفسه. لم تُختبر الترقية من 0.6.8."
+  ],
+  "id": [
+    "Pratinjau Testnet Windows ARM64 0.6.18 tanpa tanda tangan; perangkat, mulai ulang OS, SmartScreen/Defender, Pair dan MONSTER belum diverifikasi.",
+    "Installer asli lulus CI kata sandi, pemulihan dan mulai ulang akun yang sama. Peningkatan dari 0.6.8 belum diuji."
+  ]
+};
+for (const [locale, copy] of Object.entries(WALLET_DOWNLOAD_COPY)) { [copy.desktop0618ArmBoundary, copy.desktop0618ArmProof] = DESKTOP_0618_ARM_COPY[locale]; }
